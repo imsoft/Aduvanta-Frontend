@@ -1,6 +1,7 @@
-'use client';
+'use client'
 
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl'
+import { useRouter } from '@/i18n/navigation'
 import { SignOut, User } from '@phosphor-icons/react';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -14,7 +15,9 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { signOut, useSession } from '@/lib/auth-client';
 import { useOrgStore } from '@/store/org.store';
-import { OrgSwitcher } from './org-switcher';
+import { OrgSwitcher } from './org-switcher'
+import { LocaleSwitcher } from '@/components/locale-switcher'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 function getInitials(name: string): string {
   return name
@@ -26,7 +29,8 @@ function getInitials(name: string): string {
 }
 
 export function AppHeader() {
-  const router = useRouter();
+  const t = useTranslations()
+  const router = useRouter()
   const { data: session } = useSession();
   const { clearOrg } = useOrgStore();
 
@@ -34,7 +38,7 @@ export function AppHeader() {
     await signOut();
     clearOrg();
     router.push('/sign-in');
-    toast.success('Signed out');
+    toast.success(t('header.signedOut'))
   };
 
   const user = session?.user;
@@ -44,6 +48,8 @@ export function AppHeader() {
       <OrgSwitcher />
 
       <div className="flex items-center gap-2">
+        <ThemeToggle />
+        <LocaleSwitcher />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="flex items-center gap-2 rounded-md px-2 py-1 text-sm hover:bg-accent transition-colors outline-none">
@@ -68,7 +74,7 @@ export function AppHeader() {
             <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={handleSignOut} className="gap-2 text-destructive focus:text-destructive">
               <SignOut size={14} />
-              Sign out
+              {t('auth.signOut')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

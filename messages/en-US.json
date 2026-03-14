@@ -1,0 +1,116 @@
+{
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "yes": "Yes",
+    "no": "No",
+    "close": "Close",
+    "confirm": "Confirm",
+    "noCategory": "No category",
+    "unassigned": "Unassigned",
+    "selectClient": "Select client"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "organizations": "Organizations",
+    "clients": "Clients",
+    "operations": "Operations",
+    "docCategories": "Doc. Categories",
+    "compliance": "Compliance",
+    "aiCopilot": "AI Copilot",
+    "integrations": "Integrations",
+    "exports": "Exports",
+    "imports": "Imports",
+    "users": "Users",
+    "roles": "Roles",
+    "auditLogs": "Audit Logs",
+    "billing": "Billing",
+    "usage": "Usage",
+    "featureFlags": "Feature flags",
+    "settings": "Settings"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "signUp": "Sign up",
+    "createAccount": "Create account",
+    "signingIn": "Signing in…",
+    "creatingAccount": "Creating account…",
+    "enterCredentials": "Enter your credentials to access your workspace",
+    "setUpAccount": "Set up your account to get started",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full name",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?"
+  },
+  "clients": {
+    "title": "Clients",
+    "description": "Manage your organization's clients",
+    "newClient": "New client",
+    "selectOrg": "Select an organization to view clients.",
+    "allStatuses": "All statuses",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "placeholders": {
+    "email": "you@company.com",
+    "fullName": "Full name",
+    "searchClients": "Search by name, legal name, tax ID or email…",
+    "searchOperations": "Search by reference or title…",
+    "searchUsers": "colleague@company.com",
+    "orgName": "Organization name",
+    "featureKey": "feature.key",
+    "optionalDescription": "Optional description",
+    "docCategoryCode": "e.g. IMPORT_DEC",
+    "docCategoryName": "e.g. Import Declaration",
+    "aiSearch": "Describe what you're looking for…",
+    "webhookName": "e.g. Operations webhook",
+    "webhookUrl": "https://your-endpoint.example.com/webhook",
+    "signingSecret": "Signing secret",
+    "ruleSetName": "e.g. Import Standard",
+    "ruleSetCode": "e.g. IMPORT_STD",
+    "currency": "USD",
+    "advanceReference": "Invoice or transfer reference",
+    "chargeDescription": "e.g. Customs duty",
+    "documentTitle": "Leave blank to use filename",
+    "writeComment": "Write a comment…",
+    "statusChangeReason": "Reason for status change…",
+    "addressLabel": "Main office"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcomeBack": "Welcome back, {name}",
+    "noOrganization": "No organization yet",
+    "createFirstOrg": "Create your first organization to get started.",
+    "createOrganization": "Create organization"
+  },
+  "header": {
+    "signedOut": "Signed out"
+  },
+  "validation": {
+    "invalidEmail": "Invalid email address",
+    "passwordRequired": "Password is required",
+    "nameMinLength": "Name must be at least 2 characters",
+    "passwordMinLength": "Password must be at least 8 characters"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "toggleAria": "Toggle theme"
+  },
+  "toast": {
+    "signInFailed": "Sign in failed",
+    "signUpFailed": "Sign up failed",
+    "unexpectedError": "An unexpected error occurred"
+  }
+}

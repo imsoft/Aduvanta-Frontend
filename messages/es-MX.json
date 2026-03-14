@@ -1,0 +1,116 @@
+{
+  "common": {
+    "loading": "Cargando…",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "search": "Buscar",
+    "submit": "Enviar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "yes": "Sí",
+    "no": "No",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "noCategory": "Sin categoría",
+    "unassigned": "Sin asignar",
+    "selectClient": "Seleccionar cliente"
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "organizations": "Organizaciones",
+    "clients": "Clientes",
+    "operations": "Operaciones",
+    "docCategories": "Categorías doc.",
+    "compliance": "Cumplimiento",
+    "aiCopilot": "AI Copilot",
+    "integrations": "Integraciones",
+    "exports": "Exportaciones",
+    "imports": "Importaciones",
+    "users": "Usuarios",
+    "roles": "Roles",
+    "auditLogs": "Registros de auditoría",
+    "billing": "Facturación",
+    "usage": "Uso",
+    "featureFlags": "Feature flags",
+    "settings": "Configuración"
+  },
+  "auth": {
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "signUp": "Registrarse",
+    "createAccount": "Crear cuenta",
+    "signingIn": "Iniciando sesión…",
+    "creatingAccount": "Creando cuenta…",
+    "enterCredentials": "Introduce tus credenciales para acceder a tu espacio de trabajo",
+    "setUpAccount": "Configura tu cuenta para comenzar",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "fullName": "Nombre completo",
+    "dontHaveAccount": "¿No tienes cuenta?",
+    "alreadyHaveAccount": "¿Ya tienes cuenta?"
+  },
+  "clients": {
+    "title": "Clientes",
+    "description": "Gestiona los clientes de tu organización",
+    "newClient": "Nuevo cliente",
+    "selectOrg": "Selecciona una organización para ver los clientes.",
+    "allStatuses": "Todos los estados",
+    "active": "Activo",
+    "inactive": "Inactivo"
+  },
+  "placeholders": {
+    "email": "tu@empresa.com",
+    "fullName": "Nombre completo",
+    "searchClients": "Buscar por nombre, razón social, NIF o email…",
+    "searchOperations": "Buscar por referencia o título…",
+    "searchUsers": "colega@empresa.com",
+    "orgName": "Nombre de la organización",
+    "featureKey": "feature.key",
+    "optionalDescription": "Descripción opcional",
+    "docCategoryCode": "ej. IMPORT_DEC",
+    "docCategoryName": "ej. Declaración de importación",
+    "aiSearch": "Describe qué estás buscando…",
+    "webhookName": "ej. Webhook de operaciones",
+    "webhookUrl": "https://tu-endpoint.ejemplo.com/webhook",
+    "signingSecret": "Secreto de firma",
+    "ruleSetName": "ej. Estándar de importación",
+    "ruleSetCode": "ej. IMPORT_STD",
+    "currency": "EUR",
+    "advanceReference": "Referencia de factura o transferencia",
+    "chargeDescription": "ej. Arancel aduanero",
+    "documentTitle": "Dejar en blanco para usar el nombre del archivo",
+    "writeComment": "Escribe un comentario…",
+    "statusChangeReason": "Motivo del cambio de estado…",
+    "addressLabel": "Oficina principal"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "welcomeBack": "Bienvenido de nuevo, {name}",
+    "noOrganization": "Aún no hay organización",
+    "createFirstOrg": "Crea tu primera organización para comenzar.",
+    "createOrganization": "Crear organización"
+  },
+  "header": {
+    "signedOut": "Sesión cerrada"
+  },
+  "validation": {
+    "invalidEmail": "Correo electrónico no válido",
+    "passwordRequired": "La contraseña es obligatoria",
+    "nameMinLength": "El nombre debe tener al menos 2 caracteres",
+    "passwordMinLength": "La contraseña debe tener al menos 8 caracteres"
+  },
+  "theme": {
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema",
+    "toggleAria": "Cambiar tema"
+  },
+  "toast": {
+    "signInFailed": "Error al iniciar sesión",
+    "signUpFailed": "Error al registrarse",
+    "unexpectedError": "Se produjo un error inesperado"
+  }
+}

@@ -1,7 +1,7 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl'
+import { Link, usePathname } from '@/i18n/navigation'
 import {
   ArrowsDownUp,
   Buildings,
@@ -26,26 +26,27 @@ import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 
 const navItems = [
-  { label: 'Dashboard', href: '/dashboard', icon: House },
-  { label: 'Organizations', href: '/dashboard/organizations', icon: Buildings },
-  { label: 'Clients', href: '/dashboard/clients', icon: UsersFour },
-  { label: 'Operations', href: '/dashboard/operations', icon: FileText },
-  { label: 'Doc. Categories', href: '/dashboard/document-categories', icon: FolderOpen },
-  { label: 'Compliance', href: '/dashboard/compliance/rule-sets', icon: ListChecks },
-  { label: 'AI Copilot', href: '/dashboard/ai', icon: Sparkle },
-  { label: 'Integrations', href: '/dashboard/integrations', icon: LinkSimple },
-  { label: 'Exports', href: '/dashboard/exports', icon: ArrowsDownUp },
-  { label: 'Imports', href: '/dashboard/imports', icon: Upload },
-  { label: 'Users', href: '/dashboard/users', icon: UsersThree },
-  { label: 'Roles', href: '/dashboard/roles', icon: ShieldCheck },
-  { label: 'Audit Logs', href: '/dashboard/audit-logs', icon: ClipboardText },
-  { label: 'Billing', href: '/dashboard/billing', icon: CurrencyDollar },
-  { label: 'Usage', href: '/dashboard/usage', icon: ChartLine },
-  { label: 'Feature flags', href: '/dashboard/feature-flags', icon: Flag },
-] as const;
+  { labelKey: 'nav.dashboard', href: '/dashboard', icon: House },
+  { labelKey: 'nav.organizations', href: '/dashboard/organizations', icon: Buildings },
+  { labelKey: 'nav.clients', href: '/dashboard/clients', icon: UsersFour },
+  { labelKey: 'nav.operations', href: '/dashboard/operations', icon: FileText },
+  { labelKey: 'nav.docCategories', href: '/dashboard/document-categories', icon: FolderOpen },
+  { labelKey: 'nav.compliance', href: '/dashboard/compliance/rule-sets', icon: ListChecks },
+  { labelKey: 'nav.aiCopilot', href: '/dashboard/ai', icon: Sparkle },
+  { labelKey: 'nav.integrations', href: '/dashboard/integrations', icon: LinkSimple },
+  { labelKey: 'nav.exports', href: '/dashboard/exports', icon: ArrowsDownUp },
+  { labelKey: 'nav.imports', href: '/dashboard/imports', icon: Upload },
+  { labelKey: 'nav.users', href: '/dashboard/users', icon: UsersThree },
+  { labelKey: 'nav.roles', href: '/dashboard/roles', icon: ShieldCheck },
+  { labelKey: 'nav.auditLogs', href: '/dashboard/audit-logs', icon: ClipboardText },
+  { labelKey: 'nav.billing', href: '/dashboard/billing', icon: CurrencyDollar },
+  { labelKey: 'nav.usage', href: '/dashboard/usage', icon: ChartLine },
+  { labelKey: 'nav.featureFlags', href: '/dashboard/feature-flags', icon: Flag },
+] as const
 
 export function AppSidebar() {
-  const pathname = usePathname();
+  const t = useTranslations()
+  const pathname = usePathname()
 
   return (
     <aside className="flex h-full w-56 flex-col border-r bg-background">
@@ -60,7 +61,7 @@ export function AppSidebar() {
 
       {/* Navigation */}
       <nav className="flex flex-1 flex-col gap-0.5 p-2">
-        {navItems.map(({ label, href, icon: Icon }) => {
+        {navItems.map(({ labelKey, href, icon: Icon }) => {
           const active =
             href === '/dashboard'
               ? pathname === href
@@ -78,7 +79,7 @@ export function AppSidebar() {
               )}
             >
               <Icon size={16} weight={active ? 'fill' : 'regular'} />
-              {label}
+              {t(labelKey)}
             </Link>
           );
         })}
@@ -98,7 +99,7 @@ export function AppSidebar() {
           )}
         >
           <Gear size={16} />
-          Settings
+          {t('nav.settings')}
         </Link>
       </div>
     </aside>

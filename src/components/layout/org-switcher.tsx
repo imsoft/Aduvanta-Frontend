@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { CaretUpDown, Plus } from '@phosphor-icons/react';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation'
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -1,9 +1,10 @@
-import type { Metadata } from 'next';
-import { Geist, JetBrains_Mono } from 'next/font/google';
-import './globals.css';
-import { cn } from '@/lib/utils';
-import { QueryProvider } from '@/providers/query-provider';
-import { Toaster } from '@/components/ui/sonner';
+import type { Metadata } from 'next'
+import { Geist, JetBrains_Mono } from 'next/font/google'
+import './globals.css'
+import { cn } from '@/lib/utils'
+import { QueryProvider } from '@/providers/query-provider'
+import { ThemeProvider } from '@/providers/theme-provider'
+import { Toaster } from '@/components/ui/sonner'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -24,7 +25,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning dir="ltr">
       <body
         className={cn(
           'antialiased',
@@ -32,7 +33,9 @@ export default function RootLayout({
           jetbrainsMono.variable,
         )}
       >
-        <QueryProvider>{children}</QueryProvider>
+        <ThemeProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </ThemeProvider>
         <Toaster />
       </body>
     </html>

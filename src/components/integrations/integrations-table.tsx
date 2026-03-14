@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation'
 import { ArrowRight, Prohibit } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import {
