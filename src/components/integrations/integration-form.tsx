@@ -1,7 +1,9 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { useState } from 'react'
+import { useTranslations } from 'next-intl'
+import { Button } from '@/components/ui/button'
+import { PasswordInput } from '@/components/ui/password-input'
 import { WEBHOOK_EVENT_TYPES } from '@/features/integrations/schemas/integration.schemas';
 import type { Integration } from '@/features/integrations/types/integration.types';
 import type {
@@ -26,6 +28,7 @@ export function IntegrationForm({
   submitLabel,
   isEdit = false,
 }: IntegrationFormProps) {
+  const t = useTranslations('auth')
   const existingEventTypes = initialValues?.eventTypes
     ? initialValues.eventTypes.split(',').map((e) => e.trim())
     : [];
@@ -95,12 +98,13 @@ export function IntegrationForm({
           />
         </Field>
         <Field label={isEdit ? 'Secret (leave blank to keep)' : 'Secret (optional)'}>
-          <input
-            type="password"
-            className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          <PasswordInput
+            className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             value={secret}
             onChange={(e) => setSecret(e.target.value)}
             autoComplete="off"
+            ariaLabelShow={t('showPassword')}
+            ariaLabelHide={t('hidePassword')}
           />
         </Field>
       </div>

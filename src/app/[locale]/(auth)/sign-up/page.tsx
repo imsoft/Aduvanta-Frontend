@@ -8,7 +8,8 @@ import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { z } from 'zod';
 import { toast } from 'sonner';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/input'
+import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { signUp } from '@/lib/auth-client';
@@ -98,10 +99,11 @@ export default function SignUpPage() {
 
           <div className="space-y-2">
             <Label htmlFor="password">{t('auth.password')}</Label>
-            <Input
+            <PasswordInput
               id="password"
-              type="password"
               autoComplete="new-password"
+              ariaLabelShow={t('auth.showPassword')}
+              ariaLabelHide={t('auth.hidePassword')}
               {...register('password')}
             />
             {errors.password && (

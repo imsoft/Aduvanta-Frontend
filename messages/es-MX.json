@@ -50,6 +50,8 @@
     "password": "Contraseña",
     "fullName": "Nombre completo",
     "dontHaveAccount": "¿No tienes cuenta?",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
     "alreadyHaveAccount": "¿Ya tienes cuenta?"
   },
   "clients": {
