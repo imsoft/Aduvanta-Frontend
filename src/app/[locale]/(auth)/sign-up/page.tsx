@@ -75,7 +75,6 @@ export default function SignUpPage() {
             <Input
               id="name"
               type="text"
-              placeholder={t('placeholders.fullName')}
               autoComplete="name"
               {...register('name')}
             />
@@ -89,7 +88,6 @@ export default function SignUpPage() {
             <Input
               id="email"
               type="email"
-              placeholder={t('placeholders.email')}
               autoComplete="email"
               {...register('email')}
             />
@@ -114,7 +112,7 @@ export default function SignUpPage() {
           </div>
         </CardContent>
 
-        <CardFooter className="flex flex-col gap-3">
+        <CardFooter className="flex flex-col gap-3 border-t-0">
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? t('auth.creatingAccount') : t('auth.createAccount')}
           </Button>

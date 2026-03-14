@@ -82,7 +82,6 @@ export function IntegrationForm({
         <Field label="Name *">
           <input
             className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-            placeholder="e.g. Operations webhook"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -91,7 +90,6 @@ export function IntegrationForm({
           <input
             type="url"
             className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-            placeholder="https://your-endpoint.example.com/webhook"
             value={targetUrl}
             onChange={(e) => setTargetUrl(e.target.value)}
           />
@@ -100,7 +98,6 @@ export function IntegrationForm({
           <input
             type="password"
             className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-            placeholder="Signing secret"
             value={secret}
             onChange={(e) => setSecret(e.target.value)}
             autoComplete="off"

@@ -84,7 +84,6 @@ export function UploadDocumentDialog({
             </label>
             <input
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              placeholder="Leave blank to use filename"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -96,7 +95,7 @@ export function UploadDocumentDialog({
             </label>
             <Select value={categoryId} onValueChange={setCategoryId}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="No category" />
+                <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 {categories.map((c) => (

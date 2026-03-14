@@ -83,7 +83,6 @@ export function ChangeOperationStatusDialog({
               id="comment"
               rows={2}
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              placeholder="Reason for status change…"
               {...register('comment')}
             />
           </div>

@@ -65,7 +65,6 @@ export default function FeatureFlagsPage() {
               </label>
               <input
                 className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring font-mono"
-                placeholder="feature.key"
                 value={form.key}
                 onChange={(e) => setForm((v) => ({ ...v, key: e.target.value }))}
               />
@@ -76,7 +75,6 @@ export default function FeatureFlagsPage() {
               </label>
               <input
                 className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                placeholder="Optional description"
                 value={form.description}
                 onChange={(e) => setForm((v) => ({ ...v, description: e.target.value }))}
               />

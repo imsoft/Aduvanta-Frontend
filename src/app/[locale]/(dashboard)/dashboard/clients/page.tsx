@@ -55,7 +55,6 @@ export default function ClientsPage() {
 
       <div className="flex gap-3">
         <Input
-          placeholder={t('placeholders.searchClients')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-sm"

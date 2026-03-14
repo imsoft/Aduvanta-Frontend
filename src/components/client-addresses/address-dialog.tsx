@@ -78,7 +78,7 @@ export function AddressDialog({
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <Label htmlFor="addr-label">Label *</Label>
-              <Input id="addr-label" placeholder="Main office" {...register('label')} />
+              <Input id="addr-label" {...register('label')} />
               {errors.label && (
                 <p className="text-xs text-destructive">{errors.label.message}</p>
               )}

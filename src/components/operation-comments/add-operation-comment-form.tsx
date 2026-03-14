@@ -35,7 +35,6 @@ export function AddOperationCommentForm({
     <form onSubmit={handleSubmit(submit)} className="space-y-2">
       <textarea
         rows={3}
-        placeholder="Write a comment…"
         className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
         {...register('body')}
       />

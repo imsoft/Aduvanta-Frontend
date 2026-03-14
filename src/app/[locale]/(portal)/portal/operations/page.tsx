@@ -47,7 +47,6 @@ export default function PortalOperationsPage() {
           />
           <input
             className="w-full rounded-md border bg-transparent pl-8 pr-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-            placeholder="Search by reference or title…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />

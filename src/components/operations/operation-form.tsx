@@ -64,7 +64,7 @@ export function OperationForm({
             value={watch('clientId')}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select client" />
+              <SelectValue />
             </SelectTrigger>
             <SelectContent>
               {clients.map((c) => (
@@ -146,7 +146,7 @@ export function OperationForm({
             value={watch('assignedUserId') || '_none'}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Unassigned" />
+              <SelectValue />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="_none">Unassigned</SelectItem>

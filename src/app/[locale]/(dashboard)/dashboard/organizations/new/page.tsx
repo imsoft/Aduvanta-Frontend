@@ -75,7 +75,6 @@ export default function NewOrganizationPage() {
               <Label htmlFor="name">Organization name</Label>
               <Input
                 id="name"
-                placeholder={t('placeholders.orgName')}
                 autoFocus
                 {...register('name')}
               />

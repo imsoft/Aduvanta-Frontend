@@ -76,7 +76,7 @@ export function EditDocumentDialog({
             </label>
             <Select value={categoryId} onValueChange={setCategoryId}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="No category" />
+                <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={NO_CATEGORY}>No category</SelectItem>

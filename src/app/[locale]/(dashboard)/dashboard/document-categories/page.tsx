@@ -200,7 +200,6 @@ function CreateCategoryDialog({
           <Field label="Code *">
             <input
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm font-mono shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring uppercase"
-              placeholder="e.g. IMPORT_DEC"
               value={code}
               onChange={(e) => setCode(e.target.value.toUpperCase())}
             />
@@ -209,7 +208,6 @@ function CreateCategoryDialog({
           <Field label="Name *">
             <input
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              placeholder="e.g. Import Declaration"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />

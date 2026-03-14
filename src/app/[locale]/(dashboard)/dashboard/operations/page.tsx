@@ -98,7 +98,6 @@ export default function OperationsPage() {
 
       <div className="flex flex-wrap gap-3">
         <Input
-          placeholder={t('placeholders.searchOperations')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-xs"

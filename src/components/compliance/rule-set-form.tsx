@@ -50,7 +50,6 @@ export function RuleSetForm({
         <Field label="Name *">
           <input
             className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-            placeholder="e.g. Import Standard"
             value={values.name}
             onChange={(e) => setValues((v) => ({ ...v, name: e.target.value }))}
           />
@@ -58,7 +57,6 @@ export function RuleSetForm({
         <Field label="Code * (uppercase, no spaces)">
           <input
             className="w-full rounded-md border bg-transparent px-3 py-2 text-sm font-mono shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-            placeholder="e.g. IMPORT_STD"
             value={values.code}
             onChange={(e) =>
               setValues((v) => ({ ...v, code: e.target.value.toUpperCase() }))

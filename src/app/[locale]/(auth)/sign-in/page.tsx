@@ -73,7 +73,6 @@ export default function SignInPage() {
             <Input
               id="email"
               type="email"
-              placeholder={t('placeholders.email')}
               autoComplete="email"
               {...register('email')}
             />
@@ -98,7 +97,7 @@ export default function SignInPage() {
           </div>
         </CardContent>
 
-        <CardFooter className="flex flex-col gap-3">
+        <CardFooter className="flex flex-col gap-3 border-t-0">
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? t('auth.signingIn') : t('auth.signIn')}
           </Button>

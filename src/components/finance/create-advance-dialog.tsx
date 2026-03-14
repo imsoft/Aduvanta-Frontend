@@ -75,7 +75,6 @@ export function CreateAdvanceDialog({
             <Field label="Currency *">
               <input
                 className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                placeholder="USD"
                 value={values.currency}
                 onChange={(e) =>
                   setValues((v) => ({ ...v, currency: e.target.value.toUpperCase() }))
@@ -94,7 +93,6 @@ export function CreateAdvanceDialog({
           <Field label="Reference">
             <input
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              placeholder="Invoice or transfer reference"
               value={values.reference}
               onChange={(e) => setValues((v) => ({ ...v, reference: e.target.value }))}
             />

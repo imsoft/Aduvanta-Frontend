@@ -176,7 +176,6 @@ export default function UsersPage() {
             <Input
               id="invite-email"
               type="email"
-              placeholder="colleague@company.com"
               {...register('email')}
             />
             {errors.email && (

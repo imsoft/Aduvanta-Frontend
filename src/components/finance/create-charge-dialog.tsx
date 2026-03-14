@@ -58,7 +58,6 @@ export function CreateChargeDialog({
           <Field label="Type *">
             <input
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              placeholder="e.g. Customs duty"
               value={values.type}
               onChange={(e) => setValues((v) => ({ ...v, type: e.target.value }))}
             />
@@ -87,7 +86,6 @@ export function CreateChargeDialog({
             <Field label="Currency *">
               <input
                 className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                placeholder="USD"
                 value={values.currency}
                 onChange={(e) =>
                   setValues((v) => ({ ...v, currency: e.target.value.toUpperCase() }))
