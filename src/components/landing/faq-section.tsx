@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { CaretDown } from '@phosphor-icons/react'
+import { Plus, Minus } from '@phosphor-icons/react'
 
 type FaqItem = {
   question: string
@@ -11,47 +11,37 @@ type FaqItem = {
 const content = {
   'en-US': {
     badge: 'FAQ',
-    title: 'Frequently asked questions',
+    title: 'Common questions',
     items: [
       {
-        question: 'What is Aduvanta?',
+        question: 'How long does it take to get started?',
         answer:
-          'Aduvanta is a modern web platform that replaces legacy desktop software for customs and foreign trade operations. It provides customs agencies, importers, and exporters with real-time operations management, full traceability, and enterprise-grade security in a single unified platform.',
+          'About 15 minutes. Sign up, create your organization, invite your team, and you can start creating pedimentos immediately. No installation, no IT setup, no migration required to begin.',
       },
       {
-        question: 'Who is Aduvanta for?',
+        question: 'Can I migrate my data from CASA or other systems?',
         answer:
-          'Aduvanta is designed for customs agencies (agencias aduanales), independent customs brokers, importers, exporters, IMMEX companies, and logistics operators in Mexico. Anyone involved in customs operations can benefit from the platform.',
+          'Yes. We offer guided migration for Professional and Enterprise plans. Our team helps you import historical data so you don\'t lose continuity. Starter users can begin fresh and import data as needed.',
       },
       {
-        question: 'How does Aduvanta compare to Sistemas CASA?',
+        question: 'Is my data safe?',
         answer:
-          'While Sistemas CASA offers 13 separate Windows desktop applications, Aduvanta provides all functionality in a single modern web platform accessible from anywhere. Aduvanta includes features not available in legacy software: client portal, AI-powered classification, real-time collaboration, mobile access, and API integrations.',
+          'Your data is encrypted at rest and in transit, hosted on Neon PostgreSQL with automated daily backups. Each organization\'s data is fully isolated. We maintain complete audit trails and role-based access control with 60+ granular permissions.',
       },
       {
-        question: 'Is my data secure?',
+        question: 'Can my clients access the platform?',
         answer:
-          'Absolutely. Aduvanta uses enterprise-grade security with encrypted data at rest and in transit, role-based access control with 60+ permission codes, complete audit trails, and infrastructure hosted on Neon PostgreSQL with automated backups. Your data is fully isolated per organization.',
+          'Yes. The Client Portal gives each client their own login to track operations, view documents, and check status — with permission controls so they only see what you allow. Available on Professional and Enterprise plans.',
       },
       {
-        question: 'Can I manage multiple organizations?',
+        question: 'What happens after the 14-day trial?',
         answer:
-          'Yes. Aduvanta is multi-tenant from day one. You can manage multiple organizations, each with its own users, roles, permissions, and data. Users can belong to multiple organizations with different roles in each.',
+          'You choose a plan and continue using the platform with all your data intact. If you decide not to continue, your data is available for export for 30 days after the trial ends. No surprise charges.',
       },
       {
-        question: 'Is there a free trial?',
+        question: 'Do I need to install anything?',
         answer:
-          'Yes, we offer a free trial so you can explore the platform before committing. No credit card required. Contact us to get started.',
-      },
-      {
-        question: 'Can my clients see their operations?',
-        answer:
-          'Yes. The Client Portal feature allows your clients to track their operations, view documents, and receive real-time status updates through a dedicated, permission-controlled interface.',
-      },
-      {
-        question: 'What reference data is included?',
-        answer:
-          'Aduvanta includes all 13 Anexo 22 SAT catalogs (customs sections, pedimento keys, customs regimes, countries, currencies, taxes, and more), a complete SAAI error code catalog, TIGIE tariff data, and a unit converter with 100+ measurement units.',
+          'No. Aduvanta is entirely web-based and works in any modern browser (Chrome, Firefox, Safari, Edge). No downloads, no plugins, no Java — just open your browser and log in.',
       },
     ] satisfies FaqItem[],
   },
@@ -60,44 +50,34 @@ const content = {
     title: 'Preguntas frecuentes',
     items: [
       {
-        question: 'Que es Aduvanta?',
+        question: 'Cuanto tiempo toma empezar?',
         answer:
-          'Aduvanta es una plataforma web moderna que reemplaza el software de escritorio para operaciones aduaneras y de comercio exterior. Proporciona a agencias aduanales, importadores y exportadores gestion de operaciones en tiempo real, trazabilidad completa y seguridad empresarial en una sola plataforma unificada.',
+          'Unos 15 minutos. Registrate, crea tu organizacion, invita a tu equipo y puedes empezar a crear pedimentos inmediatamente. Sin instalacion, sin configuracion de TI, sin migracion obligatoria para comenzar.',
       },
       {
-        question: 'Para quien es Aduvanta?',
+        question: 'Puedo migrar mis datos de CASA u otros sistemas?',
         answer:
-          'Aduvanta esta disenada para agencias aduanales, agentes aduanales independientes, importadores, exportadores, empresas IMMEX y operadores logisticos en Mexico. Cualquier persona involucrada en operaciones aduaneras puede beneficiarse de la plataforma.',
-      },
-      {
-        question: 'Como se compara Aduvanta con Sistemas CASA?',
-        answer:
-          'Mientras que Sistemas CASA ofrece 13 aplicaciones de escritorio Windows separadas, Aduvanta proporciona toda la funcionalidad en una sola plataforma web moderna accesible desde cualquier lugar. Aduvanta incluye funcionalidades no disponibles en software legacy: portal de clientes, clasificacion con IA, colaboracion en tiempo real, acceso movil e integraciones por API.',
+          'Si. Ofrecemos migracion guiada para planes Professional y Enterprise. Nuestro equipo te ayuda a importar datos historicos para que no pierdas continuidad. Usuarios Starter pueden empezar desde cero e importar datos conforme los necesiten.',
       },
       {
         question: 'Mis datos estan seguros?',
         answer:
-          'Absolutamente. Aduvanta utiliza seguridad de nivel empresarial con datos encriptados en reposo y en transito, control de acceso por roles con 60+ codigos de permiso, registro completo de auditoria e infraestructura hospedada en Neon PostgreSQL con respaldos automaticos. Tus datos estan completamente aislados por organizacion.',
+          'Tus datos estan encriptados en reposo y en transito, hospedados en Neon PostgreSQL con respaldos automaticos diarios. Los datos de cada organizacion estan completamente aislados. Mantenemos auditoria completa y control de acceso por roles con 60+ permisos granulares.',
       },
       {
-        question: 'Puedo gestionar multiples organizaciones?',
+        question: 'Mis clientes pueden acceder a la plataforma?',
         answer:
-          'Si. Aduvanta es multi-tenant desde el primer dia. Puedes gestionar multiples organizaciones, cada una con sus propios usuarios, roles, permisos y datos. Los usuarios pueden pertenecer a multiples organizaciones con diferentes roles en cada una.',
+          'Si. El Portal de Clientes le da a cada cliente su propio acceso para rastrear operaciones, ver documentos y consultar estatus — con controles de permisos para que solo vean lo que tu permitas. Disponible en planes Professional y Enterprise.',
       },
       {
-        question: 'Hay prueba gratuita?',
+        question: 'Que pasa despues de los 14 dias de prueba?',
         answer:
-          'Si, ofrecemos una prueba gratuita para que explores la plataforma antes de comprometerte. Sin tarjeta de credito requerida. Contactanos para comenzar.',
+          'Eliges un plan y continuas usando la plataforma con todos tus datos intactos. Si decides no continuar, tus datos estan disponibles para exportar por 30 dias despues de que termine la prueba. Sin cargos sorpresa.',
       },
       {
-        question: 'Mis clientes pueden ver sus operaciones?',
+        question: 'Necesito instalar algo?',
         answer:
-          'Si. La funcionalidad de Portal de Clientes permite que tus clientes rastreen sus operaciones, vean documentos y reciban actualizaciones de estatus en tiempo real a traves de una interfaz dedicada y controlada por permisos.',
-      },
-      {
-        question: 'Que datos de referencia incluye?',
-        answer:
-          'Aduvanta incluye los 13 catalogos de Anexo 22 del SAT (secciones aduaneras, claves de pedimento, regimenes aduaneros, paises, monedas, contribuciones y mas), un catalogo completo de errores SAAI, datos de tarifa TIGIE y un conversor de unidades con 100+ unidades de medida.',
+          'No. Aduvanta es completamente web y funciona en cualquier navegador moderno (Chrome, Firefox, Safari, Edge). Sin descargas, sin plugins, sin Java — solo abre tu navegador e inicia sesion.',
       },
     ] satisfies FaqItem[],
   },
@@ -112,45 +92,44 @@ export function FaqSection({ locale }: Props) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
-    <section id="faq" className="py-20 sm:py-28">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <div className="mb-4 inline-flex items-center rounded-full border border-border bg-muted/50 px-3 py-1">
-            <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+    <section id="faq" className="border-t border-border/40 bg-muted/20 py-20 sm:py-28 lg:py-32">
+      <div className="mx-auto max-w-6xl px-5 lg:px-8">
+        <div className="mx-auto grid max-w-4xl grid-cols-1 gap-12 md:grid-cols-[280px_1fr] md:gap-16">
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-widest text-primary">
               {t.badge}
             </span>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">
+              {t.title}
+            </h2>
           </div>
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            {t.title}
-          </h2>
-        </div>
 
-        <div className="mx-auto mt-12 max-w-3xl divide-y divide-border/50">
-          {t.items.map((item, index) => (
-            <div key={item.question} className="py-4">
-              <button
-                type="button"
-                className="flex w-full items-center justify-between gap-4 py-2 text-left"
-                onClick={() =>
-                  setOpenIndex(openIndex === index ? null : index)
-                }
-                aria-expanded={openIndex === index}
-              >
-                <span className="text-base font-medium">{item.question}</span>
-                <CaretDown
-                  size={18}
-                  className={`shrink-0 text-muted-foreground transition-transform duration-200 ${
-                    openIndex === index ? 'rotate-180' : ''
-                  }`}
-                />
-              </button>
-              {openIndex === index && (
-                <p className="pb-2 pt-1 text-sm leading-relaxed text-muted-foreground">
-                  {item.answer}
-                </p>
-              )}
-            </div>
-          ))}
+          <div className="divide-y divide-border/40">
+            {t.items.map((item, index) => (
+              <div key={item.question} className="py-5 first:pt-0 last:pb-0">
+                <button
+                  type="button"
+                  className="flex w-full items-start justify-between gap-4 text-left"
+                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                  aria-expanded={openIndex === index}
+                >
+                  <span className="text-sm font-semibold sm:text-base">
+                    {item.question}
+                  </span>
+                  {openIndex === index ? (
+                    <Minus size={16} weight="bold" className="mt-1 shrink-0 text-primary" />
+                  ) : (
+                    <Plus size={16} weight="bold" className="mt-1 shrink-0 text-muted-foreground" />
+                  )}
+                </button>
+                {openIndex === index && (
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {item.answer}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

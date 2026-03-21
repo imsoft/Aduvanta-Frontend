@@ -1,9 +1,13 @@
-import { Check, ArrowRight } from '@phosphor-icons/react/dist/ssr'
+'use client'
+
+import { useState } from 'react'
+import { Check, ArrowRight } from '@phosphor-icons/react'
 import { Link } from '@/i18n/navigation'
 
-type PricingTier = {
+type Tier = {
   name: string
-  price: string
+  monthlyPrice: string
+  annualPrice: string
   period: string
   description: string
   features: string[]
@@ -14,135 +18,147 @@ type PricingTier = {
 const content = {
   'en-US': {
     badge: 'Pricing',
-    title: 'Simple, transparent pricing',
-    description: 'Choose the plan that fits your operation. All plans include core platform access.',
-    contact: 'Need a custom plan?',
-    contactCta: 'Contact Sales',
+    title: 'Invest in your operation, not your tools',
+    description: 'All plans include a 14-day free trial. No credit card required.',
+    monthly: 'Monthly',
+    annual: 'Annual',
+    annualSave: 'Save 20%',
+    popular: 'Most popular',
+    guarantee: '14-day free trial on all plans. Cancel anytime.',
+    contact: 'Need something custom?',
+    contactCta: 'Talk to us',
     tiers: [
       {
         name: 'Starter',
-        price: '$2,500',
-        period: 'MXN / month',
-        description: 'For independent customs brokers starting their digital transformation.',
+        monthlyPrice: '$2,500',
+        annualPrice: '$2,000',
+        period: 'MXN/mo',
+        description: 'For independent brokers managing their own operations.',
         features: [
           '1 organization',
-          'Up to 3 users',
-          'Pedimentos & customs entries',
-          'TIGIE & tariff classification',
+          '3 users included',
+          'Pedimentos & entries',
+          'Tariff classification (TIGIE)',
           'Anexo 22 & SAAI reference',
           'Unit converter',
           'Email support',
         ],
-        cta: 'Start Free Trial',
+        cta: 'Start free trial',
         highlighted: false,
       },
       {
         name: 'Professional',
-        price: '$12,000',
-        period: 'MXN / month',
-        description: 'For mid-size agencies that need full operational control.',
+        monthlyPrice: '$12,000',
+        annualPrice: '$9,600',
+        period: 'MXN/mo',
+        description: 'For agencies that need full operational control and client management.',
         features: [
           '1 organization',
-          'Up to 15 users',
+          '15 users included',
           'Everything in Starter',
           'Full operations & traffic',
           'Warehouse control',
           'Billing & treasury',
           'Document management',
           'Client portal',
-          'Notifications',
           'Priority support',
         ],
-        cta: 'Start Free Trial',
+        cta: 'Start free trial',
         highlighted: true,
       },
       {
         name: 'Enterprise',
-        price: '$35,000',
-        period: 'MXN / month',
-        description: 'For large customs groups and IMMEX companies.',
+        monthlyPrice: '$35,000',
+        annualPrice: '$28,000',
+        period: 'MXN/mo',
+        description: 'For customs groups and IMMEX companies at scale.',
         features: [
-          'Multi-organization',
+          'Unlimited organizations',
           'Unlimited users',
           'Everything in Professional',
-          'Analytics & BI',
+          'Analytics & BI dashboards',
           'AI Assistant',
-          'API access',
+          'Full API access',
           'Custom integrations',
           'SSO / SAML',
-          'Dedicated SLA',
-          'Onboarding included',
+          'Dedicated account manager',
         ],
-        cta: 'Contact Sales',
+        cta: 'Talk to sales',
         highlighted: false,
       },
-    ] satisfies PricingTier[],
+    ] satisfies Tier[],
   },
   'es-MX': {
     badge: 'Precios',
-    title: 'Precios simples y transparentes',
-    description: 'Elige el plan que se adapte a tu operacion. Todos los planes incluyen acceso a la plataforma base.',
-    contact: 'Necesitas un plan personalizado?',
-    contactCta: 'Contactar Ventas',
+    title: 'Invierte en tu operacion, no en tus herramientas',
+    description: 'Todos los planes incluyen 14 dias gratis. Sin tarjeta de credito.',
+    monthly: 'Mensual',
+    annual: 'Anual',
+    annualSave: 'Ahorra 20%',
+    popular: 'Mas popular',
+    guarantee: '14 dias gratis en todos los planes. Cancela cuando quieras.',
+    contact: 'Necesitas algo a la medida?',
+    contactCta: 'Platicamos',
     tiers: [
       {
         name: 'Starter',
-        price: '$2,500',
-        period: 'MXN / mes',
-        description: 'Para agentes aduanales independientes iniciando su transformacion digital.',
+        monthlyPrice: '$2,500',
+        annualPrice: '$2,000',
+        period: 'MXN/mes',
+        description: 'Para agentes independientes que manejan sus propias operaciones.',
         features: [
           '1 organizacion',
-          'Hasta 3 usuarios',
-          'Pedimentos y entradas aduaneras',
-          'TIGIE y clasificacion arancelaria',
-          'Anexo 22 y referencia SAAI',
+          '3 usuarios incluidos',
+          'Pedimentos y entradas',
+          'Clasificacion arancelaria (TIGIE)',
+          'Referencia Anexo 22 y SAAI',
           'Conversor de unidades',
           'Soporte por email',
         ],
-        cta: 'Prueba Gratuita',
+        cta: 'Empezar gratis',
         highlighted: false,
       },
       {
         name: 'Professional',
-        price: '$12,000',
-        period: 'MXN / mes',
-        description: 'Para agencias medianas que necesitan control operacional completo.',
+        monthlyPrice: '$12,000',
+        annualPrice: '$9,600',
+        period: 'MXN/mes',
+        description: 'Para agencias que necesitan control operacional completo y gestion de clientes.',
         features: [
           '1 organizacion',
-          'Hasta 15 usuarios',
+          '15 usuarios incluidos',
           'Todo lo de Starter',
           'Operaciones y trafico completo',
           'Control de almacenes',
           'Facturacion y tesoreria',
           'Gestion documental',
           'Portal de clientes',
-          'Notificaciones',
           'Soporte prioritario',
         ],
-        cta: 'Prueba Gratuita',
+        cta: 'Empezar gratis',
         highlighted: true,
       },
       {
         name: 'Enterprise',
-        price: '$35,000',
-        period: 'MXN / mes',
-        description: 'Para grupos aduanales grandes y empresas IMMEX.',
+        monthlyPrice: '$35,000',
+        annualPrice: '$28,000',
+        period: 'MXN/mes',
+        description: 'Para grupos aduanales y empresas IMMEX a escala.',
         features: [
-          'Multi-organizacion',
+          'Organizaciones ilimitadas',
           'Usuarios ilimitados',
           'Todo lo de Professional',
-          'Analitica y BI',
+          'Dashboards de analitica y BI',
           'Asistente IA',
-          'Acceso a API',
-          'Integraciones personalizadas',
+          'Acceso completo a API',
+          'Integraciones a la medida',
           'SSO / SAML',
-          'SLA dedicado',
-          'Onboarding incluido',
+          'Account manager dedicado',
         ],
-        cta: 'Contactar Ventas',
+        cta: 'Hablar con ventas',
         highlighted: false,
       },
-    ] satisfies PricingTier[],
+    ] satisfies Tier[],
   },
 } as const
 
@@ -151,85 +167,113 @@ type Props = {
 }
 
 export function PricingSection({ locale }: Props) {
+  const [annual, setAnnual] = useState(true)
   const t = locale === 'es-MX' ? content['es-MX'] : content['en-US']
 
   return (
-    <section id="pricing" className="border-t border-border/50 bg-muted/30 py-20 sm:py-28">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section id="pricing" className="border-y border-border/40 bg-muted/20 py-20 sm:py-28 lg:py-32">
+      <div className="mx-auto max-w-6xl px-5 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <div className="mb-4 inline-flex items-center rounded-full border border-border bg-background px-3 py-1">
-            <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-              {t.badge}
-            </span>
-          </div>
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+            {t.badge}
+          </span>
+          <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-4xl">
             {t.title}
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">{t.description}</p>
+          <p className="mt-4 text-base text-muted-foreground">{t.description}</p>
+
+          <div className="mt-8 inline-flex items-center gap-1 rounded-full border border-border bg-card p-1">
+            <button
+              type="button"
+              className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
+                !annual
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+              onClick={() => setAnnual(false)}
+            >
+              {t.monthly}
+            </button>
+            <button
+              type="button"
+              className={`flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
+                annual
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+              onClick={() => setAnnual(true)}
+            >
+              {t.annual}
+              <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                annual
+                  ? 'bg-primary-foreground/20 text-primary-foreground'
+                  : 'bg-primary/10 text-primary'
+              }`}>
+                {t.annualSave}
+              </span>
+            </button>
+          </div>
         </div>
 
-        <div className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-5 lg:grid-cols-3">
           {t.tiers.map((tier) => (
             <div
               key={tier.name}
-              className={`relative flex flex-col rounded-2xl border p-8 shadow-sm transition-all ${
+              className={`relative flex flex-col rounded-2xl border p-7 transition-all ${
                 tier.highlighted
-                  ? 'border-primary bg-card shadow-lg shadow-primary/10'
+                  ? 'border-primary bg-card shadow-xl shadow-primary/5'
                   : 'border-border/50 bg-card hover:border-border'
               }`}
             >
               {tier.highlighted && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="rounded-full bg-primary px-4 py-1 text-xs font-semibold text-primary-foreground">
-                    {locale === 'es-MX' ? 'Mas popular' : 'Most Popular'}
+                <div className="absolute -top-3 right-6">
+                  <span className="rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
+                    {t.popular}
                   </span>
                 </div>
               )}
 
-              <div>
-                <h3 className="text-lg font-semibold">{tier.name}</h3>
-                <div className="mt-4 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold tracking-tight">
-                    {tier.price}
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    {tier.period}
-                  </span>
-                </div>
-                <p className="mt-3 text-sm text-muted-foreground">
-                  {tier.description}
-                </p>
+              <h3 className="text-base font-semibold">{tier.name}</h3>
+              <div className="mt-4 flex items-baseline gap-1">
+                <span className="text-3xl font-bold tracking-tight sm:text-4xl">
+                  {annual ? tier.annualPrice : tier.monthlyPrice}
+                </span>
+                <span className="text-sm text-muted-foreground">{tier.period}</span>
               </div>
+              <p className="mt-2 text-sm text-muted-foreground">{tier.description}</p>
 
-              <ul className="mt-8 flex-1 space-y-3">
+              <ul className="mt-6 flex-1 space-y-2.5">
                 {tier.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3">
+                  <li key={feature} className="flex items-start gap-2.5">
                     <Check
-                      size={18}
+                      size={15}
                       weight="bold"
                       className="mt-0.5 shrink-0 text-primary"
                     />
-                    <span className="text-sm">{feature}</span>
+                    <span className="text-sm text-foreground/80">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               <Link
                 href="/sign-up"
-                className={`mt-8 flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all ${
+                className={`mt-7 flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition-all ${
                   tier.highlighted
-                    ? 'bg-primary text-primary-foreground shadow-sm hover:opacity-90'
+                    ? 'bg-primary text-primary-foreground hover:bg-primary/90'
                     : 'border border-border bg-background text-foreground hover:bg-muted'
                 }`}
               >
                 {tier.cta}
-                <ArrowRight size={16} />
+                <ArrowRight size={14} weight="bold" />
               </Link>
             </div>
           ))}
         </div>
 
-        <p className="mt-12 text-center text-sm text-muted-foreground">
+        <p className="mt-8 text-center text-sm text-muted-foreground">
+          {t.guarantee}
+        </p>
+        <p className="mt-2 text-center text-sm text-muted-foreground">
           {t.contact}{' '}
           <a
             href="mailto:ventas@aduvanta.com"

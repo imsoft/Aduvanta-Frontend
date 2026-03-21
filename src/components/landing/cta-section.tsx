@@ -3,18 +3,20 @@ import { Link } from '@/i18n/navigation'
 
 const content = {
   'en-US': {
-    title: 'Ready to modernize your customs operations?',
+    title: 'Your competitors are already switching.',
+    subtitle: 'Are you?',
     description:
-      'Join forward-thinking customs agencies that are leaving legacy software behind. Start your free trial today.',
-    cta: 'Start Free Trial',
-    secondary: 'Talk to Sales',
+      '14-day free trial. No credit card. No installation. Up and running in 15 minutes.',
+    cta: 'Start your free trial',
+    secondary: 'Schedule a call',
   },
   'es-MX': {
-    title: 'Listo para modernizar tus operaciones aduaneras?',
+    title: 'Tu competencia ya esta migrando.',
+    subtitle: 'Y tu?',
     description:
-      'Unete a las agencias aduanales que estan dejando atras el software legacy. Comienza tu prueba gratuita hoy.',
-    cta: 'Prueba Gratuita',
-    secondary: 'Hablar con Ventas',
+      '14 dias gratis. Sin tarjeta de credito. Sin instalacion. Operando en 15 minutos.',
+    cta: 'Empieza tu prueba gratis',
+    secondary: 'Agenda una llamada',
   },
 } as const
 
@@ -26,38 +28,43 @@ export function CtaSection({ locale }: Props) {
   const t = locale === 'es-MX' ? content['es-MX'] : content['en-US']
 
   return (
-    <section className="border-t border-border/50 bg-muted/30 py-20 sm:py-28">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-3xl bg-primary px-8 py-16 text-center shadow-2xl sm:px-16">
-          <div className="absolute inset-0 -z-10">
-            <div className="absolute -left-20 -top-20 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
-            <div className="absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
+    <section className="py-20 sm:py-28 lg:py-32">
+      <div className="mx-auto max-w-6xl px-5 lg:px-8">
+        <div className="relative overflow-hidden rounded-3xl bg-primary px-6 py-16 text-center shadow-2xl shadow-primary/20 sm:px-12 sm:py-20 lg:px-20">
+          <div className="absolute inset-0" aria-hidden="true">
+            <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-white/[0.04] blur-3xl" />
+            <div className="absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-white/[0.04] blur-3xl" />
           </div>
 
-          <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl">
-            {t.title}
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-primary-foreground/80">
-            {t.description}
-          </p>
+          <div className="relative">
+            <h2 className="text-2xl font-bold tracking-tight text-primary-foreground sm:text-4xl lg:text-5xl">
+              {t.title}
+              <br />
+              <span className="text-primary-foreground/80">{t.subtitle}</span>
+            </h2>
+            <p className="mx-auto mt-5 max-w-lg text-base text-primary-foreground/70 sm:text-lg">
+              {t.description}
+            </p>
 
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              href="/sign-up"
-              className="group flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-base font-semibold text-primary shadow-sm transition-all hover:bg-white/90"
-            >
-              {t.cta}
-              <ArrowRight
-                size={18}
-                className="transition-transform group-hover:translate-x-0.5"
-              />
-            </Link>
-            <a
-              href="mailto:ventas@aduvanta.com"
-              className="rounded-xl border border-white/20 px-6 py-3 text-base font-semibold text-primary-foreground transition-all hover:bg-white/10"
-            >
-              {t.secondary}
-            </a>
+            <div className="mt-8 flex flex-col items-center gap-3 sm:mt-10 sm:flex-row sm:justify-center sm:gap-4">
+              <Link
+                href="/sign-up"
+                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-primary shadow-lg transition-all hover:bg-white/95 sm:w-auto"
+              >
+                {t.cta}
+                <ArrowRight
+                  size={16}
+                  weight="bold"
+                  className="transition-transform group-hover:translate-x-0.5"
+                />
+              </Link>
+              <a
+                href="mailto:ventas@aduvanta.com"
+                className="w-full rounded-xl border border-white/20 px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-white/10 sm:w-auto"
+              >
+                {t.secondary}
+              </a>
+            </div>
           </div>
         </div>
       </div>

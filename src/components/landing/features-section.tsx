@@ -1,100 +1,127 @@
 import {
-  ShieldCheck,
-  Users,
-  Buildings,
-  ClockCountdown,
   FileText,
-  Lock,
+  Users,
+  ShieldCheck,
+  Sparkle,
 } from '@phosphor-icons/react/dist/ssr'
+import type { Icon } from '@phosphor-icons/react'
+
+type Feature = {
+  icon: Icon
+  badge: string
+  title: string
+  description: string
+  bullets: string[]
+}
 
 const content = {
   'en-US': {
-    badge: 'Why Aduvanta',
-    title: 'Built for serious customs operations',
-    description:
-      'Every feature designed for the complexity and compliance requirements of Mexican customs and foreign trade.',
+    sectionBadge: 'Product',
+    sectionTitle: 'Built for how you actually work',
     features: [
       {
-        icon: Buildings,
-        title: 'Multi-Tenant',
-        description:
-          'Manage multiple organizations from a single account. Each tenant is fully isolated with its own data, roles, and configurations.',
-      },
-      {
-        icon: ShieldCheck,
-        title: 'Role-Based Access',
-        description:
-          'Granular permissions with 60+ permission codes. Control exactly who can see, create, edit, or delete each resource.',
-      },
-      {
         icon: FileText,
-        title: 'Full Audit Trail',
+        badge: 'Pedimentos',
+        title: 'From draft to release, tracked end to end',
         description:
-          'Every sensitive action is logged with user, timestamp, and context. Meet compliance requirements with immutable audit records.',
+          'Create, validate, and submit pedimentos without switching between systems. Every field validated against SAAI rules before submission.',
+        bullets: [
+          'Full lifecycle management (draft, prevalidation, submission, release)',
+          'SAAI error reference built in — fix rejections fast',
+          'Automatic Anexo 22 catalog lookups while you type',
+        ],
       },
       {
         icon: Users,
-        title: 'Client Portal',
+        badge: 'Client Portal',
+        title: 'Stop answering the same call 10 times a day',
         description:
-          'Give your clients real-time visibility into their operations, documents, and status updates through a dedicated portal.',
+          'Give each client their own login to track operations, view documents, and check status. They see what you want them to see — nothing more.',
+        bullets: [
+          'Clients self-serve their own status updates',
+          'Permission-controlled visibility per client',
+          'Professional image for your agency',
+        ],
       },
       {
-        icon: ClockCountdown,
-        title: 'Real-Time Operations',
+        icon: ShieldCheck,
+        badge: 'Compliance & Audit',
+        title: 'Every action recorded. Every change traceable.',
         description:
-          'Track every pedimento, document, and customs entry in real time. Status updates, notifications, and alerts keep everyone in sync.',
+          'When SAT asks for documentation, you have it. Complete audit trail with who did what, when, and why — across every module.',
+        bullets: [
+          'Immutable audit logs on all sensitive mutations',
+          'Role-based access with 60+ permission codes',
+          'Organization-level data isolation',
+        ],
       },
       {
-        icon: Lock,
-        title: 'Enterprise Security',
+        icon: Sparkle,
+        badge: 'AI-Powered',
+        title: 'Classify faster. Make fewer mistakes.',
         description:
-          'Bank-grade encryption, secure session management, and infrastructure on Neon PostgreSQL with automated backups.',
+          'AI-assisted tariff classification suggests fractions based on product descriptions. Cross-referenced with TIGIE in real time.',
+        bullets: [
+          'Intelligent tariff fraction suggestions',
+          'Document analysis and data extraction',
+          'Insights on operation patterns and anomalies',
+        ],
       },
-    ],
+    ] satisfies Feature[],
   },
   'es-MX': {
-    badge: 'Por que Aduvanta',
-    title: 'Construida para operaciones aduaneras serias',
-    description:
-      'Cada funcionalidad disenada para la complejidad y los requisitos de cumplimiento del comercio exterior mexicano.',
+    sectionBadge: 'Producto',
+    sectionTitle: 'Construido para como realmente trabajas',
     features: [
       {
-        icon: Buildings,
-        title: 'Multi-Tenant',
-        description:
-          'Gestiona multiples organizaciones desde una sola cuenta. Cada tenant esta completamente aislado con sus propios datos, roles y configuraciones.',
-      },
-      {
-        icon: ShieldCheck,
-        title: 'Control de Acceso por Roles',
-        description:
-          'Permisos granulares con 60+ codigos de permiso. Controla exactamente quien puede ver, crear, editar o eliminar cada recurso.',
-      },
-      {
         icon: FileText,
-        title: 'Auditoria Completa',
+        badge: 'Pedimentos',
+        title: 'Del borrador al desaduanamiento, rastreado de principio a fin',
         description:
-          'Cada accion sensible se registra con usuario, fecha y contexto. Cumple requisitos de auditoria con registros inmutables.',
+          'Crea, valida y envia pedimentos sin cambiar entre sistemas. Cada campo validado contra reglas SAAI antes del envio.',
+        bullets: [
+          'Gestion completa del ciclo (borrador, prevalidacion, envio, desaduanamiento)',
+          'Referencia de errores SAAI integrada — corrige rechazos rapido',
+          'Consulta automatica de catalogos Anexo 22 mientras capturas',
+        ],
       },
       {
         icon: Users,
-        title: 'Portal de Clientes',
+        badge: 'Portal de Clientes',
+        title: 'Deja de contestar la misma llamada 10 veces al dia',
         description:
-          'Da a tus clientes visibilidad en tiempo real de sus operaciones, documentos y actualizaciones de estatus a traves de un portal dedicado.',
+          'Dale a cada cliente su propio acceso para rastrear operaciones, ver documentos y consultar estatus. Ven lo que tu quieres que vean — nada mas.',
+        bullets: [
+          'Tus clientes consultan su propio estatus',
+          'Visibilidad controlada por permisos por cliente',
+          'Imagen profesional para tu agencia',
+        ],
       },
       {
-        icon: ClockCountdown,
-        title: 'Operaciones en Tiempo Real',
+        icon: ShieldCheck,
+        badge: 'Cumplimiento y Auditoria',
+        title: 'Cada accion registrada. Cada cambio rastreable.',
         description:
-          'Rastrea cada pedimento, documento y entrada aduanera en tiempo real. Actualizaciones de estatus, notificaciones y alertas mantienen a todos sincronizados.',
+          'Cuando el SAT pida documentacion, la tienes. Auditoria completa con quien hizo que, cuando y por que — en cada modulo.',
+        bullets: [
+          'Registros de auditoria inmutables en toda mutacion sensible',
+          'Acceso por roles con 60+ codigos de permiso',
+          'Aislamiento de datos por organizacion',
+        ],
       },
       {
-        icon: Lock,
-        title: 'Seguridad Empresarial',
+        icon: Sparkle,
+        badge: 'Inteligencia Artificial',
+        title: 'Clasifica mas rapido. Comete menos errores.',
         description:
-          'Encriptacion de nivel bancario, gestion segura de sesiones e infraestructura en Neon PostgreSQL con respaldos automaticos.',
+          'Clasificacion arancelaria asistida por IA que sugiere fracciones basadas en descripciones de producto. Cruzada con TIGIE en tiempo real.',
+        bullets: [
+          'Sugerencias inteligentes de fracciones arancelarias',
+          'Analisis de documentos y extraccion de datos',
+          'Insights sobre patrones y anomalias en operaciones',
+        ],
       },
-    ],
+    ] satisfies Feature[],
   },
 } as const
 
@@ -106,37 +133,62 @@ export function FeaturesSection({ locale }: Props) {
   const t = locale === 'es-MX' ? content['es-MX'] : content['en-US']
 
   return (
-    <section id="features" className="border-t border-border/50 bg-muted/30 py-20 sm:py-28">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section id="product" className="py-20 sm:py-28 lg:py-32">
+      <div className="mx-auto max-w-6xl px-5 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <div className="mb-4 inline-flex items-center rounded-full border border-border bg-background px-3 py-1">
-            <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-              {t.badge}
-            </span>
-          </div>
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            {t.title}
+          <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+            {t.sectionBadge}
+          </span>
+          <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-4xl">
+            {t.sectionTitle}
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">{t.description}</p>
         </div>
 
-        <div className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {t.features.map((feature) => (
+        <div className="mt-16 space-y-20 sm:mt-20 sm:space-y-28">
+          {t.features.map((feature, i) => (
             <div
-              key={feature.title}
-              className="group rounded-2xl border border-border/50 bg-card p-6 shadow-sm transition-all hover:border-primary/20 hover:shadow-md"
+              key={feature.badge}
+              className={`flex flex-col items-center gap-10 md:flex-row md:gap-16 ${
+                i % 2 === 1 ? 'md:flex-row-reverse' : ''
+              }`}
             >
-              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
-                <feature.icon
-                  size={22}
-                  weight="duotone"
-                  className="text-primary"
-                />
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <feature.icon size={16} weight="duotone" className="text-primary" />
+                  <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+                    {feature.badge}
+                  </span>
+                </div>
+                <h3 className="mt-3 text-xl font-bold tracking-tight sm:text-2xl">
+                  {feature.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                  {feature.description}
+                </p>
+                <ul className="mt-5 space-y-2.5">
+                  {feature.bullets.map((bullet) => (
+                    <li
+                      key={bullet}
+                      className="flex items-start gap-2.5 text-sm text-muted-foreground"
+                    >
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <h3 className="text-lg font-semibold">{feature.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {feature.description}
-              </p>
+
+              <div className="w-full flex-1">
+                <div className="aspect-[4/3] overflow-hidden rounded-xl border border-border/60 bg-gradient-to-br from-muted/30 to-muted/60">
+                  <div className="flex h-full items-center justify-center">
+                    <feature.icon
+                      size={48}
+                      weight="duotone"
+                      className="text-muted-foreground/20"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           ))}
         </div>
