@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation'
 import { useRouter } from '@/i18n/navigation'
 import { Link } from '@/i18n/navigation'
-import { useQuery } from '@tanstack/react-query';
 import {
   ArrowLeft,
   PencilSimple,
@@ -36,6 +35,7 @@ import { OperationComplianceSection } from '@/components/compliance/operation-co
 import { OperationAiInsightsSection } from '@/components/ai/operation-ai-insights-section';
 import { ChangeOperationStatusDialog } from '@/components/operation-status/change-operation-status-dialog';
 import { AssignOperationDialog } from '@/components/operation-assignment/assign-operation-dialog';
+import { InfoField } from '@/components/ui/info-field';
 import {
   useOperation,
   useUpdateOperation,
@@ -43,34 +43,18 @@ import {
   useChangeOperationStatus,
   useAssignOperation,
 } from '@/features/operations/hooks/use-operations';
-import { useOrgStore } from '@/store/org.store';
-import { apiClient } from '@/lib/api-client';
-import type { Client } from '@/features/clients/types/client.types';
+import { useCanManage, useCanComment } from '@/hooks/use-permissions';
+import { useMembers } from '@/hooks/use-members';
+import { useClients } from '@/features/clients/hooks/use-clients';
 import type { UpdateOperationFormData } from '@/features/operations/schemas/operation.schemas';
-
-interface MemberUser {
-  id: string;
-  name: string;
-  email: string;
-}
-
-interface MemberWithUser {
-  membership: { id: string; userId: string };
-  user: MemberUser;
-}
 
 export default function OperationDetailPage() {
   const params = useParams<{ operationId: string }>();
   const router = useRouter();
   const { operationId } = params;
 
-  const { organizations, activeOrgId } = useOrgStore();
-  const activeOrg = organizations.find((o) => o.id === activeOrgId);
-  const canManage = activeOrg?.role === 'OWNER' || activeOrg?.role === 'ADMIN';
-  const canComment =
-    activeOrg?.role === 'OWNER' ||
-    activeOrg?.role === 'ADMIN' ||
-    activeOrg?.role === 'MEMBER';
+  const canManage = useCanManage();
+  const canComment = useCanComment();
 
   const { data: operation, isLoading } = useOperation(operationId);
   const updateOperation = useUpdateOperation(operationId);
@@ -82,27 +66,8 @@ export default function OperationDetailPage() {
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [editing, setEditing] = useState(false);
 
-  const { data: clients = [] } = useQuery<Client[]>({
-    queryKey: ['clients', activeOrgId],
-    queryFn: async () => {
-      const { data } = await apiClient.get<Client[]>('/api/clients', {
-        headers: { 'x-organization-id': activeOrgId! },
-      });
-      return data;
-    },
-    enabled: !!activeOrgId,
-  });
-
-  const { data: membersRaw = [] } = useQuery<MemberWithUser[]>({
-    queryKey: ['members', activeOrgId],
-    queryFn: async () => {
-      const { data } = await apiClient.get<MemberWithUser[]>('/api/memberships', {
-        headers: { 'x-organization-id': activeOrgId! },
-      });
-      return data;
-    },
-    enabled: !!activeOrgId,
-  });
+  const { data: clients = [] } = useClients();
+  const { data: membersRaw = [] } = useMembers();
 
   const members = membersRaw.map(({ user }) => ({ id: user.id, name: user.name }));
   const clientNames = Object.fromEntries(clients.map((c) => [c.id, c.name]));
@@ -340,25 +305,6 @@ export default function OperationDetailPage() {
           />
         </>
       )}
-    </div>
-  );
-}
-
-function InfoField({
-  label,
-  value,
-}: {
-  label: string;
-  value: string | null | undefined;
-}) {
-  return (
-    <div>
-      <dt className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-        {label}
-      </dt>
-      <dd className="mt-1 text-sm">
-        {value ?? <span className="text-muted-foreground">—</span>}
-      </dd>
     </div>
   );
 }

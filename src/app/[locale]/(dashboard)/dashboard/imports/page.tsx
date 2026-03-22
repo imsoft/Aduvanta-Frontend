@@ -6,12 +6,10 @@ import { Button } from '@/components/ui/button';
 import { ImportsTable } from '@/components/imports/imports-table';
 import { CreateImportDialog } from '@/components/imports/create-import-dialog';
 import { useImports, useCreateImport } from '@/features/imports/hooks/use-imports';
-import { useOrgStore } from '@/store/org.store';
+import { useCanManage } from '@/hooks/use-permissions';
 
 export default function ImportsPage() {
-  const { organizations, activeOrgId } = useOrgStore();
-  const activeOrg = organizations.find((o) => o.id === activeOrgId);
-  const canRun = activeOrg?.role === 'OWNER' || activeOrg?.role === 'ADMIN';
+  const canRun = useCanManage();
 
   const { data: jobs = [], isLoading } = useImports();
   const createImport = useCreateImport();

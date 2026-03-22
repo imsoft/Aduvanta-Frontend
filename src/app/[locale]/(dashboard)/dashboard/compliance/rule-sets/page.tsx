@@ -9,13 +9,10 @@ import {
   useComplianceRuleSets,
   useDeleteComplianceRuleSet,
 } from '@/features/compliance-rule-sets/hooks/use-compliance-rule-sets';
-import { useOrgStore } from '@/store/org.store';
+import { useCanManage } from '@/hooks/use-permissions';
 
 export default function ComplianceRuleSetsPage() {
-  const { organizations, activeOrgId } = useOrgStore();
-  const activeOrg = organizations.find((o) => o.id === activeOrgId);
-  const canManage =
-    activeOrg?.role === 'OWNER' || activeOrg?.role === 'ADMIN';
+  const canManage = useCanManage();
 
   const { data: ruleSets = [], isLoading } = useComplianceRuleSets();
   const deleteRuleSet = useDeleteComplianceRuleSet();

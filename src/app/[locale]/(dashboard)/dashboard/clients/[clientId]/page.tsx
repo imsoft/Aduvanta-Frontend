@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation'
 import { useRouter } from '@/i18n/navigation'
 import { Link } from '@/i18n/navigation'
-import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, PencilSimple, X, Check } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -24,44 +23,28 @@ import { ClientForm } from '@/components/clients/client-form';
 import { ClientContactsSection } from '@/components/client-contacts/client-contacts-section';
 import { ClientAddressesSection } from '@/components/client-addresses/client-addresses-section';
 import { ClientPortalAccessSection } from '@/components/client-portal-access/client-portal-access-section';
+import { InfoField } from '@/components/ui/info-field';
 import {
   useClient,
   useUpdateClient,
   useDeactivateClient,
 } from '@/features/clients/hooks/use-clients';
-import { useOrgStore } from '@/store/org.store';
-import { apiClient } from '@/lib/api-client';
+import { useCanManage } from '@/hooks/use-permissions';
+import { useMembers } from '@/hooks/use-members';
 import type { CreateClientFormData } from '@/features/clients/schemas/client.schemas';
-
-interface MemberWithUser {
-  membership: { id: string; userId: string; role: string };
-  user: { id: string; name: string; email: string };
-}
 
 export default function ClientDetailPage() {
   const params = useParams<{ clientId: string }>();
   const router = useRouter();
   const { clientId } = params;
 
-  const { organizations, activeOrgId } = useOrgStore();
-  const activeOrg = organizations.find((o) => o.id === activeOrgId);
-  const canManage = activeOrg?.role === 'OWNER' || activeOrg?.role === 'ADMIN';
+  const canManage = useCanManage();
 
   const { data: client, isLoading } = useClient(clientId);
   const updateClient = useUpdateClient(clientId);
   const deactivateClient = useDeactivateClient();
 
-  const { data: membersRaw = [] } = useQuery<MemberWithUser[]>({
-    queryKey: ['members', activeOrgId],
-    queryFn: async () => {
-      const { data } = await apiClient.get<MemberWithUser[]>('/api/memberships', {
-        headers: { 'x-organization-id': activeOrgId! },
-      });
-      return data;
-    },
-    enabled: !!activeOrgId && canManage,
-  });
-
+  const { data: membersRaw = [] } = useMembers();
   const members = membersRaw.map(({ user }) => ({
     id: user.id,
     name: user.name,
@@ -225,15 +208,6 @@ export default function ClientDetailPage() {
         canManage={canManage}
         members={members}
       />
-    </div>
-  );
-}
-
-function InfoField({ label, value }: { label: string; value: string | null | undefined }) {
-  return (
-    <div>
-      <dt className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{label}</dt>
-      <dd className="mt-1 text-sm">{value ?? <span className="text-muted-foreground">—</span>}</dd>
     </div>
   );
 }

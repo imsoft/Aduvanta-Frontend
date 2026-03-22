@@ -17,7 +17,7 @@ type Feature = {
 const content = {
   'en-US': {
     sectionBadge: 'Product',
-    sectionTitle: 'Built for how you actually work',
+    sectionTitle: 'Pedimentos, TIGIE, Portal & Compliance — Built In',
     features: [
       {
         icon: FileText,
@@ -71,7 +71,7 @@ const content = {
   },
   'es-MX': {
     sectionBadge: 'Producto',
-    sectionTitle: 'Construido para como realmente trabajas',
+    sectionTitle: 'Pedimentos, TIGIE, Portal de Clientes y Cumplimiento — Integrados',
     features: [
       {
         icon: FileText,

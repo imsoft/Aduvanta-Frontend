@@ -5,7 +5,7 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { useFeatureFlags, useCreateFeatureFlag } from '@/features/feature-flags/hooks/use-feature-flags';
 import { FeatureFlagsTable } from '@/components/billing/feature-flags-table';
-import { useOrgStore } from '@/store/org.store';
+import { useIsOwner } from '@/hooks/use-permissions';
 
 interface CreateFlagForm {
   key: string;
@@ -14,9 +14,7 @@ interface CreateFlagForm {
 }
 
 export default function FeatureFlagsPage() {
-  const { organizations, activeOrgId } = useOrgStore();
-  const activeOrg = organizations.find((o) => o.id === activeOrgId);
-  const canManage = activeOrg?.role === 'OWNER';
+  const canManage = useIsOwner();
 
   const { data: flags = [], isLoading } = useFeatureFlags();
   const createFlag = useCreateFeatureFlag();

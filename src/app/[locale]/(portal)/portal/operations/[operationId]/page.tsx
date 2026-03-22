@@ -11,26 +11,8 @@ import { OperationPriorityBadge } from '@/components/operations/operation-priori
 import { PortalOperationTimeline } from '@/components/portal/portal-operation-timeline';
 import { PortalCommentsSection } from '@/components/portal/portal-comments-section';
 import { PortalDocumentsSection } from '@/components/portal/portal-documents-section';
+import { InfoField } from '@/components/ui/info-field';
 import { usePortalOperation } from '@/features/portal/hooks/use-portal';
-
-function InfoField({
-  label,
-  value,
-}: {
-  label: string;
-  value: string | null | undefined;
-}) {
-  return (
-    <div>
-      <dt className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-        {label}
-      </dt>
-      <dd className="mt-1 text-sm">
-        {value ?? <span className="text-muted-foreground">—</span>}
-      </dd>
-    </div>
-  );
-}
 
 export default function PortalOperationDetailPage() {
   const params = useParams<{ operationId: string }>();

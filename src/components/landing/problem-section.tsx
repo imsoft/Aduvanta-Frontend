@@ -3,7 +3,7 @@ import { X, Check } from '@phosphor-icons/react/dist/ssr'
 const content = {
   'en-US': {
     badge: 'The Problem',
-    title: 'Your current software is costing you money',
+    title: 'Legacy customs software is costing you money',
     description:
       'Every hour spent fighting slow desktop apps, copying data between systems, and calling clients for status updates is an hour not spent on operations that generate revenue.',
     before: {
@@ -31,7 +31,7 @@ const content = {
   },
   'es-MX': {
     badge: 'El Problema',
-    title: 'Tu software actual te esta costando dinero',
+    title: 'Tu software aduanal actual te esta costando dinero',
     description:
       'Cada hora peleando con apps de escritorio lentas, copiando datos entre sistemas y llamando a clientes para dar estatus, es una hora que no inviertes en operaciones que generan ingresos.',
     before: {

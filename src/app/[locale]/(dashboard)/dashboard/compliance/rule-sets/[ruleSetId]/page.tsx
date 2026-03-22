@@ -25,15 +25,13 @@ import {
   useDeleteStatusRule,
 } from '@/features/compliance-status-rules/hooks/use-compliance-status-rules';
 import { useDocumentCategories } from '@/features/document-categories/hooks/use-document-categories';
-import { useOrgStore } from '@/store/org.store';
+import { useCanManage } from '@/hooks/use-permissions';
 import type { UpdateRuleSetFormData } from '@/features/compliance-rule-sets/schemas/rule-set.schemas';
 
 export default function RuleSetDetailPage() {
   const { ruleSetId } = useParams<{ ruleSetId: string }>();
   const router = useRouter();
-  const { organizations, activeOrgId } = useOrgStore();
-  const activeOrg = organizations.find((o) => o.id === activeOrgId);
-  const canManage = activeOrg?.role === 'OWNER' || activeOrg?.role === 'ADMIN';
+  const canManage = useCanManage();
 
   const { data: ruleSet, isLoading: isLoadingRuleSet } = useComplianceRuleSet(ruleSetId);
   const { data: requirements = [], isLoading: isLoadingReqs } =

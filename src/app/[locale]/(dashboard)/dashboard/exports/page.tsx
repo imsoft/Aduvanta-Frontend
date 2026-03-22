@@ -6,12 +6,10 @@ import { Button } from '@/components/ui/button';
 import { ExportsTable } from '@/components/exports/exports-table';
 import { CreateExportDialog } from '@/components/exports/create-export-dialog';
 import { useExports, useCreateExport, useExportDownloadUrl } from '@/features/exports/hooks/use-exports';
-import { useOrgStore } from '@/store/org.store';
+import { useCanManage } from '@/hooks/use-permissions';
 
 export default function ExportsPage() {
-  const { organizations, activeOrgId } = useOrgStore();
-  const activeOrg = organizations.find((o) => o.id === activeOrgId);
-  const canGenerate = activeOrg?.role === 'OWNER' || activeOrg?.role === 'ADMIN';
+  const canGenerate = useCanManage();
 
   const { data: jobs = [], isLoading } = useExports();
   const createExport = useCreateExport();

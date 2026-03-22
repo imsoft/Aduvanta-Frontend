@@ -9,6 +9,8 @@ import { toast } from 'sonner';
 import { UserPlus, Trash } from '@phosphor-icons/react';
 import { apiClient } from '@/lib/api-client';
 import { useOrgStore } from '@/store/org.store';
+import { useCanManage } from '@/hooks/use-permissions';
+import type { MemberWithUser } from '@/features/memberships/types/membership.types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -40,25 +42,6 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 
-interface MemberUser {
-  id: string;
-  name: string;
-  email: string;
-}
-
-interface Membership {
-  id: string;
-  organizationId: string;
-  userId: string;
-  role: 'OWNER' | 'ADMIN' | 'MEMBER';
-  createdAt: string;
-}
-
-interface MemberWithUser {
-  membership: Membership;
-  user: MemberUser;
-}
-
 const ROLE_VARIANT: Record<string, 'default' | 'secondary' | 'outline'> = {
   OWNER: 'default',
   ADMIN: 'secondary',
@@ -82,7 +65,7 @@ export default function UsersPage() {
   const queryClient = useQueryClient();
   const { activeOrgId, organizations } = useOrgStore();
   const activeOrg = organizations.find((o) => o.id === activeOrgId);
-  const canManage = activeOrg?.role === 'OWNER' || activeOrg?.role === 'ADMIN';
+  const canManage = useCanManage();
 
   const [roleSelections, setRoleSelections] = useState<Record<string, string>>({});
 

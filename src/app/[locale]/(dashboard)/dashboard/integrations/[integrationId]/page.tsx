@@ -7,6 +7,7 @@ import { ArrowLeft } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { IntegrationForm } from '@/components/integrations/integration-form';
 import { IntegrationDeliveriesTable } from '@/components/integrations/integration-deliveries-table';
+import { InfoField } from '@/components/ui/info-field';
 import {
   useIntegration,
   useUpdateIntegration,
@@ -15,15 +16,13 @@ import {
   useIntegrationDeliveries,
   useRetryDelivery,
 } from '@/features/integration-deliveries/hooks/use-deliveries';
-import { useOrgStore } from '@/store/org.store';
+import { useCanManage } from '@/hooks/use-permissions';
 import type { UpdateIntegrationFormData } from '@/features/integrations/schemas/integration.schemas';
 
 export default function IntegrationDetailPage() {
   const { integrationId } = useParams<{ integrationId: string }>();
   const router = useRouter();
-  const { organizations, activeOrgId } = useOrgStore();
-  const activeOrg = organizations.find((o) => o.id === activeOrgId);
-  const canManage = activeOrg?.role === 'OWNER' || activeOrg?.role === 'ADMIN';
+  const canManage = useCanManage();
 
   const { data: integration, isLoading } = useIntegration(integrationId);
   const { data: deliveries = [], isLoading: isLoadingDeliveries } =
@@ -142,15 +141,3 @@ export default function IntegrationDetailPage() {
   );
 }
 
-function InfoField({ label, value }: { label: string; value: string | null | undefined }) {
-  return (
-    <div>
-      <dt className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-        {label}
-      </dt>
-      <dd className="mt-1 text-sm break-all">
-        {value ?? <span className="text-muted-foreground">—</span>}
-      </dd>
-    </div>
-  );
-}

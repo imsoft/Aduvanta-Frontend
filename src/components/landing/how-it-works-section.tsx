@@ -7,7 +7,7 @@ import {
 const content = {
   'en-US': {
     badge: 'How It Works',
-    title: 'Up and running in 15 minutes',
+    title: 'Start managing pedimentos in 15 minutes',
     steps: [
       {
         icon: UserPlus,
@@ -34,7 +34,7 @@ const content = {
   },
   'es-MX': {
     badge: 'Como Funciona',
-    title: 'Operando en 15 minutos',
+    title: 'Empieza a gestionar pedimentos en 15 minutos',
     steps: [
       {
         icon: UserPlus,

@@ -3,10 +3,10 @@ import { Link } from '@/i18n/navigation'
 
 const content = {
   'en-US': {
-    headline: 'Stop fighting your customs software.',
-    headlineAccent: 'Start running your operation.',
+    headline: 'Cloud Customs Software for Mexico.',
+    headlineAccent: 'One Platform. Zero Installs.',
     subheadline:
-      'Aduvanta replaces 13 disconnected desktop apps with one platform. Pedimentos, documents, billing, warehouse, and client portal — all in your browser.',
+      'Aduvanta replaces 13 disconnected desktop apps with one cloud-based platform. Pedimentos, TIGIE classification, billing, warehouse, and client portal — all in your browser.',
     cta: 'Start 14-day free trial',
     ctaSecondary: 'Watch 2-min demo',
     noCard: 'No credit card required',
@@ -17,10 +17,10 @@ const content = {
     ],
   },
   'es-MX': {
-    headline: 'Deja de pelear con tu software aduanal.',
-    headlineAccent: 'Empieza a operar de verdad.',
+    headline: 'Software Aduanal 100% en la Nube.',
+    headlineAccent: 'Una Plataforma. Cero Instalaciones.',
     subheadline:
-      'Aduvanta reemplaza 13 apps de escritorio desconectadas con una sola plataforma. Pedimentos, documentos, facturacion, almacen y portal de clientes — todo desde tu navegador.',
+      'Aduvanta reemplaza 13 apps de escritorio desconectadas con una sola plataforma en la nube. Pedimentos, clasificacion arancelaria TIGIE, facturacion, almacen y portal de clientes — todo desde tu navegador.',
     cta: 'Prueba gratis 14 dias',
     ctaSecondary: 'Ver demo de 2 min',
     noCard: 'Sin tarjeta de credito',

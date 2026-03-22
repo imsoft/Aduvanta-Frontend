@@ -9,8 +9,8 @@ type ComparisonRow = {
 const content = {
   'en-US': {
     badge: 'Compare',
-    title: 'Legacy software vs. Aduvanta',
-    legacy: 'Legacy (CASA, etc.)',
+    title: 'Competition vs. Aduvanta',
+    legacy: 'Competition',
     aduvanta: 'Aduvanta',
     rows: [
       { feature: 'Web-based — no installation', legacy: false, aduvanta: true },
@@ -30,8 +30,8 @@ const content = {
   },
   'es-MX': {
     badge: 'Comparar',
-    title: 'Software legacy vs. Aduvanta',
-    legacy: 'Legacy (CASA, etc.)',
+    title: 'Competencia vs. Aduvanta',
+    legacy: 'Competencia',
     aduvanta: 'Aduvanta',
     rows: [
       { feature: 'Basado en web — sin instalacion', legacy: false, aduvanta: true },

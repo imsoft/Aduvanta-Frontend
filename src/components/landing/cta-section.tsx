@@ -3,19 +3,19 @@ import { Link } from '@/i18n/navigation'
 
 const content = {
   'en-US': {
-    title: 'Your competitors are already switching.',
-    subtitle: 'Are you?',
+    title: 'Modernize your customs agency today.',
+    subtitle: 'Start your free trial now.',
     description:
-      '14-day free trial. No credit card. No installation. Up and running in 15 minutes.',
-    cta: 'Start your free trial',
+      '14-day free trial. No credit card. No installation. Creating pedimentos in 15 minutes.',
+    cta: 'Try Aduvanta free for 14 days',
     secondary: 'Schedule a call',
   },
   'es-MX': {
-    title: 'Tu competencia ya esta migrando.',
-    subtitle: 'Y tu?',
+    title: 'Moderniza tu agencia aduanal hoy.',
+    subtitle: 'Empieza tu prueba gratis ahora.',
     description:
-      '14 dias gratis. Sin tarjeta de credito. Sin instalacion. Operando en 15 minutos.',
-    cta: 'Empieza tu prueba gratis',
+      '14 dias gratis. Sin tarjeta de credito. Sin instalacion. Creando pedimentos en 15 minutos.',
+    cta: 'Prueba Aduvanta gratis 14 dias',
     secondary: 'Agenda una llamada',
   },
 } as const

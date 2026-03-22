@@ -17,14 +17,12 @@ import {
   useCreateIntegration,
   useDeactivateIntegration,
 } from '@/features/integrations/hooks/use-integrations';
-import { useOrgStore } from '@/store/org.store';
+import { useCanManage } from '@/hooks/use-permissions';
 import type { CreateIntegrationFormData } from '@/features/integrations/schemas/integration.schemas';
 
 export default function IntegrationsPage() {
   const router = useRouter();
-  const { organizations, activeOrgId } = useOrgStore();
-  const activeOrg = organizations.find((o) => o.id === activeOrgId);
-  const canManage = activeOrg?.role === 'OWNER' || activeOrg?.role === 'ADMIN';
+  const canManage = useCanManage();
 
   const { data: integrations = [], isLoading } = useIntegrations();
   const createIntegration = useCreateIntegration();

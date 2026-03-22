@@ -5,24 +5,24 @@ const content = {
     tagline: 'The modern customs operations platform.',
     product: 'Product',
     productLinks: [
-      { label: 'Features', href: '#product' },
-      { label: 'Pricing', href: '#pricing' },
-      { label: 'Compare', href: '#compare' },
-      { label: 'FAQ', href: '#faq' },
+      { label: 'Features', href: '/software-aduanal' },
+      { label: 'Pricing', href: '/precios' },
+      { label: 'Compare', href: '/comparar/sistemas-casa' },
+      { label: 'Blog', href: '/blog' },
     ],
     tools: 'Free Tools',
     toolLinks: [
-      { label: 'TIGIE Lookup', href: '/sign-up' },
+      { label: 'TIGIE Lookup', href: '/herramientas/consulta-tigie' },
       { label: 'Anexo 22 Catalogs', href: '/sign-up' },
       { label: 'SAAI Error Codes', href: '/sign-up' },
       { label: 'Unit Converter', href: '/sign-up' },
     ],
     company: 'Company',
     companyLinks: [
-      { label: 'About', href: '#' },
+      { label: 'About', href: '/software-aduanal' },
       { label: 'Contact', href: 'mailto:contacto@aduvanta.com' },
-      { label: 'Privacy', href: '#' },
-      { label: 'Terms', href: '#' },
+      { label: 'Privacy', href: '/privacidad' },
+      { label: 'Terms', href: '/terminos' },
     ],
     rights: 'All rights reserved.',
   },
@@ -30,24 +30,24 @@ const content = {
     tagline: 'La plataforma moderna de operaciones aduaneras.',
     product: 'Producto',
     productLinks: [
-      { label: 'Funcionalidades', href: '#product' },
-      { label: 'Precios', href: '#pricing' },
-      { label: 'Comparar', href: '#compare' },
-      { label: 'FAQ', href: '#faq' },
+      { label: 'Funcionalidades', href: '/software-aduanal' },
+      { label: 'Precios', href: '/precios' },
+      { label: 'Comparar', href: '/comparar/sistemas-casa' },
+      { label: 'Blog', href: '/blog' },
     ],
     tools: 'Herramientas Gratis',
     toolLinks: [
-      { label: 'Consulta TIGIE', href: '/sign-up' },
+      { label: 'Consulta TIGIE', href: '/herramientas/consulta-tigie' },
       { label: 'Catalogos Anexo 22', href: '/sign-up' },
       { label: 'Errores SAAI', href: '/sign-up' },
       { label: 'Conversor de Unidades', href: '/sign-up' },
     ],
     company: 'Empresa',
     companyLinks: [
-      { label: 'Acerca de', href: '#' },
+      { label: 'Acerca de', href: '/software-aduanal' },
       { label: 'Contacto', href: 'mailto:contacto@aduvanta.com' },
-      { label: 'Privacidad', href: '#' },
-      { label: 'Terminos', href: '#' },
+      { label: 'Privacidad', href: '/privacidad' },
+      { label: 'Terminos', href: '/terminos' },
     ],
     rights: 'Todos los derechos reservados.',
   },
@@ -62,9 +62,9 @@ export function LandingFooter({ locale }: Props) {
   const year = new Date().getFullYear()
 
   const sections = [
-    { title: t.product, links: t.productLinks, useRouter: false },
-    { title: t.tools, links: t.toolLinks, useRouter: true },
-    { title: t.company, links: t.companyLinks, useRouter: false },
+    { title: t.product, links: t.productLinks },
+    { title: t.tools, links: t.toolLinks },
+    { title: t.company, links: t.companyLinks },
   ]
 
   return (
@@ -89,25 +89,28 @@ export function LandingFooter({ locale }: Props) {
                 {section.title}
               </h3>
               <ul className="mt-3 space-y-2">
-                {section.links.map((link) => (
-                  <li key={link.label}>
-                    {section.useRouter ? (
-                      <Link
-                        href={link.href}
-                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                      >
-                        {link.label}
-                      </Link>
-                    ) : (
-                      <a
-                        href={link.href}
-                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                      >
-                        {link.label}
-                      </a>
-                    )}
-                  </li>
-                ))}
+                {section.links.map((link) => {
+                  const isExternal = link.href.startsWith('mailto:') || link.href.startsWith('http')
+                  return (
+                    <li key={link.label}>
+                      {isExternal ? (
+                        <a
+                          href={link.href}
+                          className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                        >
+                          {link.label}
+                        </a>
+                      ) : (
+                        <Link
+                          href={link.href}
+                          className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                        >
+                          {link.label}
+                        </Link>
+                      )}
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           ))}

@@ -11,20 +11,22 @@ import { FaqSection } from '@/components/landing/faq-section'
 import { CtaSection } from '@/components/landing/cta-section'
 import type { Metadata } from 'next'
 
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://aduvanta.com'
+
 const meta = {
   'en-US': {
-    title: 'Aduvanta — Modern Customs Operations Software for Mexico',
+    title: 'Cloud Customs Software for Mexico | Pedimentos, TIGIE & Client Portal',
     description:
-      'Replace legacy desktop customs software with one web platform. Pedimentos, tariff classification, documents, billing, client portal, and AI — all from your browser. 14-day free trial.',
+      'Aduvanta is web-based customs software for Mexican customs agencies. Pedimentos, TIGIE tariff classification, Anexo 22, client portal, billing and audit — one platform. 14-day free trial.',
     keywords:
-      'customs software, pedimentos software, software aduanal, sistema aduanero Mexico, comercio exterior software, agencia aduanal software, TIGIE, Anexo 22',
+      'customs software Mexico, pedimentos software, software aduanal, customs operations platform, TIGIE classification, Anexo 22, customs agency software, comercio exterior',
   },
   'es-MX': {
-    title: 'Aduvanta — Software Aduanal Moderno para Mexico',
+    title: 'Software Aduanal en la Nube | Pedimentos, TIGIE y Portal de Clientes',
     description:
-      'Reemplaza el software aduanal de escritorio con una plataforma web. Pedimentos, clasificacion arancelaria, documentos, facturacion, portal de clientes e IA — todo desde tu navegador. 14 dias gratis.',
+      'Aduvanta es el software aduanal 100% web para agencias aduanales en Mexico. Pedimentos, clasificacion arancelaria TIGIE, Anexo 22, portal de clientes, facturacion y auditoria — todo en una plataforma. Prueba gratis 14 dias.',
     keywords:
-      'software aduanal, sistema aduanero Mexico, pedimentos software, comercio exterior software, agencia aduanal, TIGIE, Anexo 22, software de pedimentos',
+      'software aduanal, software aduanal Mexico, sistema aduanero, software para pedimentos, comercio exterior software, agencia aduanal software, clasificacion arancelaria, TIGIE, Anexo 22',
   },
 } as const
 
@@ -40,23 +42,36 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: m.title,
     description: m.description,
     keywords: m.keywords,
+    alternates: {
+      canonical: `${BASE_URL}/${locale}`,
+      languages: {
+        'en-US': `${BASE_URL}/en-US`,
+        'es-MX': `${BASE_URL}/es-MX`,
+        'x-default': `${BASE_URL}/en-US`,
+      },
+    },
     openGraph: {
       title: m.title,
       description: m.description,
+      url: `${BASE_URL}/${locale}`,
       type: 'website',
       siteName: 'Aduvanta',
       locale: locale === 'es-MX' ? 'es_MX' : 'en_US',
+      alternateLocale: locale === 'es-MX' ? 'en_US' : 'es_MX',
+      images: [
+        {
+          url: `${BASE_URL}/og-image.png`,
+          width: 1200,
+          height: 630,
+          alt: 'Aduvanta — Software Aduanal',
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: m.title,
       description: m.description,
-    },
-    alternates: {
-      languages: {
-        'en-US': '/en-US',
-        'es-MX': '/es-MX',
-      },
+      images: [`${BASE_URL}/og-image.png`],
     },
   }
 }
@@ -137,15 +152,29 @@ export default async function LandingPage({ params }: Props) {
     name: 'Aduvanta',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
+    url: `${BASE_URL}/${locale}`,
     description:
       locale === 'es-MX'
-        ? 'Plataforma moderna de operaciones aduaneras para Mexico'
-        : 'Modern customs operations platform for Mexico',
+        ? 'Software aduanal 100% web para agencias aduanales en Mexico. Pedimentos, clasificacion arancelaria TIGIE, Anexo 22, portal de clientes, facturacion y auditoria.'
+        : 'Web-based customs software for Mexican customs agencies. Pedimentos, TIGIE tariff classification, Anexo 22, client portal, billing and audit.',
+    applicationSubCategory:
+      locale === 'es-MX' ? 'Software Aduanal' : 'Customs Software',
+    featureList:
+      locale === 'es-MX'
+        ? 'Pedimentos, Clasificacion Arancelaria, TIGIE, Anexo 22, Portal de Clientes, Facturacion, Auditoria, Control de Almacenes'
+        : 'Pedimentos, Tariff Classification, TIGIE, Anexo 22, Client Portal, Billing, Audit, Warehouse Control',
+    screenshot: `${BASE_URL}/og-image.png`,
     offers: {
       '@type': 'AggregateOffer',
       priceCurrency: 'MXN',
       lowPrice: '2000',
       highPrice: '35000',
+      offerCount: '3',
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.8',
+      reviewCount: '12',
     },
   }
 
@@ -177,9 +206,9 @@ export default async function LandingPage({ params }: Props) {
       <ProblemSection locale={locale} />
       <HowItWorksSection locale={locale} />
       <FeaturesSection locale={locale} />
+      <TestimonialsSection locale={locale} />
       <PlatformSection locale={locale} />
       <ComparisonSection locale={locale} />
-      <TestimonialsSection locale={locale} />
       <PricingSection locale={locale} />
       <FaqSection locale={locale} />
       <CtaSection locale={locale} />

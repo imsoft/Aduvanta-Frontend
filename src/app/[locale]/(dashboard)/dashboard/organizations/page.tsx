@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Buildings, Plus } from '@phosphor-icons/react';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { EmptyState } from '@/components/ui/empty-state';
 import { apiClient } from '@/lib/api-client';
 import { useOrgStore, type OrgOption } from '@/store/org.store';
 
@@ -57,16 +58,16 @@ export default function OrganizationsPage() {
       )}
 
       {!isLoading && orgs.length === 0 && (
-        <div className="rounded-lg border border-dashed p-12 text-center">
-          <Buildings size={32} className="mx-auto mb-3 text-muted-foreground" />
-          <p className="text-sm font-medium">No organizations yet</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            Create your first organization to get started.
-          </p>
-          <Button asChild size="sm" className="mt-4">
-            <Link href="/dashboard/organizations/new">Create organization</Link>
-          </Button>
-        </div>
+        <EmptyState
+          title="No organizations yet"
+          description="Create your first organization to get started."
+          icon={<Buildings size={32} />}
+          action={
+            <Button asChild size="sm">
+              <Link href="/dashboard/organizations/new">Create organization</Link>
+            </Button>
+          }
+        />
       )}
 
       {!isLoading && orgs.length > 0 && (

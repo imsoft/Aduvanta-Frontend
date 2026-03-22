@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { ClientsTable } from '@/components/clients/clients-table';
+import { EmptyState } from '@/components/ui/empty-state';
 import { useClients } from '@/features/clients/hooks/use-clients';
 import { useOrgStore } from '@/store/org.store';
 
@@ -76,19 +77,21 @@ export default function ClientsPage() {
       )}
 
       {!isLoading && clients.length === 0 && (
-        <div className="rounded-lg border border-dashed p-12 text-center">
-          <p className="text-sm font-medium">No clients found</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            {search || status !== 'ACTIVE'
+        <EmptyState
+          title="No clients found"
+          description={
+            search || status !== 'ACTIVE'
               ? 'Try adjusting your filters.'
-              : 'Create your first client to get started.'}
-          </p>
-          {!search && status === 'ACTIVE' && (
-            <Button asChild size="sm" className="mt-4">
-              <Link href="/dashboard/clients/new">New client</Link>
-            </Button>
-          )}
-        </div>
+              : 'Create your first client to get started.'
+          }
+          action={
+            !search && status === 'ACTIVE' ? (
+              <Button asChild size="sm">
+                <Link href="/dashboard/clients/new">New client</Link>
+              </Button>
+            ) : undefined
+          }
+        />
       )}
 
       {!isLoading && clients.length > 0 && <ClientsTable clients={clients} />}

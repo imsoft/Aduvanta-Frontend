@@ -3,13 +3,11 @@
 import { Separator } from '@/components/ui/separator';
 import { useMySubscription, usePlans } from '@/features/subscriptions/hooks/use-subscriptions';
 import { useAssignPlan } from '@/features/subscriptions/hooks/use-subscriptions';
-import { useOrgStore } from '@/store/org.store';
+import { useIsOwner } from '@/hooks/use-permissions';
 import { PlanSummaryCard } from '@/components/billing/plan-summary-card';
 
 export default function BillingPage() {
-  const { organizations, activeOrgId } = useOrgStore();
-  const activeOrg = organizations.find((o) => o.id === activeOrgId);
-  const canManage = activeOrg?.role === 'OWNER';
+  const canManage = useIsOwner();
 
   const { data: subscription, isLoading: subLoading } = useMySubscription();
   const { data: plans = [], isLoading: plansLoading } = usePlans();

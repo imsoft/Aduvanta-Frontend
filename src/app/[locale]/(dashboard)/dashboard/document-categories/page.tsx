@@ -35,7 +35,7 @@ import {
   useUpdateDocumentCategory,
   useRemoveDocumentCategory,
 } from '@/features/document-categories/hooks/use-document-categories';
-import { useOrgStore } from '@/store/org.store';
+import { useCanManage } from '@/hooks/use-permissions';
 import type { DocumentCategory } from '@/features/document-categories/types/document-category.types';
 import type {
   CreateDocumentCategoryFormData,
@@ -43,9 +43,7 @@ import type {
 } from '@/features/document-categories/schemas/document-category.schemas';
 
 export default function DocumentCategoriesPage() {
-  const { organizations, activeOrgId } = useOrgStore();
-  const activeOrg = organizations.find((o) => o.id === activeOrgId);
-  const canManage = activeOrg?.role === 'OWNER' || activeOrg?.role === 'ADMIN';
+  const canManage = useCanManage();
 
   const { data: categories = [], isLoading } = useDocumentCategories();
   const createCategory = useCreateDocumentCategory();

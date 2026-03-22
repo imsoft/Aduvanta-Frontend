@@ -12,7 +12,11 @@ import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { signUp } from '@/lib/auth-client';
+import { Separator } from '@/components/ui/separator';
+import { GoogleIcon } from '@/components/ui/icons/google-icon';
+import { signIn, signUp } from '@/lib/auth-client';
+
+const isGoogleEnabled = process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED === 'true'
 
 const createSignUpSchema = (t: (k: string) => string) =>
   z.object({
@@ -27,6 +31,7 @@ export default function SignUpPage() {
   const t = useTranslations()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false)
   const schema = createSignUpSchema((k) => t(k))
 
   const {
@@ -57,6 +62,19 @@ export default function SignUpPage() {
     }
   };
 
+  const handleGoogleSignUp = async () => {
+    setIsGoogleLoading(true);
+    try {
+      await signIn.social({
+        provider: 'google',
+        callbackURL: '/dashboard',
+      });
+    } catch {
+      toast.error(t('toast.unexpectedError'))
+      setIsGoogleLoading(false);
+    }
+  };
+
   return (
     <Card className="w-full max-w-sm">
       <CardHeader className="space-y-1">
@@ -69,8 +87,34 @@ export default function SignUpPage() {
         </CardDescription>
       </CardHeader>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      {isGoogleEnabled && (
         <CardContent className="space-y-4">
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            disabled={isGoogleLoading}
+            onClick={handleGoogleSignUp}
+          >
+            <GoogleIcon className="mr-2 h-4 w-4" />
+            {isGoogleLoading ? t('auth.creatingAccount') : t('auth.continueWithGoogle')}
+          </Button>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <Separator />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">
+                {t('auth.orContinueWith')}
+              </span>
+            </div>
+          </div>
+        </CardContent>
+      )}
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <CardContent className="space-y-4 pt-0">
           <div className="space-y-2">
             <Label htmlFor="name">{t('auth.fullName')}</Label>
             <Input

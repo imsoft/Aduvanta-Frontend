@@ -16,16 +16,34 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
 });
 
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://aduvanta.com'
+
 export const metadata: Metadata = {
-  title: 'Aduvanta',
-  description: 'Enterprise customs and foreign trade operations platform',
+  metadataBase: new URL(BASE_URL),
+  title: {
+    default: 'Aduvanta — Software Aduanal para Mexico',
+    template: '%s | Aduvanta',
+  },
+  description:
+    'Software aduanal 100% web para agencias aduanales en Mexico. Pedimentos, clasificacion arancelaria TIGIE, Anexo 22, portal de clientes, facturacion y auditoria en una sola plataforma.',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning dir="ltr" className="scroll-smooth">
+    <html suppressHydrationWarning dir="ltr" className="scroll-smooth">
       <body
         className={cn(
           'antialiased',

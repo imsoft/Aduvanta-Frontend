@@ -52,7 +52,9 @@
     "dontHaveAccount": "¿No tienes cuenta?",
     "showPassword": "Mostrar contraseña",
     "hidePassword": "Ocultar contraseña",
-    "alreadyHaveAccount": "¿Ya tienes cuenta?"
+    "alreadyHaveAccount": "¿Ya tienes cuenta?",
+    "continueWithGoogle": "Continuar con Google",
+    "orContinueWith": "o continuar con"
   },
   "clients": {
     "title": "Clientes",

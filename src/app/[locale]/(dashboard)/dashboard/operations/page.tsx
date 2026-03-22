@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { useQuery } from '@tanstack/react-query';
 import { Plus } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,21 +14,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { OperationsTable } from '@/components/operations/operations-table';
+import { EmptyState } from '@/components/ui/empty-state';
 import { useOperations } from '@/features/operations/hooks/use-operations';
+import { useClients } from '@/features/clients/hooks/use-clients';
+import { useMembers } from '@/hooks/use-members';
 import { useOrgStore } from '@/store/org.store';
-import { apiClient } from '@/lib/api-client';
-import type { Client } from '@/features/clients/types/client.types';
-
-interface MemberUser {
-  id: string;
-  name: string;
-  email: string;
-}
-
-interface MemberWithUser {
-  membership: { id: string; userId: string; role: string };
-  user: MemberUser;
-}
 
 export default function OperationsPage() {
   const t = useTranslations()
@@ -44,27 +33,8 @@ export default function OperationsPage() {
     priority: priority === 'ALL' ? undefined : priority,
   });
 
-  const { data: clients = [] } = useQuery<Client[]>({
-    queryKey: ['clients', activeOrgId],
-    queryFn: async () => {
-      const { data } = await apiClient.get<Client[]>('/api/clients', {
-        headers: { 'x-organization-id': activeOrgId! },
-      });
-      return data;
-    },
-    enabled: !!activeOrgId,
-  });
-
-  const { data: membersRaw = [] } = useQuery<MemberWithUser[]>({
-    queryKey: ['members', activeOrgId],
-    queryFn: async () => {
-      const { data } = await apiClient.get<MemberWithUser[]>('/api/memberships', {
-        headers: { 'x-organization-id': activeOrgId! },
-      });
-      return data;
-    },
-    enabled: !!activeOrgId,
-  });
+  const { data: clients = [] } = useClients();
+  const { data: membersRaw = [] } = useMembers();
 
   const clientNames = Object.fromEntries(clients.map((c) => [c.id, c.name]));
   const userNames = Object.fromEntries(
@@ -134,19 +104,21 @@ export default function OperationsPage() {
       )}
 
       {!isLoading && operations.length === 0 && (
-        <div className="rounded-lg border border-dashed p-12 text-center">
-          <p className="text-sm font-medium">No operations found</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            {search || status !== 'ALL' || priority !== 'ALL'
+        <EmptyState
+          title="No operations found"
+          description={
+            search || status !== 'ALL' || priority !== 'ALL'
               ? 'Try adjusting your filters.'
-              : 'Create your first operation to get started.'}
-          </p>
-          {!search && status === 'ALL' && priority === 'ALL' && (
-            <Button asChild size="sm" className="mt-4">
-              <Link href="/dashboard/operations/new">New operation</Link>
-            </Button>
-          )}
-        </div>
+              : 'Create your first operation to get started.'
+          }
+          action={
+            !search && status === 'ALL' && priority === 'ALL' ? (
+              <Button asChild size="sm">
+                <Link href="/dashboard/operations/new">New operation</Link>
+              </Button>
+            ) : undefined
+          }
+        />
       )}
 
       {!isLoading && operations.length > 0 && (

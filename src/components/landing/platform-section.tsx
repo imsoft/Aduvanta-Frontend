@@ -27,9 +27,9 @@ type Category = {
 const content = {
   'en-US': {
     badge: 'Platform',
-    title: 'One platform. Every module you need.',
+    title: '14 Modules. One Customs Operations Platform.',
     description:
-      'Stop paying for 13 separate apps. Aduvanta covers your entire operation.',
+      'Stop paying for 13 separate desktop apps. Aduvanta covers your entire customs and foreign trade operation in the cloud.',
     categories: [
       {
         title: 'Customs & Trade',
@@ -67,9 +67,9 @@ const content = {
   },
   'es-MX': {
     badge: 'Plataforma',
-    title: 'Una plataforma. Cada modulo que necesitas.',
+    title: '14 Modulos. Una Plataforma de Operaciones Aduanales.',
     description:
-      'Deja de pagar por 13 apps separadas. Aduvanta cubre toda tu operacion.',
+      'Deja de pagar por 13 apps de escritorio separadas. Aduvanta cubre toda tu operacion aduanal y de comercio exterior en la nube.',
     categories: [
       {
         title: 'Aduanas y Comercio',
