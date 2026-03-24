@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Plus } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { ImportsTable } from '@/components/imports/imports-table';
@@ -9,6 +10,7 @@ import { useImports, useCreateImport } from '@/features/imports/hooks/use-import
 import { useCanManage } from '@/hooks/use-permissions';
 
 export default function ImportsPage() {
+  const t = useTranslations();
   const canRun = useCanManage();
 
   const { data: jobs = [], isLoading } = useImports();
@@ -20,21 +22,21 @@ export default function ImportsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Imports</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('imports.title')}</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Upload CSV files to import clients into your organization.
+            {t('imports.description')}
           </p>
         </div>
         {canRun && (
           <Button size="sm" className="gap-2" onClick={() => setCreateOpen(true)}>
             <Plus size={14} />
-            Import clients
+            {t('imports.importClients')}
           </Button>
         )}
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
       ) : (
         <ImportsTable jobs={jobs} />
       )}

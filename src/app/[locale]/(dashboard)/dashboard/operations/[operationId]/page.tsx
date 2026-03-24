@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
 import { useRouter } from '@/i18n/navigation'
 import { Link } from '@/i18n/navigation'
@@ -49,6 +50,7 @@ import { useClients } from '@/features/clients/hooks/use-clients';
 import type { UpdateOperationFormData } from '@/features/operations/schemas/operation.schemas';
 
 export default function OperationDetailPage() {
+  const t = useTranslations()
   const params = useParams<{ operationId: string }>();
   const router = useRouter();
   const { operationId } = params;
@@ -76,17 +78,17 @@ export default function OperationDetailPage() {
   );
 
   if (isLoading) {
-    return <div className="text-sm text-muted-foreground">Loading…</div>;
+    return <div className="text-sm text-muted-foreground">{t('common.loading')}</div>;
   }
 
   if (!operation) {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-muted-foreground">Operation not found.</p>
+        <p className="text-sm text-muted-foreground">{t('operations.notFound')}</p>
         <Button asChild variant="outline" size="sm">
           <Link href="/dashboard/operations">
             <ArrowLeft size={14} />
-            Back to operations
+            {t('operations.backToOperations')}
           </Link>
         </Button>
       </div>
@@ -126,7 +128,7 @@ export default function OperationDetailPage() {
               className="gap-2"
             >
               <ArrowsClockwise size={14} />
-              Status
+              {t('operations.status')}
             </Button>
             <Button
               size="sm"
@@ -135,7 +137,7 @@ export default function OperationDetailPage() {
               className="gap-2"
             >
               <UserCircle size={14} />
-              Assign
+              {t('operations.assign')}
             </Button>
             {operation.status !== 'CANCELLED' && (
               <AlertDialog>
@@ -146,18 +148,18 @@ export default function OperationDetailPage() {
                     className="text-destructive hover:text-destructive gap-2"
                   >
                     <X size={14} />
-                    Cancel
+                    {t('common.cancel')}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Cancel operation?</AlertDialogTitle>
+                    <AlertDialogTitle>{t('operations.cancelTitle')}</AlertDialogTitle>
                     <AlertDialogDescription>
-                      {operation.reference} — {operation.title} will be cancelled.
+                      {t('operations.cancelDescription', { reference: operation.reference, title: operation.title })}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Keep</AlertDialogCancel>
+                    <AlertDialogCancel>{t('operations.keep')}</AlertDialogCancel>
                     <AlertDialogAction
                       onClick={() =>
                         deactivateOperation.mutate(operationId, {
@@ -166,7 +168,7 @@ export default function OperationDetailPage() {
                       }
                       className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                     >
-                      Cancel operation
+                      {t('operations.cancelConfirm')}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -181,19 +183,19 @@ export default function OperationDetailPage() {
       {/* Tabs */}
       <Tabs defaultValue="general">
         <TabsList>
-          <TabsTrigger value="general">General</TabsTrigger>
-          <TabsTrigger value="timeline">Timeline</TabsTrigger>
-          <TabsTrigger value="comments">Comments</TabsTrigger>
-          <TabsTrigger value="documents">Documents</TabsTrigger>
-          <TabsTrigger value="finance">Finance</TabsTrigger>
-          <TabsTrigger value="compliance">Compliance</TabsTrigger>
-          <TabsTrigger value="ai-insights">AI Insights</TabsTrigger>
+          <TabsTrigger value="general">{t('operations.general')}</TabsTrigger>
+          <TabsTrigger value="timeline">{t('operations.timeline')}</TabsTrigger>
+          <TabsTrigger value="comments">{t('operations.comments')}</TabsTrigger>
+          <TabsTrigger value="documents">{t('operations.documents')}</TabsTrigger>
+          <TabsTrigger value="finance">{t('operations.finance')}</TabsTrigger>
+          <TabsTrigger value="compliance">{t('operations.compliance')}</TabsTrigger>
+          <TabsTrigger value="ai-insights">{t('operations.aiInsights')}</TabsTrigger>
         </TabsList>
 
         {/* General */}
         <TabsContent value="general" className="mt-4 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold">Information</h2>
+            <h2 className="text-base font-semibold">{t('operations.information')}</h2>
             {canManage && !editing && (
               <Button
                 size="sm"
@@ -202,7 +204,7 @@ export default function OperationDetailPage() {
                 className="gap-2"
               >
                 <PencilSimple size={14} />
-                Edit
+                {t('common.edit')}
               </Button>
             )}
           </div>
@@ -215,27 +217,28 @@ export default function OperationDetailPage() {
               }
               onCancel={() => setEditing(false)}
               isPending={updateOperation.isPending}
+              t={t}
             />
           ) : (
             <dl className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
-              <InfoField label="Client" value={clientNames[operation.clientId] ?? operation.clientId} />
-              <InfoField label="Type" value={operation.type} />
-              <InfoField label="Assigned to" value={operation.assignedUserId ? (userNames[operation.assignedUserId] ?? operation.assignedUserId) : undefined} />
+              <InfoField label={t('operations.client')} value={clientNames[operation.clientId] ?? operation.clientId} />
+              <InfoField label={t('operations.type')} value={operation.type} />
+              <InfoField label={t('operations.assignedTo')} value={operation.assignedUserId ? (userNames[operation.assignedUserId] ?? operation.assignedUserId) : undefined} />
               <InfoField
-                label="Due date"
+                label={t('operations.dueDate')}
                 value={operation.dueAt ? new Date(operation.dueAt).toLocaleDateString() : undefined}
               />
               <InfoField
-                label="Opened"
+                label={t('operations.opened')}
                 value={operation.openedAt ? new Date(operation.openedAt).toLocaleDateString() : undefined}
               />
               <InfoField
-                label="Closed"
+                label={t('operations.closed')}
                 value={operation.closedAt ? new Date(operation.closedAt).toLocaleDateString() : undefined}
               />
               {operation.description && (
                 <div className="sm:col-span-2 lg:col-span-3">
-                  <InfoField label="Description" value={operation.description} />
+                  <InfoField label={t('operations.descriptionField')} value={operation.description} />
                 </div>
               )}
             </dl>
@@ -244,7 +247,7 @@ export default function OperationDetailPage() {
 
         {/* Timeline */}
         <TabsContent value="timeline" className="mt-4 space-y-4">
-          <h2 className="text-base font-semibold">Status history</h2>
+          <h2 className="text-base font-semibold">{t('operations.statusHistory')}</h2>
           <OperationTimeline operationId={operationId} />
         </TabsContent>
 
@@ -314,6 +317,7 @@ function EditOperationInline({
   onSave,
   onCancel,
   isPending,
+  t,
 }: {
   operation: {
     reference: string;
@@ -326,6 +330,7 @@ function EditOperationInline({
   onSave: (data: UpdateOperationFormData) => void;
   onCancel: () => void;
   isPending: boolean;
+  t: (key: string, params?: Record<string, string>) => string;
 }) {
   const [values, setValues] = useState<UpdateOperationFormData>({
     reference: operation.reference,
@@ -341,21 +346,21 @@ function EditOperationInline({
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <Field label="Reference">
+        <Field label={t('operations.reference')}>
           <input
             className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             value={values.reference ?? ''}
             onChange={(e) => setValues((v) => ({ ...v, reference: e.target.value }))}
           />
         </Field>
-        <Field label="Title">
+        <Field label={t('operations.titleField')}>
           <input
             className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             value={values.title ?? ''}
             onChange={(e) => setValues((v) => ({ ...v, title: e.target.value }))}
           />
         </Field>
-        <Field label="Due date">
+        <Field label={t('operations.dueDate')}>
           <input
             type="date"
             className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
@@ -364,7 +369,7 @@ function EditOperationInline({
           />
         </Field>
       </div>
-      <Field label="Description">
+      <Field label={t('operations.descriptionField')}>
         <textarea
           rows={3}
           className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
@@ -374,10 +379,10 @@ function EditOperationInline({
       </Field>
       <div className="flex gap-3 justify-end">
         <Button variant="outline" onClick={onCancel} disabled={isPending}>
-          Cancel
+          {t('common.cancel')}
         </Button>
         <Button onClick={() => onSave(values)} disabled={isPending}>
-          {isPending ? 'Saving…' : 'Save changes'}
+          {isPending ? t('common.saving') : t('common.saveChanges')}
         </Button>
       </div>
     </div>

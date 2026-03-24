@@ -1,6 +1,7 @@
 'use client';
 
 import { Link } from '@/i18n/navigation'
+import { useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
 import { Buildings, Plus } from '@phosphor-icons/react';
 import { useEffect } from 'react';
@@ -14,13 +15,17 @@ async function fetchOrganizations(): Promise<OrgOption[]> {
   return data;
 }
 
-const ROLE_LABELS: Record<string, string> = {
-  OWNER: 'Owner',
-  ADMIN: 'Admin',
-  MEMBER: 'Member',
-};
+function getRoleLabel(role: string, t: (key: string) => string): string {
+  const map: Record<string, string> = {
+    OWNER: t('roles.owner'),
+    ADMIN: t('roles.admin'),
+    MEMBER: t('roles.member'),
+  };
+  return map[role] ?? role;
+}
 
 export default function OrganizationsPage() {
+  const t = useTranslations();
   const { activeOrgId, setOrganizations, setActiveOrg } = useOrgStore();
 
   const { data: orgs = [], isLoading } = useQuery({
@@ -40,31 +45,31 @@ export default function OrganizationsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Organizations</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('organizations.title')}</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Workspaces you belong to
+            {t('organizations.description')}
           </p>
         </div>
         <Button asChild size="sm">
           <Link href="/dashboard/organizations/new">
             <Plus size={14} />
-            New organization
+            {t('organizations.new')}
           </Link>
         </Button>
       </div>
 
       {isLoading && (
-        <div className="text-sm text-muted-foreground">Loading…</div>
+        <div className="text-sm text-muted-foreground">{t('common.loading')}</div>
       )}
 
       {!isLoading && orgs.length === 0 && (
         <EmptyState
-          title="No organizations yet"
-          description="Create your first organization to get started."
+          title={t('organizations.empty')}
+          description={t('organizations.emptyDescription')}
           icon={<Buildings size={32} />}
           action={
             <Button asChild size="sm">
-              <Link href="/dashboard/organizations/new">Create organization</Link>
+              <Link href="/dashboard/organizations/new">{t('organizations.createOrganization')}</Link>
             </Button>
           }
         />
@@ -87,7 +92,7 @@ export default function OrganizationsPage() {
                 </div>
               </div>
               <span className="text-xs text-muted-foreground">
-                {ROLE_LABELS[org.role] ?? org.role}
+                {getRoleLabel(org.role, t)}
               </span>
             </div>
           ))}

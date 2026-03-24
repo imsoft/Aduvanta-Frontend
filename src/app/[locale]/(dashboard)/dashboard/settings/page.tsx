@@ -1,14 +1,20 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
+
 export default function SettingsPage() {
+  const t = useTranslations();
+
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('settings.title')}</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Organization and account settings
+          {t('settings.description')}
         </p>
       </div>
       <div className="rounded-lg border border-dashed p-12 text-center">
-        <p className="text-sm text-muted-foreground">Coming soon</p>
+        <p className="text-sm text-muted-foreground">{t('common.comingSoon')}</p>
       </div>
     </div>
   );

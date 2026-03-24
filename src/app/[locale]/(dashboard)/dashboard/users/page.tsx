@@ -7,6 +7,7 @@ import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { z } from 'zod';
 import { toast } from 'sonner';
 import { UserPlus, Trash } from '@phosphor-icons/react';
+import { useTranslations } from 'next-intl';
 import { apiClient } from '@/lib/api-client';
 import { useOrgStore } from '@/store/org.store';
 import { useCanManage } from '@/hooks/use-permissions';
@@ -48,12 +49,6 @@ const ROLE_VARIANT: Record<string, 'default' | 'secondary' | 'outline'> = {
   MEMBER: 'outline',
 };
 
-const inviteSchema = z.object({
-  email: z.string().email('Invalid email'),
-  role: z.enum(['ADMIN', 'MEMBER']),
-});
-type InviteFormData = z.infer<typeof inviteSchema>;
-
 async function fetchMembers(orgId: string): Promise<MemberWithUser[]> {
   const { data } = await apiClient.get<MemberWithUser[]>('/api/memberships', {
     headers: { 'x-organization-id': orgId },
@@ -62,10 +57,17 @@ async function fetchMembers(orgId: string): Promise<MemberWithUser[]> {
 }
 
 export default function UsersPage() {
+  const t = useTranslations();
   const queryClient = useQueryClient();
   const { activeOrgId, organizations } = useOrgStore();
   const activeOrg = organizations.find((o) => o.id === activeOrgId);
   const canManage = useCanManage();
+
+  const inviteSchema = z.object({
+    email: z.string().email(t('validation.invalidEmail')),
+    role: z.enum(['ADMIN', 'MEMBER']),
+  });
+  type InviteFormData = z.infer<typeof inviteSchema>;
 
   const [roleSelections, setRoleSelections] = useState<Record<string, string>>({});
 
@@ -92,12 +94,12 @@ export default function UsersPage() {
         headers: { 'x-organization-id': activeOrgId! },
       }),
     onSuccess: () => {
-      toast.success('Member invited');
+      toast.success(t('members.invited'));
       reset({ role: 'MEMBER' });
       queryClient.invalidateQueries({ queryKey: ['members', activeOrgId] });
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message ?? 'Failed to invite member');
+      toast.error(err.response?.data?.message ?? t('members.inviteFailed'));
     },
   });
 
@@ -107,12 +109,12 @@ export default function UsersPage() {
         headers: { 'x-organization-id': activeOrgId! },
       }),
     onSuccess: (_, { userId }) => {
-      toast.success('Role updated');
+      toast.success(t('members.roleUpdated'));
       setRoleSelections((prev) => ({ ...prev, [userId]: '' }));
       queryClient.invalidateQueries({ queryKey: ['members', activeOrgId] });
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message ?? 'Failed to update role');
+      toast.error(err.response?.data?.message ?? t('members.roleUpdateFailed'));
     },
   });
 
@@ -122,18 +124,18 @@ export default function UsersPage() {
         headers: { 'x-organization-id': activeOrgId! },
       }),
     onSuccess: () => {
-      toast.success('Member removed');
+      toast.success(t('members.removed'));
       queryClient.invalidateQueries({ queryKey: ['members', activeOrgId] });
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message ?? 'Failed to remove member');
+      toast.error(err.response?.data?.message ?? t('members.removeFailed'));
     },
   });
 
   if (!activeOrgId) {
     return (
       <div className="text-sm text-muted-foreground">
-        Select an organization to view members.
+        {t('members.selectOrg')}
       </div>
     );
   }
@@ -142,9 +144,9 @@ export default function UsersPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Members</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('members.title')}</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Users in {activeOrg?.name}
+            {t('members.description', { orgName: activeOrg?.name ?? '' })}
           </p>
         </div>
       </div>
@@ -155,7 +157,7 @@ export default function UsersPage() {
           className="flex items-end gap-3 rounded-lg border p-4"
         >
           <div className="flex-1 space-y-1.5">
-            <Label htmlFor="invite-email">Invite by email</Label>
+            <Label htmlFor="invite-email">{t('members.inviteByEmail')}</Label>
             <Input
               id="invite-email"
               type="email"
@@ -167,7 +169,7 @@ export default function UsersPage() {
           </div>
 
           <div className="w-36 space-y-1.5">
-            <Label>Role</Label>
+            <Label>{t('members.role')}</Label>
             <Select
               defaultValue="MEMBER"
               onValueChange={(v) => setValue('role', v as 'ADMIN' | 'MEMBER')}
@@ -176,21 +178,21 @@ export default function UsersPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="ADMIN">Admin</SelectItem>
-                <SelectItem value="MEMBER">Member</SelectItem>
+                <SelectItem value="ADMIN">{t('roles.admin')}</SelectItem>
+                <SelectItem value="MEMBER">{t('roles.member')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <Button type="submit" disabled={invite.isPending} className="gap-2">
             <UserPlus size={14} />
-            {invite.isPending ? 'Inviting…' : 'Invite'}
+            {invite.isPending ? t('members.inviting') : t('members.invite')}
           </Button>
         </form>
       )}
 
       {isLoading && (
-        <div className="text-sm text-muted-foreground">Loading members…</div>
+        <div className="text-sm text-muted-foreground">{t('members.loading')}</div>
       )}
 
       {!isLoading && members.length > 0 && (
@@ -198,10 +200,10 @@ export default function UsersPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
-                {canManage && <TableHead className="w-48">Change role</TableHead>}
+                <TableHead>{t('members.name')}</TableHead>
+                <TableHead>{t('members.email')}</TableHead>
+                <TableHead>{t('members.role')}</TableHead>
+                {canManage && <TableHead className="w-48">{t('members.changeRole')}</TableHead>}
                 {canManage && <TableHead className="w-16" />}
               </TableRow>
             </TableHeader>
@@ -236,8 +238,8 @@ export default function UsersPage() {
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="ADMIN">Admin</SelectItem>
-                                <SelectItem value="MEMBER">Member</SelectItem>
+                                <SelectItem value="ADMIN">{t('roles.admin')}</SelectItem>
+                                <SelectItem value="MEMBER">{t('roles.member')}</SelectItem>
                               </SelectContent>
                             </Select>
                             {selectedRole && selectedRole !== membership.role && (
@@ -250,7 +252,7 @@ export default function UsersPage() {
                                   updateRole.mutate({ userId: user.id, role: selectedRole })
                                 }
                               >
-                                Save
+                                {t('common.save')}
                               </Button>
                             )}
                           </div>
@@ -273,19 +275,18 @@ export default function UsersPage() {
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
-                                <AlertDialogTitle>Remove member?</AlertDialogTitle>
+                                <AlertDialogTitle>{t('members.removeMember')}</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  {user.name} will lose access to {activeOrg?.name}. This
-                                  action cannot be undone.
+                                  {t('members.removeDescription', { name: user.name, orgName: activeOrg?.name ?? '' })}
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
                                 <AlertDialogAction
                                   onClick={() => remove.mutate(user.id)}
                                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                                 >
-                                  Remove
+                                  {t('members.remove')}
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>

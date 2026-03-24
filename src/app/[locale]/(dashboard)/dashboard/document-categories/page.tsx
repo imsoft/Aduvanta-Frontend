@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Plus, PencilSimple, Trash } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import {
@@ -43,6 +44,7 @@ import type {
 } from '@/features/document-categories/schemas/document-category.schemas';
 
 export default function DocumentCategoriesPage() {
+  const t = useTranslations();
   const canManage = useCanManage();
 
   const { data: categories = [], isLoading } = useDocumentCategories();
@@ -56,30 +58,30 @@ export default function DocumentCategoriesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Document categories</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('docCategories.title')}</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Organize documents into categories for easier retrieval.
+            {t('docCategories.description')}
           </p>
         </div>
         {canManage && (
           <Button size="sm" onClick={() => setCreateOpen(true)} className="gap-2">
             <Plus size={14} />
-            New category
+            {t('docCategories.new')}
           </Button>
         )}
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
       ) : categories.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No categories yet.</p>
+        <p className="text-sm text-muted-foreground">{t('docCategories.empty')}</p>
       ) : (
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Code</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Description</TableHead>
+              <TableHead>{t('docCategories.code')}</TableHead>
+              <TableHead>{t('docCategories.name')}</TableHead>
+              <TableHead>{t('docCategories.descriptionField')}</TableHead>
               {canManage && <TableHead />}
             </TableRow>
           </TableHeader>
@@ -114,19 +116,18 @@ export default function DocumentCategoriesPage() {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Remove category?</AlertDialogTitle>
+                            <AlertDialogTitle>{t('docCategories.removeTitle')}</AlertDialogTitle>
                             <AlertDialogDescription>
-                              <span className="font-mono">{cat.code}</span> — {cat.name} will be
-                              removed. Documents assigned to this category will not be deleted.
+                              {t('docCategories.removeDescription', { code: cat.code, name: cat.name })}
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
                             <AlertDialogAction
                               onClick={() => removeCategory.mutate(cat.id)}
                               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                             >
-                              Remove
+                              {t('common.remove')}
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
@@ -149,6 +150,7 @@ export default function DocumentCategoriesPage() {
               createCategory.mutate(dto, { onSuccess: () => setCreateOpen(false) })
             }
             isPending={createCategory.isPending}
+            t={t}
           />
           {editTarget && (
             <EditCategoryDialog
@@ -156,6 +158,7 @@ export default function DocumentCategoriesPage() {
               onOpenChange={(v) => !v && setEditTarget(null)}
               category={editTarget}
               onClose={() => setEditTarget(null)}
+              t={t}
             />
           )}
         </>
@@ -169,11 +172,13 @@ function CreateCategoryDialog({
   onOpenChange,
   onSubmit,
   isPending,
+  t,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   onSubmit: (dto: CreateDocumentCategoryFormData) => void;
   isPending: boolean;
+  t: (key: string, params?: Record<string, string>) => string;
 }) {
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
@@ -192,25 +197,25 @@ function CreateCategoryDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>New category</DialogTitle>
+          <DialogTitle>{t('docCategories.new')}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
-          <Field label="Code *">
+          <Field label={t('docCategories.codeRequired')}>
             <input
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm font-mono shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring uppercase"
               value={code}
               onChange={(e) => setCode(e.target.value.toUpperCase())}
             />
-            <p className="text-xs text-muted-foreground">Uppercase letters, digits, underscores</p>
+            <p className="text-xs text-muted-foreground">{t('docCategories.codeHint')}</p>
           </Field>
-          <Field label="Name *">
+          <Field label={t('docCategories.nameRequired')}>
             <input
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </Field>
-          <Field label="Description">
+          <Field label={t('docCategories.descriptionField')}>
             <textarea
               rows={2}
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
@@ -221,7 +226,7 @@ function CreateCategoryDialog({
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => handleOpenChange(false)} disabled={isPending}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button
             onClick={() =>
@@ -233,7 +238,7 @@ function CreateCategoryDialog({
             }
             disabled={!code.trim() || !name.trim() || isPending}
           >
-            {isPending ? 'Creating…' : 'Create'}
+            {isPending ? t('common.creating') : t('common.create')}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -246,11 +251,13 @@ function EditCategoryDialog({
   onOpenChange,
   category,
   onClose,
+  t,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   category: DocumentCategory;
   onClose: () => void;
+  t: (key: string, params?: Record<string, string>) => string;
 }) {
   const updateCategory = useUpdateDocumentCategory(category.id);
   const [name, setName] = useState(category.name);
@@ -260,24 +267,24 @@ function EditCategoryDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Edit category</DialogTitle>
+          <DialogTitle>{t('docCategories.editTitle')}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
-          <Field label="Code">
+          <Field label={t('docCategories.code')}>
             <input
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm font-mono shadow-xs text-muted-foreground"
               value={category.code}
               disabled
             />
           </Field>
-          <Field label="Name">
+          <Field label={t('docCategories.name')}>
             <input
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </Field>
-          <Field label="Description">
+          <Field label={t('docCategories.descriptionField')}>
             <textarea
               rows={2}
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
@@ -288,7 +295,7 @@ function EditCategoryDialog({
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose} disabled={updateCategory.isPending}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button
             onClick={() =>
@@ -302,7 +309,7 @@ function EditCategoryDialog({
             }
             disabled={!name.trim() || updateCategory.isPending}
           >
-            {updateCategory.isPending ? 'Saving…' : 'Save changes'}
+            {updateCategory.isPending ? t('common.saving') : t('common.saveChanges')}
           </Button>
         </DialogFooter>
       </DialogContent>

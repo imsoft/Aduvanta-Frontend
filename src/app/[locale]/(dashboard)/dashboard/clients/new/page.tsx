@@ -1,20 +1,22 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation'
 import { toast } from 'sonner';
 import { ClientForm } from '@/components/clients/client-form';
 import { useCreateClient } from '@/features/clients/hooks/use-clients';
 
 export default function NewClientPage() {
+  const t = useTranslations();
   const router = useRouter();
   const createClient = useCreateClient();
 
   return (
     <div className="max-w-2xl space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">New client</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('clients.newTitle')}</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Add a new client to your organization
+          {t('clients.newDescription')}
         </p>
       </div>
 
@@ -28,7 +30,7 @@ export default function NewClientPage() {
           });
         }}
         isPending={createClient.isPending}
-        submitLabel="Create client"
+        submitLabel={t('clients.createClient')}
         onCancel={() => router.push('/dashboard/clients')}
       />
     </div>

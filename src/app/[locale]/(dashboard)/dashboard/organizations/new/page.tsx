@@ -15,11 +15,7 @@ import { Button } from '@/components/ui/button';
 import { apiClient } from '@/lib/api-client';
 import { useOrgStore } from '@/store/org.store';
 
-const schema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-});
-
-type FormData = z.infer<typeof schema>;
+type FormData = { name: string };
 
 interface OrganizationResponse {
   id: string;
@@ -33,6 +29,10 @@ export default function NewOrganizationPage() {
   const queryClient = useQueryClient();
   const { setActiveOrg } = useOrgStore();
   const [isLoading, setIsLoading] = useState(false);
+
+  const schema = z.object({
+    name: z.string().min(2, t('organizations.nameMinLength')),
+  });
 
   const {
     register,
@@ -53,7 +53,7 @@ export default function NewOrganizationPage() {
       toast.success(`${response.data.name} created`);
       router.push('/dashboard');
     } catch {
-      toast.error('Failed to create organization');
+      toast.error(t('organizations.createFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -63,16 +63,16 @@ export default function NewOrganizationPage() {
     <div className="flex items-start justify-center pt-12">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>New organization</CardTitle>
+          <CardTitle>{t('organizations.newTitle')}</CardTitle>
           <CardDescription>
-            Create a workspace for your team. You will be the owner.
+            {t('organizations.newDescription')}
           </CardDescription>
         </CardHeader>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Organization name</Label>
+              <Label htmlFor="name">{t('organizations.nameLabel')}</Label>
               <Input
                 id="name"
                 autoFocus
@@ -92,10 +92,10 @@ export default function NewOrganizationPage() {
               onClick={() => router.back()}
               disabled={isLoading}
             >
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button type="submit" className="flex-1" disabled={isLoading}>
-              {isLoading ? 'Creating…' : 'Create organization'}
+              {isLoading ? t('common.creating') : t('organizations.createOrganization')}
             </Button>
           </CardFooter>
         </form>

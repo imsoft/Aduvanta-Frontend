@@ -44,7 +44,7 @@ export default function OperationsPage() {
   if (!activeOrgId) {
     return (
       <div className="text-sm text-muted-foreground">
-        Select an organization to view operations.
+        {t('operations.selectOrg')}
       </div>
     );
   }
@@ -53,15 +53,15 @@ export default function OperationsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Operations</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('operations.title')}</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Manage your organization's customs operations
+            {t('operations.description')}
           </p>
         </div>
         <Button asChild size="sm">
           <Link href="/dashboard/operations/new">
             <Plus size={14} />
-            New operation
+            {t('operations.new')}
           </Link>
         </Button>
       </div>
@@ -77,12 +77,12 @@ export default function OperationsPage() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">All statuses</SelectItem>
-            <SelectItem value="OPEN">Open</SelectItem>
-            <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
-            <SelectItem value="ON_HOLD">On Hold</SelectItem>
-            <SelectItem value="COMPLETED">Completed</SelectItem>
-            <SelectItem value="CANCELLED">Cancelled</SelectItem>
+            <SelectItem value="ALL">{t('operations.allStatuses')}</SelectItem>
+            <SelectItem value="OPEN">{t('operations.open')}</SelectItem>
+            <SelectItem value="IN_PROGRESS">{t('operations.inProgress')}</SelectItem>
+            <SelectItem value="ON_HOLD">{t('operations.onHold')}</SelectItem>
+            <SelectItem value="COMPLETED">{t('operations.completed')}</SelectItem>
+            <SelectItem value="CANCELLED">{t('operations.cancelled')}</SelectItem>
           </SelectContent>
         </Select>
         <Select value={priority} onValueChange={setPriority}>
@@ -90,31 +90,31 @@ export default function OperationsPage() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">All priorities</SelectItem>
-            <SelectItem value="LOW">Low</SelectItem>
-            <SelectItem value="MEDIUM">Medium</SelectItem>
-            <SelectItem value="HIGH">High</SelectItem>
-            <SelectItem value="URGENT">Urgent</SelectItem>
+            <SelectItem value="ALL">{t('operations.allPriorities')}</SelectItem>
+            <SelectItem value="LOW">{t('operations.low')}</SelectItem>
+            <SelectItem value="MEDIUM">{t('operations.medium')}</SelectItem>
+            <SelectItem value="HIGH">{t('operations.high')}</SelectItem>
+            <SelectItem value="URGENT">{t('operations.urgent')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       {isLoading && (
-        <div className="text-sm text-muted-foreground">Loading operations…</div>
+        <div className="text-sm text-muted-foreground">{t('operations.loading')}</div>
       )}
 
       {!isLoading && operations.length === 0 && (
         <EmptyState
-          title="No operations found"
+          title={t('operations.empty')}
           description={
             search || status !== 'ALL' || priority !== 'ALL'
-              ? 'Try adjusting your filters.'
-              : 'Create your first operation to get started.'
+              ? t('operations.emptyFiltered')
+              : t('operations.emptyDescription')
           }
           action={
             !search && status === 'ALL' && priority === 'ALL' ? (
               <Button asChild size="sm">
-                <Link href="/dashboard/operations/new">New operation</Link>
+                <Link href="/dashboard/operations/new">{t('operations.new')}</Link>
               </Button>
             ) : undefined
           }

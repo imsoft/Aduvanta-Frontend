@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation'
 import { Plus } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
@@ -12,6 +13,7 @@ import {
 import { useCanManage } from '@/hooks/use-permissions';
 
 export default function ComplianceRuleSetsPage() {
+  const t = useTranslations();
   const canManage = useCanManage();
 
   const { data: ruleSets = [], isLoading } = useComplianceRuleSets();
@@ -21,23 +23,23 @@ export default function ComplianceRuleSetsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Compliance rule sets</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('compliance.title')}</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Define validation rules and required documents per operation type.
+            {t('compliance.description')}
           </p>
         </div>
         {canManage && (
           <Button asChild size="sm" className="gap-2">
             <Link href="/dashboard/compliance/rule-sets/new">
               <Plus size={14} />
-              New rule set
+              {t('compliance.newRuleSet')}
             </Link>
           </Button>
         )}
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
       ) : (
         <RuleSetsTable
           ruleSets={ruleSets}

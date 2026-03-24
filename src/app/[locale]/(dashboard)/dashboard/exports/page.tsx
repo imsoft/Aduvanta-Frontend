@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Plus } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { ExportsTable } from '@/components/exports/exports-table';
@@ -9,6 +10,7 @@ import { useExports, useCreateExport, useExportDownloadUrl } from '@/features/ex
 import { useCanManage } from '@/hooks/use-permissions';
 
 export default function ExportsPage() {
+  const t = useTranslations();
   const canGenerate = useCanManage();
 
   const { data: jobs = [], isLoading } = useExports();
@@ -34,21 +36,21 @@ export default function ExportsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Exports</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('exports.title')}</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Generate and download CSV exports of your organization data.
+            {t('exports.description')}
           </p>
         </div>
         {canGenerate && (
           <Button size="sm" className="gap-2" onClick={() => setCreateOpen(true)}>
             <Plus size={14} />
-            New export
+            {t('exports.new')}
           </Button>
         )}
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
       ) : (
         <ExportsTable
           jobs={jobs}

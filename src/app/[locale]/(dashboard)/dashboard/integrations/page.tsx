@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation'
 import { Plus } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
@@ -21,6 +22,7 @@ import { useCanManage } from '@/hooks/use-permissions';
 import type { CreateIntegrationFormData } from '@/features/integrations/schemas/integration.schemas';
 
 export default function IntegrationsPage() {
+  const t = useTranslations();
   const router = useRouter();
   const canManage = useCanManage();
 
@@ -34,21 +36,21 @@ export default function IntegrationsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Integrations</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('integrations.title')}</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Configure outbound webhooks and track delivery logs.
+            {t('integrations.description')}
           </p>
         </div>
         {canManage && (
           <Button size="sm" className="gap-2" onClick={() => setCreateOpen(true)}>
             <Plus size={14} />
-            New integration
+            {t('integrations.new')}
           </Button>
         )}
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
       ) : (
         <IntegrationsTable
           integrations={integrations}
@@ -62,7 +64,7 @@ export default function IntegrationsPage() {
         <Dialog open={createOpen} onOpenChange={setCreateOpen}>
           <DialogContent className="sm:max-w-2xl">
             <DialogHeader>
-              <DialogTitle>New integration</DialogTitle>
+              <DialogTitle>{t('integrations.newTitle')}</DialogTitle>
             </DialogHeader>
             <IntegrationForm
               onSubmit={(dto) =>
@@ -75,7 +77,7 @@ export default function IntegrationsPage() {
               }
               onCancel={() => setCreateOpen(false)}
               isPending={createIntegration.isPending}
-              submitLabel="Create integration"
+              submitLabel={t('integrations.createIntegration')}
             />
           </DialogContent>
         </Dialog>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Separator } from '@/components/ui/separator';
 import { useAiSearch } from '@/features/ai-search/hooks/use-ai-search';
 import type { AiSearchResult } from '@/features/ai-search/types/ai-search.types';
@@ -8,15 +9,16 @@ import { AiSearchForm } from '@/components/ai/ai-search-form';
 import { AiSearchResults } from '@/components/ai/ai-search-results';
 
 export default function AiPage() {
+  const t = useTranslations();
   const [result, setResult] = useState<AiSearchResult | null>(null);
   const search = useAiSearch();
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">AI Copilot</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('ai.title')}</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Search and analyze operations using structured AI-assisted queries.
+          {t('ai.description')}
         </p>
       </div>
 
@@ -24,7 +26,7 @@ export default function AiPage() {
 
       <div className="max-w-2xl space-y-6">
         <div>
-          <h2 className="text-sm font-semibold mb-4">Search operations</h2>
+          <h2 className="text-sm font-semibold mb-4">{t('ai.searchTitle')}</h2>
           <AiSearchForm
             onSubmit={(data) =>
               search.mutate(data, {

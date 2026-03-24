@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation'
 import { useRouter } from '@/i18n/navigation'
 import { ArrowLeft } from '@phosphor-icons/react';
@@ -20,6 +21,7 @@ import { useCanManage } from '@/hooks/use-permissions';
 import type { UpdateIntegrationFormData } from '@/features/integrations/schemas/integration.schemas';
 
 export default function IntegrationDetailPage() {
+  const t = useTranslations();
   const { integrationId } = useParams<{ integrationId: string }>();
   const router = useRouter();
   const canManage = useCanManage();
@@ -34,11 +36,11 @@ export default function IntegrationDetailPage() {
   const [editing, setEditing] = useState(false);
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground">Loading…</p>;
+    return <p className="text-sm text-muted-foreground">{t('common.loading')}</p>;
   }
 
   if (!integration) {
-    return <p className="text-sm text-destructive">Integration not found.</p>;
+    return <p className="text-sm text-destructive">{t('integrations.notFound')}</p>;
   }
 
   return (
@@ -73,11 +75,11 @@ export default function IntegrationDetailPage() {
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Configuration
+            {t('integrations.configuration')}
           </h2>
           {canManage && !editing && (
             <Button size="sm" variant="outline" onClick={() => setEditing(true)}>
-              Edit
+              {t('common.edit')}
             </Button>
           )}
         </div>
@@ -92,19 +94,19 @@ export default function IntegrationDetailPage() {
             }
             onCancel={() => setEditing(false)}
             isPending={updateIntegration.isPending}
-            submitLabel="Save changes"
+            submitLabel={t('common.saveChanges')}
             isEdit
           />
         ) : (
           <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <InfoField label="Target URL" value={integration.targetUrl} />
+            <InfoField label={t('integrations.targetUrl')} value={integration.targetUrl} />
             <InfoField
-              label="Secret"
-              value={integration.secretEncrypted ? '***' : 'Not set'}
+              label={t('integrations.secret')}
+              value={integration.secretEncrypted ? '***' : t('integrations.notSet')}
             />
             <div className="sm:col-span-2">
               <dt className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                Event types
+                {t('integrations.eventTypes')}
               </dt>
               <dd className="mt-1 flex flex-wrap gap-1.5">
                 {integration.eventTypes.split(',').map((evt) => (
@@ -124,10 +126,10 @@ export default function IntegrationDetailPage() {
       {/* Delivery logs */}
       <section className="space-y-4">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          Delivery logs
+          {t('integrations.deliveryLogs')}
         </h2>
         {isLoadingDeliveries ? (
-          <p className="text-sm text-muted-foreground">Loading…</p>
+          <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
         ) : (
           <IntegrationDeliveriesTable
             deliveries={deliveries}

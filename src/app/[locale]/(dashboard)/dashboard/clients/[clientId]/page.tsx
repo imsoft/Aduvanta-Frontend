@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation'
 import { useRouter } from '@/i18n/navigation'
 import { Link } from '@/i18n/navigation'
@@ -34,6 +35,7 @@ import { useMembers } from '@/hooks/use-members';
 import type { CreateClientFormData } from '@/features/clients/schemas/client.schemas';
 
 export default function ClientDetailPage() {
+  const t = useTranslations();
   const params = useParams<{ clientId: string }>();
   const router = useRouter();
   const { clientId } = params;
@@ -64,17 +66,17 @@ export default function ClientDetailPage() {
   };
 
   if (isLoading) {
-    return <div className="text-sm text-muted-foreground">Loading…</div>;
+    return <div className="text-sm text-muted-foreground">{t('common.loading')}</div>;
   }
 
   if (!client) {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-muted-foreground">Client not found.</p>
+        <p className="text-sm text-muted-foreground">{t('clients.notFound')}</p>
         <Button asChild variant="outline" size="sm">
           <Link href="/dashboard/clients">
             <ArrowLeft size={14} />
-            Back to clients
+            {t('clients.backToClients')}
           </Link>
         </Button>
       </div>
@@ -112,7 +114,7 @@ export default function ClientDetailPage() {
                 className="gap-2"
               >
                 <PencilSimple size={14} />
-                Edit
+                {t('common.edit')}
               </Button>
             )}
             {client.status === 'ACTIVE' && (
@@ -120,23 +122,23 @@ export default function ClientDetailPage() {
                 <AlertDialogTrigger asChild>
                   <Button size="sm" variant="outline" className="text-destructive hover:text-destructive gap-2">
                     <X size={14} />
-                    Deactivate
+                    {t('clients.deactivate')}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Deactivate client?</AlertDialogTitle>
+                    <AlertDialogTitle>{t('clients.deactivateTitle')}</AlertDialogTitle>
                     <AlertDialogDescription>
-                      {client.name} will be marked as inactive. You can reactivate it later by editing the client.
+                      {t('clients.deactivateDescription', { name: client.name })}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
                     <AlertDialogAction
                       onClick={handleDeactivate}
                       className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                     >
-                      Deactivate
+                      {t('clients.deactivate')}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -151,7 +153,7 @@ export default function ClientDetailPage() {
       {/* General info */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-semibold">General information</h2>
+          <h2 className="text-base font-semibold">{t('clients.generalInformation')}</h2>
           {editing && (
             <Button
               size="sm"
@@ -160,7 +162,7 @@ export default function ClientDetailPage() {
               className="gap-1 text-muted-foreground"
             >
               <X size={14} />
-              Cancel
+              {t('common.cancel')}
             </Button>
           )}
         </div>
@@ -170,20 +172,20 @@ export default function ClientDetailPage() {
             defaultValues={client}
             onSubmit={handleUpdate}
             isPending={updateClient.isPending}
-            submitLabel="Save changes"
+            submitLabel={t('common.saveChanges')}
             onCancel={() => setEditing(false)}
           />
         ) : (
           <dl className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
-            <InfoField label="Name" value={client.name} />
-            <InfoField label="Legal name" value={client.legalName} />
-            <InfoField label="Tax ID" value={client.taxId} />
-            <InfoField label="Email" value={client.email} />
-            <InfoField label="Phone" value={client.phone} />
-            <InfoField label="Status" value={client.status} />
+            <InfoField label={t('clients.name')} value={client.name} />
+            <InfoField label={t('clients.legalName')} value={client.legalName} />
+            <InfoField label={t('clients.taxId')} value={client.taxId} />
+            <InfoField label={t('clients.email')} value={client.email} />
+            <InfoField label={t('clients.phone')} value={client.phone} />
+            <InfoField label={t('clients.status')} value={client.status} />
             {client.notes && (
               <div className="sm:col-span-2 lg:col-span-3">
-                <InfoField label="Notes" value={client.notes} />
+                <InfoField label={t('clients.notes')} value={client.notes} />
               </div>
             )}
           </dl>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { useFeatureFlags, useCreateFeatureFlag } from '@/features/feature-flags/hooks/use-feature-flags';
@@ -14,6 +15,7 @@ interface CreateFlagForm {
 }
 
 export default function FeatureFlagsPage() {
+  const t = useTranslations();
   const canManage = useIsOwner();
 
   const { data: flags = [], isLoading } = useFeatureFlags();
@@ -45,9 +47,9 @@ export default function FeatureFlagsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Feature flags</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('featureFlags.title')}</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Enable or disable features for your organization.
+          {t('featureFlags.description')}
         </p>
       </div>
 
@@ -55,11 +57,11 @@ export default function FeatureFlagsPage() {
 
       {showForm && canManage && (
         <div className="rounded-lg border p-4 space-y-4">
-          <h3 className="text-sm font-semibold">New feature flag</h3>
+          <h3 className="text-sm font-semibold">{t('featureFlags.new')}</h3>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                Key
+                {t('featureFlags.key')}
               </label>
               <input
                 className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring font-mono"
@@ -69,7 +71,7 @@ export default function FeatureFlagsPage() {
             </div>
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                Description
+                {t('featureFlags.descriptionField')}
               </label>
               <input
                 className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
@@ -86,7 +88,7 @@ export default function FeatureFlagsPage() {
                 onChange={(e) => setForm((v) => ({ ...v, isEnabled: e.target.checked }))}
                 className="h-4 w-4 rounded border"
               />
-              Enable immediately
+              {t('featureFlags.enableImmediately')}
             </label>
           </div>
           <div className="flex gap-3">
@@ -95,17 +97,17 @@ export default function FeatureFlagsPage() {
               onClick={handleCreate}
               disabled={!form.key || createFlag.isPending}
             >
-              {createFlag.isPending ? 'Creating…' : 'Create flag'}
+              {createFlag.isPending ? t('common.creating') : t('featureFlags.createFlag')}
             </Button>
             <Button size="sm" variant="outline" onClick={() => setShowForm(false)}>
-              Cancel
+              {t('common.cancel')}
             </Button>
           </div>
         </div>
       )}
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
       ) : (
         <FeatureFlagsTable
           flags={flags}

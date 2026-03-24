@@ -1,3 +1,6 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
 import { Badge } from '@/components/ui/badge';
 import {
   Table,
@@ -16,71 +19,79 @@ interface PermissionGroup {
   permissions: { code: string; label: string; roles: Role[] }[];
 }
 
-const PERMISSION_GROUPS: PermissionGroup[] = [
-  {
-    label: 'Organizations',
-    permissions: [
-      { code: 'organizations.read', label: 'View organization', roles: ['OWNER', 'ADMIN', 'MEMBER'] },
-      { code: 'organizations.update', label: 'Edit organization settings', roles: ['OWNER'] },
-      { code: 'organizations.delete', label: 'Delete organization', roles: ['OWNER'] },
-    ],
-  },
-  {
-    label: 'Members',
-    permissions: [
-      { code: 'members.read', label: 'View members', roles: ['OWNER', 'ADMIN', 'MEMBER'] },
-      { code: 'members.invite', label: 'Invite members', roles: ['OWNER', 'ADMIN'] },
-      { code: 'members.remove', label: 'Remove members', roles: ['OWNER', 'ADMIN'] },
-      { code: 'members.update_role', label: 'Change member roles', roles: ['OWNER', 'ADMIN'] },
-    ],
-  },
-  {
-    label: 'Roles',
-    permissions: [
-      { code: 'roles.read', label: 'View roles', roles: ['OWNER', 'ADMIN'] },
-      { code: 'roles.manage', label: 'Manage roles', roles: ['OWNER'] },
-    ],
-  },
-  {
-    label: 'Audit Logs',
-    permissions: [
-      { code: 'audit_logs.read', label: 'View audit logs', roles: ['OWNER', 'ADMIN'] },
-    ],
-  },
-  {
-    label: 'Users',
-    permissions: [
-      { code: 'users.read', label: 'View user profiles', roles: ['OWNER', 'ADMIN', 'MEMBER'] },
-    ],
-  },
-];
-
 const ROLE_VARIANT: Record<Role, 'default' | 'secondary' | 'outline'> = {
   OWNER: 'default',
   ADMIN: 'secondary',
   MEMBER: 'outline',
 };
 
+const ROLE_TRANSLATION_KEY: Record<Role, string> = {
+  OWNER: 'roles.owner',
+  ADMIN: 'roles.admin',
+  MEMBER: 'roles.member',
+};
+
 export default function RolesPage() {
+  const t = useTranslations();
+
+  const permissionGroups: PermissionGroup[] = [
+    {
+      label: t('permissions.organizations'),
+      permissions: [
+        { code: 'organizations.read', label: t('permissions.viewOrganization'), roles: ['OWNER', 'ADMIN', 'MEMBER'] },
+        { code: 'organizations.update', label: t('permissions.editOrganizationSettings'), roles: ['OWNER'] },
+        { code: 'organizations.delete', label: t('permissions.deleteOrganization'), roles: ['OWNER'] },
+      ],
+    },
+    {
+      label: t('permissions.members'),
+      permissions: [
+        { code: 'members.read', label: t('permissions.viewMembers'), roles: ['OWNER', 'ADMIN', 'MEMBER'] },
+        { code: 'members.invite', label: t('permissions.inviteMembers'), roles: ['OWNER', 'ADMIN'] },
+        { code: 'members.remove', label: t('permissions.removeMembers'), roles: ['OWNER', 'ADMIN'] },
+        { code: 'members.update_role', label: t('permissions.changeMemberRoles'), roles: ['OWNER', 'ADMIN'] },
+      ],
+    },
+    {
+      label: t('permissions.roles'),
+      permissions: [
+        { code: 'roles.read', label: t('permissions.viewRoles'), roles: ['OWNER', 'ADMIN'] },
+        { code: 'roles.manage', label: t('permissions.manageRoles'), roles: ['OWNER'] },
+      ],
+    },
+    {
+      label: t('permissions.auditLogs'),
+      permissions: [
+        { code: 'audit_logs.read', label: t('permissions.viewAuditLogs'), roles: ['OWNER', 'ADMIN'] },
+      ],
+    },
+    {
+      label: t('permissions.users'),
+      permissions: [
+        { code: 'users.read', label: t('permissions.viewUserProfiles'), roles: ['OWNER', 'ADMIN', 'MEMBER'] },
+      ],
+    },
+  ];
+
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Roles</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('rolesPage.title')}</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Permission matrix for each role in your organization
+          {t('rolesPage.description')}
         </p>
       </div>
 
       <div className="flex gap-3">
         {ROLES.map((role) => (
           <div key={role} className="flex items-center gap-2 rounded-lg border px-4 py-3">
-            <Badge variant={ROLE_VARIANT[role]}>{role}</Badge>
+            <Badge variant={ROLE_VARIANT[role]}>{t(ROLE_TRANSLATION_KEY[role])}</Badge>
           </div>
         ))}
       </div>
 
       <div className="space-y-6">
-        {PERMISSION_GROUPS.map((group) => (
+        {permissionGroups.map((group) => (
           <div key={group.label} className="space-y-2">
             <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
               {group.label}
@@ -89,10 +100,10 @@ export default function RolesPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-[300px]">Permission</TableHead>
+                    <TableHead className="w-[300px]">{t('rolesPage.permission')}</TableHead>
                     {ROLES.map((role) => (
                       <TableHead key={role} className="w-24 text-center">
-                        {role}
+                        {t(ROLE_TRANSLATION_KEY[role])}
                       </TableHead>
                     ))}
                   </TableRow>

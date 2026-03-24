@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
@@ -20,6 +21,7 @@ interface MemberWithUser {
 }
 
 export default function NewOperationPage() {
+  const t = useTranslations()
   const router = useRouter();
   const { activeOrgId } = useOrgStore();
   const createOperation = useCreateOperation();
@@ -52,9 +54,9 @@ export default function NewOperationPage() {
   return (
     <div className="max-w-2xl space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">New operation</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('operations.newTitle')}</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Create a new customs operation for your organization
+          {t('operations.newDescription')}
         </p>
       </div>
 
@@ -70,7 +72,7 @@ export default function NewOperationPage() {
           });
         }}
         isPending={createOperation.isPending}
-        submitLabel="Create operation"
+        submitLabel={t('operations.createOperation')}
         onCancel={() => router.push('/dashboard/operations')}
       />
     </div>

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { CaretLeft, CaretRight } from '@phosphor-icons/react';
 import { format } from 'date-fns';
+import { useTranslations } from 'next-intl';
 import { apiClient } from '@/lib/api-client';
 import { useOrgStore } from '@/store/org.store';
 import { Button } from '@/components/ui/button';
@@ -53,6 +54,7 @@ function ActionBadge({ action }: { action: string }) {
 }
 
 export default function AuditLogsPage() {
+  const t = useTranslations();
   const { activeOrgId } = useOrgStore();
   const [page, setPage] = useState(0);
   const offset = page * PAGE_SIZE;
@@ -66,7 +68,7 @@ export default function AuditLogsPage() {
   if (!activeOrgId) {
     return (
       <div className="text-sm text-muted-foreground">
-        Select an organization to view audit logs.
+        {t('auditLogs.selectOrg')}
       </div>
     );
   }
@@ -77,19 +79,19 @@ export default function AuditLogsPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Audit Logs</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('auditLogs.title')}</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Activity history for this organization
+          {t('auditLogs.description')}
         </p>
       </div>
 
       {isLoading && (
-        <div className="text-sm text-muted-foreground">Loading…</div>
+        <div className="text-sm text-muted-foreground">{t('common.loading')}</div>
       )}
 
       {!isLoading && logs.length === 0 && page === 0 && (
         <div className="rounded-lg border border-dashed p-12 text-center">
-          <p className="text-sm text-muted-foreground">No activity recorded yet</p>
+          <p className="text-sm text-muted-foreground">{t('auditLogs.empty')}</p>
         </div>
       )}
 
@@ -98,10 +100,10 @@ export default function AuditLogsPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Action</TableHead>
-                <TableHead>Resource</TableHead>
-                <TableHead>Actor</TableHead>
-                <TableHead>Date</TableHead>
+                <TableHead>{t('auditLogs.action')}</TableHead>
+                <TableHead>{t('auditLogs.resource')}</TableHead>
+                <TableHead>{t('auditLogs.actor')}</TableHead>
+                <TableHead>{t('auditLogs.date')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -138,7 +140,7 @@ export default function AuditLogsPage() {
             onClick={() => setPage((p) => p - 1)}
           >
             <CaretLeft size={14} />
-            Previous
+            {t('common.previous')}
           </Button>
           <Button
             variant="outline"
@@ -146,7 +148,7 @@ export default function AuditLogsPage() {
             disabled={!hasNext}
             onClick={() => setPage((p) => p + 1)}
           >
-            Next
+            {t('common.next')}
             <CaretRight size={14} />
           </Button>
         </div>

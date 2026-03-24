@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation'
 import { useRouter } from '@/i18n/navigation'
 import { ArrowLeft, Plus } from '@phosphor-icons/react';
@@ -29,6 +30,7 @@ import { useCanManage } from '@/hooks/use-permissions';
 import type { UpdateRuleSetFormData } from '@/features/compliance-rule-sets/schemas/rule-set.schemas';
 
 export default function RuleSetDetailPage() {
+  const t = useTranslations();
   const { ruleSetId } = useParams<{ ruleSetId: string }>();
   const router = useRouter();
   const canManage = useCanManage();
@@ -49,11 +51,11 @@ export default function RuleSetDetailPage() {
   const [addStatusOpen, setAddStatusOpen] = useState(false);
 
   if (isLoadingRuleSet) {
-    return <p className="text-sm text-muted-foreground">Loading…</p>;
+    return <p className="text-sm text-muted-foreground">{t('common.loading')}</p>;
   }
 
   if (!ruleSet) {
-    return <p className="text-sm text-destructive">Rule set not found.</p>;
+    return <p className="text-sm text-destructive">{t('compliance.notFound')}</p>;
   }
 
   const existingCategoryIds = requirements.map((r) => r.documentCategoryId);
@@ -83,14 +85,14 @@ export default function RuleSetDetailPage() {
       {canManage && (
         <section className="space-y-4">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Settings
+            {t('compliance.settingsSection')}
           </h2>
           <RuleSetForm
             initialValues={ruleSet}
             onSubmit={(dto) => updateRuleSet.mutate(dto as UpdateRuleSetFormData)}
             onCancel={() => {}}
             isPending={updateRuleSet.isPending}
-            submitLabel="Save changes"
+            submitLabel={t('common.saveChanges')}
           />
         </section>
       )}
@@ -99,17 +101,17 @@ export default function RuleSetDetailPage() {
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Document requirements
+            {t('compliance.docRequirements')}
           </h2>
           {canManage && (
             <Button size="sm" variant="outline" className="gap-2" onClick={() => setAddDocOpen(true)}>
               <Plus size={13} />
-              Add requirement
+              {t('compliance.addRequirement')}
             </Button>
           )}
         </div>
         {isLoadingReqs ? (
-          <p className="text-sm text-muted-foreground">Loading…</p>
+          <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
         ) : (
           <DocumentRequirementsTable
             requirements={requirements}
@@ -125,7 +127,7 @@ export default function RuleSetDetailPage() {
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Status transition rules
+            {t('compliance.statusRules')}
           </h2>
           {canManage && (
             <Button
@@ -135,12 +137,12 @@ export default function RuleSetDetailPage() {
               onClick={() => setAddStatusOpen(true)}
             >
               <Plus size={13} />
-              Add rule
+              {t('compliance.addRule')}
             </Button>
           )}
         </div>
         {isLoadingRules ? (
-          <p className="text-sm text-muted-foreground">Loading…</p>
+          <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
         ) : (
           <StatusRulesTable
             rules={statusRules}
