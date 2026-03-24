@@ -67,7 +67,7 @@ export default function SignUpPage() {
     try {
       await signIn.social({
         provider: 'google',
-        callbackURL: '/dashboard',
+        callbackURL: `${window.location.origin}/dashboard`,
       });
     } catch {
       toast.error(t('toast.unexpectedError'))
