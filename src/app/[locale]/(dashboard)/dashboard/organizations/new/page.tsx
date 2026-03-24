@@ -84,7 +84,7 @@ export default function NewOrganizationPage() {
             </div>
           </CardContent>
 
-          <CardFooter className="flex gap-3">
+          <CardFooter className="flex gap-3 border-t-0">
             <Button
               type="button"
               variant="outline"
