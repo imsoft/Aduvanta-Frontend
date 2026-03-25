@@ -44,21 +44,26 @@ export function AppHeader() {
   const user = session?.user;
 
   return (
-    <header className="flex h-14 items-center justify-between border-b bg-background px-4">
-      <OrgSwitcher />
+    <header className="flex min-h-14 flex-wrap items-center gap-x-3 gap-y-2 border-b bg-background px-4 py-2 sm:flex-nowrap sm:py-0">
+      <div className="min-w-0 flex-1">
+        <OrgSwitcher />
+      </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">
         <ThemeToggle />
         <LocaleSwitcher />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-2 rounded-md px-2 py-1 text-sm hover:bg-accent transition-colors outline-none">
-              <Avatar className="h-6 w-6">
+            <button
+              type="button"
+              className="flex max-w-full min-w-0 items-start gap-2 rounded-md px-2 py-1 text-left text-sm transition-colors hover:bg-accent outline-none"
+            >
+              <Avatar className="mt-0.5 h-6 w-6 shrink-0">
                 <AvatarFallback className="text-xs bg-primary text-primary-foreground">
                   {user?.name ? getInitials(user.name) : <User size={12} />}
                 </AvatarFallback>
               </Avatar>
-              <span className="max-w-32 truncate text-sm">
+              <span className="wrap-break-word text-sm leading-snug [word-break:break-word]">
                 {user?.name ?? user?.email}
               </span>
             </button>

@@ -23,7 +23,9 @@
     "saveChanges": "Guardar cambios",
     "comingSoon": "Próximamente",
     "previous": "Anterior",
-    "notFound": "No encontrado"
+    "notFound": "No encontrado",
+    "collapseSidebar": "Colapsar panel lateral",
+    "expandSidebar": "Expandir panel lateral"
   },
   "nav": {
     "dashboard": "Panel",

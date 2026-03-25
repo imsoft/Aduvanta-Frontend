@@ -23,7 +23,9 @@
     "saveChanges": "Save changes",
     "comingSoon": "Coming soon",
     "previous": "Previous",
-    "notFound": "Not found"
+    "notFound": "Not found",
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebar": "Expand sidebar"
   },
   "nav": {
     "dashboard": "Dashboard",
