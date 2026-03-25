@@ -326,7 +326,8 @@
   "toast": {
     "signInFailed": "Error al iniciar sesión",
     "signUpFailed": "Error al registrarse",
-    "unexpectedError": "Se produjo un error inesperado"
+    "unexpectedError": "Se produjo un error inesperado",
+    "sessionNotEstablished": "No se pudo establecer la sesión. Revisa la configuración del API (CORS, cookies y NEXT_PUBLIC_API_URL) o contacta al soporte."
   },
   "placeholders": {
     "email": "tu@empresa.com",

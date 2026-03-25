@@ -326,7 +326,8 @@
   "toast": {
     "signInFailed": "Sign in failed",
     "signUpFailed": "Sign up failed",
-    "unexpectedError": "An unexpected error occurred"
+    "unexpectedError": "An unexpected error occurred",
+    "sessionNotEstablished": "Could not establish a session. Check API configuration (CORS, cookies, NEXT_PUBLIC_API_URL) or contact support."
   },
   "placeholders": {
     "email": "you@company.com",

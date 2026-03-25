@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
-import { Link, useRouter } from '@/i18n/navigation'
+import { useLocale, useTranslations } from 'next-intl'
+import { Link } from '@/i18n/navigation'
 import { useForm } from 'react-hook-form';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { z } from 'zod';
@@ -14,7 +14,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { GoogleIcon } from '@/components/ui/icons/google-icon';
-import { signIn } from '@/lib/auth-client';
+import { getSession, signIn } from '@/lib/auth-client';
 
 const isGoogleEnabled = process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED === 'true'
 
@@ -28,7 +28,7 @@ type SignInFormData = z.infer<ReturnType<typeof createSignInSchema>>
 
 export default function SignInPage() {
   const t = useTranslations()
-  const router = useRouter()
+  const locale = useLocale()
   const [isLoading, setIsLoading] = useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
   const schema = createSignInSchema((k) => t(k))
@@ -52,7 +52,17 @@ export default function SignInPage() {
         return;
       }
 
-      router.push('/dashboard');
+      const sessionCheck = await getSession()
+      const hasUser =
+        sessionCheck.data?.user ??
+        (result.data as { user?: unknown } | undefined)?.user
+
+      if (!hasUser) {
+        toast.error(t('toast.sessionNotEstablished'))
+        return
+      }
+
+      window.location.assign(`/${locale}/dashboard`)
     } catch {
       toast.error(t('toast.unexpectedError'))
     } finally {
@@ -65,7 +75,7 @@ export default function SignInPage() {
     try {
       await signIn.social({
         provider: 'google',
-        callbackURL: `${window.location.origin}/dashboard`,
+        callbackURL: `${window.location.origin}/${locale}/dashboard`,
       });
     } catch {
       toast.error(t('toast.unexpectedError'))
