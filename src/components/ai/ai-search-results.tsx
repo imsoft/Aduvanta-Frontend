@@ -2,6 +2,7 @@
 
 import { Link } from '@/i18n/navigation'
 import { ArrowRight } from '@phosphor-icons/react';
+import { useTranslations } from 'next-intl'
 import {
   Table,
   TableBody,
@@ -11,35 +12,36 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import type { AiSearchResult } from '@/features/ai-search/types/ai-search.types';
-import { AI_SEARCH_QUERY_TYPE_LABELS } from '@/features/ai-search/types/ai-search.types';
 
 interface AiSearchResultsProps {
   result: AiSearchResult;
 }
 
 export function AiSearchResults({ result }: AiSearchResultsProps) {
+  const t = useTranslations()
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <p className="text-sm font-medium">
-          {AI_SEARCH_QUERY_TYPE_LABELS[result.queryType]}
+          {t(`ai.queryTypes.${result.queryType}`)}
         </p>
         <span className="text-xs text-muted-foreground">{result.message}</span>
       </div>
 
       {result.data.length === 0 ? (
         <div className="rounded-md border border-dashed p-4 text-center">
-          <p className="text-sm text-muted-foreground">No results found.</p>
+          <p className="text-sm text-muted-foreground">{t('ai.noResults')}</p>
         </div>
       ) : (
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Reference</TableHead>
-              <TableHead>Title</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Priority</TableHead>
-              <TableHead>Reason</TableHead>
+              <TableHead>{t('ai.table.reference')}</TableHead>
+              <TableHead>{t('ai.table.title')}</TableHead>
+              <TableHead>{t('ai.table.status')}</TableHead>
+              <TableHead>{t('ai.table.priority')}</TableHead>
+              <TableHead>{t('ai.table.reason')}</TableHead>
               <TableHead />
             </TableRow>
           </TableHeader>
@@ -58,7 +60,7 @@ export function AiSearchResults({ result }: AiSearchResultsProps) {
                     href={`/dashboard/operations/${item.operationId}`}
                     className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
                   >
-                    View <ArrowRight size={12} />
+                    {t('ai.viewOperation')} <ArrowRight size={12} />
                   </Link>
                 </TableCell>
               </TableRow>

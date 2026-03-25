@@ -113,7 +113,7 @@ export default function RolesPage() {
                     <TableRow key={perm.code}>
                       <TableCell>
                         <p className="text-sm">{perm.label}</p>
-                        <p className="font-mono text-xs text-muted-foreground">{perm.code}</p>
+                        {/* Mostramos el label traducido; el código es para debugging y confunde en UI */}
                       </TableCell>
                       {ROLES.map((role) => (
                         <TableCell key={role} className="text-center">

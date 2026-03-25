@@ -198,6 +198,8 @@
     "newDescription": "Add a new client to your organization",
     "createClient": "Create client",
     "notFound": "Client not found.",
+    "emptyFiltered": "Try adjusting your filters.",
+    "emptyDescription": "Create your first client to get started.",
     "backToClients": "Back to clients",
     "deactivate": "Deactivate",
     "deactivateTitle": "Deactivate client?",
@@ -252,7 +254,21 @@
   "ai": {
     "title": "AI Copilot",
     "description": "Search and analyze operations using structured AI-assisted queries.",
-    "searchTitle": "Search operations"
+    "searchTitle": "Search operations",
+    "noResults": "No results found.",
+    "viewOperation": "View operation",
+    "queryTypes": {
+      "PENDING_OPERATIONS": "Pending operations",
+      "URGENT_WITHOUT_ASSIGNEE": "Urgent operations without assignee",
+      "OVERDUE_OPERATIONS": "Overdue operations"
+    },
+    "table": {
+      "reference": "Reference",
+      "title": "Title",
+      "status": "Status",
+      "priority": "Priority",
+      "reason": "Reason"
+    }
   },
   "featureFlags": {
     "title": "Feature flags",

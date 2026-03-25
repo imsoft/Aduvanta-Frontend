@@ -73,21 +73,21 @@ export default function ClientsPage() {
       </div>
 
       {isLoading && (
-        <div className="text-sm text-muted-foreground">Loading clients…</div>
+        <div className="text-sm text-muted-foreground">{t('common.loading')}</div>
       )}
 
       {!isLoading && clients.length === 0 && (
         <EmptyState
-          title="No clients found"
+          title={t('clients.notFound')}
           description={
             search || status !== 'ACTIVE'
-              ? 'Try adjusting your filters.'
-              : 'Create your first client to get started.'
+              ? t('clients.emptyFiltered')
+              : t('clients.emptyDescription')
           }
           action={
             !search && status === 'ACTIVE' ? (
               <Button asChild size="sm">
-                <Link href="/dashboard/clients/new">New client</Link>
+                <Link href="/dashboard/clients/new">{t('clients.createClient')}</Link>
               </Button>
             ) : undefined
           }

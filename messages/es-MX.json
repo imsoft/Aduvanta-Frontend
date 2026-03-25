@@ -32,7 +32,7 @@
     "operations": "Operaciones",
     "docCategories": "Categorías doc.",
     "compliance": "Cumplimiento",
-    "aiCopilot": "AI Copilot",
+    "aiCopilot": "Copiloto IA",
     "integrations": "Integraciones",
     "exports": "Exportaciones",
     "imports": "Importaciones",
@@ -41,7 +41,7 @@
     "auditLogs": "Registros de auditoría",
     "billing": "Facturación",
     "usage": "Uso",
-    "featureFlags": "Feature flags",
+    "featureFlags": "Flags de función",
     "settings": "Configuración"
   },
   "auth": {
@@ -198,6 +198,8 @@
     "newDescription": "Agrega un nuevo cliente a tu organización",
     "createClient": "Crear cliente",
     "notFound": "Cliente no encontrado.",
+    "emptyFiltered": "Intenta ajustar tus filtros.",
+    "emptyDescription": "Crea tu primer cliente para comenzar.",
     "backToClients": "Volver a clientes",
     "deactivate": "Desactivar",
     "deactivateTitle": "¿Desactivar cliente?",
@@ -250,14 +252,28 @@
     "editTitle": "Editar categoría"
   },
   "ai": {
-    "title": "AI Copilot",
+    "title": "Copiloto IA",
     "description": "Busca y analiza operaciones con consultas asistidas por IA.",
-    "searchTitle": "Buscar operaciones"
+    "searchTitle": "Buscar operaciones",
+    "noResults": "No se encontraron resultados.",
+    "viewOperation": "Ver operación",
+    "queryTypes": {
+      "PENDING_OPERATIONS": "Operaciones pendientes",
+      "URGENT_WITHOUT_ASSIGNEE": "Operaciones urgentes sin asignado",
+      "OVERDUE_OPERATIONS": "Operaciones vencidas"
+    },
+    "table": {
+      "reference": "Referencia",
+      "title": "Título",
+      "status": "Estado",
+      "priority": "Prioridad",
+      "reason": "Motivo"
+    }
   },
   "featureFlags": {
-    "title": "Feature flags",
+    "title": "Flags de función",
     "description": "Habilita o deshabilita funcionalidades para tu organización.",
-    "new": "Nuevo feature flag",
+    "new": "Nuevo flag de función",
     "key": "Clave",
     "descriptionField": "Descripción",
     "enableImmediately": "Habilitar inmediatamente",
