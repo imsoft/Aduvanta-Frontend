@@ -1,33 +1,35 @@
 'use client';
 
 import type { OrganizationUsage } from '@/features/usage/types/usage.types';
+import { useTranslations } from 'next-intl'
 
 interface UsageMetricsCardsProps {
   usage: OrganizationUsage;
 }
 
 export function UsageMetricsCards({ usage }: UsageMetricsCardsProps) {
+  const t = useTranslations()
   const { metrics, limits } = usage;
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <UsageCard
-        label="Users"
+        label={t('usage.metrics.users')}
         value={metrics.users}
         max={limits?.maxUsers ?? null}
       />
       <UsageCard
-        label="Clients"
+        label={t('usage.metrics.clients')}
         value={metrics.clients}
         max={limits?.maxClients ?? null}
       />
       <UsageCard
-        label="Operations"
+        label={t('usage.metrics.operations')}
         value={metrics.operations}
         max={limits?.maxOperations ?? null}
       />
       <UsageCard
-        label="Integrations"
+        label={t('usage.metrics.integrations')}
         value={metrics.integrations}
         max={limits?.maxIntegrations ?? null}
       />
@@ -44,6 +46,8 @@ function UsageCard({
   value: number;
   max: number | null;
 }) {
+  const t = useTranslations()
+
   const pct = max !== null ? Math.min((value / max) * 100, 100) : null;
   const isNearLimit = pct !== null && pct >= 80;
   const isAtLimit = pct !== null && pct >= 100;
@@ -79,7 +83,9 @@ function UsageCard({
             <p
               className={`text-xs ${isAtLimit ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400'}`}
             >
-              {isAtLimit ? 'Limit reached' : `${Math.round(pct)}% used`}
+              {isAtLimit
+                ? t('usage.limitReached')
+                : t('usage.pctUsed', { pct: Math.round(pct) })}
             </p>
           )}
         </div>

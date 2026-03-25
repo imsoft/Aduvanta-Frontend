@@ -3,6 +3,7 @@
 import { Link } from '@/i18n/navigation'
 import { ArrowRight, Prohibit } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
+import { useTranslations } from 'next-intl'
 import {
   Table,
   TableBody,
@@ -37,9 +38,13 @@ export function IntegrationsTable({
   onDeactivate,
   isDeactivatePending,
 }: IntegrationsTableProps) {
+  const t = useTranslations()
+
   if (integrations.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">No integrations configured yet.</p>
+      <p className="text-sm text-muted-foreground">
+        {t('integrations.table.empty')}
+      </p>
     );
   }
 
@@ -47,11 +52,11 @@ export function IntegrationsTable({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>Provider</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Event types</TableHead>
-          <TableHead>Updated</TableHead>
+          <TableHead>{t('integrations.table.columns.name')}</TableHead>
+          <TableHead>{t('integrations.table.columns.provider')}</TableHead>
+          <TableHead>{t('integrations.table.columns.status')}</TableHead>
+          <TableHead>{t('integrations.table.columns.eventTypes')}</TableHead>
+          <TableHead>{t('integrations.table.columns.updated')}</TableHead>
           <TableHead />
         </TableRow>
       </TableHeader>
@@ -68,7 +73,11 @@ export function IntegrationsTable({
                     : 'text-xs text-muted-foreground'
                 }
               >
-                {integration.status}
+                {integration.status === 'ACTIVE'
+                  ? t('integrations.status.active')
+                  : integration.status === 'INACTIVE'
+                    ? t('integrations.status.inactive')
+                    : integration.status}
               </span>
             </TableCell>
             <TableCell className="text-xs text-muted-foreground">
@@ -102,19 +111,23 @@ export function IntegrationsTable({
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Deactivate integration?</AlertDialogTitle>
+                        <AlertDialogTitle>
+                          {t('integrations.table.dialog.deactivateTitle')}
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
-                          "{integration.name}" will stop receiving events.
+                          {t('integrations.table.dialog.deactivateDescription', {
+                            name: integration.name,
+                          })}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => onDeactivate(integration.id)}
                           disabled={isDeactivatePending}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
-                          Deactivate
+                          {t('integrations.table.dialog.deactivateAction')}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>

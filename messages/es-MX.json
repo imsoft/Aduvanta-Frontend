@@ -234,7 +234,15 @@
     "description": "Uso actual de recursos de tu organización.",
     "plan": "Plan",
     "noLimits": "No hay límites de plan configurados. Asigna un plan para aplicar límites de uso.",
-    "noData": "No hay datos de uso disponibles."
+    "noData": "No hay datos de uso disponibles.",
+    "metrics": {
+      "users": "Usuarios",
+      "clients": "Clientes",
+      "operations": "Operaciones",
+      "integrations": "Integraciones"
+    },
+    "limitReached": "Límite alcanzado",
+    "pctUsed": "{pct}% usados"
   },
   "docCategories": {
     "title": "Categorías de documentos",
@@ -255,6 +263,12 @@
     "title": "Copiloto IA",
     "description": "Busca y analiza operaciones con consultas asistidas por IA.",
     "searchTitle": "Buscar operaciones",
+    "searchForm": {
+      "queryTypeLabel": "Tipo de consulta",
+      "additionalContextLabel": "Contexto adicional (opcional)",
+      "searching": "Buscando…",
+      "search": "Buscar"
+    },
     "noResults": "No se encontraron resultados.",
     "viewOperation": "Ver operación",
     "queryTypes": {
@@ -277,7 +291,30 @@
     "key": "Clave",
     "descriptionField": "Descripción",
     "enableImmediately": "Habilitar inmediatamente",
-    "createFlag": "Crear flag"
+    "createFlag": "Crear flag",
+    "table": {
+      "empty": "No hay flags de función configurados todavía.",
+      "newFlag": "Nuevo flag de función",
+      "columns": {
+        "key": "Clave",
+        "description": "Descripción",
+        "scope": "Alcance",
+        "status": "Estado"
+      },
+      "scope": {
+        "organization": "Organización",
+        "global": "Global"
+      },
+      "status": {
+        "enabled": "Habilitado",
+        "disabled": "Deshabilitado"
+      },
+      "dialog": {
+        "deleteTitle": "¿Eliminar flag de función?",
+        "deleteDescriptionPrefix": "El flag de función",
+        "deleteDescriptionSuffix": "se eliminará permanentemente."
+      }
+    }
   },
   "integrations": {
     "title": "Integraciones",
@@ -291,7 +328,26 @@
     "notSet": "No configurado",
     "eventTypes": "Tipos de evento",
     "deliveryLogs": "Registros de entrega",
-    "createIntegration": "Crear integración"
+    "createIntegration": "Crear integración",
+    "table": {
+      "empty": "No hay integraciones configuradas todavía.",
+      "columns": {
+        "name": "Nombre",
+        "provider": "Proveedor",
+        "status": "Estado",
+        "eventTypes": "Tipos de evento",
+        "updated": "Actualizado"
+      },
+      "dialog": {
+        "deactivateTitle": "¿Desactivar integración?",
+        "deactivateDescription": "\"{name}\" dejará de recibir eventos.",
+        "deactivateAction": "Desactivar"
+      }
+    },
+    "status": {
+      "active": "Activa",
+      "inactive": "Inactiva"
+    }
   },
   "compliance": {
     "title": "Conjuntos de reglas de cumplimiento",
@@ -305,17 +361,52 @@
     "docRequirements": "Requisitos de documentos",
     "addRequirement": "Agregar requisito",
     "statusRules": "Reglas de transición de estado",
-    "addRule": "Agregar regla"
+    "addRule": "Agregar regla",
+    "ruleSetsTable": {
+      "empty": "No hay conjuntos de reglas configurados todavía.",
+      "columns": {
+        "name": "Nombre",
+        "code": "Código",
+        "operationType": "Tipo de operación",
+        "active": "Activo"
+      },
+      "dialog": {
+        "deleteTitle": "¿Eliminar conjunto de reglas?",
+        "deleteDescription": "\"{name}\" y todos sus requisitos y reglas de estado se eliminarán permanentemente."
+      }
+    }
   },
   "exports": {
     "title": "Exportaciones",
     "description": "Genera y descarga exportaciones CSV de los datos de tu organización.",
-    "new": "Nueva exportación"
+    "new": "Nueva exportación",
+    "table": {
+      "empty": "No hay trabajos de exportación todavía.",
+      "columns": {
+        "type": "Tipo",
+        "status": "Estado",
+        "file": "Archivo",
+        "requested": "Solicitado",
+        "completed": "Completado"
+      }
+    }
   },
   "imports": {
     "title": "Importaciones",
     "description": "Sube archivos CSV para importar clientes a tu organización.",
-    "importClients": "Importar clientes"
+    "importClients": "Importar clientes",
+    "table": {
+      "empty": "No hay trabajos de importación todavía.",
+      "columns": {
+        "type": "Tipo",
+        "status": "Estado",
+        "file": "Archivo",
+        "result": "Resultado",
+        "requested": "Solicitado",
+        "completed": "Completado"
+      },
+      "resultSummary": "{created} creadas, {failed} fallidas"
+    }
   },
   "dashboard": {
     "title": "Panel",

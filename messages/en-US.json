@@ -234,7 +234,15 @@
     "description": "Current resource usage for your organization.",
     "plan": "Plan",
     "noLimits": "No active plan limits configured. Assign a plan to enforce usage limits.",
-    "noData": "No usage data available."
+    "noData": "No usage data available.",
+    "metrics": {
+      "users": "Users",
+      "clients": "Clients",
+      "operations": "Operations",
+      "integrations": "Integrations"
+    },
+    "limitReached": "Limit reached",
+    "pctUsed": "{pct}% used"
   },
   "docCategories": {
     "title": "Document categories",
@@ -255,6 +263,12 @@
     "title": "AI Copilot",
     "description": "Search and analyze operations using structured AI-assisted queries.",
     "searchTitle": "Search operations",
+    "searchForm": {
+      "queryTypeLabel": "Query type",
+      "additionalContextLabel": "Additional context (optional)",
+      "searching": "Searching…",
+      "search": "Search"
+    },
     "noResults": "No results found.",
     "viewOperation": "View operation",
     "queryTypes": {
@@ -277,7 +291,30 @@
     "key": "Key",
     "descriptionField": "Description",
     "enableImmediately": "Enable immediately",
-    "createFlag": "Create flag"
+    "createFlag": "Create flag",
+    "table": {
+      "empty": "No feature flags configured yet.",
+      "newFlag": "New feature flag",
+      "columns": {
+        "key": "Key",
+        "description": "Description",
+        "scope": "Scope",
+        "status": "Status"
+      },
+      "scope": {
+        "organization": "Organization",
+        "global": "Global"
+      },
+      "status": {
+        "enabled": "Enabled",
+        "disabled": "Disabled"
+      },
+      "dialog": {
+        "deleteTitle": "Delete feature flag?",
+        "deleteDescriptionPrefix": "The feature flag",
+        "deleteDescriptionSuffix": "will be permanently deleted."
+      }
+    }
   },
   "integrations": {
     "title": "Integrations",
@@ -291,7 +328,26 @@
     "notSet": "Not set",
     "eventTypes": "Event types",
     "deliveryLogs": "Delivery logs",
-    "createIntegration": "Create integration"
+    "createIntegration": "Create integration",
+    "table": {
+      "empty": "No integrations configured yet.",
+      "columns": {
+        "name": "Name",
+        "provider": "Provider",
+        "status": "Status",
+        "eventTypes": "Event types",
+        "updated": "Updated"
+      },
+      "dialog": {
+        "deactivateTitle": "Deactivate integration?",
+        "deactivateDescription": "\"{name}\" will stop receiving events.",
+        "deactivateAction": "Deactivate"
+      }
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
   },
   "compliance": {
     "title": "Compliance rule sets",
@@ -305,17 +361,52 @@
     "docRequirements": "Document requirements",
     "addRequirement": "Add requirement",
     "statusRules": "Status transition rules",
-    "addRule": "Add rule"
+    "addRule": "Add rule",
+    "ruleSetsTable": {
+      "empty": "No rule sets configured yet.",
+      "columns": {
+        "name": "Name",
+        "code": "Code",
+        "operationType": "Operation type",
+        "active": "Active"
+      },
+      "dialog": {
+        "deleteTitle": "Delete rule set?",
+        "deleteDescription": "\"{name}\" and all its requirements and status rules will be permanently deleted."
+      }
+    }
   },
   "exports": {
     "title": "Exports",
     "description": "Generate and download CSV exports of your organization data.",
-    "new": "New export"
+    "new": "New export",
+    "table": {
+      "empty": "No export jobs yet.",
+      "columns": {
+        "type": "Type",
+        "status": "Status",
+        "file": "File",
+        "requested": "Requested",
+        "completed": "Completed"
+      }
+    }
   },
   "imports": {
     "title": "Imports",
     "description": "Upload CSV files to import clients into your organization.",
-    "importClients": "Import clients"
+    "importClients": "Import clients",
+    "table": {
+      "empty": "No import jobs yet.",
+      "columns": {
+        "type": "Type",
+        "status": "Status",
+        "file": "File",
+        "result": "Result",
+        "requested": "Requested",
+        "completed": "Completed"
+      },
+      "resultSummary": "{created} created, {failed} failed"
+    }
   },
   "dashboard": {
     "title": "Dashboard",

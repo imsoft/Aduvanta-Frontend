@@ -2,6 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
+import { useTranslations } from 'next-intl'
 import { MagnifyingGlass } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,7 +14,6 @@ import {
 } from '@/components/ui/select';
 import {
   AI_SEARCH_QUERY_TYPES,
-  AI_SEARCH_QUERY_TYPE_LABELS,
 } from '@/features/ai-search/types/ai-search.types';
 import {
   createAiSearchQuerySchema,
@@ -26,6 +26,8 @@ interface AiSearchFormProps {
 }
 
 export function AiSearchForm({ onSubmit, isPending }: AiSearchFormProps) {
+  const t = useTranslations()
+
   const {
     register,
     handleSubmit,
@@ -46,7 +48,7 @@ export function AiSearchForm({ onSubmit, isPending }: AiSearchFormProps) {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="space-y-1.5">
         <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          Query type
+          {t('ai.searchForm.queryTypeLabel')}
         </label>
         <Select
           value={queryType}
@@ -60,7 +62,7 @@ export function AiSearchForm({ onSubmit, isPending }: AiSearchFormProps) {
           <SelectContent>
             {AI_SEARCH_QUERY_TYPES.map((type) => (
               <SelectItem key={type} value={type}>
-                {AI_SEARCH_QUERY_TYPE_LABELS[type]}
+                {t(`ai.queryTypes.${type}`)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -69,7 +71,7 @@ export function AiSearchForm({ onSubmit, isPending }: AiSearchFormProps) {
 
       <div className="space-y-1.5">
         <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          Additional context (optional)
+          {t('ai.searchForm.additionalContextLabel')}
         </label>
         <textarea
           {...register('queryText')}
@@ -83,7 +85,7 @@ export function AiSearchForm({ onSubmit, isPending }: AiSearchFormProps) {
 
       <Button type="submit" disabled={isPending} className="gap-2">
         <MagnifyingGlass size={14} />
-        {isPending ? 'Searching…' : 'Search'}
+        {isPending ? t('ai.searchForm.searching') : t('ai.searchForm.search')}
       </Button>
     </form>
   );

@@ -3,6 +3,7 @@
 import { Link } from '@/i18n/navigation'
 import { ArrowRight, Trash } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
+import { useTranslations } from 'next-intl'
 import {
   Table,
   TableBody,
@@ -37,10 +38,12 @@ export function RuleSetsTable({
   onDelete,
   isDeletePending,
 }: RuleSetsTableProps) {
+  const t = useTranslations()
+
   if (ruleSets.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
-        No rule sets configured yet.
+        {t('compliance.ruleSetsTable.empty')}
       </p>
     );
   }
@@ -49,10 +52,10 @@ export function RuleSetsTable({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>Code</TableHead>
-          <TableHead>Operation type</TableHead>
-          <TableHead>Active</TableHead>
+          <TableHead>{t('compliance.ruleSetsTable.columns.name')}</TableHead>
+          <TableHead>{t('compliance.ruleSetsTable.columns.code')}</TableHead>
+          <TableHead>{t('compliance.ruleSetsTable.columns.operationType')}</TableHead>
+          <TableHead>{t('compliance.ruleSetsTable.columns.active')}</TableHead>
           <TableHead />
         </TableRow>
       </TableHeader>
@@ -70,7 +73,7 @@ export function RuleSetsTable({
                     : 'text-xs font-medium text-muted-foreground'
                 }
               >
-                {rs.isActive ? 'Yes' : 'No'}
+                {rs.isActive ? t('common.yes') : t('common.no')}
               </span>
             </TableCell>
             <TableCell>
@@ -93,20 +96,23 @@ export function RuleSetsTable({
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Delete rule set?</AlertDialogTitle>
+                        <AlertDialogTitle>
+                          {t('compliance.ruleSetsTable.dialog.deleteTitle')}
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
-                          "{rs.name}" and all its requirements and status rules will be
-                          permanently deleted.
+                          {t('compliance.ruleSetsTable.dialog.deleteDescription', {
+                            name: rs.name,
+                          })}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => onDelete(rs.id)}
                           disabled={isDeletePending}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
-                          Delete
+                          {t('common.delete')}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>

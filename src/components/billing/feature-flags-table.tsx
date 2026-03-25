@@ -11,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { useTranslations } from 'next-intl'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,6 +37,8 @@ export function FeatureFlagsTable({
   canManage,
   onCreateClick,
 }: FeatureFlagsTableProps) {
+  const t = useTranslations()
+
   const updateFlag = useUpdateFeatureFlag();
   const deleteFlag = useDeleteFeatureFlag();
 
@@ -46,12 +49,12 @@ export function FeatureFlagsTable({
           <div className="flex justify-end">
             <Button size="sm" className="gap-2" onClick={onCreateClick}>
               <Plus size={14} />
-              New flag
+              {t('featureFlags.table.newFlag')}
             </Button>
           </div>
         )}
         <div className="rounded-md border border-dashed p-6 text-center">
-          <p className="text-sm text-muted-foreground">No feature flags configured yet.</p>
+          <p className="text-sm text-muted-foreground">{t('featureFlags.table.empty')}</p>
         </div>
       </div>
     );
@@ -63,17 +66,17 @@ export function FeatureFlagsTable({
         <div className="flex justify-end">
           <Button size="sm" className="gap-2" onClick={onCreateClick}>
             <Plus size={14} />
-            New flag
+            {t('featureFlags.table.newFlag')}
           </Button>
         </div>
       )}
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Key</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Scope</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>{t('featureFlags.table.columns.key')}</TableHead>
+            <TableHead>{t('featureFlags.table.columns.description')}</TableHead>
+            <TableHead>{t('featureFlags.table.columns.scope')}</TableHead>
+            <TableHead>{t('featureFlags.table.columns.status')}</TableHead>
             {canManage && <TableHead />}
           </TableRow>
         </TableHeader>
@@ -86,7 +89,9 @@ export function FeatureFlagsTable({
               </TableCell>
               <TableCell>
                 <span className="text-xs text-muted-foreground">
-                  {flag.organizationId ? 'Organization' : 'Global'}
+                  {flag.organizationId
+                    ? t('featureFlags.table.scope.organization')
+                    : t('featureFlags.table.scope.global')}
                 </span>
               </TableCell>
               <TableCell>
@@ -104,7 +109,9 @@ export function FeatureFlagsTable({
                         : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-200'
                     }`}
                   >
-                    {flag.isEnabled ? 'Enabled' : 'Disabled'}
+                    {flag.isEnabled
+                      ? t('featureFlags.table.status.enabled')
+                      : t('featureFlags.table.status.disabled')}
                   </button>
                 ) : (
                   <span
@@ -114,7 +121,9 @@ export function FeatureFlagsTable({
                         : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
                     }`}
                   >
-                    {flag.isEnabled ? 'Enabled' : 'Disabled'}
+                    {flag.isEnabled
+                      ? t('featureFlags.table.status.enabled')
+                      : t('featureFlags.table.status.disabled')}
                   </span>
                 )}
               </TableCell>
@@ -133,18 +142,22 @@ export function FeatureFlagsTable({
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Delete feature flag?</AlertDialogTitle>
+                          <AlertDialogTitle>
+                            {t('featureFlags.table.dialog.deleteTitle')}
+                          </AlertDialogTitle>
                           <AlertDialogDescription>
-                            Feature flag <span className="font-mono">{flag.key}</span> will be permanently deleted.
+                            {t('featureFlags.table.dialog.deleteDescriptionPrefix')}{" "}
+                            <span className="font-mono">{flag.key}</span>{" "}
+                            {t('featureFlags.table.dialog.deleteDescriptionSuffix')}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
                           <AlertDialogAction
                             onClick={() => deleteFlag.mutate(flag.id)}
                             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                           >
-                            Delete
+                            {t('common.delete')}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>

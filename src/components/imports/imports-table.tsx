@@ -10,26 +10,29 @@ import {
 } from '@/components/ui/table';
 import { ImportJobStatusBadge } from './import-job-status-badge';
 import type { ImportJob, ImportResultSummary } from '@/features/imports/types/import-job.types';
+import { useTranslations } from 'next-intl'
 
 interface ImportsTableProps {
   jobs: ImportJob[];
 }
 
 export function ImportsTable({ jobs }: ImportsTableProps) {
+  const t = useTranslations()
+
   if (jobs.length === 0) {
-    return <p className="text-sm text-muted-foreground">No import jobs yet.</p>;
+    return <p className="text-sm text-muted-foreground">{t('imports.table.empty')}</p>;
   }
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Type</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>File</TableHead>
-          <TableHead>Result</TableHead>
-          <TableHead>Requested</TableHead>
-          <TableHead>Completed</TableHead>
+          <TableHead>{t('imports.table.columns.type')}</TableHead>
+          <TableHead>{t('imports.table.columns.status')}</TableHead>
+          <TableHead>{t('imports.table.columns.file')}</TableHead>
+          <TableHead>{t('imports.table.columns.result')}</TableHead>
+          <TableHead>{t('imports.table.columns.requested')}</TableHead>
+          <TableHead>{t('imports.table.columns.completed')}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -49,7 +52,10 @@ export function ImportsTable({ jobs }: ImportsTableProps) {
               </TableCell>
               <TableCell className="text-xs text-muted-foreground">
                 {summary
-                  ? `${summary.created} created, ${summary.failed} failed`
+                  ? t('imports.table.resultSummary', {
+                      created: summary.created,
+                      failed: summary.failed,
+                    })
                   : '—'}
               </TableCell>
               <TableCell className="text-xs text-muted-foreground">

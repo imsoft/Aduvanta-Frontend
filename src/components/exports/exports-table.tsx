@@ -2,6 +2,7 @@
 
 import { DownloadSimple } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
+import { useTranslations } from 'next-intl'
 import {
   Table,
   TableBody,
@@ -20,19 +21,21 @@ interface ExportsTableProps {
 }
 
 export function ExportsTable({ jobs, onDownload, isDownloadPending }: ExportsTableProps) {
+  const t = useTranslations()
+
   if (jobs.length === 0) {
-    return <p className="text-sm text-muted-foreground">No export jobs yet.</p>;
+    return <p className="text-sm text-muted-foreground">{t('exports.table.empty')}</p>;
   }
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Type</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>File</TableHead>
-          <TableHead>Requested</TableHead>
-          <TableHead>Completed</TableHead>
+          <TableHead>{t('exports.table.columns.type')}</TableHead>
+          <TableHead>{t('exports.table.columns.status')}</TableHead>
+          <TableHead>{t('exports.table.columns.file')}</TableHead>
+          <TableHead>{t('exports.table.columns.requested')}</TableHead>
+          <TableHead>{t('exports.table.columns.completed')}</TableHead>
           <TableHead />
         </TableRow>
       </TableHeader>
