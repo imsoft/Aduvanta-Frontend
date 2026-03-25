@@ -131,6 +131,11 @@
     "description": "Activity history for this organization",
     "empty": "No activity recorded yet",
     "action": "Action",
+    "actions": {
+      "created": "Created",
+      "updated": "Updated",
+      "removed": "Deleted"
+    },
     "resource": "Resource",
     "actor": "Actor",
     "date": "Date",

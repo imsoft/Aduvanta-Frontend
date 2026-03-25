@@ -44,13 +44,23 @@ async function fetchAuditLogs(
 }
 
 function ActionBadge({ action }: { action: string }) {
+  const t = useTranslations()
+
   const color = action.includes('created')
     ? 'default'
     : action.includes('removed') || action.includes('deleted')
       ? 'destructive'
       : 'secondary';
 
-  return <Badge variant={color as any}>{action}</Badge>;
+  const label = action.includes('created')
+    ? t('auditLogs.actions.created')
+    : action.includes('removed') || action.includes('deleted')
+      ? t('auditLogs.actions.removed')
+      : action.includes('updated')
+        ? t('auditLogs.actions.updated')
+        : action
+
+  return <Badge variant={color as any}>{label}</Badge>;
 }
 
 export default function AuditLogsPage() {

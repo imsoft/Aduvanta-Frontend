@@ -131,6 +131,11 @@
     "description": "Historial de actividad de esta organización",
     "empty": "Aún no hay actividad registrada",
     "action": "Acción",
+    "actions": {
+      "created": "Creado",
+      "updated": "Actualizado",
+      "removed": "Eliminado"
+    },
     "resource": "Recurso",
     "actor": "Actor",
     "date": "Fecha",
