@@ -31,14 +31,14 @@ export default function ClientsPage() {
 
   if (!activeOrgId) {
     return (
-      <div className="text-sm text-muted-foreground">
+      <div className="w-full text-sm text-muted-foreground">
         {t('clients.selectOrg')}
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">{t('clients.title')}</h1>
@@ -58,7 +58,7 @@ export default function ClientsPage() {
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="max-w-sm"
+          className="w-full max-w-md min-w-0"
         />
         <Select value={status} onValueChange={(v) => setStatus(v as typeof status)}>
           <SelectTrigger className="w-36">

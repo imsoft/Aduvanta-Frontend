@@ -66,12 +66,12 @@ export default function ClientDetailPage() {
   };
 
   if (isLoading) {
-    return <div className="text-sm text-muted-foreground">{t('common.loading')}</div>;
+    return <div className="w-full text-sm text-muted-foreground">{t('common.loading')}</div>;
   }
 
   if (!client) {
     return (
-      <div className="space-y-4">
+      <div className="w-full space-y-4">
         <p className="text-sm text-muted-foreground">{t('clients.notFound')}</p>
         <Button asChild variant="outline" size="sm">
           <Link href="/dashboard/clients">
@@ -84,7 +84,7 @@ export default function ClientDetailPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="w-full space-y-8">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
@@ -151,7 +151,7 @@ export default function ClientDetailPage() {
       <Separator />
 
       {/* General info */}
-      <section className="space-y-4">
+      <section className="w-full space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold">{t('clients.generalInformation')}</h2>
           {editing && (

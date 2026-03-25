@@ -1,7 +1,11 @@
-import { z } from 'zod';
+import { z } from 'zod'
+import type { ValidationT } from '@/features/operations/schemas/operation.schemas'
 
-export const createOperationCommentSchema = z.object({
-  body: z.string().min(1, 'Comment cannot be empty').max(10000),
-});
+export const buildCreateOperationCommentSchema = (t: ValidationT) =>
+  z.object({
+    body: z.string().min(1, t('commentNotEmpty')).max(10000),
+  })
 
-export type CreateOperationCommentFormData = z.infer<typeof createOperationCommentSchema>;
+export type CreateOperationCommentFormData = z.infer<
+  ReturnType<typeof buildCreateOperationCommentSchema>
+>

@@ -10,7 +10,7 @@ export default function UsagePage() {
   const { data: usage, isLoading } = useUsage();
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">{t('usage.title')}</h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -23,7 +23,7 @@ export default function UsagePage() {
       {isLoading ? (
         <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
       ) : usage ? (
-        <div className="space-y-4">
+        <div className="w-full space-y-4">
           {usage.planName && (
             <p className="text-sm text-muted-foreground">
               {t('usage.plan')}: <span className="font-medium text-foreground">{usage.planName}</span>

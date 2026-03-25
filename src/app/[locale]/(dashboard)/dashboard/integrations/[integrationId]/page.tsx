@@ -36,15 +36,15 @@ export default function IntegrationDetailPage() {
   const [editing, setEditing] = useState(false);
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground">{t('common.loading')}</p>;
+    return <p className="w-full text-sm text-muted-foreground">{t('common.loading')}</p>;
   }
 
   if (!integration) {
-    return <p className="text-sm text-destructive">{t('integrations.notFound')}</p>;
+    return <p className="w-full text-sm text-destructive">{t('integrations.notFound')}</p>;
   }
 
   return (
-    <div className="space-y-8">
+    <div className="w-full space-y-8">
       <div className="flex items-center gap-3">
         <Button
           variant="ghost"
@@ -72,7 +72,7 @@ export default function IntegrationDetailPage() {
       </div>
 
       {/* Integration info / edit */}
-      <section className="space-y-4">
+      <section className="w-full space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             {t('integrations.configuration')}
@@ -124,7 +124,7 @@ export default function IntegrationDetailPage() {
       </section>
 
       {/* Delivery logs */}
-      <section className="space-y-4">
+      <section className="w-full space-y-4">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
           {t('integrations.deliveryLogs')}
         </h2>

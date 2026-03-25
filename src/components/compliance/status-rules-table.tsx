@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Trash } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import {
@@ -36,6 +37,7 @@ export function StatusRulesTable({
   onDelete,
   isDeletePending,
 }: StatusRulesTableProps) {
+  const tCommon = useTranslations('common');
   if (rules.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
@@ -91,7 +93,7 @@ export function StatusRulesTable({
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogCancel>{tCommon('cancel')}</AlertDialogCancel>
                       <AlertDialogAction
                         onClick={() => onDelete(rule.id)}
                         disabled={isDeletePending}

@@ -78,12 +78,12 @@ export default function OperationDetailPage() {
   );
 
   if (isLoading) {
-    return <div className="text-sm text-muted-foreground">{t('common.loading')}</div>;
+    return <div className="w-full text-sm text-muted-foreground">{t('common.loading')}</div>;
   }
 
   if (!operation) {
     return (
-      <div className="space-y-4">
+      <div className="w-full space-y-4">
         <p className="text-sm text-muted-foreground">{t('operations.notFound')}</p>
         <Button asChild variant="outline" size="sm">
           <Link href="/dashboard/operations">
@@ -96,7 +96,7 @@ export default function OperationDetailPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-6">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
@@ -344,7 +344,7 @@ function EditOperationInline({
   });
 
   return (
-    <div className="space-y-4">
+    <div className="w-full space-y-4">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label={t('operations.reference')}>
           <input

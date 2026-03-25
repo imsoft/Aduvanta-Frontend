@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { PencilSimple, Trash } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import {
@@ -43,6 +44,7 @@ export function OperationAdvancesTable({
   isEditPending,
   isDeactivatePending,
 }: OperationAdvancesTableProps) {
+  const tCommon = useTranslations('common');
   const [editingAdvance, setEditingAdvance] = useState<OperationAdvance | null>(null);
 
   if (advances.length === 0) {
@@ -123,7 +125,7 @@ export function OperationAdvancesTable({
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogCancel>{tCommon('cancel')}</AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={() => onDeactivate(advance.id)}
                                 disabled={isDeactivatePending}

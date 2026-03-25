@@ -1,34 +1,37 @@
-'use client';
+'use client'
 
-import { useForm } from 'react-hook-form';
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
+import { useMemo } from 'react'
+import { useForm } from 'react-hook-form'
+import { useTranslations } from 'next-intl'
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@/components/ui/select'
 import {
-  createOperationSchema,
+  buildCreateOperationSchema,
   type CreateOperationFormData,
-} from '@/features/operations/schemas/operation.schemas';
-import type { Client } from '@/features/clients/types/client.types';
+} from '@/features/operations/schemas/operation.schemas'
+import type { Client } from '@/features/clients/types/client.types'
+
 interface AssignableMember {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
 interface OperationFormProps {
-  clients: Client[];
-  members: AssignableMember[];
-  onSubmit: (data: CreateOperationFormData) => void;
-  isPending: boolean;
-  submitLabel: string;
-  onCancel?: () => void;
+  clients: Client[]
+  members: AssignableMember[]
+  onSubmit: (data: CreateOperationFormData) => void
+  isPending: boolean
+  submitLabel: string
+  onCancel?: () => void
 }
 
 export function OperationForm({
@@ -39,6 +42,16 @@ export function OperationForm({
   submitLabel,
   onCancel,
 }: OperationFormProps) {
+  const t = useTranslations('operations')
+  const tForm = useTranslations('operations.form')
+  const tv = useTranslations('validation')
+  const common = useTranslations('common')
+
+  const schema = useMemo(
+    () => buildCreateOperationSchema((k) => tv(k)),
+    [tv],
+  )
+
   const {
     register,
     handleSubmit,
@@ -46,19 +59,21 @@ export function OperationForm({
     watch,
     formState: { errors },
   } = useForm<CreateOperationFormData>({
-    resolver: standardSchemaResolver(createOperationSchema),
+    resolver: standardSchemaResolver(schema),
     defaultValues: {
       type: 'IMPORT',
       priority: 'MEDIUM',
     },
-  });
+  })
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {/* Client */}
         <div className="space-y-1.5">
-          <Label>Client *</Label>
+          <Label>
+            {tForm('client')}
+            {tForm('requiredMark')}
+          </Label>
           <Select
             onValueChange={(v) => setValue('clientId', v)}
             value={watch('clientId')}
@@ -79,27 +94,33 @@ export function OperationForm({
           )}
         </div>
 
-        {/* Reference */}
         <div className="space-y-1.5">
-          <Label htmlFor="reference">Reference *</Label>
+          <Label htmlFor="reference">
+            {tForm('reference')}
+            {tForm('requiredMark')}
+          </Label>
           <Input id="reference" {...register('reference')} />
           {errors.reference && (
             <p className="text-xs text-destructive">{errors.reference.message}</p>
           )}
         </div>
 
-        {/* Title */}
         <div className="space-y-1.5 sm:col-span-2">
-          <Label htmlFor="title">Title *</Label>
+          <Label htmlFor="title">
+            {tForm('title')}
+            {tForm('requiredMark')}
+          </Label>
           <Input id="title" {...register('title')} />
           {errors.title && (
             <p className="text-xs text-destructive">{errors.title.message}</p>
           )}
         </div>
 
-        {/* Type */}
         <div className="space-y-1.5">
-          <Label>Type *</Label>
+          <Label>
+            {tForm('type')}
+            {tForm('requiredMark')}
+          </Label>
           <Select
             onValueChange={(v) =>
               setValue('type', v as CreateOperationFormData['type'])
@@ -110,16 +131,18 @@ export function OperationForm({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="IMPORT">Import</SelectItem>
-              <SelectItem value="EXPORT">Export</SelectItem>
-              <SelectItem value="INTERNAL">Internal</SelectItem>
+              <SelectItem value="IMPORT">{t('types.IMPORT')}</SelectItem>
+              <SelectItem value="EXPORT">{t('types.EXPORT')}</SelectItem>
+              <SelectItem value="INTERNAL">{t('types.INTERNAL')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
-        {/* Priority */}
         <div className="space-y-1.5">
-          <Label>Priority *</Label>
+          <Label>
+            {tForm('priority')}
+            {tForm('requiredMark')}
+          </Label>
           <Select
             onValueChange={(v) =>
               setValue('priority', v as CreateOperationFormData['priority'])
@@ -130,17 +153,16 @@ export function OperationForm({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="LOW">Low</SelectItem>
-              <SelectItem value="MEDIUM">Medium</SelectItem>
-              <SelectItem value="HIGH">High</SelectItem>
-              <SelectItem value="URGENT">Urgent</SelectItem>
+              <SelectItem value="LOW">{t('low')}</SelectItem>
+              <SelectItem value="MEDIUM">{t('medium')}</SelectItem>
+              <SelectItem value="HIGH">{t('high')}</SelectItem>
+              <SelectItem value="URGENT">{t('urgent')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
-        {/* Assigned user */}
         <div className="space-y-1.5">
-          <Label>Assign to</Label>
+          <Label>{tForm('assignTo')}</Label>
           <Select
             onValueChange={(v) => setValue('assignedUserId', v === '_none' ? '' : v)}
             value={watch('assignedUserId') || '_none'}
@@ -149,7 +171,7 @@ export function OperationForm({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="_none">Unassigned</SelectItem>
+              <SelectItem value="_none">{common('unassigned')}</SelectItem>
               {members.map((m) => (
                 <SelectItem key={m.id} value={m.id}>
                   {m.name}
@@ -159,16 +181,14 @@ export function OperationForm({
           </Select>
         </div>
 
-        {/* Due date */}
         <div className="space-y-1.5">
-          <Label htmlFor="dueAt">Due date</Label>
+          <Label htmlFor="dueAt">{tForm('dueDate')}</Label>
           <Input id="dueAt" type="date" {...register('dueAt')} />
         </div>
       </div>
 
-      {/* Description */}
       <div className="space-y-1.5">
-        <Label htmlFor="description">Description</Label>
+        <Label htmlFor="description">{tForm('description')}</Label>
         <textarea
           id="description"
           rows={3}
@@ -177,7 +197,7 @@ export function OperationForm({
         />
       </div>
 
-      <div className="flex gap-3 justify-end">
+      <div className="flex justify-end gap-3">
         {onCancel && (
           <Button
             type="button"
@@ -185,13 +205,13 @@ export function OperationForm({
             onClick={onCancel}
             disabled={isPending}
           >
-            Cancel
+            {common('cancel')}
           </Button>
         )}
         <Button type="submit" disabled={isPending}>
-          {isPending ? 'Saving…' : submitLabel}
+          {isPending ? common('saving') : submitLabel}
         </Button>
       </div>
     </form>
-  );
+  )
 }

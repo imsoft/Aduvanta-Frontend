@@ -14,7 +14,7 @@ export default function AiPage() {
   const search = useAiSearch();
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">{t('ai.title')}</h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -24,7 +24,7 @@ export default function AiPage() {
 
       <Separator />
 
-      <div className="max-w-2xl space-y-6">
+      <div className="space-y-6">
         <div>
           <h2 className="text-sm font-semibold mb-4">{t('ai.searchTitle')}</h2>
           <AiSearchForm

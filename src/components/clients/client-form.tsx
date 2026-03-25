@@ -1,22 +1,24 @@
-'use client';
+'use client'
 
-import { useForm } from 'react-hook-form';
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
+import { useMemo } from 'react'
+import { useForm } from 'react-hook-form'
+import { useTranslations } from 'next-intl'
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
 import {
-  createClientSchema,
+  buildCreateClientSchema,
   type CreateClientFormData,
-} from '@/features/clients/schemas/client.schemas';
-import type { Client } from '@/features/clients/types/client.types';
+} from '@/features/clients/schemas/client.schemas'
+import type { Client } from '@/features/clients/types/client.types'
 
 interface ClientFormProps {
-  defaultValues?: Partial<Client>;
-  onSubmit: (data: CreateClientFormData) => void;
-  isPending: boolean;
-  submitLabel: string;
-  onCancel?: () => void;
+  defaultValues?: Partial<Client>
+  onSubmit: (data: CreateClientFormData) => void
+  isPending: boolean
+  submitLabel: string
+  onCancel?: () => void
 }
 
 export function ClientForm({
@@ -26,12 +28,21 @@ export function ClientForm({
   submitLabel,
   onCancel,
 }: ClientFormProps) {
+  const t = useTranslations('clients')
+  const tv = useTranslations('validation')
+  const common = useTranslations('common')
+
+  const schema = useMemo(
+    () => buildCreateClientSchema((k) => tv(k)),
+    [tv],
+  )
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<CreateClientFormData>({
-    resolver: standardSchemaResolver(createClientSchema),
+    resolver: standardSchemaResolver(schema),
     defaultValues: {
       name: defaultValues?.name ?? '',
       legalName: defaultValues?.legalName ?? '',
@@ -40,13 +51,18 @@ export function ClientForm({
       phone: defaultValues?.phone ?? '',
       notes: defaultValues?.notes ?? '',
     },
-  });
+  })
+
+  const required = t('requiredMark')
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
-          <Label htmlFor="name">Name *</Label>
+          <Label htmlFor="name">
+            {t('name')}
+            {required}
+          </Label>
           <Input id="name" {...register('name')} />
           {errors.name && (
             <p className="text-xs text-destructive">{errors.name.message}</p>
@@ -54,17 +70,17 @@ export function ClientForm({
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="legalName">Legal name</Label>
+          <Label htmlFor="legalName">{t('legalName')}</Label>
           <Input id="legalName" {...register('legalName')} />
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="taxId">Tax ID</Label>
+          <Label htmlFor="taxId">{t('taxId')}</Label>
           <Input id="taxId" {...register('taxId')} />
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">{t('email')}</Label>
           <Input id="email" type="email" {...register('email')} />
           {errors.email && (
             <p className="text-xs text-destructive">{errors.email.message}</p>
@@ -72,13 +88,13 @@ export function ClientForm({
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="phone">Phone</Label>
+          <Label htmlFor="phone">{t('phone')}</Label>
           <Input id="phone" {...register('phone')} />
         </div>
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="notes">Notes</Label>
+        <Label htmlFor="notes">{t('notes')}</Label>
         <textarea
           id="notes"
           rows={3}
@@ -87,16 +103,16 @@ export function ClientForm({
         />
       </div>
 
-      <div className="flex gap-3 justify-end">
+      <div className="flex justify-end gap-3">
         {onCancel && (
           <Button type="button" variant="outline" onClick={onCancel} disabled={isPending}>
-            Cancel
+            {common('cancel')}
           </Button>
         )}
         <Button type="submit" disabled={isPending}>
-          {isPending ? 'Saving…' : submitLabel}
+          {isPending ? common('saving') : submitLabel}
         </Button>
       </div>
     </form>
-  );
+  )
 }

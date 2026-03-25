@@ -134,14 +134,14 @@ export default function UsersPage() {
 
   if (!activeOrgId) {
     return (
-      <div className="text-sm text-muted-foreground">
+      <div className="w-full text-sm text-muted-foreground">
         {t('members.selectOrg')}
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">{t('members.title')}</h1>

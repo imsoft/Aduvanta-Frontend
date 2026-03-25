@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { UserPlus, PencilSimple, Trash } from '@phosphor-icons/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -42,6 +43,7 @@ export function ClientContactsSection({
   clientId,
   canManage,
 }: ClientContactsSectionProps) {
+  const tCommon = useTranslations('common');
   const { data: contacts = [], isLoading } = useClientContacts(clientId);
   const createContact = useCreateClientContact(clientId);
   const updateContact = useUpdateClientContact(clientId);
@@ -141,7 +143,7 @@ export function ClientContactsSection({
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogCancel>{tCommon('cancel')}</AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={() => removeContact.mutate(contact.id)}
                                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"

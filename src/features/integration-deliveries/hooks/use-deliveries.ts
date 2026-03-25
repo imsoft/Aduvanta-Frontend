@@ -1,34 +1,38 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { useOrgStore } from '@/store/org.store';
-import { deliveriesApi } from '../api/deliveries.api';
+'use client'
+
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
+import { toast } from 'sonner'
+import { useOrgStore } from '@/store/org.store'
+import { deliveriesApi } from '../api/deliveries.api'
 
 export function useIntegrationDeliveries(
   integrationId: string,
   params?: { status?: string },
 ) {
-  const { activeOrgId } = useOrgStore();
+  const { activeOrgId } = useOrgStore()
 
   return useQuery({
     queryKey: ['deliveries', activeOrgId, integrationId, params],
     queryFn: () => deliveriesApi.listForIntegration(activeOrgId!, integrationId, params),
     enabled: !!activeOrgId && !!integrationId,
-  });
+  })
 }
 
 export function useRetryDelivery(integrationId: string) {
-  const { activeOrgId } = useOrgStore();
-  const queryClient = useQueryClient();
+  const { activeOrgId } = useOrgStore()
+  const queryClient = useQueryClient()
+  const t = useTranslations('toast')
 
   return useMutation({
     mutationFn: (deliveryId: string) =>
       deliveriesApi.retry(activeOrgId!, deliveryId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['deliveries', activeOrgId, integrationId] });
-      toast.success('Delivery retried');
+      queryClient.invalidateQueries({ queryKey: ['deliveries', activeOrgId, integrationId] })
+      toast.success(t('deliveryRetried'))
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message ?? 'Failed to retry delivery');
+      toast.error(err.response?.data?.message ?? t('deliveryRetryFailed'))
     },
-  });
+  })
 }

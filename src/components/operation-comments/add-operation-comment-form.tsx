@@ -1,35 +1,45 @@
-'use client';
+'use client'
 
-import { useForm } from 'react-hook-form';
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
-import { Button } from '@/components/ui/button';
+import { useMemo } from 'react'
+import { useForm } from 'react-hook-form'
+import { useTranslations } from 'next-intl'
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
+import { Button } from '@/components/ui/button'
 import {
-  createOperationCommentSchema,
+  buildCreateOperationCommentSchema,
   type CreateOperationCommentFormData,
-} from '@/features/operation-comments/schemas/operation-comment.schemas';
+} from '@/features/operation-comments/schemas/operation-comment.schemas'
 
 interface AddOperationCommentFormProps {
-  onSubmit: (data: CreateOperationCommentFormData) => void;
-  isPending: boolean;
+  onSubmit: (data: CreateOperationCommentFormData) => void
+  isPending: boolean
 }
 
 export function AddOperationCommentForm({
   onSubmit,
   isPending,
 }: AddOperationCommentFormProps) {
+  const t = useTranslations('clients')
+  const tv = useTranslations('validation')
+
+  const schema = useMemo(
+    () => buildCreateOperationCommentSchema((k) => tv(k)),
+    [tv],
+  )
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<CreateOperationCommentFormData>({
-    resolver: standardSchemaResolver(createOperationCommentSchema),
-  });
+    resolver: standardSchemaResolver(schema),
+  })
 
   const submit = (data: CreateOperationCommentFormData) => {
-    onSubmit(data);
-    reset();
-  };
+    onSubmit(data)
+    reset()
+  }
 
   return (
     <form onSubmit={handleSubmit(submit)} className="space-y-2">
@@ -43,9 +53,9 @@ export function AddOperationCommentForm({
       )}
       <div className="flex justify-end">
         <Button type="submit" size="sm" disabled={isPending}>
-          {isPending ? 'Posting…' : 'Post comment'}
+          {isPending ? t('posting') : t('postComment')}
         </Button>
       </div>
     </form>
-  );
+  )
 }

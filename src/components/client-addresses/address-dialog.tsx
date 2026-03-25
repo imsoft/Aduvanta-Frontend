@@ -1,8 +1,9 @@
-'use client';
+'use client'
 
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
+import { useEffect, useMemo } from 'react'
+import { useForm } from 'react-hook-form'
+import { useTranslations } from 'next-intl'
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,23 +13,23 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
-  clientAddressSchema,
+  buildClientAddressSchema,
   type ClientAddressFormData,
-} from '@/features/client-addresses/schemas/client-address.schemas';
-import type { ClientAddress } from '@/features/client-addresses/types/client-address.types';
+} from '@/features/client-addresses/schemas/client-address.schemas'
+import type { ClientAddress } from '@/features/client-addresses/types/client-address.types'
 
 interface AddressDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  defaultValues?: ClientAddress;
-  onSubmit: (data: ClientAddressFormData) => void;
-  isPending: boolean;
-  title: string;
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  defaultValues?: ClientAddress
+  onSubmit: (data: ClientAddressFormData) => void
+  isPending: boolean
+  title: string
 }
 
 export function AddressDialog({
@@ -39,14 +40,25 @@ export function AddressDialog({
   isPending,
   title,
 }: AddressDialogProps) {
+  const t = useTranslations('clients')
+  const tv = useTranslations('validation')
+  const common = useTranslations('common')
+
+  const schema = useMemo(
+    () => buildClientAddressSchema((k) => tv(k)),
+    [tv],
+  )
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<ClientAddressFormData>({
-    resolver: standardSchemaResolver(clientAddressSchema),
-  });
+    resolver: standardSchemaResolver(schema),
+  })
+
+  const rm = t('requiredMark')
 
   useEffect(() => {
     if (open) {
@@ -60,31 +72,35 @@ export function AddressDialog({
         street2: defaultValues?.street2 ?? '',
         reference: defaultValues?.reference ?? '',
         isPrimary: defaultValues?.isPrimary ?? false,
-      });
+      })
     }
-  }, [open, defaultValues, reset]);
+  }, [open, defaultValues, reset])
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="max-w-lg">
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>
-            Fill in the address information below.
-          </AlertDialogDescription>
+          <AlertDialogDescription>{t('addressDialogHint')}</AlertDialogDescription>
         </AlertDialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 py-2">
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label htmlFor="addr-label">Label *</Label>
+              <Label htmlFor="addr-label">
+                {t('labelField')}
+                {rm}
+              </Label>
               <Input id="addr-label" {...register('label')} />
               {errors.label && (
                 <p className="text-xs text-destructive">{errors.label.message}</p>
               )}
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="addr-country">Country *</Label>
+              <Label htmlFor="addr-country">
+                {t('country')}
+                {rm}
+              </Label>
               <Input id="addr-country" {...register('country')} />
               {errors.country && (
                 <p className="text-xs text-destructive">{errors.country.message}</p>
@@ -93,7 +109,10 @@ export function AddressDialog({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="addr-street1">Street *</Label>
+            <Label htmlFor="addr-street1">
+              {t('street')}
+              {rm}
+            </Label>
             <Input id="addr-street1" {...register('street1')} />
             {errors.street1 && (
               <p className="text-xs text-destructive">{errors.street1.message}</p>
@@ -101,27 +120,27 @@ export function AddressDialog({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="addr-street2">Street 2</Label>
+            <Label htmlFor="addr-street2">{t('street2')}</Label>
             <Input id="addr-street2" {...register('street2')} />
           </div>
 
           <div className="grid grid-cols-3 gap-3">
             <div className="space-y-1.5">
-              <Label htmlFor="addr-city">City</Label>
+              <Label htmlFor="addr-city">{t('city')}</Label>
               <Input id="addr-city" {...register('city')} />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="addr-state">State</Label>
+              <Label htmlFor="addr-state">{t('state')}</Label>
               <Input id="addr-state" {...register('state')} />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="addr-postal">Postal code</Label>
+              <Label htmlFor="addr-postal">{t('postalCode')}</Label>
               <Input id="addr-postal" {...register('postalCode')} />
             </div>
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="addr-reference">Reference</Label>
+            <Label htmlFor="addr-reference">{t('addressReference')}</Label>
             <Input id="addr-reference" {...register('reference')} />
           </div>
 
@@ -133,24 +152,24 @@ export function AddressDialog({
               {...register('isPrimary')}
             />
             <Label htmlFor="addr-primary" className="font-normal">
-              Set as primary address
+              {t('primaryAddress')}
             </Label>
           </div>
 
           <AlertDialogFooter className="pt-2">
             <AlertDialogCancel asChild>
               <Button type="button" variant="outline" disabled={isPending}>
-                Cancel
+                {common('cancel')}
               </Button>
             </AlertDialogCancel>
             <AlertDialogAction asChild>
               <Button type="submit" disabled={isPending}>
-                {isPending ? 'Saving…' : 'Save'}
+                {isPending ? common('saving') : common('save')}
               </Button>
             </AlertDialogAction>
           </AlertDialogFooter>
         </form>
       </AlertDialogContent>
     </AlertDialog>
-  );
+  )
 }

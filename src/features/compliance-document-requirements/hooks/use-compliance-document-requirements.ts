@@ -1,26 +1,30 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { useOrgStore } from '@/store/org.store';
-import { complianceDocumentRequirementsApi } from '../api/compliance-document-requirements.api';
+'use client'
+
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
+import { toast } from 'sonner'
+import { useOrgStore } from '@/store/org.store'
+import { complianceDocumentRequirementsApi } from '../api/compliance-document-requirements.api'
 import type {
   CreateDocumentRequirementFormData,
   UpdateDocumentRequirementFormData,
-} from '../schemas/document-requirement.schemas';
+} from '../schemas/document-requirement.schemas'
 
 export function useDocumentRequirements(ruleSetId: string) {
-  const { activeOrgId } = useOrgStore();
+  const { activeOrgId } = useOrgStore()
 
   return useQuery({
     queryKey: ['document-requirements', activeOrgId, ruleSetId],
     queryFn: () =>
       complianceDocumentRequirementsApi.listForRuleSet(activeOrgId!, ruleSetId),
     enabled: !!activeOrgId && !!ruleSetId,
-  });
+  })
 }
 
 export function useCreateDocumentRequirement(ruleSetId: string) {
-  const { activeOrgId } = useOrgStore();
-  const queryClient = useQueryClient();
+  const { activeOrgId } = useOrgStore()
+  const queryClient = useQueryClient()
+  const t = useTranslations('toast')
 
   return useMutation({
     mutationFn: (dto: CreateDocumentRequirementFormData) =>
@@ -28,42 +32,44 @@ export function useCreateDocumentRequirement(ruleSetId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['document-requirements', activeOrgId, ruleSetId],
-      });
-      toast.success('Document requirement added');
+      })
+      toast.success(t('docRequirementAdded'))
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message ?? 'Failed to add document requirement');
+      toast.error(err.response?.data?.message ?? t('docRequirementAddFailed'))
     },
-  });
+  })
 }
 
 export function useUpdateDocumentRequirement(ruleSetId: string) {
-  const { activeOrgId } = useOrgStore();
-  const queryClient = useQueryClient();
+  const { activeOrgId } = useOrgStore()
+  const queryClient = useQueryClient()
+  const t = useTranslations('toast')
 
   return useMutation({
     mutationFn: ({
       requirementId,
       dto,
     }: {
-      requirementId: string;
-      dto: UpdateDocumentRequirementFormData;
+      requirementId: string
+      dto: UpdateDocumentRequirementFormData
     }) => complianceDocumentRequirementsApi.update(activeOrgId!, requirementId, dto),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['document-requirements', activeOrgId, ruleSetId],
-      });
-      toast.success('Requirement updated');
+      })
+      toast.success(t('requirementUpdated'))
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message ?? 'Failed to update requirement');
+      toast.error(err.response?.data?.message ?? t('requirementUpdateFailed'))
     },
-  });
+  })
 }
 
 export function useDeleteDocumentRequirement(ruleSetId: string) {
-  const { activeOrgId } = useOrgStore();
-  const queryClient = useQueryClient();
+  const { activeOrgId } = useOrgStore()
+  const queryClient = useQueryClient()
+  const t = useTranslations('toast')
 
   return useMutation({
     mutationFn: (requirementId: string) =>
@@ -71,11 +77,11 @@ export function useDeleteDocumentRequirement(ruleSetId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['document-requirements', activeOrgId, ruleSetId],
-      });
-      toast.success('Document requirement removed');
+      })
+      toast.success(t('docRequirementRemoved'))
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message ?? 'Failed to remove document requirement');
+      toast.error(err.response?.data?.message ?? t('docRequirementRemoveFailed'))
     },
-  });
+  })
 }

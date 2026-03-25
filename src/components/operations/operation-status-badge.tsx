@@ -1,22 +1,35 @@
-import { Badge } from '@/components/ui/badge';
-import type { OperationStatus } from '@/features/operations/types/operation.types';
+'use client'
 
-const STATUS_CONFIG: Record<
+import { useTranslations } from 'next-intl'
+import { Badge } from '@/components/ui/badge'
+import type { OperationStatus } from '@/features/operations/types/operation.types'
+
+const STATUS_VARIANT: Record<
   OperationStatus,
-  { label: string; variant: 'default' | 'secondary' | 'outline' | 'destructive' }
+  'default' | 'secondary' | 'outline' | 'destructive'
 > = {
-  OPEN: { label: 'Open', variant: 'secondary' },
-  IN_PROGRESS: { label: 'In Progress', variant: 'default' },
-  ON_HOLD: { label: 'On Hold', variant: 'outline' },
-  COMPLETED: { label: 'Completed', variant: 'secondary' },
-  CANCELLED: { label: 'Cancelled', variant: 'destructive' },
-};
+  OPEN: 'secondary',
+  IN_PROGRESS: 'default',
+  ON_HOLD: 'outline',
+  COMPLETED: 'secondary',
+  CANCELLED: 'destructive',
+}
 
 interface OperationStatusBadgeProps {
-  status: OperationStatus;
+  status: OperationStatus
 }
 
 export function OperationStatusBadge({ status }: OperationStatusBadgeProps) {
-  const config = STATUS_CONFIG[status];
-  return <Badge variant={config.variant}>{config.label}</Badge>;
+  const t = useTranslations('operations')
+  const labelMap: Record<OperationStatus, string> = {
+    OPEN: t('open'),
+    IN_PROGRESS: t('inProgress'),
+    ON_HOLD: t('onHold'),
+    COMPLETED: t('completed'),
+    CANCELLED: t('cancelled'),
+  }
+
+  return (
+    <Badge variant={STATUS_VARIANT[status]}>{labelMap[status]}</Badge>
+  )
 }

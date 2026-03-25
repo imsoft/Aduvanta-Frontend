@@ -52,7 +52,7 @@ export default function NewOperationPage() {
   const members = membersRaw.map(({ user }) => ({ id: user.id, name: user.name }));
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="w-full space-y-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">{t('operations.newTitle')}</h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -66,7 +66,7 @@ export default function NewOperationPage() {
         onSubmit={(data) => {
           createOperation.mutate(data, {
             onSuccess: (operation) => {
-              toast.success(`Operation ${operation.reference} created`);
+              toast.success(t('operations.createdToast', { reference: operation.reference }));
               router.push(`/dashboard/operations/${operation.id}`);
             },
           });

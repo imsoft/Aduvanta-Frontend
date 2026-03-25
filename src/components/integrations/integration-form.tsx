@@ -28,7 +28,9 @@ export function IntegrationForm({
   submitLabel,
   isEdit = false,
 }: IntegrationFormProps) {
-  const t = useTranslations('auth')
+  const t = useTranslations('integrations')
+  const tAuth = useTranslations('auth')
+  const common = useTranslations('common')
   const existingEventTypes = initialValues?.eventTypes
     ? initialValues.eventTypes.split(',').map((e) => e.trim())
     : [];
@@ -82,14 +84,14 @@ export function IntegrationForm({
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <Field label="Name *">
+        <Field label={t('form.name')}>
           <input
             className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </Field>
-        <Field label={isEdit ? 'Target URL (leave blank to keep)' : 'Target URL *'}>
+        <Field label={isEdit ? t('form.targetUrlEdit') : t('form.targetUrl')}>
           <input
             type="url"
             className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
@@ -97,19 +99,19 @@ export function IntegrationForm({
             onChange={(e) => setTargetUrl(e.target.value)}
           />
         </Field>
-        <Field label={isEdit ? 'Secret (leave blank to keep)' : 'Secret (optional)'}>
+        <Field label={isEdit ? t('form.secretKeep') : t('form.secretOptional')}>
           <PasswordInput
             className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             value={secret}
             onChange={(e) => setSecret(e.target.value)}
             autoComplete="off"
-            ariaLabelShow={t('showPassword')}
-            ariaLabelHide={t('hidePassword')}
+            ariaLabelShow={tAuth('showPassword')}
+            ariaLabelHide={tAuth('hidePassword')}
           />
         </Field>
       </div>
 
-      <Field label="Event types *">
+      <Field label={t('form.eventTypes')}>
         <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
           {WEBHOOK_EVENT_TYPES.map((event) => (
             <label key={event} className="flex items-center gap-2 cursor-pointer">
@@ -127,10 +129,10 @@ export function IntegrationForm({
 
       <div className="flex gap-3 justify-end">
         <Button variant="outline" onClick={onCancel} disabled={isPending}>
-          Cancel
+          {common('cancel')}
         </Button>
         <Button onClick={handleSubmit} disabled={!isValid || isPending}>
-          {isPending ? 'Saving…' : submitLabel}
+          {isPending ? common('saving') : submitLabel}
         </Button>
       </div>
     </div>

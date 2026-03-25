@@ -1,25 +1,29 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { useOrgStore } from '@/store/org.store';
-import { complianceStatusRulesApi } from '../api/compliance-status-rules.api';
+'use client'
+
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
+import { toast } from 'sonner'
+import { useOrgStore } from '@/store/org.store'
+import { complianceStatusRulesApi } from '../api/compliance-status-rules.api'
 import type {
   CreateStatusRuleFormData,
   UpdateStatusRuleFormData,
-} from '../schemas/status-rule.schemas';
+} from '../schemas/status-rule.schemas'
 
 export function useStatusRules(ruleSetId: string) {
-  const { activeOrgId } = useOrgStore();
+  const { activeOrgId } = useOrgStore()
 
   return useQuery({
     queryKey: ['status-rules', activeOrgId, ruleSetId],
     queryFn: () => complianceStatusRulesApi.listForRuleSet(activeOrgId!, ruleSetId),
     enabled: !!activeOrgId && !!ruleSetId,
-  });
+  })
 }
 
 export function useCreateStatusRule(ruleSetId: string) {
-  const { activeOrgId } = useOrgStore();
-  const queryClient = useQueryClient();
+  const { activeOrgId } = useOrgStore()
+  const queryClient = useQueryClient()
+  const t = useTranslations('toast')
 
   return useMutation({
     mutationFn: (dto: CreateStatusRuleFormData) =>
@@ -27,42 +31,44 @@ export function useCreateStatusRule(ruleSetId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['status-rules', activeOrgId, ruleSetId],
-      });
-      toast.success('Status rule added');
+      })
+      toast.success(t('statusRuleAdded'))
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message ?? 'Failed to add status rule');
+      toast.error(err.response?.data?.message ?? t('statusRuleAddFailed'))
     },
-  });
+  })
 }
 
 export function useUpdateStatusRule(ruleSetId: string) {
-  const { activeOrgId } = useOrgStore();
-  const queryClient = useQueryClient();
+  const { activeOrgId } = useOrgStore()
+  const queryClient = useQueryClient()
+  const t = useTranslations('toast')
 
   return useMutation({
     mutationFn: ({
       statusRuleId,
       dto,
     }: {
-      statusRuleId: string;
-      dto: UpdateStatusRuleFormData;
+      statusRuleId: string
+      dto: UpdateStatusRuleFormData
     }) => complianceStatusRulesApi.update(activeOrgId!, statusRuleId, dto),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['status-rules', activeOrgId, ruleSetId],
-      });
-      toast.success('Status rule updated');
+      })
+      toast.success(t('statusRuleUpdated'))
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message ?? 'Failed to update status rule');
+      toast.error(err.response?.data?.message ?? t('statusRuleUpdateFailed'))
     },
-  });
+  })
 }
 
 export function useDeleteStatusRule(ruleSetId: string) {
-  const { activeOrgId } = useOrgStore();
-  const queryClient = useQueryClient();
+  const { activeOrgId } = useOrgStore()
+  const queryClient = useQueryClient()
+  const t = useTranslations('toast')
 
   return useMutation({
     mutationFn: (statusRuleId: string) =>
@@ -70,11 +76,11 @@ export function useDeleteStatusRule(ruleSetId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['status-rules', activeOrgId, ruleSetId],
-      });
-      toast.success('Status rule removed');
+      })
+      toast.success(t('statusRuleRemoved'))
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message ?? 'Failed to remove status rule');
+      toast.error(err.response?.data?.message ?? t('statusRuleRemoveFailed'))
     },
-  });
+  })
 }

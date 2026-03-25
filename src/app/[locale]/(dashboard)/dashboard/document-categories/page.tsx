@@ -55,7 +55,7 @@ export default function DocumentCategoriesPage() {
   const [editTarget, setEditTarget] = useState<DocumentCategory | null>(null);
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">{t('docCategories.title')}</h1>
@@ -199,7 +199,7 @@ function CreateCategoryDialog({
         <DialogHeader>
           <DialogTitle>{t('docCategories.new')}</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
+        <div className="w-full space-y-4">
           <Field label={t('docCategories.codeRequired')}>
             <input
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm font-mono shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring uppercase"
@@ -269,7 +269,7 @@ function EditCategoryDialog({
         <DialogHeader>
           <DialogTitle>{t('docCategories.editTitle')}</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
+        <div className="w-full space-y-4">
           <Field label={t('docCategories.code')}>
             <input
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm font-mono shadow-xs text-muted-foreground"

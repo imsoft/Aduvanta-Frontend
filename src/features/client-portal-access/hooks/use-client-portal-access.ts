@@ -1,21 +1,25 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { useOrgStore } from '@/store/org.store';
-import { clientPortalAccessApi } from '../api/client-portal-access.api';
+'use client'
+
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
+import { toast } from 'sonner'
+import { useOrgStore } from '@/store/org.store'
+import { clientPortalAccessApi } from '../api/client-portal-access.api'
 
 export function useClientPortalAccess(clientId: string) {
-  const { activeOrgId } = useOrgStore();
+  const { activeOrgId } = useOrgStore()
 
   return useQuery({
     queryKey: ['client-portal-access', activeOrgId, clientId],
     queryFn: () => clientPortalAccessApi.listForClient(activeOrgId!, clientId),
     enabled: !!activeOrgId && !!clientId,
-  });
+  })
 }
 
 export function useGrantPortalAccess(clientId: string) {
-  const { activeOrgId } = useOrgStore();
-  const queryClient = useQueryClient();
+  const { activeOrgId } = useOrgStore()
+  const queryClient = useQueryClient()
+  const t = useTranslations('toast')
 
   return useMutation({
     mutationFn: (dto: { clientId: string; userId: string }) =>
@@ -23,29 +27,30 @@ export function useGrantPortalAccess(clientId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['client-portal-access', activeOrgId, clientId],
-      });
-      toast.success('Portal access granted');
+      })
+      toast.success(t('portalAccessGranted'))
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message ?? 'Failed to grant portal access');
+      toast.error(err.response?.data?.message ?? t('portalAccessGrantFailed'))
     },
-  });
+  })
 }
 
 export function useRevokePortalAccess(clientId: string) {
-  const { activeOrgId } = useOrgStore();
-  const queryClient = useQueryClient();
+  const { activeOrgId } = useOrgStore()
+  const queryClient = useQueryClient()
+  const t = useTranslations('toast')
 
   return useMutation({
     mutationFn: (accessId: string) => clientPortalAccessApi.revoke(activeOrgId!, accessId),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['client-portal-access', activeOrgId, clientId],
-      });
-      toast.success('Portal access revoked');
+      })
+      toast.success(t('portalAccessRevoked'))
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message ?? 'Failed to revoke portal access');
+      toast.error(err.response?.data?.message ?? t('portalAccessRevokeFailed'))
     },
-  });
+  })
 }

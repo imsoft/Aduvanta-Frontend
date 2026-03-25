@@ -43,14 +43,14 @@ export default function OperationsPage() {
 
   if (!activeOrgId) {
     return (
-      <div className="text-sm text-muted-foreground">
+      <div className="w-full text-sm text-muted-foreground">
         {t('operations.selectOrg')}
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">{t('operations.title')}</h1>
@@ -70,7 +70,7 @@ export default function OperationsPage() {
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="max-w-xs"
+          className="w-full min-w-0 max-w-xs sm:max-w-sm"
         />
         <Select value={status} onValueChange={setStatus}>
           <SelectTrigger className="w-40">

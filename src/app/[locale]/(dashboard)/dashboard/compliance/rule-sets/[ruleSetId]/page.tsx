@@ -51,11 +51,11 @@ export default function RuleSetDetailPage() {
   const [addStatusOpen, setAddStatusOpen] = useState(false);
 
   if (isLoadingRuleSet) {
-    return <p className="text-sm text-muted-foreground">{t('common.loading')}</p>;
+    return <p className="w-full text-sm text-muted-foreground">{t('common.loading')}</p>;
   }
 
   if (!ruleSet) {
-    return <p className="text-sm text-destructive">{t('compliance.notFound')}</p>;
+    return <p className="w-full text-sm text-destructive">{t('compliance.notFound')}</p>;
   }
 
   const existingCategoryIds = requirements.map((r) => r.documentCategoryId);
@@ -65,7 +65,7 @@ export default function RuleSetDetailPage() {
   }));
 
   return (
-    <div className="space-y-8">
+    <div className="w-full space-y-8">
       <div className="flex items-center gap-3">
         <Button
           variant="ghost"
@@ -83,7 +83,7 @@ export default function RuleSetDetailPage() {
 
       {/* Edit form */}
       {canManage && (
-        <section className="space-y-4">
+        <section className="w-full space-y-4">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             {t('compliance.settingsSection')}
           </h2>
@@ -98,7 +98,7 @@ export default function RuleSetDetailPage() {
       )}
 
       {/* Document requirements */}
-      <section className="space-y-4">
+      <section className="w-full space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             {t('compliance.docRequirements')}
@@ -124,7 +124,7 @@ export default function RuleSetDetailPage() {
       </section>
 
       {/* Status transition rules */}
-      <section className="space-y-4">
+      <section className="w-full space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             {t('compliance.statusRules')}

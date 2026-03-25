@@ -50,7 +50,7 @@ export default function NewOrganizationPage() {
 
       await queryClient.invalidateQueries({ queryKey: ['organizations'] });
       setActiveOrg(response.data.id);
-      toast.success(`${response.data.name} created`);
+      toast.success(t('organizations.createdToast', { name: response.data.name }));
       router.push('/dashboard');
     } catch {
       toast.error(t('organizations.createFailed'));
@@ -60,8 +60,8 @@ export default function NewOrganizationPage() {
   };
 
   return (
-    <div className="flex items-start justify-center pt-12">
-      <Card className="w-full max-w-md">
+    <div className="flex w-full items-start justify-center pt-12">
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>{t('organizations.newTitle')}</CardTitle>
           <CardDescription>
@@ -70,7 +70,7 @@ export default function NewOrganizationPage() {
         </CardHeader>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <CardContent className="space-y-4">
+          <CardContent className="w-full space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">{t('organizations.nameLabel')}</Label>
               <Input

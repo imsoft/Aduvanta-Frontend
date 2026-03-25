@@ -1,44 +1,46 @@
-'use client';
+'use client'
 
-import { useForm } from 'react-hook-form';
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
+import { useEffect, useMemo } from 'react'
+import { useForm } from 'react-hook-form'
+import { useTranslations } from 'next-intl'
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@/components/ui/select'
 import {
   changeStatusSchema,
   type ChangeStatusFormData,
-} from '@/features/operations/schemas/operation.schemas';
-import type { OperationStatus } from '@/features/operations/types/operation.types';
+} from '@/features/operations/schemas/operation.schemas'
+import type { OperationStatus } from '@/features/operations/types/operation.types'
 
 interface ChangeOperationStatusDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  currentStatus: OperationStatus;
-  onSubmit: (data: ChangeStatusFormData) => void;
-  isPending: boolean;
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  currentStatus: OperationStatus
+  onSubmit: (data: ChangeStatusFormData) => void
+  isPending: boolean
 }
 
-const STATUS_OPTIONS: { value: OperationStatus; label: string }[] = [
-  { value: 'OPEN', label: 'Open' },
-  { value: 'IN_PROGRESS', label: 'In Progress' },
-  { value: 'ON_HOLD', label: 'On Hold' },
-  { value: 'COMPLETED', label: 'Completed' },
-  { value: 'CANCELLED', label: 'Cancelled' },
-];
+const STATUS_VALUES: OperationStatus[] = [
+  'OPEN',
+  'IN_PROGRESS',
+  'ON_HOLD',
+  'COMPLETED',
+  'CANCELLED',
+]
 
 export function ChangeOperationStatusDialog({
   open,
@@ -47,38 +49,61 @@ export function ChangeOperationStatusDialog({
   onSubmit,
   isPending,
 }: ChangeOperationStatusDialogProps) {
-  const { handleSubmit, setValue, watch, register } = useForm<ChangeStatusFormData>({
+  const t = useTranslations('operations')
+  const tForm = useTranslations('operations.form')
+  const common = useTranslations('common')
+
+  const statusLabel = useMemo(() => {
+    const map: Record<OperationStatus, string> = {
+      OPEN: t('open'),
+      IN_PROGRESS: t('inProgress'),
+      ON_HOLD: t('onHold'),
+      COMPLETED: t('completed'),
+      CANCELLED: t('cancelled'),
+    }
+    return map
+  }, [t])
+
+  const { handleSubmit, setValue, watch, register, reset } = useForm<ChangeStatusFormData>({
     resolver: standardSchemaResolver(changeStatusSchema),
-    defaultValues: { status: currentStatus },
-  });
+  })
+
+  const selected = watch('status')
+
+  useEffect(() => {
+    if (!open) return
+    const next =
+      STATUS_VALUES.find((s) => s !== currentStatus) ?? currentStatus
+    reset({ status: next, comment: '' })
+  }, [open, currentStatus, reset])
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-sm">
         <DialogHeader>
-          <DialogTitle>Change status</DialogTitle>
+          <DialogTitle>{tForm('changeStatusTitle')}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-1.5">
-            <Label>New status</Label>
+            <Label>{tForm('newStatus')}</Label>
             <Select
               onValueChange={(v) => setValue('status', v as OperationStatus)}
-              defaultValue={currentStatus}
+              value={selected}
             >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {STATUS_OPTIONS.filter((s) => s.value !== currentStatus).map((s) => (
-                  <SelectItem key={s.value} value={s.value}>
-                    {s.label}
+                {STATUS_VALUES.filter((s) => s !== currentStatus).map((s) => (
+                  <SelectItem key={s} value={s}>
+                    {statusLabel[s]}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="comment">Comment (optional)</Label>
+            <Label htmlFor="comment">{tForm('commentOptional')}</Label>
             <textarea
               id="comment"
               rows={2}
@@ -93,14 +118,14 @@ export function ChangeOperationStatusDialog({
               onClick={() => onOpenChange(false)}
               disabled={isPending}
             >
-              Cancel
+              {common('cancel')}
             </Button>
             <Button type="submit" disabled={isPending}>
-              {isPending ? 'Saving…' : 'Update status'}
+              {isPending ? common('saving') : tForm('updateStatus')}
             </Button>
           </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

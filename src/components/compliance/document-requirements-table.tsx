@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Trash } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import {
@@ -39,6 +40,7 @@ export function DocumentRequirementsTable({
   onDelete,
   isDeletePending,
 }: DocumentRequirementsTableProps) {
+  const tCommon = useTranslations('common');
   const categoryMap = Object.fromEntries(categories.map((c) => [c.id, c]));
 
   if (requirements.length === 0) {
@@ -97,7 +99,7 @@ export function DocumentRequirementsTable({
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>{tCommon('cancel')}</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => onDelete(req.id)}
                           disabled={isDeletePending}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Plus, Trash, UserCircle } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import {
@@ -44,6 +45,7 @@ export function ClientPortalAccessSection({
   canManage,
   members,
 }: ClientPortalAccessSectionProps) {
+  const tCommon = useTranslations('common');
   const [grantOpen, setGrantOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState('');
 
@@ -125,7 +127,7 @@ export function ClientPortalAccessSection({
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>{tCommon('cancel')}</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => revokeAccess.mutate(access.id)}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
@@ -170,7 +172,7 @@ export function ClientPortalAccessSection({
               onClick={() => setGrantOpen(false)}
               disabled={grantAccess.isPending}
             >
-              Cancel
+              {tCommon('cancel')}
             </Button>
             <Button
               onClick={handleGrant}

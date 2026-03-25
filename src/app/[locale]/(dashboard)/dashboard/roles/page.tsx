@@ -74,7 +74,7 @@ export default function RolesPage() {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="w-full space-y-8">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">{t('rolesPage.title')}</h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -90,7 +90,7 @@ export default function RolesPage() {
         ))}
       </div>
 
-      <div className="space-y-6">
+      <div className="w-full space-y-6">
         {permissionGroups.map((group) => (
           <div key={group.label} className="space-y-2">
             <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">

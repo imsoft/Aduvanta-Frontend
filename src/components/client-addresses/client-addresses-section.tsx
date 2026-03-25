@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { MapPin, PencilSimple, Trash } from '@phosphor-icons/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -42,6 +43,7 @@ export function ClientAddressesSection({
   clientId,
   canManage,
 }: ClientAddressesSectionProps) {
+  const tCommon = useTranslations('common');
   const { data: addresses = [], isLoading } = useClientAddresses(clientId);
   const createAddress = useCreateClientAddress(clientId);
   const updateAddress = useUpdateClientAddress(clientId);
@@ -147,7 +149,7 @@ export function ClientAddressesSection({
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogCancel>{tCommon('cancel')}</AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={() => removeAddress.mutate(addr.id)}
                                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { PencilSimple, Trash } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import {
@@ -43,6 +44,7 @@ export function OperationChargesTable({
   isEditPending,
   isDeactivatePending,
 }: OperationChargesTableProps) {
+  const tCommon = useTranslations('common');
   const [editingCharge, setEditingCharge] = useState<OperationCharge | null>(null);
 
   if (charges.length === 0) {
@@ -125,7 +127,7 @@ export function OperationChargesTable({
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogCancel>{tCommon('cancel')}</AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={() => onDeactivate(charge.id)}
                                 disabled={isDeactivatePending}
