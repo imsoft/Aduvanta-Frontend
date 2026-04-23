@@ -83,6 +83,12 @@ pnpm lint     # ESLint
 
 ## Documentación adicional
 
+Guías internas del proyecto en [`docs/`](./docs/README.md):
+
+- [Actualizar dependencias](./docs/updating.md)
+
+Referencias externas:
+
 - [Next.js](https://nextjs.org/docs)
 - [next-intl](https://next-intl-docs.vercel.app/docs/getting-started/app-router)
 - [Better Auth](https://www.better-auth.com/docs)
