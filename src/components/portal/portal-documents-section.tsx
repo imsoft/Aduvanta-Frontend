@@ -12,6 +12,8 @@ import {
 } from '@/components/ui/table';
 import { usePortalDocuments, usePortalDocumentDownload } from '@/features/portal/hooks/use-portal';
 import type { Document } from '@/features/portal/types/portal.types';
+import { EmptyState } from '@/components/ui/empty-state';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -33,11 +35,11 @@ export function PortalDocumentsSection({ operationId }: PortalDocumentsSectionPr
   }
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground">Loading documents…</p>;
+    return <TableSkeleton rows={3} columns={5} />;
   }
 
   if (documents.length === 0) {
-    return <p className="text-sm text-muted-foreground">No documents available.</p>;
+    return <EmptyState title="No documents available." />;
   }
 
   return (

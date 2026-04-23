@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/select';
 import { OperationsTable } from '@/components/operations/operations-table';
 import { EmptyState } from '@/components/ui/empty-state';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 import { useOperations } from '@/features/operations/hooks/use-operations';
 import { useClients } from '@/features/clients/hooks/use-clients';
 import { useMembers } from '@/hooks/use-members';
@@ -99,9 +100,7 @@ export default function OperationsPage() {
         </Select>
       </div>
 
-      {isLoading && (
-        <div className="text-sm text-muted-foreground">{t('operations.loading')}</div>
-      )}
+      {isLoading && <TableSkeleton rows={8} columns={6} />}
 
       {!isLoading && operations.length === 0 && (
         <EmptyState

@@ -9,6 +9,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useDocumentVersions } from '@/features/documents/hooks/use-documents';
+import { EmptyState } from '@/components/ui/empty-state';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -24,11 +26,11 @@ export function DocumentVersionsTable({ documentId }: DocumentVersionsTableProps
   const { data: versions = [], isLoading } = useDocumentVersions(documentId);
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground py-4">Loading versions…</p>;
+    return <TableSkeleton rows={3} columns={4} />;
   }
 
   if (versions.length === 0) {
-    return <p className="text-sm text-muted-foreground py-4">No versions found.</p>;
+    return <EmptyState title="No versions found." />;
   }
 
   return (

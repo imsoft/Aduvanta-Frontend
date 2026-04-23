@@ -24,6 +24,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { EmptyState } from '@/components/ui/empty-state';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 import {
   useClientAddresses,
   useCreateClientAddress,
@@ -81,10 +83,10 @@ export function ClientAddressesSection({
         )}
       </div>
 
-      {isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+      {isLoading && <TableSkeleton rows={3} columns={canManage ? 5 : 4} />}
 
       {!isLoading && addresses.length === 0 && (
-        <p className="text-sm text-muted-foreground">No addresses yet.</p>
+        <EmptyState title="No addresses yet." />
       )}
 
       {!isLoading && addresses.length > 0 && (

@@ -24,6 +24,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { EmptyState } from '@/components/ui/empty-state';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 import {
   useClientContacts,
   useCreateClientContact,
@@ -76,10 +78,10 @@ export function ClientContactsSection({
         )}
       </div>
 
-      {isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+      {isLoading && <TableSkeleton rows={3} columns={canManage ? 5 : 4} />}
 
       {!isLoading && contacts.length === 0 && (
-        <p className="text-sm text-muted-foreground">No contacts yet.</p>
+        <EmptyState title="No contacts yet." />
       )}
 
       {!isLoading && contacts.length > 0 && (

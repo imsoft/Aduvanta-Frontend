@@ -2,6 +2,8 @@
 
 import { ChatCircle } from '@phosphor-icons/react';
 import { AddOperationCommentForm } from './add-operation-comment-form';
+import { EmptyState } from '@/components/ui/empty-state';
+import { ListSkeleton } from '@/components/ui/loading-skeletons';
 import {
   useOperationComments,
   useCreateOperationComment,
@@ -23,13 +25,10 @@ export function OperationCommentsSection({
     <div className="space-y-4">
       <h2 className="text-base font-semibold">Comments</h2>
 
-      {isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+      {isLoading && <ListSkeleton rows={3} />}
 
       {!isLoading && comments.length === 0 && (
-        <div className="flex flex-col items-center gap-2 py-8 text-center">
-          <ChatCircle size={24} className="text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">No comments yet.</p>
-        </div>
+        <EmptyState icon={<ChatCircle size={20} />} title="No comments yet." />
       )}
 
       {!isLoading && comments.length > 0 && (

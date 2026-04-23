@@ -2,6 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 import { Separator } from '@/components/ui/separator';
+import { CardsSkeleton } from '@/components/ui/loading-skeletons';
+import { EmptyState } from '@/components/ui/empty-state';
 import { useUsage } from '@/features/usage/hooks/use-usage';
 import { UsageMetricsCards } from '@/components/billing/usage-metrics-cards';
 
@@ -21,7 +23,7 @@ export default function UsagePage() {
       <Separator />
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
+        <CardsSkeleton count={4} gridClassName="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" />
       ) : usage ? (
         <div className="w-full space-y-4">
           {usage.planName && (
@@ -40,7 +42,7 @@ export default function UsagePage() {
           )}
         </div>
       ) : (
-        <p className="text-sm text-muted-foreground">{t('usage.noData')}</p>
+        <EmptyState title={t('usage.noData')} />
       )}
     </div>
   );

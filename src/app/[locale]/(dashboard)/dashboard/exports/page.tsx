@@ -6,6 +6,7 @@ import { Plus } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { ExportsTable } from '@/components/exports/exports-table';
 import { CreateExportDialog } from '@/components/exports/create-export-dialog';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 import { useExports, useCreateExport, useExportDownloadUrl } from '@/features/exports/hooks/use-exports';
 import { useCanManage } from '@/hooks/use-permissions';
 
@@ -50,7 +51,7 @@ export default function ExportsPage() {
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
+        <TableSkeleton rows={6} columns={5} />
       ) : (
         <ExportsTable
           jobs={jobs}

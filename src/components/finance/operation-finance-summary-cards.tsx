@@ -2,6 +2,7 @@
 
 import { useOperationFinanceSummary } from '@/features/operation-finance/hooks/use-operation-finance';
 import type { FinancialStatus } from '@/features/operation-finance/types/operation-finance.types';
+import { CardsSkeleton } from '@/components/ui/loading-skeletons';
 
 interface OperationFinanceSummaryCardsProps {
   operationId: string;
@@ -31,7 +32,12 @@ export function OperationFinanceSummaryCards({
   const { data: summary, isLoading } = useOperationFinanceSummary(operationId);
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground">Loading summary…</p>;
+    return (
+      <CardsSkeleton
+        count={4}
+        gridClassName="grid grid-cols-2 gap-3 sm:grid-cols-4"
+      />
+    );
   }
 
   if (!summary) return null;

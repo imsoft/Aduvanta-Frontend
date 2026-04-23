@@ -6,6 +6,7 @@ import { Plus } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { ImportsTable } from '@/components/imports/imports-table';
 import { CreateImportDialog } from '@/components/imports/create-import-dialog';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 import { useImports, useCreateImport } from '@/features/imports/hooks/use-imports';
 import { useCanManage } from '@/hooks/use-permissions';
 
@@ -36,7 +37,7 @@ export default function ImportsPage() {
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
+        <TableSkeleton rows={6} columns={5} />
       ) : (
         <ImportsTable jobs={jobs} />
       )}

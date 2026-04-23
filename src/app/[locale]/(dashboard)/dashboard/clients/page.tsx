@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/select';
 import { ClientsTable } from '@/components/clients/clients-table';
 import { EmptyState } from '@/components/ui/empty-state';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 import { useClients } from '@/features/clients/hooks/use-clients';
 import { useOrgStore } from '@/store/org.store';
 
@@ -72,9 +73,7 @@ export default function ClientsPage() {
         </Select>
       </div>
 
-      {isLoading && (
-        <div className="text-sm text-muted-foreground">{t('common.loading')}</div>
-      )}
+      {isLoading && <TableSkeleton rows={8} columns={5} />}
 
       {!isLoading && clients.length === 0 && (
         <EmptyState

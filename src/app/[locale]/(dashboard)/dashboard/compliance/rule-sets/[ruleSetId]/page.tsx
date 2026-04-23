@@ -26,6 +26,11 @@ import {
   useDeleteStatusRule,
 } from '@/features/compliance-status-rules/hooks/use-compliance-status-rules';
 import { useDocumentCategories } from '@/features/document-categories/hooks/use-document-categories';
+import {
+  DetailPageSkeleton,
+  TableSkeleton,
+} from '@/components/ui/loading-skeletons';
+import { EmptyState } from '@/components/ui/empty-state';
 import { useCanManage } from '@/hooks/use-permissions';
 import type { UpdateRuleSetFormData } from '@/features/compliance-rule-sets/schemas/rule-set.schemas';
 
@@ -51,11 +56,11 @@ export default function RuleSetDetailPage() {
   const [addStatusOpen, setAddStatusOpen] = useState(false);
 
   if (isLoadingRuleSet) {
-    return <p className="w-full text-sm text-muted-foreground">{t('common.loading')}</p>;
+    return <DetailPageSkeleton />;
   }
 
   if (!ruleSet) {
-    return <p className="w-full text-sm text-destructive">{t('compliance.notFound')}</p>;
+    return <EmptyState title={t('compliance.notFound')} />;
   }
 
   const existingCategoryIds = requirements.map((r) => r.documentCategoryId);
@@ -111,7 +116,7 @@ export default function RuleSetDetailPage() {
           )}
         </div>
         {isLoadingReqs ? (
-          <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
+          <TableSkeleton rows={4} columns={4} />
         ) : (
           <DocumentRequirementsTable
             requirements={requirements}
@@ -142,7 +147,7 @@ export default function RuleSetDetailPage() {
           )}
         </div>
         {isLoadingRules ? (
-          <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
+          <TableSkeleton rows={4} columns={4} />
         ) : (
           <StatusRulesTable
             rules={statusRules}

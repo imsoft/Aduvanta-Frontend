@@ -1,20 +1,19 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
 import { useSession } from '@/lib/auth-client';
 import { AppSidebar } from '@/components/layout/app-sidebar';
 import { AppHeader } from '@/components/layout/app-header';
 import { SidebarProvider } from '@/components/layout/sidebar-context';
 import { AnalyticsTracker } from '@/components/analytics-tracker';
+import { DashboardShellSkeleton } from '@/components/ui/loading-skeletons';
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const t = useTranslations('common')
   const router = useRouter()
   const { data: session, isPending } = useSession()
 
@@ -25,11 +24,7 @@ export default function DashboardLayout({
   }, [session, isPending, router]);
 
   if (isPending) {
-      return (
-      <div className="flex h-screen items-center justify-center text-muted-foreground text-sm">
-        {t('loading')}
-      </div>
-    )
+    return <DashboardShellSkeleton />
   }
 
   if (!session) {

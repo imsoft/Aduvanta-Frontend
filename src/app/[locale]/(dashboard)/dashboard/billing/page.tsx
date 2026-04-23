@@ -2,6 +2,9 @@
 
 import { useTranslations } from 'next-intl';
 import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
+import { CardsSkeleton } from '@/components/ui/loading-skeletons';
+import { EmptyState } from '@/components/ui/empty-state';
 import { useMySubscription, usePlans } from '@/features/subscriptions/hooks/use-subscriptions';
 import { useAssignPlan } from '@/features/subscriptions/hooks/use-subscriptions';
 import { useIsOwner } from '@/hooks/use-permissions';
@@ -27,15 +30,15 @@ export default function BillingPage() {
       <Separator />
 
       {subLoading ? (
-        <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
+        <div className="space-y-3 rounded-lg border bg-card p-6">
+          <Skeleton className="h-5 w-32" />
+          <Skeleton className="h-4 w-2/3" />
+          <Skeleton className="h-4 w-1/2" />
+        </div>
       ) : subscription ? (
         <PlanSummaryCard data={subscription} />
       ) : (
-        <div className="rounded-md border border-dashed p-6 text-center">
-          <p className="text-sm text-muted-foreground">
-            {t('billing.noPlan')}
-          </p>
-        </div>
+        <EmptyState title={t('billing.noPlan')} />
       )}
 
       {canManage && plans.length > 0 && (
@@ -44,7 +47,7 @@ export default function BillingPage() {
           <div>
             <h2 className="text-base font-semibold mb-4">{t('billing.availablePlans')}</h2>
             {plansLoading ? (
-              <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
+              <CardsSkeleton count={3} />
             ) : (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {plans.map((plan) => (

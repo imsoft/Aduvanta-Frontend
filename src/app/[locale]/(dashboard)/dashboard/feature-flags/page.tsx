@@ -6,6 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { useFeatureFlags, useCreateFeatureFlag } from '@/features/feature-flags/hooks/use-feature-flags';
 import { FeatureFlagsTable } from '@/components/billing/feature-flags-table';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 import { useIsOwner } from '@/hooks/use-permissions';
 
 interface CreateFlagForm {
@@ -107,7 +108,7 @@ export default function FeatureFlagsPage() {
       )}
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
+        <TableSkeleton rows={5} columns={4} />
       ) : (
         <FeatureFlagsTable
           flags={flags}

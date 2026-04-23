@@ -27,6 +27,8 @@ import {
   useGrantPortalAccess,
   useRevokePortalAccess,
 } from '@/features/client-portal-access/hooks/use-client-portal-access';
+import { EmptyState } from '@/components/ui/empty-state';
+import { ListSkeleton } from '@/components/ui/loading-skeletons';
 
 interface PortalAccessMember {
   id: string;
@@ -82,11 +84,9 @@ export function ClientPortalAccessSection({
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <ListSkeleton rows={3} />
       ) : accessList.length === 0 ? (
-        <p className="text-sm text-muted-foreground">
-          No users have portal access to this client.
-        </p>
+        <EmptyState title="No users have portal access to this client." />
       ) : (
         <ul className="space-y-2">
           {accessList.map((access) => {

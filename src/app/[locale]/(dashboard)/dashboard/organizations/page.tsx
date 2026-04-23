@@ -7,6 +7,7 @@ import { Buildings, Plus } from '@phosphor-icons/react';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
+import { ListSkeleton } from '@/components/ui/loading-skeletons';
 import { apiClient } from '@/lib/api-client';
 import { useOrgStore, type OrgOption } from '@/store/org.store';
 
@@ -58,9 +59,7 @@ export default function OrganizationsPage() {
         </Button>
       </div>
 
-      {isLoading && (
-        <div className="text-sm text-muted-foreground">{t('common.loading')}</div>
-      )}
+      {isLoading && <ListSkeleton rows={4} />}
 
       {!isLoading && orgs.length === 0 && (
         <EmptyState

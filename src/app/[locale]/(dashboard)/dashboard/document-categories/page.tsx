@@ -30,6 +30,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { EmptyState } from '@/components/ui/empty-state';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 import {
   useDocumentCategories,
   useCreateDocumentCategory,
@@ -72,9 +74,9 @@ export default function DocumentCategoriesPage() {
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
+        <TableSkeleton rows={6} columns={canManage ? 4 : 3} />
       ) : categories.length === 0 ? (
-        <p className="text-sm text-muted-foreground">{t('docCategories.empty')}</p>
+        <EmptyState title={t('docCategories.empty')} />
       ) : (
         <Table>
           <TableHeader>

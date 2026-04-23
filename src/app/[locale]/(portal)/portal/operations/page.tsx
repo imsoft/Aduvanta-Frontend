@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { usePortalOperations } from '@/features/portal/hooks/use-portal';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 
 const STATUS_OPTIONS = [
   { value: 'ALL', label: 'All statuses' },
@@ -66,7 +67,7 @@ export default function PortalOperationsPage() {
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <TableSkeleton rows={6} columns={5} />
       ) : (
         <PortalOperationsTable operations={operations} />
       )}

@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation'
 import { Plus } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { RuleSetsTable } from '@/components/compliance/rule-sets-table';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 import {
   useComplianceRuleSets,
   useDeleteComplianceRuleSet,
@@ -39,7 +40,7 @@ export default function ComplianceRuleSetsPage() {
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
+        <TableSkeleton rows={5} columns={4} />
       ) : (
         <RuleSetsTable
           ruleSets={ruleSets}

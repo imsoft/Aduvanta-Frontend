@@ -37,6 +37,8 @@ import { OperationAiInsightsSection } from '@/components/ai/operation-ai-insight
 import { ChangeOperationStatusDialog } from '@/components/operation-status/change-operation-status-dialog';
 import { AssignOperationDialog } from '@/components/operation-assignment/assign-operation-dialog';
 import { InfoField } from '@/components/ui/info-field';
+import { DetailPageSkeleton } from '@/components/ui/loading-skeletons';
+import { EmptyState } from '@/components/ui/empty-state';
 import {
   useOperation,
   useUpdateOperation,
@@ -78,13 +80,13 @@ export default function OperationDetailPage() {
   );
 
   if (isLoading) {
-    return <div className="w-full text-sm text-muted-foreground">{t('common.loading')}</div>;
+    return <DetailPageSkeleton />;
   }
 
   if (!operation) {
     return (
       <div className="w-full space-y-4">
-        <p className="text-sm text-muted-foreground">{t('operations.notFound')}</p>
+        <EmptyState title={t('operations.notFound')} />
         <Button asChild variant="outline" size="sm">
           <Link href="/dashboard/operations">
             <ArrowLeft size={14} />

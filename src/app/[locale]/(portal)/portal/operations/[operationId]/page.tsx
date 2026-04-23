@@ -13,6 +13,8 @@ import { PortalCommentsSection } from '@/components/portal/portal-comments-secti
 import { PortalDocumentsSection } from '@/components/portal/portal-documents-section';
 import { InfoField } from '@/components/ui/info-field';
 import { usePortalOperation } from '@/features/portal/hooks/use-portal';
+import { DetailPageSkeleton } from '@/components/ui/loading-skeletons';
+import { EmptyState } from '@/components/ui/empty-state';
 
 export default function PortalOperationDetailPage() {
   const params = useParams<{ operationId: string }>();
@@ -21,13 +23,13 @@ export default function PortalOperationDetailPage() {
   const { data: operation, isLoading } = usePortalOperation(operationId);
 
   if (isLoading) {
-    return <div className="text-sm text-muted-foreground">Loading…</div>;
+    return <DetailPageSkeleton />;
   }
 
   if (!operation) {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-muted-foreground">Operation not found.</p>
+        <EmptyState title="Operation not found." />
         <Button asChild variant="outline" size="sm">
           <Link href="/portal/operations">
             <ArrowLeft size={14} />

@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import { IntegrationsTable } from '@/components/integrations/integrations-table';
 import { IntegrationForm } from '@/components/integrations/integration-form';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 import {
   useIntegrations,
   useCreateIntegration,
@@ -50,7 +51,7 @@ export default function IntegrationsPage() {
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
+        <TableSkeleton rows={6} columns={5} />
       ) : (
         <IntegrationsTable
           integrations={integrations}

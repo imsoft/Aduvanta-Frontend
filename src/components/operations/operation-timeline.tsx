@@ -4,6 +4,8 @@ import { ArrowRight } from '@phosphor-icons/react';
 import { useOperationHistory } from '@/features/operations/hooks/use-operations';
 import { OperationStatusBadge } from './operation-status-badge';
 import type { OperationStatus } from '@/features/operations/types/operation.types';
+import { EmptyState } from '@/components/ui/empty-state';
+import { ListSkeleton } from '@/components/ui/loading-skeletons';
 
 interface OperationTimelineProps {
   operationId: string;
@@ -13,11 +15,11 @@ export function OperationTimeline({ operationId }: OperationTimelineProps) {
   const { data: history = [], isLoading } = useOperationHistory(operationId);
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground">Loading timeline…</p>;
+    return <ListSkeleton rows={3} />;
   }
 
   if (history.length === 0) {
-    return <p className="text-sm text-muted-foreground">No history yet.</p>;
+    return <EmptyState title="No history yet." />;
   }
 
   // Show most recent first.

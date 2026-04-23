@@ -1,6 +1,8 @@
 'use client';
 
 import { usePortalComments } from '@/features/portal/hooks/use-portal';
+import { EmptyState } from '@/components/ui/empty-state';
+import { ListSkeleton } from '@/components/ui/loading-skeletons';
 
 interface PortalCommentsSectionProps {
   operationId: string;
@@ -10,11 +12,11 @@ export function PortalCommentsSection({ operationId }: PortalCommentsSectionProp
   const { data: comments = [], isLoading } = usePortalComments(operationId);
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground">Loading comments…</p>;
+    return <ListSkeleton rows={3} />;
   }
 
   if (comments.length === 0) {
-    return <p className="text-sm text-muted-foreground">No comments yet.</p>;
+    return <EmptyState title="No comments yet." />;
   }
 
   return (

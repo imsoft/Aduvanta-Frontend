@@ -3,6 +3,8 @@
 import { OperationStatusBadge } from '@/components/operations/operation-status-badge';
 import { usePortalStatusHistory } from '@/features/portal/hooks/use-portal';
 import type { OperationStatus } from '@/features/operations/types/operation.types';
+import { EmptyState } from '@/components/ui/empty-state';
+import { ListSkeleton } from '@/components/ui/loading-skeletons';
 
 interface PortalOperationTimelineProps {
   operationId: string;
@@ -12,11 +14,11 @@ export function PortalOperationTimeline({ operationId }: PortalOperationTimeline
   const { data: history = [], isLoading } = usePortalStatusHistory(operationId);
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground">Loading timeline…</p>;
+    return <ListSkeleton rows={3} />;
   }
 
   if (history.length === 0) {
-    return <p className="text-sm text-muted-foreground">No status history yet.</p>;
+    return <EmptyState title="No status history yet." />;
   }
 
   return (

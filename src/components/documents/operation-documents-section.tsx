@@ -27,6 +27,8 @@ import { useDocumentCategories } from '@/features/document-categories/hooks/use-
 import type { Document } from '@/features/documents/types/document.types';
 import type { UpdateDocumentFormData } from '@/features/documents/schemas/document.schemas';
 import type { DocumentCategory } from '@/features/document-categories/types/document-category.types';
+import { EmptyState } from '@/components/ui/empty-state';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -59,7 +61,7 @@ export function OperationDocumentsSection({
   }
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground py-4">Loading documents…</p>;
+    return <TableSkeleton rows={3} columns={5} />;
   }
 
   return (
@@ -75,7 +77,7 @@ export function OperationDocumentsSection({
       </div>
 
       {documents.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No documents yet.</p>
+        <EmptyState title="No documents yet." />
       ) : (
         <Table>
           <TableHeader>

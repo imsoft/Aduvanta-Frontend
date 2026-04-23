@@ -17,6 +17,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { EmptyState } from '@/components/ui/empty-state';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 
 interface AuditLog {
   id: string;
@@ -95,14 +97,10 @@ export default function AuditLogsPage() {
         </p>
       </div>
 
-      {isLoading && (
-        <div className="text-sm text-muted-foreground">{t('common.loading')}</div>
-      )}
+      {isLoading && <TableSkeleton rows={10} columns={5} />}
 
       {!isLoading && logs.length === 0 && page === 0 && (
-        <div className="rounded-lg border border-dashed p-12 text-center">
-          <p className="text-sm text-muted-foreground">{t('auditLogs.empty')}</p>
-        </div>
+        <EmptyState title={t('auditLogs.empty')} />
       )}
 
       {!isLoading && logs.length > 0 && (

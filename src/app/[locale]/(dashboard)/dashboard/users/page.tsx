@@ -42,6 +42,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 
 const ROLE_VARIANT: Record<string, 'default' | 'secondary' | 'outline'> = {
   OWNER: 'default',
@@ -191,9 +192,7 @@ export default function UsersPage() {
         </form>
       )}
 
-      {isLoading && (
-        <div className="text-sm text-muted-foreground">{t('members.loading')}</div>
-      )}
+      {isLoading && <TableSkeleton rows={6} columns={canManage ? 5 : 3} />}
 
       {!isLoading && members.length > 0 && (
         <div className="rounded-lg border">

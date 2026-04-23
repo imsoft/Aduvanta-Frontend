@@ -22,6 +22,7 @@ import {
 } from '@/features/operation-advances/hooks/use-operation-advances';
 import type { CreateChargeFormData, UpdateChargeFormData } from '@/features/operation-charges/schemas/operation-charge.schemas';
 import type { CreateAdvanceFormData, UpdateAdvanceFormData } from '@/features/operation-advances/schemas/operation-advance.schemas';
+import { TableSkeleton } from '@/components/ui/loading-skeletons';
 
 interface OperationFinanceSectionProps {
   operationId: string;
@@ -87,7 +88,7 @@ export function OperationFinanceSection({
           )}
         </div>
         {chargesLoading ? (
-          <p className="text-sm text-muted-foreground">Loading…</p>
+          <TableSkeleton rows={3} columns={5} />
         ) : (
           <OperationChargesTable
             charges={charges}
@@ -117,7 +118,7 @@ export function OperationFinanceSection({
           )}
         </div>
         {advancesLoading ? (
-          <p className="text-sm text-muted-foreground">Loading…</p>
+          <TableSkeleton rows={3} columns={5} />
         ) : (
           <OperationAdvancesTable
             advances={advances}

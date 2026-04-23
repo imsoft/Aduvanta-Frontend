@@ -10,6 +10,11 @@ import { IntegrationForm } from '@/components/integrations/integration-form';
 import { IntegrationDeliveriesTable } from '@/components/integrations/integration-deliveries-table';
 import { InfoField } from '@/components/ui/info-field';
 import {
+  DetailPageSkeleton,
+  TableSkeleton,
+} from '@/components/ui/loading-skeletons';
+import { EmptyState } from '@/components/ui/empty-state';
+import {
   useIntegration,
   useUpdateIntegration,
 } from '@/features/integrations/hooks/use-integrations';
@@ -36,11 +41,11 @@ export default function IntegrationDetailPage() {
   const [editing, setEditing] = useState(false);
 
   if (isLoading) {
-    return <p className="w-full text-sm text-muted-foreground">{t('common.loading')}</p>;
+    return <DetailPageSkeleton />;
   }
 
   if (!integration) {
-    return <p className="w-full text-sm text-destructive">{t('integrations.notFound')}</p>;
+    return <EmptyState title={t('integrations.notFound')} />;
   }
 
   return (
@@ -129,7 +134,7 @@ export default function IntegrationDetailPage() {
           {t('integrations.deliveryLogs')}
         </h2>
         {isLoadingDeliveries ? (
-          <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
+          <TableSkeleton rows={5} columns={4} />
         ) : (
           <IntegrationDeliveriesTable
             deliveries={deliveries}
