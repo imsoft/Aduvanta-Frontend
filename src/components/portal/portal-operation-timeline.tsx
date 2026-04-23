@@ -25,7 +25,7 @@ export function PortalOperationTimeline({ operationId }: PortalOperationTimeline
     <ol className="space-y-4">
       {[...history].reverse().map((entry) => (
         <li key={entry.id} className="flex items-start gap-3">
-          <div className="mt-0.5 h-2 w-2 rounded-full bg-muted-foreground/40 shrink-0 mt-1.5" />
+          <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-muted-foreground/40" />
           <div className="space-y-1">
             <div className="flex items-center gap-2 flex-wrap">
               {entry.fromStatus && (
