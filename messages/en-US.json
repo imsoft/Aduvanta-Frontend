@@ -44,7 +44,15 @@
     "billing": "Billing",
     "usage": "Usage",
     "featureFlags": "Feature flags",
-    "settings": "Settings"
+    "settings": "Settings",
+    "pedimentos": "Entries",
+    "clasificacion": "Classification",
+    "bodega": "Warehouse",
+    "tesoreria": "Treasury",
+    "padron": "Registry",
+    "inspecciones": "Inspections",
+    "previos": "Previos",
+    "reportes": "Reports"
   },
   "auth": {
     "signIn": "Sign in",

@@ -44,7 +44,15 @@
     "billing": "Facturación",
     "usage": "Uso",
     "featureFlags": "Flags de función",
-    "settings": "Configuración"
+    "settings": "Configuración",
+    "pedimentos": "Pedimentos",
+    "clasificacion": "Clasificación",
+    "bodega": "Bodega",
+    "tesoreria": "Tesorería",
+    "padron": "Padrón",
+    "inspecciones": "Inspecciones",
+    "previos": "Previos",
+    "reportes": "Reportes"
   },
   "auth": {
     "signIn": "Iniciar sesión",

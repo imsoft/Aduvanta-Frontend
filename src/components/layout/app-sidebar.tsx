@@ -3,7 +3,6 @@
 import { useTranslations } from 'next-intl'
 import { Link, usePathname } from '@/i18n/navigation'
 import {
-  ArrowsDownUp,
   Buildings,
   ChartBar,
   ClipboardText,
@@ -12,7 +11,6 @@ import {
   LinkSimple,
   ListChecks,
   ShieldCheck,
-  Upload,
   UsersThree,
   UsersFour,
   FileText,
@@ -23,30 +21,80 @@ import {
   Flag,
   CaretLeft,
   CaretRight,
+  Scales,
+  Warehouse,
+  IdentificationCard,
+  MagnifyingGlass,
+  Clipboard,
+  Bank,
+  Receipt,
+  type Icon,
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { useSidebar } from '@/components/layout/sidebar-context'
 
-const navItems = [
-  { labelKey: 'nav.dashboard', href: '/dashboard', icon: House },
-  { labelKey: 'nav.organizations', href: '/dashboard/organizations', icon: Buildings },
-  { labelKey: 'nav.clients', href: '/dashboard/clients', icon: UsersFour },
-  { labelKey: 'nav.operations', href: '/dashboard/operations', icon: FileText },
-  { labelKey: 'nav.docCategories', href: '/dashboard/document-categories', icon: FolderOpen },
-  { labelKey: 'nav.compliance', href: '/dashboard/compliance/rule-sets', icon: ListChecks },
-  { labelKey: 'nav.aiCopilot', href: '/dashboard/ai', icon: Sparkle },
-  { labelKey: 'nav.integrations', href: '/dashboard/integrations', icon: LinkSimple },
-  { labelKey: 'nav.exports', href: '/dashboard/exports', icon: ArrowsDownUp },
-  { labelKey: 'nav.imports', href: '/dashboard/imports', icon: Upload },
-  { labelKey: 'nav.users', href: '/dashboard/users', icon: UsersThree },
-  { labelKey: 'nav.roles', href: '/dashboard/roles', icon: ShieldCheck },
-  { labelKey: 'nav.auditLogs', href: '/dashboard/audit-logs', icon: ClipboardText },
-  { labelKey: 'nav.billing', href: '/dashboard/billing', icon: CurrencyDollar },
-  { labelKey: 'nav.usage', href: '/dashboard/usage', icon: ChartLine },
-  { labelKey: 'nav.featureFlags', href: '/dashboard/feature-flags', icon: Flag },
-] as const
+type NavItem = {
+  labelKey: string
+  href: string
+  icon: Icon
+}
+
+type NavGroup = {
+  groupKey: string
+  items: NavItem[]
+}
+
+const navGroups: NavGroup[] = [
+  {
+    groupKey: '',
+    items: [
+      { labelKey: 'nav.dashboard', href: '/dashboard', icon: House },
+      { labelKey: 'nav.operations', href: '/dashboard/operations', icon: FileText },
+      { labelKey: 'nav.clients', href: '/dashboard/clients', icon: UsersFour },
+    ],
+  },
+  {
+    groupKey: 'Aduanas',
+    items: [
+      { labelKey: 'nav.pedimentos', href: '/dashboard/pedimentos', icon: ClipboardText },
+      { labelKey: 'nav.clasificacion', href: '/dashboard/clasificacion', icon: Scales },
+      { labelKey: 'nav.inspecciones', href: '/dashboard/inspecciones', icon: MagnifyingGlass },
+      { labelKey: 'nav.previos', href: '/dashboard/previos', icon: Clipboard },
+    ],
+  },
+  {
+    groupKey: 'Control',
+    items: [
+      { labelKey: 'nav.bodega', href: '/dashboard/bodega', icon: Warehouse },
+      { labelKey: 'nav.tesoreria', href: '/dashboard/tesoreria', icon: Bank },
+      { labelKey: 'nav.padron', href: '/dashboard/padron', icon: IdentificationCard },
+      { labelKey: 'nav.reportes', href: '/dashboard/reportes', icon: ChartBar },
+    ],
+  },
+  {
+    groupKey: 'Sistema',
+    items: [
+      { labelKey: 'nav.compliance', href: '/dashboard/compliance/rule-sets', icon: ListChecks },
+      { labelKey: 'nav.docCategories', href: '/dashboard/document-categories', icon: FolderOpen },
+      { labelKey: 'nav.aiCopilot', href: '/dashboard/ai', icon: Sparkle },
+      { labelKey: 'nav.integrations', href: '/dashboard/integrations', icon: LinkSimple },
+    ],
+  },
+  {
+    groupKey: 'Administración',
+    items: [
+      { labelKey: 'nav.organizations', href: '/dashboard/organizations', icon: Buildings },
+      { labelKey: 'nav.users', href: '/dashboard/users', icon: UsersThree },
+      { labelKey: 'nav.roles', href: '/dashboard/roles', icon: ShieldCheck },
+      { labelKey: 'nav.auditLogs', href: '/dashboard/audit-logs', icon: Receipt },
+      { labelKey: 'nav.billing', href: '/dashboard/billing', icon: CurrencyDollar },
+      { labelKey: 'nav.usage', href: '/dashboard/usage', icon: ChartLine },
+      { labelKey: 'nav.featureFlags', href: '/dashboard/feature-flags', icon: Flag },
+    ],
+  },
+]
 
 export const AppSidebar = () => {
   const t = useTranslations()
@@ -98,36 +146,45 @@ export const AppSidebar = () => {
 
       {/* Navigation */}
       <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto overflow-x-hidden p-2">
-        {navItems.map(({ labelKey, href, icon: Icon }) => {
-          const active =
-            href === '/dashboard'
-              ? pathname === href
-              : pathname.startsWith(href)
-          const label = t(labelKey)
+        {navGroups.map((group) => (
+          <div key={group.groupKey || '__top'} className="mb-1">
+            {group.groupKey && !collapsed && (
+              <p className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+                {group.groupKey}
+              </p>
+            )}
+            {group.items.map(({ labelKey, href, icon: Icon }) => {
+              const active =
+                href === '/dashboard'
+                  ? pathname === href
+                  : pathname.startsWith(href)
+              const label = t(labelKey)
 
-          return (
-            <Link
-              key={href}
-              href={href}
-              title={collapsed ? label : undefined}
-              className={cn(
-                'flex items-center rounded-md py-2 text-sm transition-colors',
-                collapsed ? 'justify-center px-0' : 'gap-2.5 px-3',
-                active
-                  ? 'bg-accent font-medium text-accent-foreground'
-                  : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
-              )}
-            >
-              <Icon
-                size={16}
-                className="shrink-0"
-                weight={active ? 'fill' : 'regular'}
-                aria-hidden
-              />
-              <span className={cn(collapsed && 'sr-only')}>{label}</span>
-            </Link>
-          )
-        })}
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  title={collapsed ? label : undefined}
+                  className={cn(
+                    'flex items-center rounded-md py-2 text-sm transition-colors',
+                    collapsed ? 'justify-center px-0' : 'gap-2.5 px-3',
+                    active
+                      ? 'bg-accent font-medium text-accent-foreground'
+                      : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                  )}
+                >
+                  <Icon
+                    size={16}
+                    className="shrink-0"
+                    weight={active ? 'fill' : 'regular'}
+                    aria-hidden
+                  />
+                  <span className={cn(collapsed && 'sr-only')}>{label}</span>
+                </Link>
+              )
+            })}
+          </div>
+        ))}
       </nav>
 
       <Separator />
