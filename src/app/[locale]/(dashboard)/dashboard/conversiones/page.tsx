@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { ArrowsLeftRight } from '@phosphor-icons/react';
+import { ArrowsLeftRight, Info } from '@phosphor-icons/react';
+import { useMarketRates, useFixRate } from '@/features/exchange-rates/hooks/use-exchange-rates';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -297,11 +298,26 @@ function convert(value: number, from: Unit, to: Unit): number {
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
+// Priority currencies to show first in the currency converter
+const PRIORITY_CURRENCIES = ['MXN', 'USD', 'EUR', 'GBP', 'CAD', 'JPY', 'CNY', 'CHF', 'AUD', 'BRL', 'KRW', 'SGD', 'HKD', 'NOK', 'SEK'];
+
+function fmtCurrency(value: number, decimals = 4): string {
+  if (!isFinite(value)) return '—';
+  return parseFloat(value.toFixed(decimals)).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: decimals });
+}
+
 export default function ConversionesPag() {
   const [activeCat, setActiveCat] = useState<string>('masa');
   const [fromUnitId, setFromUnitId] = useState<string>('kg');
   const [toUnitId, setToUnitId] = useState<string>('lb');
   const [inputValue, setInputValue] = useState<string>('1');
+
+  // Currency state
+  const [currencyBase, setCurrencyBase] = useState<string>('MXN');
+  const [currencyTarget, setCurrencyTarget] = useState<string>('USD');
+  const [currencyAmount, setCurrencyAmount] = useState<string>('1');
+  const { data: marketRates, isLoading: loadingMarket, error: marketError } = useMarketRates(currencyBase);
+  const { data: fixRate, isLoading: loadingFix } = useFixRate();
 
   const category = CATEGORIES.find((c) => c.id === activeCat)!;
 
@@ -521,6 +537,215 @@ export default function ConversionesPag() {
               </ul>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* ─── Currency section ─────────────────────────────────────── */}
+      <div className="space-y-4">
+        <div>
+          <h2 className="text-lg font-semibold tracking-tight">💱 Tipos de cambio</h2>
+          <p className="text-sm text-muted-foreground mt-0.5">
+            Tasas de mercado (ExchangeRate-API) y tipo oficial SAT (Banco de México FIX)
+          </p>
+        </div>
+
+        {/* FIX card */}
+        <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
+          <div className="px-5 py-3 border-b bg-amber-50 dark:bg-amber-950/20 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-amber-700 dark:text-amber-400">
+                Tipo de cambio FIX — Banco de México
+              </span>
+              <Badge variant="outline" className="text-[10px] border-amber-400 text-amber-700 dark:text-amber-400">
+                Obligatorio para pedimentos (Art. 20 CFF)
+              </Badge>
+            </div>
+            {fixRate && (
+              <span className="text-xs text-muted-foreground">
+                Publicado: {fixRate.date}
+              </span>
+            )}
+          </div>
+          <div className="px-5 py-4">
+            {loadingFix && (
+              <div className="h-8 w-48 rounded bg-muted/40 animate-pulse" />
+            )}
+            {!loadingFix && fixRate && (
+              <div className="flex flex-wrap items-end gap-6">
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">1 USD =</p>
+                  <p className="font-mono text-3xl font-bold text-foreground">
+                    {fmtCurrency(fixRate.usdMxn, 4)}
+                    <span className="ml-2 text-base font-normal text-muted-foreground">MXN</span>
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">1 MXN =</p>
+                  <p className="font-mono text-xl font-semibold text-foreground">
+                    {fmtCurrency(1 / fixRate.usdMxn, 6)}
+                    <span className="ml-1.5 text-sm font-normal text-muted-foreground">USD</span>
+                  </p>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground ml-auto">
+                  <Info size={13} />
+                  <span>{fixRate.source}</span>
+                </div>
+              </div>
+            )}
+            {!loadingFix && !fixRate && (
+              <p className="text-sm text-muted-foreground">
+                Configura <code className="text-xs bg-muted px-1 rounded">BANXICO_TOKEN</code> en el backend para ver el FIX en tiempo real.
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Market rates converter */}
+        <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
+          <div className="px-5 py-3 border-b bg-muted/20 flex items-center justify-between">
+            <p className="text-sm font-medium">Conversor de monedas — tasas de mercado</p>
+            {marketRates && (
+              <span className="text-xs text-muted-foreground">
+                Base: {marketRates.base} · {marketRates.source === 'cache' ? '📦 caché' : '🌐 en vivo'} · {new Date(marketRates.updatedAt).toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' })}
+              </span>
+            )}
+          </div>
+          <div className="p-5 space-y-4">
+            {/* Currency converter inputs */}
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <div className="flex-1 w-full space-y-2">
+                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">De</Label>
+                <div className="flex gap-2">
+                  <Input
+                    type="number"
+                    value={currencyAmount}
+                    onChange={(e) => setCurrencyAmount(e.target.value)}
+                    className="text-lg font-mono flex-1"
+                    placeholder="0"
+                  />
+                  <Select value={currencyBase} onValueChange={(v) => { setCurrencyBase(v); }}>
+                    <SelectTrigger className="w-36">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Prioritarias</SelectLabel>
+                        {PRIORITY_CURRENCIES.map((c) => (
+                          <SelectItem key={c} value={c}>{c}</SelectItem>
+                        ))}
+                      </SelectGroup>
+                      {marketRates && (
+                        <SelectGroup>
+                          <SelectLabel>Todas</SelectLabel>
+                          {Object.keys(marketRates.rates)
+                            .filter((c) => !PRIORITY_CURRENCIES.includes(c))
+                            .sort()
+                            .map((c) => (
+                              <SelectItem key={c} value={c}>{c}</SelectItem>
+                            ))}
+                        </SelectGroup>
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <button
+                onClick={() => { setCurrencyBase(currencyTarget); setCurrencyTarget(currencyBase); }}
+                className="mt-2 sm:mt-6 rounded-full border p-2.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors shrink-0"
+                aria-label="Intercambiar monedas"
+              >
+                <ArrowsLeftRight size={18} weight="bold" />
+              </button>
+
+              <div className="flex-1 w-full space-y-2">
+                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">A</Label>
+                <div className="flex gap-2">
+                  <div className="flex-1 flex items-center rounded-md border bg-muted/40 px-3 font-mono text-lg min-h-[2.5rem]">
+                    {loadingMarket ? (
+                      <span className="text-muted-foreground text-sm">Cargando...</span>
+                    ) : marketRates?.rates[currencyTarget] != null && currencyAmount !== '' ? (
+                      fmtCurrency(parseFloat(currencyAmount) * (marketRates.rates[currencyTarget] ?? 1), 4)
+                    ) : '—'}
+                  </div>
+                  <Select value={currencyTarget} onValueChange={setCurrencyTarget}>
+                    <SelectTrigger className="w-36">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Prioritarias</SelectLabel>
+                        {PRIORITY_CURRENCIES.map((c) => (
+                          <SelectItem key={c} value={c}>{c}</SelectItem>
+                        ))}
+                      </SelectGroup>
+                      {marketRates && (
+                        <SelectGroup>
+                          <SelectLabel>Todas</SelectLabel>
+                          {Object.keys(marketRates.rates)
+                            .filter((c) => !PRIORITY_CURRENCIES.includes(c))
+                            .sort()
+                            .map((c) => (
+                              <SelectItem key={c} value={c}>{c}</SelectItem>
+                            ))}
+                        </SelectGroup>
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+
+            {/* Error state */}
+            {marketError && (
+              <p className="text-sm text-destructive rounded-md border border-destructive/30 bg-destructive/5 px-4 py-2">
+                No se pudo cargar tasas de cambio. Verifica que <code className="text-xs bg-muted px-1 rounded">EXCHANGE_RATE_API_KEY</code> esté configurada en el backend.
+              </p>
+            )}
+
+            {/* All currencies grid */}
+            {!loadingMarket && marketRates && (
+              <div>
+                <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wide font-medium">
+                  {currencyAmount || '1'} {currencyBase} en monedas principales
+                </p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+                  {PRIORITY_CURRENCIES
+                    .filter((c) => c !== currencyBase && marketRates.rates[c] != null)
+                    .map((code) => {
+                      const rate = marketRates.rates[code]!;
+                      const converted = parseFloat(currencyAmount || '1') * rate;
+                      return (
+                        <button
+                          key={code}
+                          onClick={() => setCurrencyTarget(code)}
+                          className={cn(
+                            'rounded-lg border px-3 py-2.5 text-left transition-colors hover:bg-accent/40',
+                            currencyTarget === code && 'border-primary bg-primary/5',
+                          )}
+                        >
+                          <p className="text-[11px] font-semibold text-muted-foreground uppercase">{code}</p>
+                          <p className="mt-0.5 font-mono text-sm font-bold truncate">
+                            {fmtCurrency(converted, converted < 1 ? 6 : 2)}
+                          </p>
+                          <p className="text-[10px] text-muted-foreground font-mono">
+                            1 {currencyBase} = {fmtCurrency(rate, rate < 1 ? 6 : 4)}
+                          </p>
+                        </button>
+                      );
+                    })}
+                </div>
+              </div>
+            )}
+
+            {loadingMarket && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+                {Array.from({ length: 10 }).map((_, i) => (
+                  <div key={i} className="h-16 rounded-lg border bg-muted/30 animate-pulse" />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
