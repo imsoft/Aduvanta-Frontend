@@ -52,7 +52,8 @@
     "padron": "Padrón",
     "inspecciones": "Inspecciones",
     "previos": "Previos",
-    "reportes": "Reportes"
+    "reportes": "Reportes",
+    "conversiones": "Conversiones"
   },
   "auth": {
     "signIn": "Iniciar sesión",

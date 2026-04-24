@@ -28,6 +28,7 @@ import {
   Clipboard,
   Bank,
   Receipt,
+  ArrowsLeftRight,
   type Icon,
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
@@ -71,6 +72,7 @@ const navGroups: NavGroup[] = [
       { labelKey: 'nav.tesoreria', href: '/dashboard/tesoreria', icon: Bank },
       { labelKey: 'nav.padron', href: '/dashboard/padron', icon: IdentificationCard },
       { labelKey: 'nav.reportes', href: '/dashboard/reportes', icon: ChartBar },
+      { labelKey: 'nav.conversiones', href: '/dashboard/conversiones', icon: ArrowsLeftRight },
     ],
   },
   {
