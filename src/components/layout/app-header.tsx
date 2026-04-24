@@ -52,14 +52,14 @@ export function AppHeader() {
           <DropdownMenuTrigger asChild>
             <button
               type="button"
-              className="flex max-w-full min-w-0 items-start gap-2 rounded-md px-2 py-1 text-left text-sm transition-colors hover:bg-accent outline-none"
+              className="flex max-w-full min-w-0 items-center gap-2 rounded-md px-2 py-1 text-left text-sm transition-colors hover:bg-accent outline-none"
             >
-              <Avatar className="mt-0.5 h-6 w-6 shrink-0">
+              <Avatar className="h-6 w-6 shrink-0">
                 <AvatarFallback className="text-xs bg-primary text-primary-foreground">
                   {user?.name ? getInitials(user.name) : <User size={12} />}
                 </AvatarFallback>
               </Avatar>
-              <span className="wrap-break-word text-sm leading-snug [word-break:break-word]">
+              <span className="truncate text-sm">
                 {user?.name ?? user?.email}
               </span>
             </button>
