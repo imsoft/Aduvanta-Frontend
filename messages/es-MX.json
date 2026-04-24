@@ -275,7 +275,26 @@
   },
   "settings": {
     "title": "Configuración",
-    "description": "Configuración de organización y cuenta"
+    "description": "Configuración de organización y cuenta",
+    "profile": {
+      "title": "Perfil",
+      "description": "Información de tu cuenta",
+      "verified": "Correo verificado"
+    },
+    "appearance": {
+      "title": "Apariencia",
+      "description": "Elige el tema de la interfaz"
+    },
+    "language": {
+      "title": "Idioma",
+      "description": "Selecciona el idioma de la plataforma",
+      "active": "Activo"
+    },
+    "session": {
+      "title": "Sesión",
+      "description": "Gestiona tu sesión activa",
+      "activeSince": "Sesión activa"
+    }
   },
   "billing": {
     "title": "Facturación",

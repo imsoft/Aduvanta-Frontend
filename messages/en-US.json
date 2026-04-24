@@ -275,7 +275,26 @@
   },
   "settings": {
     "title": "Settings",
-    "description": "Organization and account settings"
+    "description": "Organization and account settings",
+    "profile": {
+      "title": "Profile",
+      "description": "Your account information",
+      "verified": "Email verified"
+    },
+    "appearance": {
+      "title": "Appearance",
+      "description": "Choose the interface theme"
+    },
+    "language": {
+      "title": "Language",
+      "description": "Select the platform language",
+      "active": "Active"
+    },
+    "session": {
+      "title": "Session",
+      "description": "Manage your active session",
+      "activeSince": "Active session"
+    }
   },
   "billing": {
     "title": "Billing",

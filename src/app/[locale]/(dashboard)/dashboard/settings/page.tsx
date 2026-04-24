@@ -1,21 +1,222 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTheme } from 'next-themes';
+import { useLocale, useTranslations } from 'next-intl';
+import { usePathname, useRouter } from '@/i18n/navigation';
+import { useSession, signOut } from '@/lib/auth-client';
+import { useOrgStore } from '@/store/org.store';
+import { routing } from '@/i18n/routing';
+import { toast } from 'sonner';
+import { Sun, Moon, Desktop, Globe, User, SignOut, ShieldCheck } from '@phosphor-icons/react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+
+const THEMES = [
+  { id: 'light', icon: Sun, labelKey: 'theme.light' },
+  { id: 'dark', icon: Moon, labelKey: 'theme.dark' },
+  { id: 'system', icon: Desktop, labelKey: 'theme.system' },
+] as const;
+
+const LOCALE_META: Record<string, { label: string; flag: string }> = {
+  'es-MX': { label: 'Español (México)', flag: '🇲🇽' },
+  'en-US': { label: 'English (US)', flag: '🇺🇸' },
+};
+
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .slice(0, 2)
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase();
+}
+
+function Section({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="space-y-4">
+      <div>
+        <h2 className="text-base font-semibold">{title}</h2>
+        {description && (
+          <p className="text-sm text-muted-foreground mt-0.5">{description}</p>
+        )}
+      </div>
+      {children}
+    </section>
+  );
+}
 
 export default function SettingsPage() {
   const t = useTranslations();
+  const { theme, setTheme } = useTheme();
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+  const { data: session } = useSession();
+  const { clearOrg } = useOrgStore();
+
+  const user = session?.user;
+
+  const handleLocaleChange = (newLocale: string) => {
+    router.replace(pathname, { locale: newLocale });
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    clearOrg();
+    router.push('/sign-in');
+    toast.success(t('header.signedOut'));
+  };
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full max-w-2xl space-y-8">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">{t('settings.title')}</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          {t('settings.description')}
-        </p>
+        <p className="text-sm text-muted-foreground mt-1">{t('settings.description')}</p>
       </div>
-      <div className="rounded-lg border border-dashed p-12 text-center">
-        <p className="text-sm text-muted-foreground">{t('common.comingSoon')}</p>
-      </div>
+
+      {/* Perfil */}
+      <Section
+        title={t('settings.profile.title')}
+        description={t('settings.profile.description')}
+      >
+        <div className="rounded-xl border bg-card p-5 flex items-center gap-4">
+          <Avatar className="h-14 w-14 shrink-0">
+            <AvatarFallback className="text-lg bg-primary text-primary-foreground">
+              {user?.name ? getInitials(user.name) : <User size={22} />}
+            </AvatarFallback>
+          </Avatar>
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold truncate">{user?.name ?? '—'}</p>
+            <p className="text-sm text-muted-foreground truncate">{user?.email}</p>
+            {user?.emailVerified && (
+              <Badge variant="secondary" className="mt-1.5 text-[10px] gap-1 h-4">
+                <ShieldCheck size={10} />
+                {t('settings.profile.verified')}
+              </Badge>
+            )}
+          </div>
+        </div>
+      </Section>
+
+      <Separator />
+
+      {/* Apariencia */}
+      <Section
+        title={t('settings.appearance.title')}
+        description={t('settings.appearance.description')}
+      >
+        <div className="grid grid-cols-3 gap-3">
+          {THEMES.map(({ id, icon: Icon, labelKey }) => {
+            const active = theme === id;
+            return (
+              <button
+                key={id}
+                onClick={() => setTheme(id)}
+                className={cn(
+                  'flex flex-col items-center gap-3 rounded-xl border p-4 transition-all hover:bg-accent/40',
+                  active
+                    ? 'border-primary bg-primary/5 ring-1 ring-primary'
+                    : 'border-border',
+                )}
+              >
+                {/* Mini preview */}
+                <div
+                  className={cn(
+                    'w-full rounded-lg border overflow-hidden',
+                    id === 'dark' ? 'bg-zinc-900 border-zinc-700' : id === 'light' ? 'bg-white border-zinc-200' : 'bg-linear-to-br from-white to-zinc-800 border-zinc-300',
+                  )}
+                >
+                  <div className={cn('h-2 w-full', id === 'dark' ? 'bg-zinc-800' : 'bg-zinc-100')} />
+                  <div className="p-2 space-y-1">
+                    <div className={cn('h-1.5 w-3/4 rounded-full', id === 'dark' ? 'bg-zinc-600' : 'bg-zinc-200')} />
+                    <div className={cn('h-1.5 w-1/2 rounded-full', id === 'dark' ? 'bg-zinc-700' : 'bg-zinc-100')} />
+                    <div className={cn('h-1.5 w-5 rounded-full mt-2', id === 'dark' ? 'bg-blue-500' : 'bg-blue-400')} />
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Icon size={13} className={active ? 'text-primary' : 'text-muted-foreground'} />
+                  <span className={cn('text-xs font-medium', active ? 'text-primary' : 'text-foreground')}>
+                    {t(labelKey)}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </Section>
+
+      <Separator />
+
+      {/* Idioma */}
+      <Section
+        title={t('settings.language.title')}
+        description={t('settings.language.description')}
+      >
+        <div className="flex flex-col gap-2">
+          {routing.locales.map((loc) => {
+            const meta = LOCALE_META[loc] ?? { label: loc, flag: '🌐' };
+            const active = locale === loc;
+            return (
+              <button
+                key={loc}
+                onClick={() => handleLocaleChange(loc)}
+                className={cn(
+                  'flex items-center gap-3 rounded-xl border px-4 py-3 text-left transition-all hover:bg-accent/40',
+                  active ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-border',
+                )}
+              >
+                <span className="text-xl leading-none">{meta.flag}</span>
+                <span className={cn('flex-1 text-sm font-medium', active && 'text-primary')}>
+                  {meta.label}
+                </span>
+                {active && (
+                  <Badge variant="secondary" className="text-[10px] h-4 shrink-0">
+                    {t('settings.language.active')}
+                  </Badge>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </Section>
+
+      <Separator />
+
+      {/* Sesión */}
+      <Section
+        title={t('settings.session.title')}
+        description={t('settings.session.description')}
+      >
+        <div className="rounded-xl border bg-card p-5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 min-w-0">
+            <Globe size={16} className="text-muted-foreground shrink-0" />
+            <div className="min-w-0">
+              <p className="text-sm font-medium truncate">{user?.name ?? user?.email}</p>
+              <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+            </div>
+          </div>
+          <Button
+            variant="destructive"
+            size="sm"
+            className="shrink-0 gap-1.5"
+            onClick={handleSignOut}
+          >
+            <SignOut size={14} />
+            {t('auth.signOut')}
+          </Button>
+        </div>
+      </Section>
     </div>
   );
 }

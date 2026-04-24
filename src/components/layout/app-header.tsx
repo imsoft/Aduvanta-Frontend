@@ -16,8 +16,6 @@ import { Separator } from '@/components/ui/separator';
 import { signOut, useSession } from '@/lib/auth-client';
 import { useOrgStore } from '@/store/org.store';
 import { OrgSwitcher } from './org-switcher'
-import { LocaleSwitcher } from '@/components/locale-switcher'
-import { ThemeToggle } from '@/components/theme-toggle'
 
 function getInitials(name: string): string {
   return name
@@ -50,8 +48,6 @@ export function AppHeader() {
       </div>
 
       <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">
-        <ThemeToggle />
-        <LocaleSwitcher />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
