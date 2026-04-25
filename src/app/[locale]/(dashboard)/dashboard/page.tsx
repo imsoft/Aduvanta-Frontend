@@ -191,7 +191,7 @@ export default function DashboardPage() {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Pedimentos by status */}
             <div className="rounded-lg border p-4 space-y-3">
               <div className="flex items-center gap-2">

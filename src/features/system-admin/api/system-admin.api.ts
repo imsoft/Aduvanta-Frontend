@@ -76,6 +76,67 @@ export interface FeatureFlagRow {
   updatedAt: string;
 }
 
+export interface OrgUsageRow {
+  id: string;
+  name: string;
+  slug: string;
+  createdAt: string;
+  memberCount: number;
+  entryCount: number;
+  operationCount: number;
+  entriesThisMonth: number;
+  subscriptionStatus: string | null;
+  planName: string | null;
+}
+
+export interface SessionRow {
+  id: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  ipAddress: string | null;
+  userAgent: string | null;
+  createdAt: string;
+  expiresAt: string;
+  isSystemAdmin: boolean;
+}
+
+export interface SubscriptionRow {
+  id: string;
+  organizationId: string;
+  organizationName: string | null;
+  organizationSlug: string | null;
+  status: string;
+  billingInterval: string | null;
+  currentPeriodEnd: string | null;
+  trialEndsAt: string | null;
+  cancelAtPeriodEnd: boolean;
+  planName: string | null;
+  planCode: string | null;
+  priceMonthly: string | null;
+  priceYearly: string | null;
+  createdAt: string;
+}
+
+export interface BillingSummary {
+  subscriptions: SubscriptionRow[];
+  byPlan: { planName: string | null; planCode: string | null; count: number }[];
+  byStatus: { status: string; count: number }[];
+}
+
+export interface AnnouncementRow {
+  id: string;
+  title: string;
+  body: string;
+  level: 'INFO' | 'WARNING' | 'CRITICAL';
+  isActive: boolean;
+  startsAt: string;
+  endsAt: string | null;
+  createdById: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export const systemAdminApi = {
   getMyStatus: async (): Promise<{ isSystemAdmin: boolean }> => {
     const { data } = await apiClient.get('/api/system-admin/me');
@@ -146,5 +207,74 @@ export const systemAdminApi = {
 
   setFeatureFlag: async (key: string, isEnabled: boolean, organizationId?: string): Promise<void> => {
     await apiClient.put(`/api/system-admin/feature-flags/${key}`, { isEnabled, organizationId });
+  },
+
+  getUsage: async (
+    limit = 25,
+    offset = 0,
+  ): Promise<{ usage: OrgUsageRow[]; total: number }> => {
+    const { data } = await apiClient.get('/api/system-admin/usage', {
+      params: { limit, offset },
+    });
+    return data as { usage: OrgUsageRow[]; total: number };
+  },
+
+  listSessions: async (
+    limit = 50,
+    offset = 0,
+  ): Promise<{ sessions: SessionRow[]; total: number }> => {
+    const { data } = await apiClient.get('/api/system-admin/sessions', {
+      params: { limit, offset },
+    });
+    return data as { sessions: SessionRow[]; total: number };
+  },
+
+  revokeSession: async (sessionId: string): Promise<void> => {
+    await apiClient.delete(`/api/system-admin/sessions/${sessionId}`);
+  },
+
+  getBilling: async (): Promise<BillingSummary> => {
+    const { data } = await apiClient.get('/api/system-admin/billing');
+    return data as BillingSummary;
+  },
+
+  listAnnouncements: async (): Promise<AnnouncementRow[]> => {
+    const { data } = await apiClient.get('/api/system-admin/announcements');
+    return data as AnnouncementRow[];
+  },
+
+  getActiveAnnouncements: async (): Promise<AnnouncementRow[]> => {
+    const { data } = await apiClient.get('/api/system-admin/announcements/active');
+    return data as AnnouncementRow[];
+  },
+
+  createAnnouncement: async (body: {
+    title: string;
+    body: string;
+    level: 'INFO' | 'WARNING' | 'CRITICAL';
+    startsAt?: string;
+    endsAt?: string;
+  }): Promise<AnnouncementRow> => {
+    const { data } = await apiClient.post('/api/system-admin/announcements', body);
+    return data as AnnouncementRow;
+  },
+
+  updateAnnouncement: async (
+    id: string,
+    body: Partial<{
+      title: string;
+      body: string;
+      level: 'INFO' | 'WARNING' | 'CRITICAL';
+      isActive: boolean;
+      startsAt: string;
+      endsAt: string | null;
+    }>,
+  ): Promise<AnnouncementRow> => {
+    const { data } = await apiClient.put(`/api/system-admin/announcements/${id}`, body);
+    return data as AnnouncementRow;
+  },
+
+  deleteAnnouncement: async (id: string): Promise<void> => {
+    await apiClient.delete(`/api/system-admin/announcements/${id}`);
   },
 };

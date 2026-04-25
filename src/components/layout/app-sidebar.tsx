@@ -30,6 +30,12 @@ import {
   Receipt,
   ArrowsLeftRight,
   ShieldStar,
+  Heartbeat,
+  ChartPieSlice,
+  Devices,
+  CreditCard,
+  BellRinging,
+  BookOpen,
   type Icon,
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
@@ -105,27 +111,33 @@ const adminNavGroups = [
     groupKey: '',
     items: [
       { label: 'Panel', href: '/dashboard/admin', icon: ShieldStar },
+      { label: 'Estado del Sistema', href: '/dashboard/admin/health', icon: Heartbeat },
     ],
   },
   {
-    groupKey: 'Operaciones',
+    groupKey: 'Actividad',
     items: [
       { label: 'Pedimentos', href: '/dashboard/admin/pedimentos', icon: ClipboardText },
       { label: 'Operaciones', href: '/dashboard/admin/operaciones', icon: FileText },
     ],
   },
   {
-    groupKey: 'Entidades',
+    groupKey: 'Tenants',
     items: [
       { label: 'Organizaciones', href: '/dashboard/admin/organizations', icon: Buildings },
+      { label: 'Uso por org.', href: '/dashboard/admin/uso', icon: ChartPieSlice },
       { label: 'Usuarios', href: '/dashboard/admin/users', icon: UsersThree },
+      { label: 'Sesiones activas', href: '/dashboard/admin/sesiones', icon: Devices },
+      { label: 'Suscripciones', href: '/dashboard/admin/suscripciones', icon: CreditCard },
     ],
   },
   {
-    groupKey: 'Sistema',
+    groupKey: 'Configuración',
     items: [
-      { label: 'Audit Logs', href: '/dashboard/admin/audit-logs', icon: Receipt },
+      { label: 'Anuncios', href: '/dashboard/admin/anuncios', icon: BellRinging },
       { label: 'Feature Flags', href: '/dashboard/admin/feature-flags', icon: Flag },
+      { label: 'Catálogos SAT', href: '/dashboard/admin/catalogos', icon: BookOpen },
+      { label: 'Audit Logs', href: '/dashboard/admin/audit-logs', icon: Receipt },
     ],
   },
 ]
