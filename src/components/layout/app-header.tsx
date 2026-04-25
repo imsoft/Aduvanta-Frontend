@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
-import { SignOut, User } from '@phosphor-icons/react';
+import { SignOut, User, ShieldStar } from '@phosphor-icons/react';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
@@ -15,7 +15,8 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { signOut, useSession } from '@/lib/auth-client';
 import { useOrgStore } from '@/store/org.store';
-import { OrgSwitcher } from './org-switcher'
+import { OrgSwitcher } from './org-switcher';
+import { useIsSystemAdmin } from '@/features/system-admin/hooks/use-system-admin';
 
 function getInitials(name: string): string {
   return name
@@ -31,6 +32,7 @@ export function AppHeader() {
   const router = useRouter()
   const { data: session } = useSession();
   const { clearOrg } = useOrgStore();
+  const { data: adminStatus } = useIsSystemAdmin();
 
   const handleSignOut = async () => {
     await signOut();
@@ -44,7 +46,17 @@ export function AppHeader() {
   return (
     <header className="flex min-h-14 flex-wrap items-center gap-x-3 gap-y-2 border-b bg-background px-4 py-2 sm:flex-nowrap sm:py-0">
       <div className="min-w-0 flex-1">
-        <OrgSwitcher />
+        {adminStatus?.isSystemAdmin ? (
+          <div className="flex items-center gap-2">
+            <ShieldStar size={16} className="text-amber-500 shrink-0" weight="fill" />
+            <span className="text-sm font-semibold text-amber-600 dark:text-amber-400">Super Admin</span>
+            <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+              Vista de plataforma
+            </span>
+          </div>
+        ) : (
+          <OrgSwitcher />
+        )}
       </div>
 
       <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">

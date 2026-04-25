@@ -18,6 +18,7 @@ import { useSession } from '@/lib/auth-client';
 import { useOrgStore, type OrgOption } from '@/store/org.store';
 import { Button } from '@/components/ui/button';
 import { apiClient } from '@/lib/api-client';
+import { useIsSystemAdmin } from '@/features/system-admin/hooks/use-system-admin';
 
 async function fetchOrganizations(): Promise<OrgOption[]> {
   const { data } = await apiClient.get<OrgOption[]>('/api/organizations');
@@ -81,13 +82,19 @@ export default function DashboardPage() {
   const router = useRouter();
   const { data: session } = useSession();
   const { activeOrgId, organizations, setOrganizations, setActiveOrg } = useOrgStore();
+  const { data: adminStatus, isSuccess: adminChecked } = useIsSystemAdmin();
 
   const { data: orgs, isSuccess } = useQuery({
     queryKey: ['organizations'],
     queryFn: fetchOrganizations,
+    enabled: adminChecked && !adminStatus?.isSystemAdmin,
   });
 
   useEffect(() => {
+    if (adminChecked && adminStatus?.isSystemAdmin) {
+      router.replace('/dashboard/admin');
+      return;
+    }
     if (!orgs) return;
     setOrganizations(orgs);
     if (!activeOrgId && orgs.length > 0) {
@@ -96,7 +103,7 @@ export default function DashboardPage() {
     if (isSuccess && orgs.length === 0) {
       router.replace('/dashboard/organizations/new');
     }
-  }, [orgs, isSuccess, activeOrgId, setOrganizations, setActiveOrg, router]);
+  }, [orgs, isSuccess, activeOrgId, setOrganizations, setActiveOrg, router, adminStatus, adminChecked]);
 
   const activeOrg = organizations.find((o) => o.id === activeOrgId);
   const user = session?.user;
@@ -112,6 +119,7 @@ export default function DashboardPage() {
     enabled: !!activeOrgId,
   });
 
+  if (adminStatus?.isSystemAdmin) return null;
   if (isSuccess && orgs && orgs.length === 0) {
     return null;
   }

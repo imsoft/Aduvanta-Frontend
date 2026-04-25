@@ -30,6 +30,52 @@ export interface UserRow {
   isSystemAdmin: boolean;
 }
 
+export interface EntryRow {
+  id: string;
+  entryNumber: string | null;
+  entryKey: string | null;
+  regime: string | null;
+  status: string;
+  grandTotal: string | null;
+  internalReference: string | null;
+  organizationId: string;
+  organizationSlug: string | null;
+  createdAt: string;
+}
+
+export interface OperationRow {
+  id: string;
+  reference: string;
+  title: string;
+  type: string;
+  status: string;
+  priority: string;
+  organizationId: string;
+  organizationSlug: string | null;
+  createdAt: string;
+}
+
+export interface AuditLogRow {
+  id: string;
+  action: string;
+  resource: string;
+  resourceId: string | null;
+  actorId: string | null;
+  organizationId: string | null;
+  metadata: Record<string, unknown> | null;
+  createdAt: string;
+}
+
+export interface FeatureFlagRow {
+  id: string;
+  key: string;
+  description: string | null;
+  isEnabled: boolean;
+  organizationId: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export const systemAdminApi = {
   getMyStatus: async (): Promise<{ isSystemAdmin: boolean }> => {
     const { data } = await apiClient.get('/api/system-admin/me');
@@ -60,5 +106,45 @@ export const systemAdminApi = {
       params: { limit, offset, search },
     });
     return data as { users: UserRow[]; total: number };
+  },
+
+  listEntries: async (
+    limit = 25,
+    offset = 0,
+    search?: string,
+  ): Promise<{ entries: EntryRow[]; total: number }> => {
+    const { data } = await apiClient.get('/api/system-admin/entries', {
+      params: { limit, offset, search },
+    });
+    return data as { entries: EntryRow[]; total: number };
+  },
+
+  listOperations: async (
+    limit = 25,
+    offset = 0,
+  ): Promise<{ operations: OperationRow[]; total: number }> => {
+    const { data } = await apiClient.get('/api/system-admin/operations', {
+      params: { limit, offset },
+    });
+    return data as { operations: OperationRow[]; total: number };
+  },
+
+  listAuditLogs: async (
+    limit = 50,
+    offset = 0,
+  ): Promise<{ logs: AuditLogRow[]; total: number }> => {
+    const { data } = await apiClient.get('/api/system-admin/audit-logs', {
+      params: { limit, offset },
+    });
+    return data as { logs: AuditLogRow[]; total: number };
+  },
+
+  listFeatureFlags: async (): Promise<FeatureFlagRow[]> => {
+    const { data } = await apiClient.get('/api/system-admin/feature-flags');
+    return data as FeatureFlagRow[];
+  },
+
+  setFeatureFlag: async (key: string, isEnabled: boolean, organizationId?: string): Promise<void> => {
+    await apiClient.put(`/api/system-admin/feature-flags/${key}`, { isEnabled, organizationId });
   },
 };

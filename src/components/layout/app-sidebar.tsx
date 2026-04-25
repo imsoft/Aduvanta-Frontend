@@ -100,10 +100,34 @@ const navGroups: NavGroup[] = [
   },
 ]
 
-const adminNavItems = [
-  { label: 'Panel', href: '/dashboard/admin', icon: ShieldStar },
-  { label: 'Organizaciones', href: '/dashboard/admin/organizations', icon: Buildings },
-  { label: 'Usuarios', href: '/dashboard/admin/users', icon: UsersThree },
+const adminNavGroups = [
+  {
+    groupKey: '',
+    items: [
+      { label: 'Panel', href: '/dashboard/admin', icon: ShieldStar },
+    ],
+  },
+  {
+    groupKey: 'Operaciones',
+    items: [
+      { label: 'Pedimentos', href: '/dashboard/admin/pedimentos', icon: ClipboardText },
+      { label: 'Operaciones', href: '/dashboard/admin/operaciones', icon: FileText },
+    ],
+  },
+  {
+    groupKey: 'Entidades',
+    items: [
+      { label: 'Organizaciones', href: '/dashboard/admin/organizations', icon: Buildings },
+      { label: 'Usuarios', href: '/dashboard/admin/users', icon: UsersThree },
+    ],
+  },
+  {
+    groupKey: 'Sistema',
+    items: [
+      { label: 'Audit Logs', href: '/dashboard/admin/audit-logs', icon: Receipt },
+      { label: 'Feature Flags', href: '/dashboard/admin/feature-flags', icon: Flag },
+    ],
+  },
 ]
 
 export const AppSidebar = () => {
@@ -156,85 +180,90 @@ export const AppSidebar = () => {
       <Separator />
 
       {/* Navigation */}
-      <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto overflow-x-hidden p-2">
-        {navGroups.map((group) => (
-          <div key={group.groupKey || '__top'} className="mb-1">
-            {group.groupKey && !collapsed && (
-              <p className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
-                {group.groupKey}
-              </p>
-            )}
-            {group.items.map(({ labelKey, href, icon: Icon }) => {
-              const active =
-                href === '/dashboard'
-                  ? pathname === href
-                  : pathname.startsWith(href)
-              const label = t(labelKey)
+      {adminStatus?.isSystemAdmin ? (
+        <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto overflow-x-hidden p-2">
+          {!collapsed && (
+            <p className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-wider text-amber-500/80">
+              Super Admin
+            </p>
+          )}
+          {adminNavGroups.map((group) => (
+            <div key={group.groupKey || '__top'} className="mb-1">
+              {group.groupKey && !collapsed && (
+                <p className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+                  {group.groupKey}
+                </p>
+              )}
+              {group.items.map(({ label, href, icon: Icon }) => {
+                const active = href === '/dashboard/admin' ? pathname === href : pathname.startsWith(href)
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    title={collapsed ? label : undefined}
+                    className={cn(
+                      'flex items-center rounded-md py-2 text-sm transition-colors',
+                      collapsed ? 'justify-center px-0' : 'gap-2.5 px-3',
+                      active
+                        ? 'bg-amber-500/10 font-medium text-amber-600 dark:text-amber-400'
+                        : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                    )}
+                  >
+                    <Icon
+                      size={16}
+                      className={cn('shrink-0', active && 'text-amber-500')}
+                      weight={active ? 'fill' : 'regular'}
+                      aria-hidden
+                    />
+                    <span className={cn(collapsed && 'sr-only')}>{label}</span>
+                  </Link>
+                )
+              })}
+            </div>
+          ))}
+        </nav>
+      ) : (
+        <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto overflow-x-hidden p-2">
+          {navGroups.map((group) => (
+            <div key={group.groupKey || '__top'} className="mb-1">
+              {group.groupKey && !collapsed && (
+                <p className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+                  {group.groupKey}
+                </p>
+              )}
+              {group.items.map(({ labelKey, href, icon: Icon }) => {
+                const active =
+                  href === '/dashboard'
+                    ? pathname === href
+                    : pathname.startsWith(href)
+                const label = t(labelKey)
 
-              return (
-                <Link
-                  key={href}
-                  href={href}
-                  title={collapsed ? label : undefined}
-                  className={cn(
-                    'flex items-center rounded-md py-2 text-sm transition-colors',
-                    collapsed ? 'justify-center px-0' : 'gap-2.5 px-3',
-                    active
-                      ? 'bg-accent font-medium text-accent-foreground'
-                      : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
-                  )}
-                >
-                  <Icon
-                    size={16}
-                    className="shrink-0"
-                    weight={active ? 'fill' : 'regular'}
-                    aria-hidden
-                  />
-                  <span className={cn(collapsed && 'sr-only')}>{label}</span>
-                </Link>
-              )
-            })}
-          </div>
-        ))}
-      </nav>
-
-      {/* System admin section */}
-      {adminStatus?.isSystemAdmin && (
-        <>
-          <Separator />
-          <nav className="flex flex-col gap-0.5 overflow-x-hidden p-2">
-            {!collapsed && (
-              <p className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-wider text-amber-500/80">
-                Plataforma
-              </p>
-            )}
-            {adminNavItems.map(({ label, href, icon: Icon }) => {
-              const active = href === '/dashboard/admin' ? pathname === href : pathname.startsWith(href)
-              return (
-                <Link
-                  key={href}
-                  href={href}
-                  title={collapsed ? label : undefined}
-                  className={cn(
-                    'flex items-center rounded-md py-2 text-sm transition-colors',
-                    collapsed ? 'justify-center px-0' : 'gap-2.5 px-3',
-                    active
-                      ? 'bg-amber-500/10 font-medium text-amber-600 dark:text-amber-400'
-                      : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
-                  )}
-                >
-                  <Icon
-                    size={16}
-                    className={cn('shrink-0', active && 'text-amber-500')}
-                    weight={active ? 'fill' : 'regular'}
-                    aria-hidden
-                  />
-                  <span className={cn(collapsed && 'sr-only')}>{label}</span>
-                </Link>
-              )
-            })}
-          </nav>
-        </>
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    title={collapsed ? label : undefined}
+                    className={cn(
+                      'flex items-center rounded-md py-2 text-sm transition-colors',
+                      collapsed ? 'justify-center px-0' : 'gap-2.5 px-3',
+                      active
+                        ? 'bg-accent font-medium text-accent-foreground'
+                        : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                    )}
+                  >
+                    <Icon
+                      size={16}
+                      className="shrink-0"
+                      weight={active ? 'fill' : 'regular'}
+                      aria-hidden
+                    />
+                    <span className={cn(collapsed && 'sr-only')}>{label}</span>
+                  </Link>
+                )
+              })}
+            </div>
+          ))}
+        </nav>
       )}
 
       <Separator />
