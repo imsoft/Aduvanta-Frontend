@@ -62,7 +62,13 @@ export default function SignInPage() {
         return
       }
 
-      window.location.assign(`/${locale}/dashboard`)
+      const params = new URLSearchParams(window.location.search)
+      const callbackUrl = params.get('callbackUrl') ?? ''
+      const destination =
+        callbackUrl.startsWith('/') && !callbackUrl.startsWith('//')
+          ? callbackUrl
+          : `/${locale}/dashboard`
+      window.location.assign(destination)
     } catch {
       toast.error(t('toast.unexpectedError'))
     } finally {
@@ -75,7 +81,7 @@ export default function SignInPage() {
     try {
       await signIn.social({
         provider: 'google',
-        callbackURL: `${window.location.origin}/${locale}/dashboard`,
+        callbackURL: `${process.env.NEXT_PUBLIC_APP_URL ?? ''}/${locale}/dashboard`,
       });
     } catch {
       toast.error(t('toast.unexpectedError'))

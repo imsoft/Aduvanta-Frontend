@@ -32,8 +32,7 @@ apiClient.interceptors.response.use(
       error.response.data?.code === 'DUPLICATE_REQUEST'
     ) {
       toast.info('Request already in progress. Please wait.');
-      // Suppress the error so the UI doesn't show a failure
-      return new Promise(() => {});
+      return Promise.resolve(error.response);
     }
 
     return Promise.reject(error);

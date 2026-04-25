@@ -26,7 +26,7 @@ const cspDirectives: Record<string, string[]> = {
   "script-src": [
     "'self'",
     "'unsafe-inline'",
-    "'unsafe-eval'",
+    ...(isDev ? ["'unsafe-eval'"] : []),
     "https://va.vercel-scripts.com",
     "https://*.vercel-insights.com",
     "https://*.sentry.io",

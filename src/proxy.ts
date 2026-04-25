@@ -6,9 +6,29 @@ const intlMiddleware = createMiddleware(routing)
 
 const publicPaths = ['/', '/sign-in', '/sign-up']
 
+// Paths where an authenticated user should be bounced to the dashboard
+// instead of seeing the public page (landing, sign-in, sign-up).
+const redirectToDashboardPaths = ['/', '/sign-in', '/sign-up']
+
+// Built from routing.locales so adding a new locale automatically updates
+// the middleware — no hardcoded regex to forget.
+const localeSegment = routing.locales.join('|')
+const localePrefix = new RegExp(`^/(${localeSegment})`)
+
+function stripLocale(pathname: string): string {
+  return pathname.replace(localePrefix, '') || '/'
+}
+
 function isPublicPath(pathname: string): boolean {
-  const withoutLocale = pathname.replace(/^\/(en-US|es-MX)/, '') || '/'
+  const withoutLocale = stripLocale(pathname)
   return publicPaths.some(
+    (p) => withoutLocale === p || withoutLocale.startsWith(`${p}/`),
+  )
+}
+
+function isRedirectToDashboardPath(pathname: string): boolean {
+  const withoutLocale = stripLocale(pathname)
+  return redirectToDashboardPaths.some(
     (p) => withoutLocale === p || withoutLocale.startsWith(`${p}/`),
   )
 }
@@ -28,6 +48,20 @@ export function proxy(request: NextRequest) {
   const intlResponse = intlMiddleware(request)
 
   if (isPublicPath(pathname)) {
+    if (isRedirectToDashboardPath(pathname)) {
+      const sessionCookie =
+        request.cookies.get('better-auth.session_token') ??
+        request.cookies.get('__Secure-better-auth.session_token')
+
+      if (sessionCookie) {
+        const locale =
+          pathname.match(/^\/(en-US|es-MX)/)?.[1] ?? routing.defaultLocale
+        return NextResponse.redirect(
+          new URL(`/${locale}/dashboard`, request.url),
+        )
+      }
+    }
+
     return intlResponse
   }
 

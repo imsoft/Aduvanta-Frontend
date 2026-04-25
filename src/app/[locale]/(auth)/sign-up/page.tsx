@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { Link, useRouter } from '@/i18n/navigation'
 import { useForm } from 'react-hook-form';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
@@ -29,6 +29,7 @@ type SignUpFormData = z.infer<ReturnType<typeof createSignUpSchema>>
 
 export default function SignUpPage() {
   const t = useTranslations()
+  const locale = useLocale()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
@@ -67,7 +68,7 @@ export default function SignUpPage() {
     try {
       await signIn.social({
         provider: 'google',
-        callbackURL: `${window.location.origin}/dashboard`,
+        callbackURL: `${process.env.NEXT_PUBLIC_APP_URL ?? ''}/${locale}/dashboard`,
       });
     } catch {
       toast.error(t('toast.unexpectedError'))
