@@ -35,16 +35,51 @@ export interface CustomsEntry {
   regime: CustomsRegime;
   status: EntryStatus;
   operationType: number;
+
+  // Dates
   entryDate: string | null;
   paymentDate: string | null;
   arrivalDate: string | null;
+  exitDate: string | null;
+
+  // Transport
   transportMode: number | null;
   carrierName: string | null;
   transportDocumentNumber: string | null;
+
+  // Countries
   originCountry: string | null;
   destinationCountry: string | null;
+
+  // Exchange rate / currency
   exchangeRate: string | null;
   invoiceCurrency: string | null;
+
+  // Goods summary
+  grossWeightKg: string | null;
+  packageCount: number | null;
+  packageMarks: string | null;
+
+  // Incrementables (Art. 65-66 Ley Aduanera)
+  freightValue: string | null;
+  insuranceValue: string | null;
+  packagingValue: string | null;
+  otherIncrementables: string | null;
+
+  // INCOTERM and valuation
+  incoterm: string | null;
+  vinculacion: string | null;
+  valueReceiptNumber: string | null;
+
+  // Payment
+  paymentMethod: string | null;
+  paymentReference: string | null;
+
+  // SAAI fields
+  acceptanceCode: string | null;
+  customsSectionKey: string | null;
+
+  // Total values
   totalCommercialValueUsd: string | null;
   totalCommercialValueMxn: string | null;
   totalCustomsValueMxn: string | null;
@@ -53,7 +88,7 @@ export interface CustomsEntry {
   totalDta: string | null;
   totalOtherTaxes: string | null;
   grandTotal: string | null;
-  paymentReference: string | null;
+
   internalReference: string | null;
   observations: string | null;
   createdById: string;
@@ -65,29 +100,48 @@ export interface CustomsEntry {
 export interface CustomsEntryItem {
   id: string;
   entryId: string;
-  sequenceNumber: number;
-  tariffFraction: string | null;
+  itemNumber: number;
+  tariffFractionCode: string | null;
   tariffSubdivision: string | null;
+  valuationMethod: number | null;
   description: string;
+  originCountry: string | null;
+  // UMT (tariff unit)
   quantity: string | null;
-  unitOfMeasure: string | null;
+  measurementUnit: string | null;
+  // UMC (commercial unit)
   commercialQuantity: string | null;
   commercialUnitOfMeasure: string | null;
+  // Weight
+  grossWeightKg: string | null;
+  netWeightKg: string | null;
+  // Values
   commercialValueUsd: string | null;
+  paidPriceUsd: string | null;
+  unitPriceUsd: string | null;
   customsValueMxn: string | null;
-  countryOfOrigin: string | null;
+  customsValueUsd: string | null;
+  incrementablesMxn: string | null;
+  addedValueMxn: string | null;
+  // Trade
+  tradeAgreementCode: string | null;
+  vinculacion: string | null;
+  // Product details
   brand: string | null;
   model: string | null;
   serialNumber: string | null;
+  productCode: string | null;
+  observations: string | null;
   createdAt: string;
 }
 
 export interface CustomsEntryParty {
   id: string;
   entryId: string;
-  partyType: string;
+  role: string;
   name: string;
   taxId: string | null;
+  curp: string | null;
   address: string | null;
   country: string | null;
   createdAt: string;
@@ -103,6 +157,24 @@ export interface CustomsEntryDocument {
   currency: string | null;
   value: string | null;
   createdAt: string;
+}
+
+export interface CustomsEntryIdentifier {
+  id: string;
+  entryId: string;
+  itemId: string | null;
+  level: string;
+  code: string;
+  complement1: string | null;
+  complement2: string | null;
+  complement3: string | null;
+}
+
+export interface CustomsEntryContainer {
+  id: string;
+  entryId: string;
+  number: string;
+  containerType: string | null;
 }
 
 export interface CustomsOffice {
@@ -126,7 +198,16 @@ export interface CustomsEntryDetail extends CustomsEntry {
   items: CustomsEntryItem[];
   parties: CustomsEntryParty[];
   documents: CustomsEntryDocument[];
-  statusHistory: { id: string; fromStatus: string | null; toStatus: string; changedById: string; comment: string | null; createdAt: string }[];
+  identifiers: CustomsEntryIdentifier[];
+  containers: CustomsEntryContainer[];
+  statusHistory: {
+    id: string;
+    fromStatus: string | null;
+    toStatus: string;
+    changedById: string;
+    comment: string | null;
+    createdAt: string;
+  }[];
 }
 
 export interface ListCustomsEntriesResult {

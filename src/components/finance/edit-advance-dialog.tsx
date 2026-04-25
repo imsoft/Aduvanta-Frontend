@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -27,6 +28,8 @@ export function EditAdvanceDialog({
   onSubmit,
   isPending,
 }: EditAdvanceDialogProps) {
+  const t = useTranslations('finance');
+  const tCommon = useTranslations('common');
   const [values, setValues] = useState({
     amount: parseFloat(advance.amount),
     currency: advance.currency,
@@ -62,11 +65,11 @@ export function EditAdvanceDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Edit advance</DialogTitle>
+          <DialogTitle>{t('dialogs.editAdvance')}</DialogTitle>
         </DialogHeader>
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Amount *">
+            <Field label={t('fields.amountRequired')}>
               <input
                 type="number"
                 min="0"
@@ -78,7 +81,7 @@ export function EditAdvanceDialog({
                 }
               />
             </Field>
-            <Field label="Currency *">
+            <Field label={t('fields.currencyRequired')}>
               <input
                 className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 value={values.currency}
@@ -88,7 +91,7 @@ export function EditAdvanceDialog({
               />
             </Field>
           </div>
-          <Field label="Received at *">
+          <Field label={t('fields.receivedAtRequired')}>
             <input
               type="date"
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
@@ -96,14 +99,14 @@ export function EditAdvanceDialog({
               onChange={(e) => setValues((v) => ({ ...v, receivedAt: e.target.value }))}
             />
           </Field>
-          <Field label="Reference">
+          <Field label={t('fields.reference')}>
             <input
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={values.reference}
               onChange={(e) => setValues((v) => ({ ...v, reference: e.target.value }))}
             />
           </Field>
-          <Field label="Notes">
+          <Field label={t('fields.notes')}>
             <textarea
               rows={2}
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
@@ -114,13 +117,13 @@ export function EditAdvanceDialog({
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isPending}>
-            Cancel
+            {tCommon('cancel')}
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={!values.currency || values.amount <= 0 || !values.receivedAt || isPending}
           >
-            {isPending ? 'Saving…' : 'Save changes'}
+            {isPending ? tCommon('saving') : tCommon('saveChanges')}
           </Button>
         </DialogFooter>
       </DialogContent>

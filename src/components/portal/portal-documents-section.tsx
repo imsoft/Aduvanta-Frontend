@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { DownloadSimple } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import {
@@ -26,6 +27,7 @@ interface PortalDocumentsSectionProps {
 }
 
 export function PortalDocumentsSection({ operationId }: PortalDocumentsSectionProps) {
+  const t = useTranslations('portalDocs');
   const { data: documents = [], isLoading } = usePortalDocuments(operationId);
   const download = usePortalDocumentDownload();
 
@@ -39,17 +41,17 @@ export function PortalDocumentsSection({ operationId }: PortalDocumentsSectionPr
   }
 
   if (documents.length === 0) {
-    return <EmptyState title="No documents available." />;
+    return <EmptyState title={t('empty')} />;
   }
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>Type</TableHead>
-          <TableHead>Size</TableHead>
-          <TableHead>Uploaded</TableHead>
+          <TableHead>{t('columns.name')}</TableHead>
+          <TableHead>{t('columns.type')}</TableHead>
+          <TableHead>{t('columns.size')}</TableHead>
+          <TableHead>{t('columns.uploaded')}</TableHead>
           <TableHead />
         </TableRow>
       </TableHeader>
@@ -73,7 +75,7 @@ export function PortalDocumentsSection({ operationId }: PortalDocumentsSectionPr
                 disabled={download.isPending}
               >
                 <DownloadSimple size={13} />
-                Download
+                {t('download')}
               </Button>
             </TableCell>
           </TableRow>

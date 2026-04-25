@@ -1,312 +1,79 @@
 import type { Metadata } from 'next'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { buildPageMetadata, buildBreadcrumbJsonLd, BASE_URL } from '@/lib/seo'
 import { Link } from '@/i18n/navigation'
+import { Reveal } from '@/components/ui/reveal'
+import { StaticPageHero } from '@/components/landing/static-page-hero'
+import { StaticCtaCard } from '@/components/landing/static-cta-card'
 
-const tiers = {
-  'en-US': [
-    {
-      name: 'Starter',
-      price: '$2,000',
-      period: '/mo',
-      description: 'For small agencies getting started with modern customs software.',
-      features: [
-        'Up to 5 users',
-        '100 pedimentos/month',
-        'Tariff classification (TIGIE)',
-        'Anexo 22 catalogs',
-        'Basic audit logging',
-        'Email support',
-      ],
-      cta: 'Start free trial',
-      highlighted: false,
-    },
-    {
-      name: 'Professional',
-      price: '$8,000',
-      period: '/mo',
-      description: 'For growing agencies that need the full platform.',
-      features: [
-        'Up to 20 users',
-        'Unlimited pedimentos',
-        'All operational modules',
-        'Client portal',
-        'Advanced analytics',
-        'Priority support',
-        'Data migration assistance',
-        'Custom reports',
-      ],
-      cta: 'Start free trial',
-      highlighted: true,
-    },
-    {
-      name: 'Enterprise',
-      price: '$35,000',
-      period: '/mo',
-      description: 'For large operations with custom requirements.',
-      features: [
-        'Unlimited users',
-        'Unlimited pedimentos',
-        'All Professional features',
-        'Custom integrations',
-        'Dedicated account manager',
-        'SLA guarantee',
-        'Full data migration',
-        'On-boarding training',
-        'API access',
-      ],
-      cta: 'Contact sales',
-      highlighted: false,
-    },
-  ],
-  'es-MX': [
-    {
-      name: 'Starter',
-      price: '$2,000',
-      period: '/mes',
-      description: 'Para agencias pequenas que inician con software aduanal moderno.',
-      features: [
-        'Hasta 5 usuarios',
-        '100 pedimentos/mes',
-        'Clasificacion arancelaria (TIGIE)',
-        'Catalogos Anexo 22',
-        'Registro de auditoria basico',
-        'Soporte por correo',
-      ],
-      cta: 'Iniciar prueba gratis',
-      highlighted: false,
-    },
-    {
-      name: 'Professional',
-      price: '$8,000',
-      period: '/mes',
-      description: 'Para agencias en crecimiento que necesitan la plataforma completa.',
-      features: [
-        'Hasta 20 usuarios',
-        'Pedimentos ilimitados',
-        'Todos los modulos operativos',
-        'Portal de clientes',
-        'Analiticas avanzadas',
-        'Soporte prioritario',
-        'Asistencia en migracion de datos',
-        'Reportes personalizados',
-      ],
-      cta: 'Iniciar prueba gratis',
-      highlighted: true,
-    },
-    {
-      name: 'Enterprise',
-      price: '$35,000',
-      period: '/mes',
-      description: 'Para operaciones grandes con requerimientos especificos.',
-      features: [
-        'Usuarios ilimitados',
-        'Pedimentos ilimitados',
-        'Todo lo de Professional',
-        'Integraciones personalizadas',
-        'Gerente de cuenta dedicado',
-        'Garantia de SLA',
-        'Migracion completa de datos',
-        'Capacitacion de onboarding',
-        'Acceso a API',
-      ],
-      cta: 'Contactar ventas',
-      highlighted: false,
-    },
-  ],
-} as const
+type Tier = {
+  name: string
+  price: string
+  period: string
+  description: string
+  features: string[]
+  cta: string
+  highlighted: boolean
+}
 
-const faq = {
-  'en-US': [
-    {
-      question: 'Is there a free trial?',
-      answer:
-        'Yes. All plans include a 14-day free trial with full access. No credit card required.',
-    },
-    {
-      question: 'Can I change plans later?',
-      answer:
-        'Absolutely. You can upgrade or downgrade at any time. Changes take effect on your next billing cycle.',
-    },
-    {
-      question: 'What payment methods do you accept?',
-      answer:
-        'We accept bank transfers, credit/debit cards, and SPEI. All prices are in Mexican pesos (MXN) plus applicable taxes.',
-    },
-    {
-      question: 'Do you offer annual billing?',
-      answer:
-        'Yes. Annual plans receive a 15% discount compared to monthly billing.',
-    },
-    {
-      question: 'What happens to my data if I cancel?',
-      answer:
-        'Your data remains available for 30 days after cancellation. You can export everything at any time.',
-    },
-    {
-      question: 'Do you issue CFDI invoices?',
-      answer:
-        'Yes. We issue CFDI-compliant invoices for all payments automatically.',
-    },
-  ],
-  'es-MX': [
-    {
-      question: 'Hay prueba gratis?',
-      answer:
-        'Si. Todos los planes incluyen una prueba gratis de 14 dias con acceso completo. No se requiere tarjeta de credito.',
-    },
-    {
-      question: 'Puedo cambiar de plan despues?',
-      answer:
-        'Por supuesto. Puedes subir o bajar de plan en cualquier momento. Los cambios se aplican en tu proximo ciclo de facturacion.',
-    },
-    {
-      question: 'Que metodos de pago aceptan?',
-      answer:
-        'Aceptamos transferencias bancarias, tarjetas de credito/debito y SPEI. Todos los precios son en pesos mexicanos (MXN) mas impuestos aplicables.',
-    },
-    {
-      question: 'Ofrecen facturacion anual?',
-      answer:
-        'Si. Los planes anuales tienen un 15% de descuento comparado con la facturacion mensual.',
-    },
-    {
-      question: 'Que pasa con mis datos si cancelo?',
-      answer:
-        'Tus datos permanecen disponibles por 30 dias despues de la cancelacion. Puedes exportar todo en cualquier momento.',
-    },
-    {
-      question: 'Emiten facturas CFDI?',
-      answer:
-        'Si. Emitimos facturas CFDI automaticamente para todos los pagos.',
-    },
-  ],
-} as const
-
-const labels = {
-  'en-US': {
-    title: 'Pricing — Aduvanta Customs Software',
-    heading: 'Simple, transparent pricing',
-    subheading:
-      'Choose the plan that fits your agency. All plans include a 14-day free trial — no credit card required.',
-    currency: 'MXN',
-    faqHeading: 'Frequently asked questions',
-    ctaHeading: 'Ready to modernize your customs operations?',
-    ctaBody:
-      'Start your 14-day free trial today. No credit card required, no commitments.',
-    ctaButton: 'Start free trial',
-    popular: 'Most popular',
-  },
-  'es-MX': {
-    title: 'Precios — Software Aduanal Aduvanta',
-    heading: 'Precios simples y transparentes',
-    subheading:
-      'Elige el plan ideal para tu agencia. Todos los planes incluyen prueba gratis de 14 dias — sin tarjeta de credito.',
-    currency: 'MXN',
-    faqHeading: 'Preguntas frecuentes',
-    ctaHeading: 'Listo para modernizar tus operaciones aduanales?',
-    ctaBody:
-      'Inicia tu prueba gratis de 14 dias hoy. Sin tarjeta de credito, sin compromisos.',
-    ctaButton: 'Iniciar prueba gratis',
-    popular: 'Mas popular',
-  },
-} as const
+type FaqItem = { question: string; answer: string }
 
 type Props = { params: Promise<{ locale: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
-  const isEs = locale === 'es-MX'
+  const t = await getTranslations({ locale, namespace: 'landing.precios.meta' })
   return buildPageMetadata({
     locale,
-    title: isEs
-      ? 'Precios — Software Aduanal Aduvanta'
-      : 'Pricing — Aduvanta Customs Software',
-    description: isEs
-      ? 'Conoce los precios de Aduvanta. Planes desde $2,000 MXN/mes. Prueba gratis 14 dias, sin tarjeta de credito. Software aduanal en la nube.'
-      : 'Aduvanta pricing plans starting at $2,000 MXN/month. 14-day free trial, no credit card required. Cloud customs software for Mexican agencies.',
+    title: t('title'),
+    description: t('description'),
     path: '/precios',
-    keywords:
-      'precios software aduanal, pricing customs software, costo sistema aduanero',
+    keywords: t('keywords'),
   })
 }
 
 export default async function PreciosPage({ params }: Props) {
   const { locale } = await params
-  const isEs = locale === 'es-MX'
-  const t = isEs ? labels['es-MX'] : labels['en-US']
-  const plans = isEs ? tiers['es-MX'] : tiers['en-US']
-  const faqs = isEs ? faq['es-MX'] : faq['en-US']
+  setRequestLocale(locale)
+  const t = await getTranslations({ locale, namespace: 'landing.precios' })
+  const plans = t.raw('tiers') as Tier[]
+  const faqs = t.raw('faq') as FaqItem[]
 
   const breadcrumb = buildBreadcrumbJsonLd([
     { name: 'Aduvanta', url: `${BASE_URL}/${locale}` },
-    { name: t.title, url: `${BASE_URL}/${locale}/precios` },
+    { name: t('title'), url: `${BASE_URL}/${locale}/precios` },
   ])
 
   const pricingJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: 'Aduvanta',
-    description: isEs
-      ? 'Software aduanal en la nube para agencias aduanales en Mexico'
-      : 'Cloud customs software for Mexican customs agencies',
+    description: t('subheading'),
     url: `${BASE_URL}/${locale}/precios`,
-    brand: {
-      '@type': 'Brand',
-      name: 'Aduvanta',
-    },
-    offers: [
-      {
-        '@type': 'Offer',
-        name: 'Starter',
-        price: '2000',
+    brand: { '@type': 'Brand', name: 'Aduvanta' },
+    offers: plans.map((plan) => ({
+      '@type': 'Offer',
+      name: plan.name,
+      price: plan.price.replace(/[$,]/g, ''),
+      priceCurrency: 'MXN',
+      priceSpecification: {
+        '@type': 'UnitPriceSpecification',
+        price: plan.price.replace(/[$,]/g, ''),
         priceCurrency: 'MXN',
-        priceSpecification: {
-          '@type': 'UnitPriceSpecification',
-          price: '2000',
-          priceCurrency: 'MXN',
-          billingDuration: 'P1M',
-        },
-        availability: 'https://schema.org/InStock',
+        billingDuration: 'P1M',
       },
-      {
-        '@type': 'Offer',
-        name: 'Professional',
-        price: '8000',
-        priceCurrency: 'MXN',
-        priceSpecification: {
-          '@type': 'UnitPriceSpecification',
-          price: '8000',
-          priceCurrency: 'MXN',
-          billingDuration: 'P1M',
-        },
-        availability: 'https://schema.org/InStock',
-      },
-      {
-        '@type': 'Offer',
-        name: 'Enterprise',
-        price: '35000',
-        priceCurrency: 'MXN',
-        priceSpecification: {
-          '@type': 'UnitPriceSpecification',
-          price: '35000',
-          priceCurrency: 'MXN',
-          billingDuration: 'P1M',
-        },
-        availability: 'https://schema.org/InStock',
-      },
-    ],
+      availability: 'https://schema.org/InStock',
+    })),
   }
 
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
+    inLanguage: locale === 'es-MX' ? 'es-MX' : 'en-US',
     mainEntity: faqs.map((item) => ({
       '@type': 'Question',
       name: item.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: item.answer,
-      },
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
     })),
   }
 
@@ -325,31 +92,24 @@ export default async function PreciosPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      {/* Pricing hero */}
-      <section className="mx-auto max-w-5xl px-6 py-20 text-center">
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-          {t.heading}
-        </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-          {t.subheading}
-        </p>
-      </section>
+      <StaticPageHero title={t('heading')} subtitle={t('subheading')} width="md" />
 
-      {/* Pricing cards */}
       <section className="mx-auto max-w-6xl px-6 pb-20">
         <div className="grid gap-8 md:grid-cols-3">
-          {plans.map((plan) => (
-            <div
+          {plans.map((plan, i) => (
+            <Reveal
               key={plan.name}
-              className={`relative rounded-2xl border p-8 ${
+              variant="scale"
+              delay={120 * i}
+              className={`relative rounded-2xl border p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
                 plan.highlighted
-                  ? 'border-primary bg-primary/5 shadow-lg'
+                  ? 'border-primary bg-primary/5 shadow-lg hover:shadow-primary/20'
                   : 'border-border bg-background'
               }`}
             >
               {plan.highlighted && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-semibold text-primary-foreground">
-                  {t.popular}
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-semibold text-primary-foreground shadow-md">
+                  {t('popular')}
                 </span>
               )}
               <h2 className="text-xl font-semibold">{plan.name}</h2>
@@ -358,7 +118,7 @@ export default async function PreciosPage({ params }: Props) {
               </p>
               <div className="mt-6">
                 <span className="text-sm text-muted-foreground">
-                  {t.currency}{' '}
+                  {t('currency')}{' '}
                 </span>
                 <span className="text-4xl font-bold tracking-tight">
                   {plan.price}
@@ -393,52 +153,44 @@ export default async function PreciosPage({ params }: Props) {
               <div className="mt-8">
                 <Link
                   href="/sign-up"
-                  className={`block w-full rounded-lg px-4 py-3 text-center text-sm font-semibold transition ${
+                  className={`block w-full rounded-lg px-4 py-3 text-center text-sm font-semibold transition-all hover:-translate-y-0.5 ${
                     plan.highlighted
-                      ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                      ? 'bg-primary text-primary-foreground shadow-md hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20'
                       : 'border border-border bg-background text-foreground hover:bg-muted'
                   }`}
                 >
                   {plan.cta}
                 </Link>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      {/* FAQ */}
       <section className="mx-auto max-w-3xl px-6 pb-20">
-        <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          {t.faqHeading}
-        </h2>
+        <Reveal>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            {t('faqHeading')}
+          </h2>
+        </Reveal>
         <dl className="mt-8 space-y-6">
-          {faqs.map((item) => (
-            <div key={item.question}>
+          {faqs.map((item, i) => (
+            <Reveal key={item.question} delay={60 * i}>
               <dt className="font-semibold">{item.question}</dt>
               <dd className="mt-2 text-muted-foreground">{item.answer}</dd>
-            </div>
+            </Reveal>
           ))}
         </dl>
       </section>
 
-      {/* CTA */}
-      <section className="border-t bg-muted/50 px-6 py-20 text-center">
-        <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          {t.ctaHeading}
-        </h2>
-        <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-          {t.ctaBody}
-        </p>
-        <div className="mt-8">
-          <Link
-            href="/sign-up"
-            className="inline-block rounded-lg bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
-          >
-            {t.ctaButton}
-          </Link>
-        </div>
-      </section>
+      <StaticCtaCard title={t('ctaHeading')} description={t('ctaBody')}>
+        <Link
+          href="/sign-up"
+          className="inline-block rounded-lg bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+        >
+          {t('ctaButton')}
+        </Link>
+      </StaticCtaCard>
     </>
   )
 }

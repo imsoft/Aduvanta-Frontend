@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Plus } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { OperationFinanceSummaryCards } from './operation-finance-summary-cards';
@@ -33,6 +34,7 @@ export function OperationFinanceSection({
   operationId,
   canManage,
 }: OperationFinanceSectionProps) {
+  const t = useTranslations('finance');
   const [createChargeOpen, setCreateChargeOpen] = useState(false);
   const [createAdvanceOpen, setCreateAdvanceOpen] = useState(false);
 
@@ -67,14 +69,14 @@ export function OperationFinanceSection({
     <div className="space-y-8">
       {/* Summary */}
       <section className="space-y-4">
-        <h2 className="text-base font-semibold">Summary</h2>
+        <h2 className="text-base font-semibold">{t('summary')}</h2>
         <OperationFinanceSummaryCards operationId={operationId} />
       </section>
 
       {/* Charges */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-semibold">Charges</h2>
+          <h2 className="text-base font-semibold">{t('charges')}</h2>
           {canManage && (
             <Button
               size="sm"
@@ -83,7 +85,7 @@ export function OperationFinanceSection({
               className="gap-2"
             >
               <Plus size={14} />
-              Add charge
+              {t('addCharge')}
             </Button>
           )}
         </div>
@@ -104,7 +106,7 @@ export function OperationFinanceSection({
       {/* Advances */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-semibold">Advances</h2>
+          <h2 className="text-base font-semibold">{t('advances')}</h2>
           {canManage && (
             <Button
               size="sm"
@@ -113,7 +115,7 @@ export function OperationFinanceSection({
               className="gap-2"
             >
               <Plus size={14} />
-              Register advance
+              {t('registerAdvance')}
             </Button>
           )}
         </div>

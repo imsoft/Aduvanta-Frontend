@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -29,6 +30,8 @@ export function CreateDocumentRequirementDialog({
   onSubmit,
   isPending,
 }: CreateDocumentRequirementDialogProps) {
+  const t = useTranslations('compliance.createDocRequirementDialog');
+  const tCommon = useTranslations('common');
   const [selectedCategoryId, setSelectedCategoryId] = useState('');
   const [isRequired, setIsRequired] = useState(true);
 
@@ -53,16 +56,16 @@ export function CreateDocumentRequirementDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Add document requirement</DialogTitle>
+          <DialogTitle>{t('title')}</DialogTitle>
         </DialogHeader>
         <div className="space-y-3">
-          <Field label="Document category *">
+          <Field label={t('category')}>
             <select
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={selectedCategoryId}
               onChange={(e) => setSelectedCategoryId(e.target.value)}
             >
-              <option value="">Select a category…</option>
+              <option value="">{t('selectCategory')}</option>
               {available.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.name} ({cat.code})
@@ -79,7 +82,7 @@ export function CreateDocumentRequirementDialog({
               className="h-4 w-4"
             />
             <label htmlFor="isRequired" className="text-sm">
-              Mark as required
+              {t('markAsRequired')}
             </label>
           </div>
         </div>
@@ -89,13 +92,13 @@ export function CreateDocumentRequirementDialog({
             onClick={() => handleOpenChange(false)}
             disabled={isPending}
           >
-            Cancel
+            {tCommon('cancel')}
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={!selectedCategoryId || isPending}
           >
-            {isPending ? 'Adding…' : 'Add requirement'}
+            {isPending ? t('adding') : t('add')}
           </Button>
         </DialogFooter>
       </DialogContent>

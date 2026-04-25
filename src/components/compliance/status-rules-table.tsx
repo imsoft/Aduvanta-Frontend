@@ -38,10 +38,11 @@ export function StatusRulesTable({
   isDeletePending,
 }: StatusRulesTableProps) {
   const tCommon = useTranslations('common');
+  const t = useTranslations('compliance.statusRulesTable');
   if (rules.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
-        No status transition rules defined yet.
+        {t('empty')}
       </p>
     );
   }
@@ -50,9 +51,9 @@ export function StatusRulesTable({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>From status</TableHead>
-          <TableHead>To status</TableHead>
-          <TableHead>Requires all docs</TableHead>
+          <TableHead>{t('columns.from')}</TableHead>
+          <TableHead>{t('columns.to')}</TableHead>
+          <TableHead>{t('columns.requiresAllDocs')}</TableHead>
           {canManage && <TableHead />}
         </TableRow>
       </TableHeader>
@@ -69,7 +70,7 @@ export function StatusRulesTable({
                     : 'text-xs text-muted-foreground'
                 }
               >
-                {rule.requiresAllRequiredDocuments ? 'Yes' : 'No'}
+                {rule.requiresAllRequiredDocuments ? tCommon('yes') : tCommon('no')}
               </span>
             </TableCell>
             {canManage && (
@@ -86,10 +87,9 @@ export function StatusRulesTable({
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Remove status rule?</AlertDialogTitle>
+                      <AlertDialogTitle>{t('removeTitle')}</AlertDialogTitle>
                       <AlertDialogDescription>
-                        The transition {rule.fromStatus} → {rule.toStatus} will no longer be
-                        governed by this rule set.
+                        {t('removeDescription', { from: rule.fromStatus, to: rule.toStatus })}
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
@@ -99,7 +99,7 @@ export function StatusRulesTable({
                         disabled={isDeletePending}
                         className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                       >
-                        Remove
+                        {tCommon('remove')}
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>

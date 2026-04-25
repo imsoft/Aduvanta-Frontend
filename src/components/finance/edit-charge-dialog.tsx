@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -27,6 +28,8 @@ export function EditChargeDialog({
   onSubmit,
   isPending,
 }: EditChargeDialogProps) {
+  const t = useTranslations('finance');
+  const tCommon = useTranslations('common');
   const [values, setValues] = useState({
     type: charge.type,
     description: charge.description ?? '',
@@ -59,17 +62,17 @@ export function EditChargeDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Edit charge</DialogTitle>
+          <DialogTitle>{t('dialogs.editCharge')}</DialogTitle>
         </DialogHeader>
         <div className="space-y-3">
-          <Field label="Type *">
+          <Field label={t('fields.typeRequired')}>
             <input
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={values.type}
               onChange={(e) => setValues((v) => ({ ...v, type: e.target.value }))}
             />
           </Field>
-          <Field label="Description">
+          <Field label={t('fields.description')}>
             <textarea
               rows={2}
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
@@ -78,7 +81,7 @@ export function EditChargeDialog({
             />
           </Field>
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Amount *">
+            <Field label={t('fields.amountRequired')}>
               <input
                 type="number"
                 min="0"
@@ -90,7 +93,7 @@ export function EditChargeDialog({
                 }
               />
             </Field>
-            <Field label="Currency *">
+            <Field label={t('fields.currencyRequired')}>
               <input
                 className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 value={values.currency}
@@ -103,13 +106,13 @@ export function EditChargeDialog({
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isPending}>
-            Cancel
+            {tCommon('cancel')}
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={!values.type || !values.currency || values.amount <= 0 || isPending}
           >
-            {isPending ? 'Saving…' : 'Save changes'}
+            {isPending ? tCommon('saving') : tCommon('saveChanges')}
           </Button>
         </DialogFooter>
       </DialogContent>

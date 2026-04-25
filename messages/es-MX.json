@@ -468,6 +468,56 @@
         "deleteTitle": "¿Eliminar conjunto de reglas?",
         "deleteDescription": "\"{name}\" y todos sus requisitos y reglas de estado se eliminarán permanentemente."
       }
+    },
+    "operation": {
+      "title": "Cumplimiento",
+      "evaluating": "Evaluando cumplimiento…",
+      "canAdvance": "Puede avanzar",
+      "blocked": "Bloqueado",
+      "ruleSet": "Conjunto de reglas",
+      "alerts": "Alertas",
+      "missingDocuments": "Documentos requeridos faltantes",
+      "requiredDocuments": "Documentos requeridos",
+      "transitionsTitle": "Transiciones de estado desde el estado actual"
+    },
+    "statusRulesTable": {
+      "empty": "Aún no hay reglas de transición de estado definidas.",
+      "columns": {
+        "from": "Estado origen",
+        "to": "Estado destino",
+        "requiresAllDocs": "Requiere todos los docs"
+      },
+      "removeTitle": "¿Eliminar regla de estado?",
+      "removeDescription": "La transición {from} → {to} ya no será regida por este conjunto de reglas."
+    },
+    "docRequirementsTable": {
+      "empty": "Aún no hay requisitos de documentos definidos.",
+      "columns": {
+        "category": "Categoría",
+        "code": "Código",
+        "required": "Requerido"
+      },
+      "isRequired": "Requerido",
+      "isOptional": "Opcional",
+      "removeTitle": "¿Eliminar requisito?",
+      "removeDescription": "\"{name}\" ya no será requerido por este conjunto de reglas."
+    },
+    "createStatusRuleDialog": {
+      "title": "Agregar regla de transición de estado",
+      "fromStatus": "Estado origen",
+      "toStatus": "Estado destino",
+      "requiresAllDocs": "Requiere todos los documentos obligatorios",
+      "duplicate": "Esta transición ya existe en este conjunto de reglas.",
+      "adding": "Agregando…",
+      "add": "Agregar regla"
+    },
+    "createDocRequirementDialog": {
+      "title": "Agregar requisito de documento",
+      "category": "Categoría de documento *",
+      "selectCategory": "Selecciona una categoría…",
+      "markAsRequired": "Marcar como requerido",
+      "adding": "Agregando…",
+      "add": "Agregar requisito"
     }
   },
   "exports": {
@@ -673,5 +723,1546 @@
     "writeComment": "Escribe un comentario…",
     "statusChangeReason": "Motivo del cambio de estado…",
     "addressLabel": "Oficina principal"
+  },
+  "finance": {
+    "summary": "Resumen",
+    "charges": "Cargos",
+    "advances": "Anticipos",
+    "addCharge": "Agregar cargo",
+    "registerAdvance": "Registrar anticipo",
+    "noCharges": "Aún no hay cargos registrados.",
+    "noAdvances": "Aún no hay anticipos registrados.",
+    "columns": {
+      "type": "Tipo",
+      "description": "Descripción",
+      "amount": "Monto",
+      "currency": "Moneda",
+      "status": "Estado",
+      "created": "Creado",
+      "reference": "Referencia",
+      "receivedAt": "Fecha de recepción"
+    },
+    "summaryCards": {
+      "totalCharges": "Total de cargos",
+      "totalAdvances": "Total de anticipos",
+      "pendingBalance": "Saldo pendiente",
+      "status": "Estado"
+    },
+    "financialStatus": {
+      "PAID": "Pagado",
+      "PARTIALLY_PAID": "Pagado parcialmente",
+      "PENDING": "Pendiente",
+      "NO_CHARGES": "Sin cargos"
+    },
+    "fields": {
+      "typeRequired": "Tipo *",
+      "description": "Descripción",
+      "amountRequired": "Monto *",
+      "currencyRequired": "Moneda *",
+      "receivedAtRequired": "Fecha de recepción *",
+      "reference": "Referencia",
+      "notes": "Notas"
+    },
+    "dialogs": {
+      "addCharge": "Agregar cargo",
+      "editCharge": "Editar cargo",
+      "registerAdvance": "Registrar anticipo",
+      "editAdvance": "Editar anticipo",
+      "deactivateChargeTitle": "¿Desactivar cargo?",
+      "deactivateChargeDescription": "Este cargo se marcará como inactivo y se excluirá del resumen financiero.",
+      "deactivateAdvanceTitle": "¿Desactivar anticipo?",
+      "deactivateAdvanceDescription": "Este anticipo se marcará como inactivo y se excluirá del resumen financiero.",
+      "deactivate": "Desactivar",
+      "adding": "Agregando…",
+      "registering": "Registrando…"
+    }
+  },
+  "operationDocuments": {
+    "title": "Documentos",
+    "upload": "Subir",
+    "uploading": "Subiendo…",
+    "empty": "Aún no hay documentos.",
+    "columns": {
+      "name": "Nombre",
+      "category": "Categoría",
+      "version": "Versión",
+      "size": "Tamaño",
+      "status": "Estado"
+    },
+    "fields": {
+      "file": "Archivo",
+      "name": "Nombre",
+      "category": "Categoría",
+      "description": "Descripción"
+    },
+    "dialogs": {
+      "upload": "Subir documento",
+      "edit": "Editar documento"
+    }
+  },
+  "portalDocs": {
+    "empty": "No hay documentos disponibles.",
+    "columns": {
+      "name": "Nombre",
+      "type": "Tipo",
+      "size": "Tamaño",
+      "uploaded": "Subido"
+    },
+    "download": "Descargar"
+  },
+  "clientAccess": {
+    "title": "Acceso al portal",
+    "grant": "Otorgar acceso",
+    "grantDialogTitle": "Otorgar acceso al portal",
+    "granting": "Otorgando…",
+    "selectUser": "Usuario",
+    "selectUserPlaceholder": "Selecciona un usuario…",
+    "empty": "Ningún usuario tiene acceso al portal de este cliente.",
+    "revokeTitle": "¿Revocar acceso al portal?",
+    "revokeDescription": "{name} perderá acceso al portal de este cliente.",
+    "revoke": "Revocar"
+  },
+  "clientAddresses": {
+    "title": "Direcciones",
+    "add": "Agregar dirección",
+    "addDialogTitle": "Agregar dirección",
+    "editDialogTitle": "Editar dirección",
+    "empty": "Aún no hay direcciones.",
+    "columns": {
+      "label": "Etiqueta",
+      "address": "Dirección",
+      "cityState": "Ciudad / Estado",
+      "country": "País"
+    },
+    "primary": "Principal",
+    "removeTitle": "¿Eliminar dirección?",
+    "removeDescription": "{label} será eliminada permanentemente."
+  },
+  "operationComments": {
+    "title": "Comentarios",
+    "empty": "Aún no hay comentarios."
+  },
+  "customsEntries": {
+    "table": {
+      "entryNumber": "No. Pedimento",
+      "reference": "Referencia",
+      "key": "Clave",
+      "regime": "Régimen",
+      "status": "Estado",
+      "customsValue": "Valor en Aduana",
+      "totalContributions": "Total Contribuciones",
+      "date": "Fecha",
+      "pending": "Pendiente"
+    },
+    "regimes": {
+      "IMP_DEFINITIVA": "A1 — Importación definitiva",
+      "EXP_DEFINITIVA": "A2 — Exportación definitiva",
+      "IMP_TEMPORAL": "Importación temporal",
+      "EXP_TEMPORAL": "Exportación temporal",
+      "DEPOSITO_FISCAL": "Depósito fiscal",
+      "TRANSITO_INTERNO": "Tránsito interno",
+      "TRANSITO_INTERNACIONAL": "Tránsito internacional",
+      "VIRTUAL": "Virtual (IMMEX)",
+      "OTHER": "Otro"
+    }
+  },
+  "importerRegistry": {
+    "title": "Padrón de Importadores",
+    "subtitle": "Padrón general y sectorial (PISE) de importadores",
+    "newRecord": "Nuevo registro",
+    "newRecordTitle": "Nuevo registro de padrón",
+    "expiringBanner": "{count, plural, one {# registro} other {# registros}} con vencimiento en los próximos 30 días",
+    "searchPlaceholder": "Buscar por RFC o razón social…",
+    "allStatuses": "Todos los estados",
+    "emptyTitle": "Sin registros de padrón",
+    "emptyDescription": "Agrega el primer registro de padrón de importadores",
+    "saving": "Guardando…",
+    "createRecord": "Crear registro",
+    "fields": {
+      "client": "Cliente",
+      "clientPlaceholder": "Selecciona un cliente…",
+      "rfc": "RFC",
+      "rfcPlaceholder": "RFC del importador",
+      "registryType": "Tipo de padrón",
+      "businessName": "Razón social",
+      "businessNamePlaceholder": "Nombre o razón social",
+      "satFolio": "Folio SAT",
+      "satFolioPlaceholder": "Folio de inscripción al padrón",
+      "inscriptionDate": "Fecha de inscripción",
+      "expirationDate": "Fecha de vencimiento"
+    },
+    "columns": {
+      "rfc": "RFC",
+      "businessName": "Razón social",
+      "type": "Tipo",
+      "satFolio": "Folio SAT",
+      "inscription": "Inscripción",
+      "expiration": "Vencimiento",
+      "status": "Estado"
+    },
+    "status": {
+      "ACTIVE": "Activo",
+      "SUSPENDED": "Suspendido",
+      "CANCELLED": "Cancelado",
+      "EXPIRED": "Vencido",
+      "PENDING": "En trámite"
+    },
+    "types": {
+      "GENERAL": "General",
+      "SECTORIAL": "Sectorial (PISE)",
+      "BOTH": "General + Sectorial"
+    }
+  },
+  "converter": {
+    "title": "Conversiones",
+    "subtitle": "Conversor universal de unidades — masa, longitud, volumen, temperatura y más",
+    "from": "De",
+    "to": "A",
+    "swapUnits": "Intercambiar unidades",
+    "swapCurrencies": "Intercambiar monedas",
+    "loading": "Cargando…",
+    "referenceTableTitle": "Tabla de referencia",
+    "referenceTableDescription": "{amount} {symbol} en todas las unidades",
+    "frequentEquivalences": "Equivalencias frecuentes en comercio exterior",
+    "equivalencesCards": {
+      "weight": "Peso",
+      "volume": "Volumen",
+      "length": "Longitud"
+    },
+    "exchange": {
+      "title": "Tipos de cambio",
+      "subtitle": "Tasas de mercado (ExchangeRate-API) y tipo oficial SAT (Banco de México FIX)",
+      "fixTitle": "Tipo de cambio FIX — Banco de México",
+      "fixBadge": "Obligatorio para pedimentos (Art. 20 CFF)",
+      "publishedOn": "Publicado: {date}",
+      "fixMissing": "Configura {tokenName} en el backend para ver el FIX en tiempo real.",
+      "converterTitle": "Conversor de monedas — tasas de mercado",
+      "baseLabel": "Base",
+      "cacheLabel": "caché",
+      "liveLabel": "en vivo",
+      "priority": "Prioritarias",
+      "all": "Todas",
+      "mainCurrenciesTitle": "{amount} {base} en monedas principales",
+      "error": "No se pudo cargar tasas de cambio. Verifica que {keyName} esté configurada en el backend."
+    },
+    "categories": {
+      "masa": "Masa / Peso",
+      "longitud": "Longitud",
+      "volumen": "Volumen",
+      "area": "Área",
+      "temperatura": "Temperatura",
+      "velocidad": "Velocidad",
+      "presion": "Presión",
+      "energia": "Energía",
+      "potencia": "Potencia",
+      "datos": "Datos digitales",
+      "tiempo": "Tiempo",
+      "angulo": "Ángulo"
+    },
+    "units": {
+      "kg": "Kilogramo",
+      "g": "Gramo",
+      "mg": "Miligramo",
+      "ug": "Microgramo",
+      "t": "Tonelada métrica",
+      "ton_larga": "Tonelada larga (UK)",
+      "ton_corta": "Tonelada corta (US)",
+      "lb": "Libra",
+      "oz": "Onza",
+      "gr": "Grano",
+      "quintal": "Quintal métrico",
+      "arroba": "Arroba",
+      "stone": "Stone",
+      "m": "Metro",
+      "km": "Kilómetro",
+      "cm": "Centímetro",
+      "mm": "Milímetro",
+      "um": "Micrómetro",
+      "nm_len": "Nanómetro",
+      "mi": "Milla terrestre",
+      "nmi": "Milla náutica",
+      "yd": "Yarda",
+      "ft": "Pie",
+      "in": "Pulgada",
+      "fur": "Furlong",
+      "ly": "Año luz",
+      "au": "Unidad astronómica",
+      "l": "Litro",
+      "ml": "Mililitro",
+      "cl": "Centilitro",
+      "dl": "Decilitro",
+      "m3": "Metro cúbico",
+      "cm3": "Centímetro cúbico",
+      "mm3": "Milímetro cúbico",
+      "gal_us": "Galón US",
+      "gal_uk": "Galón UK",
+      "qt_us": "Cuarto US",
+      "pt_us": "Pinta US",
+      "cup": "Taza US",
+      "floz_us": "Onza líquida US",
+      "ft3": "Pie cúbico",
+      "in3": "Pulgada cúbica",
+      "bbl_oil": "Barril (petróleo)",
+      "bbl_beer": "Barril (cerveza US)",
+      "m2": "Metro cuadrado",
+      "km2": "Kilómetro cuadrado",
+      "cm2": "Centímetro cuadrado",
+      "mm2": "Milímetro cuadrado",
+      "ha": "Hectárea",
+      "a": "Área",
+      "ac": "Acre",
+      "mi2": "Milla cuadrada",
+      "yd2": "Yarda cuadrada",
+      "ft2": "Pie cuadrado",
+      "in2": "Pulgada cuadrada",
+      "c": "Celsius",
+      "f": "Fahrenheit",
+      "k": "Kelvin",
+      "r": "Rankine",
+      "reaumur": "Réaumur",
+      "ms": "Metro por segundo",
+      "kmh": "Kilómetro por hora",
+      "mph": "Milla por hora",
+      "fts": "Pie por segundo",
+      "kn": "Nudo",
+      "mach": "Mach (ISA)",
+      "c_light": "Velocidad de la luz",
+      "pa": "Pascal",
+      "kpa": "Kilopascal",
+      "mpa": "Megapascal",
+      "bar": "Bar",
+      "mbar": "Milibar",
+      "atm": "Atmósfera",
+      "psi": "PSI",
+      "mmhg": "Milímetro de mercurio",
+      "inhg": "Pulgada de mercurio",
+      "torr": "Torr",
+      "j": "Julio",
+      "kj": "Kilojulio",
+      "mj": "Megajulio",
+      "cal": "Caloría",
+      "kcal": "Kilocaloría",
+      "wh": "Vatio hora",
+      "kwh": "Kilowatt hora",
+      "ev": "Electronvolt",
+      "btu": "BTU",
+      "ftlbf": "Pie-libra fuerza",
+      "w": "Vatio",
+      "kw": "Kilovatio",
+      "mw": "Megavatio",
+      "hp_met": "Caballo de vapor métrico",
+      "hp_imp": "Horsepower (imperial)",
+      "btuhr": "BTU/hora",
+      "kcalhr": "kcal/hora",
+      "bit": "Bit",
+      "byte": "Byte",
+      "kb": "Kilobyte",
+      "mb": "Megabyte",
+      "gb": "Gigabyte",
+      "tb": "Terabyte",
+      "pb": "Petabyte",
+      "kbit": "Kilobit",
+      "mbit": "Megabit",
+      "gbit": "Gigabit",
+      "s": "Segundo",
+      "ms_t": "Milisegundo",
+      "us_t": "Microsegundo",
+      "ns_t": "Nanosegundo",
+      "min": "Minuto",
+      "h": "Hora",
+      "d": "Día",
+      "semana": "Semana",
+      "mes": "Mes (30 días)",
+      "anio": "Año (365 días)",
+      "deg": "Grado",
+      "rad": "Radián",
+      "grad": "Gradián",
+      "arcmin": "Minuto de arco",
+      "arcsec": "Segundo de arco",
+      "turn": "Vuelta completa"
+    }
+  },
+  "landing": {
+    "common": {
+      "getStarted": "Comenzar",
+      "comenzar": "Comenzar"
+    },
+    "navbar": {
+      "product": "Producto",
+      "pricing": "Precios",
+      "compare": "Comparar",
+      "faq": "FAQ",
+      "signIn": "Iniciar sesion",
+      "cta": "Empezar gratis",
+      "switchLocale": "EN",
+      "switchLocaleLabel": "Switch to English",
+      "openMenu": "Abrir menu",
+      "closeMenu": "Cerrar menu",
+      "brandHome": "Inicio Aduvanta",
+      "mainNavigation": "Navegacion principal"
+    },
+    "logoBar": {
+      "label": "Con la confianza de agencias aduanales en todo Mexico"
+    },
+    "footer": {
+      "tagline": "La plataforma moderna de operaciones aduanales.",
+      "productTitle": "Producto",
+      "toolsTitle": "Herramientas Gratuitas",
+      "companyTitle": "Empresa",
+      "rights": "Todos los derechos reservados.",
+      "productLinks": [
+        {
+          "label": "Caracteristicas",
+          "href": "/software-aduanal"
+        },
+        {
+          "label": "Precios",
+          "href": "/precios"
+        },
+        {
+          "label": "Comparar",
+          "href": "/comparar/sistemas-casa"
+        },
+        {
+          "label": "Blog",
+          "href": "/blog"
+        }
+      ],
+      "toolLinks": [
+        {
+          "label": "Consulta TIGIE",
+          "href": "/herramientas/consulta-tigie"
+        },
+        {
+          "label": "Catalogos Anexo 22",
+          "href": "/sign-up"
+        },
+        {
+          "label": "Codigos de Error SAAI",
+          "href": "/sign-up"
+        },
+        {
+          "label": "Conversor de Unidades",
+          "href": "/sign-up"
+        }
+      ],
+      "companyLinks": [
+        {
+          "label": "Nosotros",
+          "href": "/software-aduanal"
+        },
+        {
+          "label": "Contacto",
+          "href": "mailto:contacto@aduvanta.com"
+        },
+        {
+          "label": "Privacidad",
+          "href": "/privacidad"
+        },
+        {
+          "label": "Terminos",
+          "href": "/terminos"
+        }
+      ]
+    },
+    "hero": {
+      "eyebrow": "Nuevo — Clasificacion arancelaria con IA",
+      "headline": "Software Aduanal 100% en la Nube.",
+      "headlineAccent": "Una Plataforma. Cero Instalaciones.",
+      "subheadline": "Aduvanta reemplaza 13 apps de escritorio desconectadas con una sola plataforma en la nube. Pedimentos, clasificacion arancelaria TIGIE, facturacion, almacen y portal de clientes — todo desde tu navegador.",
+      "cta": "Prueba gratis 14 dias",
+      "ctaSecondary": "Ver demo",
+      "noCard": "Sin tarjeta de credito",
+      "preview": "Vista previa de la plataforma",
+      "playLabel": "Reproducir demo de Aduvanta",
+      "playCaption": "Ver demo",
+      "posterAlt": "Vista previa del demo de Aduvanta",
+      "stats": [
+        {
+          "value": "80%",
+          "label": "menos tiempo en pedimentos"
+        },
+        {
+          "value": "0",
+          "label": "software que instalar"
+        },
+        {
+          "value": "100%",
+          "label": "en linea, desde cualquier lugar"
+        }
+      ]
+    },
+    "problem": {
+      "badge": "El Problema",
+      "title": "El software aduanal heredado te cuesta dinero",
+      "description": "Cada hora peleando con apps de escritorio lentas, copiando datos entre sistemas y llamando a clientes para actualizar estatus es una hora que no se dedica a operaciones que generan ingresos.",
+      "beforeLabel": "Sin Aduvanta",
+      "beforeItems": [
+        "Captura manual entre 5+ sistemas desconectados",
+        "Clientes llamando cada hora preguntando por estatus",
+        "Errores de pedimentos detectados despues del envio",
+        "Documentos dispersos en correos y memorias USB",
+        "Sin forma de saber quien cambio que y cuando",
+        "Atado a una sola computadora en la oficina"
+      ],
+      "afterLabel": "Con Aduvanta",
+      "afterItems": [
+        "Una plataforma para todo — captura los datos una sola vez",
+        "Los clientes rastrean sus operaciones en tiempo real",
+        "Validacion antes del envio, menos rechazos",
+        "Todos los documentos organizados con control de versiones",
+        "Auditoria completa en cada accion",
+        "Trabaja desde cualquier lugar, en cualquier dispositivo"
+      ]
+    },
+    "howItWorks": {
+      "badge": "Como Funciona",
+      "title": "Empieza a gestionar pedimentos en 15 minutos",
+      "steps": [
+        {
+          "number": "01",
+          "title": "Crea tu cuenta",
+          "description": "Registrate, verifica tu email y listo. Sin descargas, sin instalaciones, sin departamento de IT."
+        },
+        {
+          "number": "02",
+          "title": "Configura tu organizacion",
+          "description": "Agrega a tu equipo, asigna roles y configura permisos. Invita a tus clientes a su propio portal."
+        },
+        {
+          "number": "03",
+          "title": "Empieza a operar",
+          "description": "Crea tu primer pedimento, sube documentos, rastrea operaciones. Todo desde tu navegador."
+        }
+      ]
+    },
+    "features": {
+      "sectionBadge": "Producto",
+      "sectionTitle": "Pedimentos, TIGIE, Portal de Clientes y Cumplimiento — Integrados",
+      "items": [
+        {
+          "iconKey": "fileText",
+          "badge": "Pedimentos",
+          "title": "Del borrador al desaduanamiento, rastreado de principio a fin",
+          "description": "Crea, valida y envia pedimentos sin cambiar entre sistemas. Cada campo validado contra reglas SAAI antes del envio.",
+          "bullets": [
+            "Gestion completa del ciclo (borrador, prevalidacion, envio, desaduanamiento)",
+            "Referencia de errores SAAI integrada — corrige rechazos rapido",
+            "Consulta automatica de catalogos Anexo 22 mientras capturas"
+          ],
+          "imageSrc": "/images/landing/features/pedimentos.jpg",
+          "imageAlt": "Ilustracion del ciclo de un pedimento: borrador en laptop, validacion SAAI y desaduanamiento de un camion"
+        },
+        {
+          "iconKey": "users",
+          "badge": "Portal de Clientes",
+          "title": "Deja de contestar la misma llamada 10 veces al dia",
+          "description": "Dale a cada cliente su propio acceso para rastrear operaciones, ver documentos y consultar estatus. Ven lo que tu quieres que vean — nada mas.",
+          "bullets": [
+            "Tus clientes consultan su propio estatus",
+            "Visibilidad controlada por permisos por cliente",
+            "Imagen profesional para tu agencia"
+          ],
+          "imageSrc": "/images/landing/features/portal-clientes.jpg",
+          "imageAlt": "Dashboard del portal de clientes con seguimiento de operaciones y acceso controlado por permisos a estatus, costos y notas internas"
+        },
+        {
+          "iconKey": "shieldCheck",
+          "badge": "Cumplimiento y Auditoria",
+          "title": "Cada accion registrada. Cada cambio rastreable.",
+          "description": "Cuando el SAT pida documentacion, la tienes. Auditoria completa con quien hizo que, cuando y por que — en cada modulo.",
+          "bullets": [
+            "Registros de auditoria inmutables en toda mutacion sensible",
+            "Acceso por roles con 60+ codigos de permiso",
+            "Aislamiento de datos por organizacion"
+          ],
+          "imageSrc": "/images/landing/features/cumplimiento-auditoria.jpg",
+          "imageAlt": "Boveda de auditoria inmutable encadenada a pedimentos y certificados de auditoria, representando registros listos para el SAT"
+        },
+        {
+          "iconKey": "sparkle",
+          "badge": "Inteligencia Artificial",
+          "title": "Clasifica mas rapido. Comete menos errores.",
+          "description": "Clasificacion arancelaria asistida por IA que sugiere fracciones basadas en descripciones de producto. Cruzada con TIGIE en tiempo real.",
+          "bullets": [
+            "Sugerencias inteligentes de fracciones arancelarias",
+            "Analisis de documentos y extraccion de datos",
+            "Insights sobre patrones y anomalias en operaciones"
+          ],
+          "imageSrc": "/images/landing/features/inteligencia-artificial.jpg",
+          "imageAlt": "Clasificacion arancelaria asistida por IA sugiriendo fracciones TIGIE en tiempo real para la descripcion de producto de un pedimento"
+        }
+      ]
+    },
+    "platform": {
+      "badge": "Plataforma",
+      "title": "14 Modulos. Una Plataforma de Operaciones Aduanales.",
+      "description": "Deja de pagar por 13 apps de escritorio separadas. Aduvanta cubre toda tu operacion aduanal y de comercio exterior en la nube.",
+      "categories": [
+        {
+          "title": "Aduanas y Comercio",
+          "modules": [
+            {
+              "iconKey": "fileText",
+              "name": "Pedimentos"
+            },
+            {
+              "iconKey": "scales",
+              "name": "Clasificacion Arancelaria"
+            },
+            {
+              "iconKey": "currencyDollar",
+              "name": "Valoracion Aduanera"
+            },
+            {
+              "iconKey": "truck",
+              "name": "Operaciones y Trafico"
+            }
+          ]
+        },
+        {
+          "title": "Finanzas y Facturacion",
+          "modules": [
+            {
+              "iconKey": "invoice",
+              "name": "Facturacion"
+            },
+            {
+              "iconKey": "vault",
+              "name": "Tesoreria"
+            },
+            {
+              "iconKey": "chartBar",
+              "name": "Analitica y BI"
+            }
+          ]
+        },
+        {
+          "title": "Documentos y Cumplimiento",
+          "modules": [
+            {
+              "iconKey": "folder",
+              "name": "Gestion Documental"
+            },
+            {
+              "iconKey": "warehouse",
+              "name": "Control de Almacenes"
+            },
+            {
+              "iconKey": "bookOpen",
+              "name": "Catalogos Anexo 22"
+            }
+          ]
+        },
+        {
+          "title": "Herramientas de Referencia",
+          "modules": [
+            {
+              "iconKey": "warning",
+              "name": "Errores SAAI"
+            },
+            {
+              "iconKey": "calculator",
+              "name": "Conversor de Unidades"
+            }
+          ]
+        }
+      ]
+    },
+    "comparison": {
+      "badge": "Comparar",
+      "title": "Competencia vs. Aduvanta",
+      "legacy": "Competencia",
+      "aduvanta": "Aduvanta",
+      "footer": "La misma funcionalidad base. Una experiencia completamente diferente.",
+      "rows": [
+        {
+          "feature": "Basado en web — sin instalacion",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "Acceso desde cualquier dispositivo",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "Portal de clientes incluido",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "Clasificacion con IA",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "Colaboracion en tiempo real",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "Auditoria completa",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "Soporte multi-organizacion",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "API para integraciones",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "Gestion de pedimentos",
+          "legacy": true,
+          "aduvanta": true
+        },
+        {
+          "feature": "Clasificacion arancelaria",
+          "legacy": true,
+          "aduvanta": true
+        },
+        {
+          "feature": "Actualizaciones automaticas",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "Facturacion y tesoreria unificada",
+          "legacy": false,
+          "aduvanta": true
+        }
+      ]
+    },
+    "pricing": {
+      "badge": "Precios",
+      "title": "Invierte en tu operacion, no en tus herramientas",
+      "description": "Todos los planes incluyen 14 dias gratis. Sin tarjeta de credito.",
+      "monthly": "Mensual",
+      "annual": "Anual",
+      "annualSave": "Ahorra 20%",
+      "popular": "Mas popular",
+      "guarantee": "14 dias gratis en todos los planes. Cancela cuando quieras.",
+      "contact": "Necesitas algo a la medida?",
+      "contactCta": "Platicamos",
+      "tiers": [
+        {
+          "name": "Starter",
+          "monthlyPrice": "$2,500",
+          "annualPrice": "$2,000",
+          "period": "MXN/mes",
+          "description": "Para agentes independientes que manejan sus propias operaciones.",
+          "features": [
+            "1 organizacion",
+            "3 usuarios incluidos",
+            "Pedimentos y entradas",
+            "Clasificacion arancelaria (TIGIE)",
+            "Referencia Anexo 22 y SAAI",
+            "Conversor de unidades",
+            "Soporte por email"
+          ],
+          "cta": "Empezar gratis",
+          "highlighted": false
+        },
+        {
+          "name": "Professional",
+          "monthlyPrice": "$12,000",
+          "annualPrice": "$9,600",
+          "period": "MXN/mes",
+          "description": "Para agencias que necesitan control operacional completo y gestion de clientes.",
+          "features": [
+            "1 organizacion",
+            "15 usuarios incluidos",
+            "Todo lo de Starter",
+            "Operaciones y trafico completo",
+            "Control de almacenes",
+            "Facturacion y tesoreria",
+            "Gestion documental",
+            "Portal de clientes",
+            "Soporte prioritario"
+          ],
+          "cta": "Empezar gratis",
+          "highlighted": true
+        },
+        {
+          "name": "Enterprise",
+          "monthlyPrice": "$35,000",
+          "annualPrice": "$28,000",
+          "period": "MXN/mes",
+          "description": "Para grupos aduanales y empresas IMMEX a escala.",
+          "features": [
+            "Organizaciones ilimitadas",
+            "Usuarios ilimitados",
+            "Todo lo de Professional",
+            "Dashboards de analitica y BI",
+            "Asistente IA",
+            "Acceso completo a API",
+            "Integraciones a la medida",
+            "SSO / SAML",
+            "Account manager dedicado"
+          ],
+          "cta": "Hablar con ventas",
+          "highlighted": false
+        }
+      ]
+    },
+    "testimonials": {
+      "badge": "Testimonios",
+      "title": "Lo que dicen nuestros usuarios",
+      "items": [
+        {
+          "quote": "Migramos de CASA y ahorramos 3 horas al dia solo en captura de pedimentos. A nuestros clientes les encanta el portal — dejaron de llamar para preguntar por estatus.",
+          "name": "Maria Gonzalez",
+          "role": "Directora, Agencia Aduanal MG"
+        },
+        {
+          "quote": "Solo la auditoria justifico el cambio. Cuando el SAT nos audito, sacamos cada registro en minutos en lugar de dias.",
+          "name": "Carlos Hernandez",
+          "role": "Gerente de Cumplimiento, TradeLink MX"
+        },
+        {
+          "quote": "Por fin, una plataforma aduanera que se siente como software hecho en esta decada. Mi equipo estuvo operando el mismo dia.",
+          "name": "Ana Torres",
+          "role": "Lider de Operaciones, GlobalFreight"
+        }
+      ]
+    },
+    "faq": {
+      "badge": "FAQ",
+      "title": "Preguntas frecuentes",
+      "items": [
+        {
+          "question": "Cuanto tarda en empezar a funcionar?",
+          "answer": "Unos 15 minutos. Registrate, crea tu organizacion, invita a tu equipo y puedes empezar a crear pedimentos inmediatamente. Sin instalacion, sin configuracion de IT, sin migracion necesaria para empezar."
+        },
+        {
+          "question": "Puedo migrar mis datos desde CASA u otros sistemas?",
+          "answer": "Si. Ofrecemos migracion guiada para los planes Professional y Enterprise. Nuestro equipo te ayuda a importar datos historicos para que no pierdas continuidad. Los usuarios Starter pueden empezar desde cero e importar datos segun se necesite."
+        },
+        {
+          "question": "Mis datos estan seguros?",
+          "answer": "Tus datos estan encriptados en reposo y en transito, alojados en Neon PostgreSQL con respaldos diarios automaticos. Los datos de cada organizacion estan completamente aislados. Mantenemos auditoria completa y control de acceso basado en roles con 60+ permisos granulares."
+        },
+        {
+          "question": "Pueden mis clientes acceder a la plataforma?",
+          "answer": "Si. El Portal de Clientes le da a cada cliente su propio acceso para rastrear operaciones, ver documentos y consultar estatus — con controles de permisos para que solo vean lo que tu permites. Disponible en los planes Professional y Enterprise."
+        },
+        {
+          "question": "Que pasa despues de los 14 dias de prueba?",
+          "answer": "Eliges un plan y continuas usando la plataforma con todos tus datos intactos. Si decides no continuar, tus datos estan disponibles para exportar durante 30 dias despues de que termina la prueba. Sin cargos sorpresa."
+        },
+        {
+          "question": "Necesito instalar algo?",
+          "answer": "No. Aduvanta es 100% web y funciona en cualquier navegador moderno (Chrome, Firefox, Safari, Edge). Sin descargas, sin plugins, sin Java — solo abre tu navegador e inicia sesion."
+        }
+      ]
+    },
+    "ctaSection": {
+      "title": "Moderniza tu agencia aduanal hoy.",
+      "subtitle": "Empieza tu prueba gratis ahora.",
+      "description": "14 dias gratis. Sin tarjeta de credito. Sin instalacion. Creando pedimentos en 15 minutos.",
+      "cta": "Prueba Aduvanta gratis 14 dias",
+      "secondary": "Agendar una llamada"
+    },
+    "consultaTigie": {
+      "meta": {
+        "title": "Consulta TIGIE Gratis — Fracciones Arancelarias Mexico",
+        "description": "Consulta gratuita de fracciones arancelarias TIGIE. Busca tasas de importacion, exportacion, regulaciones y notas complementarias de la tarifa arancelaria de Mexico.",
+        "keywords": "consulta TIGIE, fracciones arancelarias, tarifa arancelaria Mexico, clasificacion arancelaria, TIGIE consulta gratis",
+        "breadcrumbTools": "Herramientas",
+        "breadcrumbTigie": "Consulta TIGIE"
+      },
+      "title": "Herramienta Gratuita de Consulta TIGIE",
+      "subtitle": "Busca en la tarifa TIGIE de Mexico por fraccion arancelaria, descripcion o palabra clave. Encuentra tasas arancelarias, regulaciones y notas aplicables al instante.",
+      "searchPlaceholder": "Busca por fraccion arancelaria o palabra clave (ej. 8471.30 o \"laptops\")...",
+      "searchButton": "Buscar TIGIE",
+      "signUpNote": "Consulta TIGIE completa disponible con registro gratuito. Sin tarjeta de credito.",
+      "features": [
+        {
+          "title": "Base de Datos TIGIE Completa",
+          "description": "Accede a la Tarifa de la Ley de los Impuestos Generales de Importacion y de Exportacion completa. Mas de 12,000 fracciones arancelarias con tasas, unidades de medida y notas complementarias."
+        },
+        {
+          "title": "Tasas Arancelarias y Regulaciones",
+          "description": "Consulta tasas de importacion y exportacion (ad valorem, especificas, mixtas), regulaciones aplicables (NOMs, permisos, cupos) y mercancias restringidas para cada fraccion."
+        },
+        {
+          "title": "Integracion con Anexo 22",
+          "description": "Cruza fracciones arancelarias con catalogos del Anexo 22 incluyendo unidades de medida, aduanas, codigos de pais y codigos NICO — todo en un solo lugar."
+        },
+        {
+          "title": "Siempre Actualizado",
+          "description": "Nuestra base de datos TIGIE esta sincronizada con publicaciones oficiales del SAT. Cuando cambian las fracciones arancelarias, nuestra base lo refleja automaticamente."
+        }
+      ],
+      "ctaTitle": "Necesitas mas que solo consultas?",
+      "ctaDescription": "Aduvanta integra la clasificacion TIGIE directamente en la creacion de pedimentos. Sugerencias con IA, validacion automatica y auditoria completa.",
+      "ctaCta": "Prueba Aduvanta gratis 14 dias"
+    },
+    "softwareAduanal": {
+      "meta": {
+        "title": "Software Aduanal en la Nube para Agencias Aduanales",
+        "description": "Software aduanal 100% en la nube. Pedimentos, clasificacion arancelaria TIGIE, Anexo 22, portal de clientes, facturacion y auditoria en una sola plataforma para agencias aduanales en Mexico.",
+        "keywords": "software aduanal, software aduanal Mexico, sistema aduanero, agencia aduanal software"
+      },
+      "title": "Software Aduanal en la Nube para Agencias Aduanales",
+      "heroSubtitle": "Una plataforma para operar toda tu agencia aduanal. Pedimentos, clasificacion arancelaria, portal de clientes, facturacion, cumplimiento — todo en la nube.",
+      "heroCta": "Empieza tu prueba gratis",
+      "heroSecondaryCta": "Ver precios",
+      "painTitle": "Por Que las Agencias Aduanales Necesitan Software Moderno",
+      "painSubtitle": "Las herramientas que construyeron la industria aduanera ahora la estan frenando.",
+      "pains": [
+        {
+          "title": "Aplicaciones de escritorio desconectadas",
+          "description": "Usar 5-10 programas de Windows separados que no se comunican entre si desperdicia horas cada dia. Los datos se capturan multiples veces, los errores se multiplican y nada esta sincronizado."
+        },
+        {
+          "title": "Sin acceso remoto",
+          "description": "El software de escritorio ata a tu equipo a la oficina. Cuando un cliente llama a las 8 PM, no puedes revisar el estatus de su pedimento desde tu celular."
+        },
+        {
+          "title": "Cero visibilidad para clientes",
+          "description": "Los clientes llaman y envian correos preguntando \"donde esta mi embarque?\" porque no tienen forma de verificar por si mismos. Tu equipo pierde horas respondiendo consultas de estatus."
+        },
+        {
+          "title": "Riesgo de cumplimiento sin pistas de auditoria",
+          "description": "Cuando el SAT audita tu agencia, puedes demostrar exactamente quien modifico un pedimento, cuando y por que? La mayoria de los sistemas legados no pueden."
+        },
+        {
+          "title": "Crecer significa mas caos",
+          "description": "Agregar personal, clientes o una segunda oficina con herramientas legadas significa mas licencias, mas silos de datos y mas cosas que pueden fallar."
+        }
+      ],
+      "modulesTitle": "14 Modulos Integrados. Una Plataforma.",
+      "modulesSubtitle": "Cada funcion que tu agencia aduanal necesita, disenada para trabajar en conjunto desde el dia uno.",
+      "modules": [
+        {
+          "name": "Clasificacion Arancelaria (TIGIE)",
+          "description": "Busqueda arancelaria con IA y referencia cruzada al Anexo 22. Clasifica mercancias en segundos."
+        },
+        {
+          "name": "Pedimentos Aduanales",
+          "description": "Gestion completa del ciclo de vida desde borrador hasta desaduanamiento. Validacion integrada de errores SAAI."
+        },
+        {
+          "name": "Operaciones / Trafico",
+          "description": "Seguimiento en tiempo real de cada operacion en puertos, almacenes y tramos de transporte."
+        },
+        {
+          "name": "Valoracion Aduanera",
+          "description": "Calculos de valoracion automatizados con seleccion de metodo y seguimiento de ajustes."
+        },
+        {
+          "name": "COVE / E-Documents",
+          "description": "Envio de documentos digitales a VUCEM con validacion previa a la carga."
+        },
+        {
+          "name": "Facturacion",
+          "description": "Generacion de facturas vinculadas a operaciones. Cumplimiento CFDI con calculo automatico de impuestos."
+        },
+        {
+          "name": "Tesoreria",
+          "description": "Seguimiento de pagos, conciliacion bancaria y visibilidad de flujo de efectivo."
+        },
+        {
+          "name": "Gestion Documental",
+          "description": "Almacenamiento centralizado con versionamiento, etiquetado y acceso controlado por permisos."
+        },
+        {
+          "name": "Control de Almacenes",
+          "description": "Rastreo de inventario para almacenes fiscalizados con historial de movimientos."
+        },
+        {
+          "name": "Cartas CUPO",
+          "description": "Gestion y seguimiento de cupos para programas de preferencias arancelarias."
+        },
+        {
+          "name": "Notificaciones",
+          "description": "Alertas en tiempo real para cambios de estatus, vencimientos y eventos de cumplimiento."
+        },
+        {
+          "name": "Portal de Clientes",
+          "description": "Portal de autoservicio para que tus clientes rastreen operaciones y descarguen documentos."
+        },
+        {
+          "name": "Analitica e Inteligencia",
+          "description": "Dashboards y reportes de desempeno operativo, ingresos y metricas de cumplimiento."
+        },
+        {
+          "name": "Asistente IA",
+          "description": "Asistente inteligente para clasificacion arancelaria, consulta de regulaciones y guia operativa."
+        }
+      ],
+      "diffTitle": "Que Hace Diferente a Aduvanta",
+      "diffs": [
+        {
+          "iconKey": "cloud",
+          "title": "100% en la Nube",
+          "description": "Accede desde cualquier navegador, cualquier dispositivo, donde sea. Sin instalaciones, sin VPNs, sin dependencia de Windows."
+        },
+        {
+          "iconKey": "shield",
+          "title": "Seguridad Empresarial",
+          "description": "Control de acceso basado en roles, aislamiento de datos multi-inquilino, almacenamiento cifrado y pistas de auditoria completas para cada accion."
+        },
+        {
+          "iconKey": "users",
+          "title": "Multi-Organizacion",
+          "description": "Administra multiples agencias aduanales u organizaciones de clientes desde una sola cuenta. Cada una con datos aislados y permisos independientes."
+        },
+        {
+          "iconKey": "sparkle",
+          "title": "Potenciado por IA",
+          "description": "Sugerencias de clasificacion arancelaria, validacion automatizada y deteccion inteligente de errores que mejora con cada operacion."
+        }
+      ],
+      "socialTitle": "Agencias Aduanales en Crecimiento Confian en Nosotros",
+      "socialDescription": "Agencias en todo Mexico estan migrando de software de escritorio legado a Aduvanta para modernizar sus operaciones, reducir errores y darle a sus clientes una mejor experiencia.",
+      "ctaTitle": "Listo para modernizar tu agencia aduanal?",
+      "ctaDescription": "14 dias de prueba gratis. Sin tarjeta de credito. Sin instalacion. Operando en 15 minutos.",
+      "ctaButton": "Empieza tu prueba gratis"
+    },
+    "precios": {
+      "meta": {
+        "title": "Precios — Software Aduanal Aduvanta",
+        "description": "Conoce los precios de Aduvanta. Planes desde $2,000 MXN/mes. Prueba gratis 14 dias, sin tarjeta de credito. Software aduanal en la nube.",
+        "keywords": "precios software aduanal, pricing customs software, costo sistema aduanero"
+      },
+      "title": "Precios — Software Aduanal Aduvanta",
+      "heading": "Precios simples y transparentes",
+      "subheading": "Elige el plan ideal para tu agencia. Todos los planes incluyen prueba gratis de 14 dias — sin tarjeta de credito.",
+      "currency": "MXN",
+      "faqHeading": "Preguntas frecuentes",
+      "ctaHeading": "Listo para modernizar tus operaciones aduanales?",
+      "ctaBody": "Inicia tu prueba gratis de 14 dias hoy. Sin tarjeta de credito, sin compromisos.",
+      "ctaButton": "Iniciar prueba gratis",
+      "popular": "Mas popular",
+      "tiers": [
+        {
+          "name": "Starter",
+          "price": "$2,000",
+          "period": "/mes",
+          "description": "Para agencias pequenas que inician con software aduanal moderno.",
+          "features": [
+            "Hasta 5 usuarios",
+            "100 pedimentos/mes",
+            "Clasificacion arancelaria (TIGIE)",
+            "Catalogos Anexo 22",
+            "Registro de auditoria basico",
+            "Soporte por correo"
+          ],
+          "cta": "Iniciar prueba gratis",
+          "highlighted": false
+        },
+        {
+          "name": "Professional",
+          "price": "$8,000",
+          "period": "/mes",
+          "description": "Para agencias en crecimiento que necesitan la plataforma completa.",
+          "features": [
+            "Hasta 20 usuarios",
+            "Pedimentos ilimitados",
+            "Todos los modulos operativos",
+            "Portal de clientes",
+            "Analiticas avanzadas",
+            "Soporte prioritario",
+            "Asistencia en migracion de datos",
+            "Reportes personalizados"
+          ],
+          "cta": "Iniciar prueba gratis",
+          "highlighted": true
+        },
+        {
+          "name": "Enterprise",
+          "price": "$35,000",
+          "period": "/mes",
+          "description": "Para operaciones grandes con requerimientos especificos.",
+          "features": [
+            "Usuarios ilimitados",
+            "Pedimentos ilimitados",
+            "Todo lo de Professional",
+            "Integraciones personalizadas",
+            "Gerente de cuenta dedicado",
+            "Garantia de SLA",
+            "Migracion completa de datos",
+            "Capacitacion de onboarding",
+            "Acceso a API"
+          ],
+          "cta": "Contactar ventas",
+          "highlighted": false
+        }
+      ],
+      "faq": [
+        {
+          "question": "Hay prueba gratis?",
+          "answer": "Si. Todos los planes incluyen una prueba gratis de 14 dias con acceso completo. No se requiere tarjeta de credito."
+        },
+        {
+          "question": "Puedo cambiar de plan despues?",
+          "answer": "Por supuesto. Puedes subir o bajar de plan en cualquier momento. Los cambios se aplican en tu proximo ciclo de facturacion."
+        },
+        {
+          "question": "Que metodos de pago aceptan?",
+          "answer": "Aceptamos transferencias bancarias, tarjetas de credito/debito y SPEI. Todos los precios son en pesos mexicanos (MXN) mas impuestos aplicables."
+        },
+        {
+          "question": "Ofrecen facturacion anual?",
+          "answer": "Si. Los planes anuales tienen un 15% de descuento comparado con la facturacion mensual."
+        },
+        {
+          "question": "Que pasa con mis datos si cancelo?",
+          "answer": "Tus datos permanecen disponibles por 30 dias despues de la cancelacion. Puedes exportar todo en cualquier momento."
+        },
+        {
+          "question": "Emiten facturas CFDI?",
+          "answer": "Si. Emitimos facturas CFDI automaticamente para todos los pagos."
+        }
+      ]
+    },
+    "compararCasa": {
+      "meta": {
+        "title": "Aduvanta vs Sistemas CASA — Comparacion de Software Aduanal",
+        "description": "Compara Aduvanta vs Sistemas CASA. Una plataforma web unificada contra 13 aplicaciones de escritorio. Descubre por que las agencias aduanales estan cambiando.",
+        "keywords": "aduvanta vs sistemas casa, comparar software aduanal, alternativa sistemas casa",
+        "breadcrumbCompare": "Comparar"
+      },
+      "title": "Aduvanta vs Sistemas CASA — Comparacion de Software Aduanal",
+      "heading": "Aduvanta vs Sistemas CASA",
+      "subheading": "Compara una plataforma unificada en la nube contra 13 aplicaciones de escritorio separadas.",
+      "introTitle": "Por que las agencias estan cambiando de CASA",
+      "introBody": "Sistemas CASA ha sido un pilar de la industria aduanal mexicana por decadas, ofreciendo un conjunto de 13 aplicaciones de escritorio para Windows. Pero la industria ha evolucionado — las agencias necesitan colaboracion en tiempo real, acceso en la nube, portales de clientes y seguridad moderna. Aduvanta ofrece todo esto en una sola plataforma.",
+      "tableFeature": "Caracteristica",
+      "summaryTitle": "En resumen",
+      "summaryItems": [
+        {
+          "heading": "13 apps vs 1 plataforma",
+          "body": "CASA requiere instalar y gestionar 13 aplicaciones de Windows por separado. Aduvanta funciona completamente en el navegador — un solo inicio de sesion, una plataforma, todos los modulos."
+        },
+        {
+          "heading": "Instalacion local vs nube",
+          "body": "CASA debe instalarse en cada estacion de trabajo y actualizarse manualmente. Aduvanta es 100% nube — accede desde cualquier lugar, en cualquier dispositivo, siempre actualizado."
+        },
+        {
+          "heading": "Inquilino unico vs multi-inquilino",
+          "body": "CASA opera como instalaciones locales aisladas. Aduvanta es multi-inquilino desde el dia uno — gestiona multiples organizaciones, clientes y equipos desde una sola cuenta."
+        },
+        {
+          "heading": "Auditoria limitada vs registro completo",
+          "body": "CASA provee registros basicos de operacion. Aduvanta registra cada accion sensible con contexto completo: quien hizo que, cuando y desde donde."
+        },
+        {
+          "heading": "Sin portal de clientes vs portal integrado",
+          "body": "CASA no tiene manera de que tus clientes consulten el estado de sus operaciones. Aduvanta incluye un portal de clientes donde pueden rastrear sus pedimentos y documentos en tiempo real."
+        }
+      ],
+      "ctaHeading": "Listo para actualizar desde CASA?",
+      "ctaBody": "Inicia tu prueba gratis de 14 dias. Ofrecemos migracion guiada de datos para planes Professional y Enterprise.",
+      "ctaButton": "Iniciar prueba gratis",
+      "ctaPricing": "Ver precios",
+      "rows": [
+        {
+          "feature": "Plataforma web unificada",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Numero de aplicaciones separadas",
+          "aduvanta": "1 plataforma",
+          "casa": "13 apps de escritorio"
+        },
+        {
+          "feature": "100% nube — cero instalacion",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Arquitectura multi-inquilino",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Actualizaciones automaticas",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Portal de clientes integrado",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Registro completo de auditoria",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Control de acceso por roles (RBAC)",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Funciona en Mac, Windows, movil",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Colaboracion multi-usuario en tiempo real",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Datos encriptados en reposo y en transito",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Respaldos automaticos diarios",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Acceso a API para integraciones",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Clasificacion arancelaria TIGIE",
+          "aduvanta": true,
+          "casa": true
+        },
+        {
+          "feature": "Pedimentos",
+          "aduvanta": true,
+          "casa": true
+        },
+        {
+          "feature": "Catalogos Anexo 22",
+          "aduvanta": true,
+          "casa": true
+        }
+      ]
+    },
+    "privacidad": {
+      "meta": {
+        "title": "Aviso de Privacidad",
+        "description": "Aviso de Privacidad de Aduvanta. Conoce como recopilamos, usamos y protegemos tus datos personales conforme a la LFPDPPP."
+      },
+      "title": "Aviso de Privacidad",
+      "lastUpdated": "Ultima actualizacion: 1 de marzo de 2026",
+      "intro": "Aduvanta Technologies, S.A.P.I. de C.V. (\"Aduvanta\", \"nosotros\" o \"nuestro\") se compromete a proteger sus datos personales. El presente Aviso de Privacidad explica como recopilamos, usamos, almacenamos y compartimos su informacion personal cuando utiliza nuestra plataforma de software aduanal en la nube (\"el Servicio\"), en cumplimiento con la Ley Federal de Proteccion de Datos Personales en Posesion de los Particulares (\"LFPDPPP\") y su Reglamento.",
+      "termsLinkPrefix": "Tambien puedes consultar nuestros ",
+      "termsLinkText": "Terminos y Condiciones",
+      "termsLinkSuffix": ".",
+      "sections": [
+        {
+          "heading": "Responsable del Tratamiento",
+          "body": "Aduvanta Technologies, S.A.P.I. de C.V., con domicilio en Monterrey, Nuevo Leon, Mexico, es el responsable de la recopilacion, uso y proteccion de sus datos personales. Para cualquier consulta relacionada con este Aviso de Privacidad, puede contactar a nuestro Oficial de Proteccion de Datos en privacy@aduvanta.com."
+        },
+        {
+          "heading": "Datos Personales que Recopilamos",
+          "body": "Recopilamos las siguientes categorias de datos personales:\n\n• Datos de identificacion: Nombre completo, direccion de correo electronico, numero de telefono, Registro Federal de Contribuyentes (RFC) y CURP cuando aplique.\n• Datos de cuenta: Nombre de usuario, contrasena cifrada, membresia organizacional, asignacion de roles y permisos.\n• Datos de facturacion: Razon social, domicilio fiscal, datos del metodo de pago (procesados a traves de proveedores de pago certificados) e informacion de facturacion.\n• Datos de uso: Direccion IP, tipo de navegador, informacion del dispositivo, marcas de tiempo de acceso, paginas visitadas y funcionalidades utilizadas dentro de la plataforma.\n• Datos operativos: Declaraciones aduaneras (pedimentos), clasificaciones arancelarias, registros de clientes y demas informacion que ingrese en la plataforma como parte de sus operaciones aduanales.\n• Datos de comunicaciones: Tickets de soporte, correos electronicos y transcripciones de chat cuando contacta a nuestro equipo de soporte."
+        },
+        {
+          "heading": "Finalidades del Tratamiento",
+          "body": "Tratamos sus datos personales para las siguientes finalidades:\n\n• Proporcionar y mantener el Servicio, incluyendo la creacion de cuentas, autenticacion y autorizacion.\n• Procesar pagos, emitir facturas y gestionar su suscripcion.\n• Enviar comunicaciones transaccionales como confirmaciones de cuenta, alertas de seguridad y actualizaciones del servicio.\n• Brindar soporte tecnico y responder a sus consultas.\n• Mejorar el Servicio a traves de analiticas de uso anonimizadas.\n• Cumplir con obligaciones legales y regulatorias, incluyendo reportes fiscales y requisitos de auditoria.\n• Hacer cumplir nuestros Terminos y Condiciones y proteger la seguridad de la plataforma.\n\nNo utilizaremos sus datos personales para finalidades incompatibles con las aqui establecidas sin su consentimiento previo."
+        },
+        {
+          "heading": "Fundamento Legal del Tratamiento",
+          "body": "Tratamos sus datos personales con base en los siguientes fundamentos legales conforme a la LFPDPPP:\n\n• Relacion contractual: Tratamiento necesario para cumplir con nuestras obligaciones contractuales cuando se suscribe y utiliza el Servicio.\n• Obligaciones legales: Tratamiento requerido para cumplir con leyes mexicanas aplicables, incluyendo regulaciones fiscales, contables y aduaneras.\n• Interes legitimo: Tratamiento necesario para la seguridad, mejora y correcto funcionamiento del Servicio.\n• Consentimiento: Para actividades de tratamiento opcionales como comunicaciones de marketing, a las cuales puede otorgar o revocar su consentimiento en cualquier momento."
+        },
+        {
+          "heading": "Almacenamiento y Seguridad de los Datos",
+          "body": "Sus datos personales se almacenan en servidores seguros proporcionados por socios de infraestructura confiables con centros de datos que cumplen con certificaciones estandar de la industria (SOC 2, ISO 27001). Implementamos las siguientes medidas de seguridad:\n\n• Cifrado de datos en reposo y en transito usando TLS 1.3 y AES-256.\n• Control de acceso basado en roles (RBAC) que asegura que solo el personal autorizado pueda acceder a datos especificos.\n• Aislamiento de datos multi-inquilino que garantiza que los datos de cada organizacion esten logicamente separados.\n• Respaldos automaticos diarios con capacidad de recuperacion a un punto en el tiempo.\n• Registro de auditoria completo de todos los accesos y modificaciones a datos sensibles.\n• Evaluaciones de seguridad y pruebas de vulnerabilidad periodicas.\n\nAunque empleamos practicas de seguridad estandar de la industria, ningun metodo de transmision o almacenamiento electronico es 100% seguro. No podemos garantizar seguridad absoluta, pero nos comprometemos a notificar oportunamente a los usuarios afectados en caso de una violacion de datos, conforme a la LFPDPPP."
+        },
+        {
+          "heading": "Transferencias y Terceros",
+          "body": "Podemos compartir sus datos personales con las siguientes categorias de terceros, unicamente en la medida necesaria para las finalidades descritas en este Aviso de Privacidad:\n\n• Proveedores de infraestructura: Servicios de alojamiento en la nube, bases de datos y almacenamiento para la operacion de la plataforma.\n• Procesadores de pago: Proveedores de servicios de pago certificados para la facturacion de suscripciones.\n• Servicios de analitica: Datos de uso anonimizados para la mejora del servicio (no se comparte informacion de identificacion personal).\n• Autoridades legales y regulatorias: Cuando lo requiera la ley, una orden judicial o regulacion gubernamental.\n• Asesores profesionales: Auditores, abogados y contadores segun sea necesario para las operaciones del negocio.\n\nNo vendemos, alquilamos ni comercializamos sus datos personales a terceros con fines de marketing. Todos los proveedores de servicios externos estan contractualmente obligados a mantener la confidencialidad y seguridad de sus datos."
+        },
+        {
+          "heading": "Cookies y Tecnologias de Rastreo",
+          "body": "Utilizamos cookies y tecnologias similares para las siguientes finalidades:\n\n• Cookies esenciales: Necesarias para la autenticacion, gestion de sesiones y seguridad. No pueden desactivarse.\n• Cookies funcionales: Recuerdan sus preferencias como la seleccion de idioma y configuracion de la interfaz.\n• Cookies de analitica: Nos ayudan a entender como los usuarios interactuan con la plataforma para mejorar el Servicio.\n\nPuede gestionar las preferencias de cookies a traves de la configuracion de su navegador. Desactivar las cookies esenciales puede impedir el uso del Servicio."
+        },
+        {
+          "heading": "Sus Derechos ARCO",
+          "body": "Conforme a la LFPDPPP, usted tiene los siguientes derechos respecto a sus datos personales (conocidos como derechos ARCO):\n\n• Acceso: Puede solicitar acceso a los datos personales que tenemos sobre usted.\n• Rectificacion: Puede solicitar la correccion de datos personales inexactos o incompletos.\n• Cancelacion: Puede solicitar la eliminacion de sus datos personales cuando ya no sean necesarios para las finalidades para las que fueron recopilados.\n• Oposicion: Puede oponerse al tratamiento de sus datos personales para finalidades especificas.\n\nPara ejercer sus derechos ARCO, envie una solicitud por escrito a privacy@aduvanta.com incluyendo su nombre completo, una copia de su identificacion oficial, una descripcion clara de los datos y el derecho que desea ejercer, y cualquier documentacion de soporte. Responderemos a su solicitud dentro de 20 dias habiles, conforme lo requiere la LFPDPPP."
+        },
+        {
+          "heading": "Conservacion de Datos",
+          "body": "Conservamos sus datos personales mientras su cuenta este activa o sea necesario para proporcionar el Servicio. Despues de la terminacion de la cuenta, conservamos ciertos datos durante los siguientes periodos:\n\n• Registros de facturacion y fiscales: 5 anos, conforme lo requiere la legislacion fiscal mexicana.\n• Registros de auditoria: 5 anos, para fines de cumplimiento y resolucion de controversias.\n• Datos de uso anonimizados: Indefinidamente, ya que no pueden vincularse a usuarios individuales.\n\nAl vencimiento del periodo de conservacion aplicable, sus datos seran eliminados de forma segura o anonimizados."
+        },
+        {
+          "heading": "Transferencias Internacionales de Datos",
+          "body": "Sus datos personales pueden ser procesados en servidores ubicados fuera de Mexico. En tales casos, nos aseguramos de que existan salvaguardas apropiadas, incluyendo clausulas contractuales que requieren que la parte receptora mantenga estandares de proteccion de datos equivalentes conforme a la LFPDPPP y su Reglamento."
+        },
+        {
+          "heading": "Cambios a este Aviso de Privacidad",
+          "body": "Podemos actualizar este Aviso de Privacidad de tiempo en tiempo. Los cambios significativos seran comunicados a traves de la plataforma o por correo electronico. Su uso continuado del Servicio despues de dichos cambios constituye la aceptacion del Aviso de Privacidad actualizado. Le recomendamos revisar esta pagina periodicamente."
+        },
+        {
+          "heading": "Informacion de Contacto",
+          "body": "Si tiene preguntas sobre este Aviso de Privacidad o desea ejercer sus derechos ARCO, contactenos en:\n\nAduvanta Technologies, S.A.P.I. de C.V.\nCorreo electronico: privacy@aduvanta.com\nSitio web: https://aduvanta.com\n\nTambien tiene derecho a presentar una queja ante el Instituto Nacional de Transparencia, Acceso a la Informacion y Proteccion de Datos Personales (INAI) si considera que sus derechos de proteccion de datos han sido vulnerados."
+        }
+      ]
+    },
+    "terminos": {
+      "meta": {
+        "title": "Terminos y Condiciones",
+        "description": "Terminos y Condiciones de Aduvanta. Conoce las condiciones de uso de nuestra plataforma de software aduanal y comercio exterior."
+      },
+      "title": "Terminos y Condiciones",
+      "lastUpdated": "Ultima actualizacion: 1 de marzo de 2026",
+      "intro": "Los presentes Terminos y Condiciones (\"Terminos\") regulan el acceso y uso de la plataforma de operaciones aduanales y comercio exterior en la nube (\"el Servicio\") proporcionada por Aduvanta Technologies, S.A.P.I. de C.V. (\"Aduvanta\", \"nosotros\" o \"nuestro\"). Al acceder o utilizar el Servicio, usted acepta quedar vinculado por estos Terminos. Si no esta de acuerdo, no podra utilizar el Servicio.",
+      "privacyLinkPrefix": "Tambien puedes consultar nuestro ",
+      "privacyLinkText": "Aviso de Privacidad",
+      "privacyLinkSuffix": ".",
+      "sections": [
+        {
+          "heading": "1. Definiciones",
+          "body": "\"Cliente\" se refiere a la persona moral o fisica que se registra en el Servicio y celebra un contrato de suscripcion con Aduvanta.\n\n\"Organizacion\" se refiere al espacio de trabajo (tenant) creado dentro del Servicio, que representa una empresa, agencia aduanal o unidad de negocio.\n\n\"Usuario\" se refiere a cualquier persona fisica autorizada por el Cliente para acceder al Servicio bajo la Organizacion del Cliente.\n\n\"Suscripcion\" se refiere al plan de pago seleccionado por el Cliente que determina el nivel de servicio, acceso a funcionalidades y limites de uso.\n\n\"Datos del Cliente\" se refiere a todos los datos, archivos, documentos, registros e informacion cargados, ingresados o generados por el Cliente o sus Usuarios dentro del Servicio.\n\n\"Plataforma\" se refiere a la aplicacion web de Aduvanta, sus APIs y toda la infraestructura y servicios relacionados."
+        },
+        {
+          "heading": "2. Registro de Cuenta y Configuracion de Organizacion",
+          "body": "Para utilizar el Servicio, debe crear una cuenta y configurar una Organizacion. Usted se compromete a proporcionar informacion veraz, completa y actualizada durante el registro y a mantener actualizada la informacion de su cuenta.\n\nCada Organizacion debe designar al menos un administrador responsable de gestionar Usuarios, roles, permisos y configuraciones de la Organizacion.\n\nUsted es responsable de mantener la confidencialidad de sus credenciales de acceso y de todas las actividades que ocurran bajo su cuenta u Organizacion. Debe notificar a Aduvanta de manera inmediata sobre cualquier uso no autorizado de su cuenta.\n\nAduvanta se reserva el derecho de rechazar registros o suspender cuentas que incumplan estos Terminos o que proporcionen informacion falsa o enganosa."
+        },
+        {
+          "heading": "3. Suscripcion y Facturacion",
+          "body": "El Servicio se ofrece mediante suscripcion. Todos los precios se cotizan y son pagaderos en Pesos Mexicanos (MXN) mas los impuestos aplicables (IVA).\n\nLos nuevos Clientes tienen derecho a un periodo de prueba gratuito de 14 dias con acceso completo a las funcionalidades del plan seleccionado. No se requiere informacion de pago para iniciar el periodo de prueba. Al finalizar el periodo de prueba, el Cliente debera seleccionar un plan de pago para continuar utilizando el Servicio.\n\nLas suscripciones se facturan de forma mensual o anual, segun la seleccion del Cliente. Las suscripciones anuales reciben un descuento conforme se publica en nuestra pagina de precios. El pago se debe realizar al inicio de cada ciclo de facturacion.\n\nAduvanta emitira un CFDI (Comprobante Fiscal Digital por Internet) valido por cada pago recibido.\n\nSi el pago no se recibe dentro de los 15 dias naturales posteriores a la fecha de vencimiento, Aduvanta se reserva el derecho de suspender el acceso al Servicio hasta que se reciba el pago. Los incumplimientos de pago reiterados podran resultar en la terminacion de la cuenta.\n\nAduvanta podra ajustar los precios con un aviso previo por escrito de al menos 30 dias. Los cambios de precio entraran en vigor al inicio del siguiente ciclo de facturacion."
+        },
+        {
+          "heading": "4. Uso Aceptable",
+          "body": "Usted se compromete a utilizar el Servicio unicamente para fines licitos y de conformidad con estos Terminos. Queda prohibido:\n\n• Utilizar el Servicio para violar cualquier ley o regulacion aplicable, incluyendo las leyes aduaneras, fiscales y de comercio exterior de Mexico.\n• Intentar obtener acceso no autorizado a cualquier parte del Servicio, otras cuentas o sistemas conectados al Servicio.\n• Interferir con o interrumpir la integridad o el rendimiento del Servicio o su infraestructura.\n• Realizar ingenieria inversa, descompilar, desensamblar o intentar obtener el codigo fuente del Servicio.\n• Utilizar el Servicio para transmitir malware, virus o cualquier codigo danino.\n• Compartir credenciales de acceso o permitir que terceros no autorizados accedan al Servicio a traves de su cuenta.\n• Utilizar herramientas automatizadas (bots, scrapers) para acceder al Servicio sin autorizacion previa por escrito de Aduvanta.\n• Cargar o transmitir contenido que infrinja derechos de propiedad intelectual de terceros.\n\nAduvanta se reserva el derecho de suspender o dar por terminado el acceso de cualquier Cliente o Usuario que incumpla estas disposiciones de uso aceptable."
+        },
+        {
+          "heading": "5. Propiedad de los Datos del Cliente",
+          "body": "El Cliente conserva todos los derechos de propiedad sobre los Datos del Cliente. Aduvanta no adquiere ningun derecho de propiedad sobre los Datos del Cliente por el hecho de proporcionar el Servicio.\n\nAduvanta actua como encargado del tratamiento respecto a los Datos del Cliente. Tratamos los Datos del Cliente unicamente en la medida necesaria para proporcionar el Servicio y conforme a las instrucciones del Cliente, en cumplimiento con nuestro Aviso de Privacidad y las leyes de proteccion de datos aplicables.\n\nAduvanta no accedera, usara ni divulgara los Datos del Cliente salvo: (a) cuando sea necesario para proporcionar y mantener el Servicio; (b) para cumplir con la ley aplicable o una orden judicial valida; (c) cuando el Cliente lo autorice expresamente; o (d) para proteger la seguridad e integridad del Servicio.\n\nAl terminar la suscripcion, el Cliente podra solicitar la exportacion de sus Datos del Cliente dentro de los 30 dias naturales siguientes. Transcurrido este plazo, Aduvanta podra eliminar permanentemente los Datos del Cliente, salvo cuando la conservacion sea requerida por ley."
+        },
+        {
+          "heading": "6. Propiedad Intelectual",
+          "body": "El Servicio, incluyendo su software, arquitectura, diseno, interfaz de usuario, documentacion, APIs, marcas registradas y toda la propiedad intelectual relacionada, es y permanece como propiedad exclusiva de Aduvanta Technologies, S.A.P.I. de C.V.\n\nEstos Terminos otorgan al Cliente una licencia limitada, no exclusiva, intransferible y revocable para acceder y utilizar el Servicio durante el periodo de suscripcion activa, unicamente para las operaciones internas del negocio del Cliente.\n\nNo se otorgan derechos para copiar, modificar, distribuir, vender o crear obras derivadas basadas en el Servicio o cualquier parte del mismo.\n\nLas sugerencias, comentarios o solicitudes de funcionalidades presentadas por los Clientes o Usuarios podran ser utilizadas por Aduvanta sin obligacion alguna de compensacion o atribucion."
+        },
+        {
+          "heading": "7. Disponibilidad del Servicio y SLA",
+          "body": "Aduvanta se compromete a una disponibilidad objetivo del 99.9% para el Servicio, medida mensualmente, excluyendo ventanas de mantenimiento programado.\n\nEl mantenimiento programado sera comunicado con al menos 48 horas de anticipacion y se realizara durante periodos de bajo uso siempre que sea posible.\n\nEn caso de que el tiempo de inactividad no programado exceda el objetivo del 99.9% en un mes calendario determinado, los Clientes con planes anuales podran solicitar creditos de servicio conforme al Acuerdo de Nivel de Servicio (SLA) aplicable publicado en nuestro sitio web.\n\nAduvanta no es responsable por tiempo de inactividad causado por: (a) factores fuera de nuestro control razonable, incluyendo eventos de fuerza mayor; (b) equipos, software o conexiones de red del Cliente; (c) servicios o APIs de terceros no operados por Aduvanta; o (d) acciones del Cliente que incumplan estos Terminos."
+        },
+        {
+          "heading": "8. Limitacion de Responsabilidad",
+          "body": "En la maxima medida permitida por la ley aplicable:\n\nAduvanta no sera responsable por danos indirectos, incidentales, especiales, consecuentes o punitivos, incluyendo pero sin limitarse a la perdida de utilidades, ingresos, datos, oportunidades de negocio o credito mercantil, que surjan de o en relacion con el uso o la imposibilidad de uso del Servicio.\n\nLa responsabilidad total acumulada de Aduvanta por cualquier reclamacion derivada de o relacionada con estos Terminos o el Servicio no excedera el monto total pagado por el Cliente a Aduvanta durante el periodo de 12 meses inmediatamente anterior al evento que dio origen a la reclamacion.\n\nEl Servicio se proporciona como herramienta de apoyo operativo. Aduvanta no garantiza que el uso del Servicio asegure el cumplimiento de requisitos regulatorios. El Cliente es el unico responsable de verificar la exactitud de las declaraciones aduaneras, clasificaciones arancelarias y todos los tramites regulatorios.\n\nEstas limitaciones aplican independientemente de la teoria legal sobre la cual se base la reclamacion, ya sea contractual, extracontractual, por negligencia, responsabilidad objetiva o de cualquier otra naturaleza."
+        },
+        {
+          "heading": "9. Terminacion",
+          "body": "El Cliente podra dar por terminada la suscripcion en cualquier momento mediante aviso por escrito a traves de la plataforma o por correo electronico a legal@aduvanta.com. La terminacion surtira efectos al final del ciclo de facturacion vigente. No se emitiran reembolsos por periodos de facturacion parciales.\n\nAduvanta podra dar por terminado o suspender el acceso del Cliente al Servicio de forma inmediata, sin previo aviso, si: (a) el Cliente incumple materialmente estos Terminos y no subsana el incumplimiento dentro de los 15 dias naturales siguientes a la notificacion por escrito; (b) el Cliente realiza actividades ilegales utilizando el Servicio; (c) el Cliente no realiza el pago de las cuotas por mas de 30 dias naturales despues de su vencimiento; o (d) Aduvanta esta obligado a hacerlo por disposicion legal.\n\nAl momento de la terminacion: (a) todos los derechos otorgados al Cliente bajo estos Terminos cesaran de manera inmediata; (b) el Cliente debera cesar todo uso del Servicio; (c) el Cliente podra solicitar la exportacion de datos dentro de los 30 dias naturales conforme a lo descrito en la Seccion 5; y (d) las obligaciones de pago pendientes subsistiran a la terminacion."
+        },
+        {
+          "heading": "10. Ley Aplicable y Jurisdiccion",
+          "body": "Los presentes Terminos se regiran e interpretaran de conformidad con las leyes de los Estados Unidos Mexicanos.\n\nCualquier controversia, disputa o reclamacion que surja de o en relacion con estos Terminos o el Servicio sera sometida a la jurisdiccion exclusiva de los tribunales competentes ubicados en Monterrey, Nuevo Leon, Mexico.\n\nLas partes renuncian a cualquier otra jurisdiccion que pudiera corresponderles por razon de su domicilio presente o futuro o por cualquier otra causa."
+        },
+        {
+          "heading": "11. Disposiciones Generales",
+          "body": "Acuerdo completo: Estos Terminos, junto con el Aviso de Privacidad y cualquier Acuerdo de Nivel de Servicio aplicable, constituyen el acuerdo completo entre el Cliente y Aduvanta respecto al Servicio.\n\nDivisibilidad: Si alguna disposicion de estos Terminos se considera invalida o inaplicable, las disposiciones restantes continuaran en pleno vigor y efecto.\n\nRenuncia: La falta de Aduvanta de hacer valer cualquier derecho o disposicion de estos Terminos no constituira una renuncia a dicho derecho o disposicion.\n\nCesion: El Cliente no podra ceder ni transferir estos Terminos sin el consentimiento previo por escrito de Aduvanta. Aduvanta podra ceder estos Terminos en relacion con una fusion, adquisicion o venta de la totalidad o sustancialmente la totalidad de sus activos.\n\nNotificaciones: Las notificaciones de Aduvanta al Cliente se enviaran a la direccion de correo electronico asociada con la cuenta del Cliente. Las notificaciones del Cliente a Aduvanta deberan enviarse a legal@aduvanta.com."
+        },
+        {
+          "heading": "12. Informacion de Contacto",
+          "body": "Para preguntas sobre estos Terminos y Condiciones, contactenos en:\n\nAduvanta Technologies, S.A.P.I. de C.V.\nCorreo electronico: legal@aduvanta.com\nSitio web: https://aduvanta.com"
+        }
+      ]
+    },
+    "home": {
+      "meta": {
+        "title": "Software Aduanal en la Nube para Mexico | Pedimentos, TIGIE y Portal de Clientes",
+        "description": "Aduvanta es software aduanal 100% web para agencias aduanales en Mexico. Pedimentos, clasificacion arancelaria TIGIE, Anexo 22, portal de clientes, facturacion y auditoria — una plataforma. Prueba 14 dias gratis.",
+        "keywords": "software aduanal mexico, software pedimentos, plataforma aduanal, operaciones aduanales, clasificacion TIGIE, Anexo 22, software agencia aduanal, comercio exterior",
+        "ogAlt": "Aduvanta — Software Aduanal"
+      },
+      "schema": {
+        "description": "Software aduanal 100% web para agencias aduanales en Mexico. Pedimentos, clasificacion arancelaria TIGIE, Anexo 22, portal de clientes, facturacion y auditoria.",
+        "applicationSubCategory": "Software Aduanal",
+        "featureList": "Pedimentos, Clasificacion Arancelaria, TIGIE, Anexo 22, Portal de Clientes, Facturacion, Auditoria, Control de Almacenes"
+      },
+      "faq": [
+        {
+          "question": "Cuanto tarda en empezar a funcionar?",
+          "answer": "Unos 15 minutos. Registrate, crea tu organizacion, invita a tu equipo y empieza a crear pedimentos de inmediato."
+        },
+        {
+          "question": "Puedo migrar mis datos desde CASA u otros sistemas?",
+          "answer": "Si. Ofrecemos migracion guiada para los planes Professional y Enterprise."
+        },
+        {
+          "question": "Mis datos estan seguros?",
+          "answer": "Tus datos estan encriptados, con respaldos diarios automaticos y control de acceso basado en roles."
+        },
+        {
+          "question": "Pueden mis clientes acceder a la plataforma?",
+          "answer": "Si. El Portal de Clientes le da a cada cliente su propio acceso para rastrear operaciones y ver documentos."
+        },
+        {
+          "question": "Que pasa despues de los 14 dias de prueba?",
+          "answer": "Eliges un plan y continuas con todos tus datos intactos. Sin cargos sorpresa."
+        },
+        {
+          "question": "Necesito instalar algo?",
+          "answer": "No. Aduvanta funciona en cualquier navegador moderno. Sin descargas, sin plugins."
+        }
+      ]
+    },
+    "pedimentos": {
+      "meta": {
+        "title": "Modulo de Pedimentos — Software para Pedimentos Aduanales",
+        "description": "Software para pedimentos aduanales con validacion automatica, integracion SAAI, deteccion de errores y seguimiento en tiempo real. Simplifique sus declaraciones aduanales con Aduvanta.",
+        "keywords": "pedimentos, pedimentos aduanales, software de pedimentos, despacho aduanero, declaracion aduanal, SAAI"
+      },
+      "breadcrumbTitle": "Modulo de Pedimentos",
+      "hero": {
+        "heading": "Pedimentos sin Complicaciones",
+        "subheading": "El pedimento es la declaracion aduanal oficial requerida para cada operacion de importacion y exportacion en Mexico. Aduvanta simplifica todo el ciclo de vida — desde la creacion y validacion hasta la presentacion y archivo — para que su equipo se enfoque en las operaciones, no en el papeleo."
+      },
+      "features": [
+        {
+          "title": "Validacion Automatica",
+          "description": "Cada pedimento se valida contra codigos de error del SAAI y reglas del Anexo 22 antes de su presentacion. Detecte errores de datos, campos faltantes e inconsistencias antes de que lleguen a la autoridad aduanera, reduciendo rechazos y retrasos costosos."
+        },
+        {
+          "title": "Integracion con SAAI",
+          "description": "Aduvanta esta disenado para integrarse con el SAAI (Sistema Automatizado Aduanero Integral) de Mexico. Genere archivos electronicos conformes, rastree el estado de envio y reciba acuses directamente dentro de la plataforma."
+        },
+        {
+          "title": "Adjuntos y Gestion Documental",
+          "description": "Adjunte facturas, listas de empaque, certificados de origen y cualquier documentacion requerida directamente a cada pedimento. Todos los documentos se almacenan de forma segura en la nube y se vinculan a sus operaciones correspondientes para recuperacion inmediata."
+        },
+        {
+          "title": "Seguimiento de Estatus en Tiempo Real",
+          "description": "Rastree cada pedimento a lo largo de su ciclo de vida: borrador, validado, presentado, pagado y archivado. Las notificaciones configurables mantienen informados a su equipo y clientes en cada etapa."
+        }
+      ],
+      "cta": {
+        "heading": "Simplifique su flujo de pedimentos",
+        "description": "Cree su cuenta gratuita y descubra como Aduvanta simplifica las declaraciones aduanales.",
+        "button": "Comenzar"
+      }
+    },
+    "clasificacionArancelaria": {
+      "meta": {
+        "title": "Clasificacion Arancelaria TIGIE — Consulta de Fracciones Arancelarias",
+        "description": "Consulte fracciones arancelarias, tasas de arancel y regulaciones con la base de datos TIGIE integrada de Aduvanta. Clasificacion arancelaria precisa para pedimentos.",
+        "keywords": "clasificacion arancelaria, TIGIE, fracciones arancelarias, arancel de importacion, arancel de exportacion, consulta arancelaria"
+      },
+      "breadcrumbTitle": "Clasificacion Arancelaria TIGIE",
+      "hero": {
+        "heading": "Clasificacion Arancelaria con Integracion TIGIE",
+        "subheading": "La TIGIE (Tarifa de la Ley de los Impuestos Generales de Importacion y de Exportacion) es la tarifa arancelaria oficial de Mexico. Aduvanta proporciona una base de datos TIGIE completa y con busqueda para que pueda clasificar mercancias con precision y vincular las clasificaciones directamente a los pedimentos."
+      },
+      "features": [
+        {
+          "title": "Base de Datos TIGIE Completa",
+          "description": "Acceda a la tarifa arancelaria mexicana completa con capitulos, partidas, subpartidas y fracciones arancelarias. Busque por codigo, descripcion o palabra clave. La base de datos se mantiene actualizada con las publicaciones oficiales del SAT."
+        },
+        {
+          "title": "Tasas Arancelarias y Regulaciones",
+          "description": "Consulte tasas de aranceles de importacion y exportacion, impuestos aplicables (IGI, DTA, IVA), notas regulatorias y unidades de medida complementaria para cada fraccion arancelaria. Toda la informacion necesaria para calculos de costos precisos en un solo lugar."
+        },
+        {
+          "title": "Notas y Reglas de Clasificacion",
+          "description": "Acceda a notas de seccion, notas de capitulo y reglas generales de interpretacion directamente dentro de la plataforma. Estas referencias ayudan a garantizar decisiones de clasificacion consistentes y defendibles en todo su equipo."
+        },
+        {
+          "title": "Vinculado a Pedimentos",
+          "description": "Cuando clasifica un producto, la fraccion arancelaria fluye directamente a su pedimento. Las tasas arancelarias, requisitos regulatorios y restricciones aplicables se aplican automaticamente, reduciendo la captura manual y los errores de clasificacion."
+        }
+      ],
+      "cta": {
+        "heading": "Clasifique con confianza",
+        "description": "Cree su cuenta gratuita y explore la base de datos TIGIE integrada en Aduvanta.",
+        "button": "Comenzar"
+      }
+    },
+    "cumplimientoAduanero": {
+      "meta": {
+        "title": "Cumplimiento Aduanero y Auditoria — Control de Operaciones",
+        "description": "Cumplimiento aduanero con validacion automatica, pistas de auditoria inmutables, prevencion de errores y reportes regulatorios. Controle sus operaciones con Aduvanta.",
+        "keywords": "cumplimiento aduanero, auditoria aduanal, control de operaciones aduanales, reglas de cumplimiento, pista de auditoria"
+      },
+      "breadcrumbTitle": "Cumplimiento Aduanero y Auditoria",
+      "hero": {
+        "heading": "Cumplimiento Aduanero en el que Puede Confiar",
+        "subheading": "Los incumplimientos en operaciones aduanales generan multas, retrasos y dano reputacional. Aduvanta integra el cumplimiento en cada flujo de trabajo — reglas de validacion automaticas, deteccion de errores en tiempo real y registros de auditoria inmutables que le dan control total sobre sus operaciones."
+      },
+      "features": [
+        {
+          "title": "Reglas de Cumplimiento Automaticas",
+          "description": "Defina y aplique reglas de cumplimiento que se ejecutan automaticamente en cada pedimento y operacion aduanal. Las reglas cubren precision en clasificacion arancelaria, documentacion requerida, umbrales de valor, restricciones por pais y requisitos regulatorios. Cuando una regla se viola, el sistema la senala antes de la presentacion."
+        },
+        {
+          "title": "Pista de Auditoria Inmutable",
+          "description": "Cada accion en Aduvanta queda registrada: quien hizo que, cuando y en que contexto. Los registros de auditoria son de solo escritura y no pueden modificarse ni eliminarse. Esto proporciona un registro defendible para auditorias regulatorias, revisiones internas y resolucion de controversias."
+        },
+        {
+          "title": "Prevencion y Deteccion de Errores",
+          "description": "Aduvanta valida datos contra codigos de error del SAAI, catalogos del Anexo 22 y sus propias reglas personalizadas. Los errores se detectan en el punto de captura, no despues de la presentacion. Los tableros resaltan operaciones con advertencias para que su equipo resuelva problemas proactivamente."
+        },
+        {
+          "title": "Reportes Regulatorios",
+          "description": "Genere reportes de cumplimiento para auditorias internas, reportes a clientes y autoridades regulatorias. Rastree metricas de cumplimiento a lo largo del tiempo, identifique problemas recurrentes y demuestre la debida diligencia ante las autoridades cuando sea requerido."
+        }
+      ],
+      "cta": {
+        "heading": "Tome el control de su cumplimiento",
+        "description": "Cree su cuenta gratuita y descubra como Aduvanta hace manejable el cumplimiento.",
+        "button": "Comenzar"
+      }
+    },
+    "portalClientes": {
+      "meta": {
+        "title": "Portal de Clientes para Agencias Aduanales",
+        "description": "Portal de clientes para agencias aduanales con seguimiento de operaciones, acceso a documentos y permisos basados en roles. Brinde transparencia a sus clientes con Aduvanta.",
+        "keywords": "portal de clientes, portal para agencias aduanales, portal de clientes aduanales, acceso de clientes, seguimiento de operaciones"
+      },
+      "breadcrumbTitle": "Portal de Clientes",
+      "hero": {
+        "heading": "Un Portal de Clientes Disenado para Agencias Aduanales",
+        "subheading": "Sus clientes esperan transparencia. El portal de clientes de Aduvanta permite a importadores y exportadores rastrear sus operaciones, descargar documentos y revisar actualizaciones de estatus en tiempo real — sin necesidad de llamar a su oficina."
+      },
+      "features": [
+        {
+          "title": "Seguimiento de Operaciones en Autoservicio",
+          "description": "Los clientes pueden iniciar sesion y ver el estatus actual de cada pedimento, embarque y operacion aduanal asociada a su cuenta. Sin mas llamadas telefonicas o cadenas de correos preguntando por actualizaciones."
+        },
+        {
+          "title": "Acceso a Documentos",
+          "description": "Comparta pedimentos, facturas, listas de empaque, certificados y documentos de cumplimiento directamente a traves del portal. Los clientes descargan lo que necesitan, cuando lo necesitan, desde un repositorio seguro y organizado."
+        },
+        {
+          "title": "Permisos Basados en Roles",
+          "description": "Controle exactamente lo que cada usuario cliente puede ver y hacer. Asigne acceso de solo lectura para visualizacion de operaciones, permisos de descarga de documentos o acceso restringido a operaciones especificas. Cada permiso es validado por el backend."
+        },
+        {
+          "title": "Profesional y de Marca",
+          "description": "El portal de clientes refleja el profesionalismo de su agencia. Los clientes interactuan con una interfaz moderna y responsiva que funciona en cualquier dispositivo — una mejora significativa respecto a flujos basados en correo electronico y sistemas obsoletos."
+        }
+      ],
+      "cta": {
+        "heading": "Ofrezca una mejor experiencia a sus clientes",
+        "description": "Cree su cuenta gratuita y configure su portal de clientes en minutos.",
+        "button": "Comenzar"
+      }
+    },
+    "blog": {
+      "meta": {
+        "title": "Blog — Comercio Exterior y Software Aduanal",
+        "description": "Articulos, guias y consejos sobre pedimentos, clasificacion arancelaria, TIGIE, comercio exterior y operaciones aduanales en Mexico.",
+        "keywords": "blog aduanal, pedimentos, clasificacion arancelaria, comercio exterior Mexico, TIGIE, software aduanal"
+      },
+      "subtitle": "Guias, consejos y novedades sobre comercio exterior y operaciones aduanales en Mexico.",
+      "home": "Inicio",
+      "readMore": "Leer mas",
+      "ctaTitle": "Prueba Aduvanta gratis",
+      "ctaBody": "Simplifica tus operaciones aduanales con validaciones automaticas, TIGIE integrada y calculo de impuestos en tiempo real. 14 dias gratis, sin tarjeta de credito.",
+      "ctaButton": "Comenzar gratis",
+      "relatedArticles": "Articulos relacionados",
+      "readingTimeSuffix": "min"
+    }
   }
 }

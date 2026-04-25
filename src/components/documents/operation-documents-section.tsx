@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Upload } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import {
@@ -45,6 +46,7 @@ export function OperationDocumentsSection({
   operationId,
   canManage,
 }: OperationDocumentsSectionProps) {
+  const t = useTranslations('operationDocuments');
   const [uploadOpen, setUploadOpen] = useState(false);
 
   const { data: documents = [], isLoading } = useOperationDocuments(operationId);
@@ -67,26 +69,26 @@ export function OperationDocumentsSection({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-base font-semibold">Documents</h2>
+        <h2 className="text-base font-semibold">{t('title')}</h2>
         {canManage && (
           <Button size="sm" variant="outline" onClick={() => setUploadOpen(true)} className="gap-2">
             <Upload size={14} />
-            Upload
+            {t('upload')}
           </Button>
         )}
       </div>
 
       {documents.length === 0 ? (
-        <EmptyState title="No documents yet." />
+        <EmptyState title={t('empty')} />
       ) : (
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Version</TableHead>
-              <TableHead>Size</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>{t('columns.name')}</TableHead>
+              <TableHead>{t('columns.category')}</TableHead>
+              <TableHead>{t('columns.version')}</TableHead>
+              <TableHead>{t('columns.size')}</TableHead>
+              <TableHead>{t('columns.status')}</TableHead>
               <TableHead />
             </TableRow>
           </TableHeader>

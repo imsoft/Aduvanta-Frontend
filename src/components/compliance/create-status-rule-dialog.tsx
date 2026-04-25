@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -35,6 +36,8 @@ export function CreateStatusRuleDialog({
   onSubmit,
   isPending,
 }: CreateStatusRuleDialogProps) {
+  const t = useTranslations('compliance.createStatusRuleDialog');
+  const tCommon = useTranslations('common');
   const [fromStatus, setFromStatus] = useState<OperationStatus>('OPEN');
   const [toStatus, setToStatus] = useState<OperationStatus>('IN_PROGRESS');
   const [requiresDocs, setRequiresDocs] = useState(false);
@@ -61,11 +64,11 @@ export function CreateStatusRuleDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Add status transition rule</DialogTitle>
+          <DialogTitle>{t('title')}</DialogTitle>
         </DialogHeader>
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-3">
-            <Field label="From status">
+            <Field label={t('fromStatus')}>
               <select
                 className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 value={fromStatus}
@@ -78,7 +81,7 @@ export function CreateStatusRuleDialog({
                 ))}
               </select>
             </Field>
-            <Field label="To status">
+            <Field label={t('toStatus')}>
               <select
                 className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 value={toStatus}
@@ -101,12 +104,12 @@ export function CreateStatusRuleDialog({
               className="h-4 w-4"
             />
             <label htmlFor="requiresDocs" className="text-sm">
-              Requires all required documents
+              {t('requiresAllDocs')}
             </label>
           </div>
           {isDuplicate && (
             <p className="text-xs text-destructive">
-              This transition already exists in this rule set.
+              {t('duplicate')}
             </p>
           )}
         </div>
@@ -116,13 +119,13 @@ export function CreateStatusRuleDialog({
             onClick={() => handleOpenChange(false)}
             disabled={isPending}
           >
-            Cancel
+            {tCommon('cancel')}
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={isDuplicate || isPending}
           >
-            {isPending ? 'Adding…' : 'Add rule'}
+            {isPending ? t('adding') : t('add')}
           </Button>
         </DialogFooter>
       </DialogContent>

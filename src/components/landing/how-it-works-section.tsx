@@ -3,96 +3,54 @@ import {
   Buildings,
   Rocket,
 } from '@phosphor-icons/react/dist/ssr'
+import type { Icon } from '@phosphor-icons/react'
+import { useTranslations } from 'next-intl'
+import { Reveal } from '@/components/ui/reveal'
 
-const content = {
-  'en-US': {
-    badge: 'How It Works',
-    title: 'Start managing pedimentos in 15 minutes',
-    steps: [
-      {
-        icon: UserPlus,
-        number: '01',
-        title: 'Create your account',
-        description:
-          'Sign up, verify your email, and you\'re in. No downloads, no installations, no IT department needed.',
-      },
-      {
-        icon: Buildings,
-        number: '02',
-        title: 'Set up your organization',
-        description:
-          'Add your team, assign roles, and configure permissions. Invite your clients to their own portal.',
-      },
-      {
-        icon: Rocket,
-        number: '03',
-        title: 'Start operating',
-        description:
-          'Create your first pedimento, upload documents, track operations. Everything from your browser.',
-      },
-    ],
-  },
-  'es-MX': {
-    badge: 'Como Funciona',
-    title: 'Empieza a gestionar pedimentos en 15 minutos',
-    steps: [
-      {
-        icon: UserPlus,
-        number: '01',
-        title: 'Crea tu cuenta',
-        description:
-          'Registrate, verifica tu email y listo. Sin descargas, sin instalaciones, sin necesitar al departamento de TI.',
-      },
-      {
-        icon: Buildings,
-        number: '02',
-        title: 'Configura tu organizacion',
-        description:
-          'Agrega a tu equipo, asigna roles y configura permisos. Invita a tus clientes a su propio portal.',
-      },
-      {
-        icon: Rocket,
-        number: '03',
-        title: 'Empieza a operar',
-        description:
-          'Crea tu primer pedimento, sube documentos, rastrea operaciones. Todo desde tu navegador.',
-      },
-    ],
-  },
-} as const
-
-type Props = {
-  locale: string
+type Step = {
+  number: string
+  title: string
+  description: string
 }
 
-export function HowItWorksSection({ locale }: Props) {
-  const t = locale === 'es-MX' ? content['es-MX'] : content['en-US']
+const stepIcons: Icon[] = [UserPlus, Buildings, Rocket]
+
+export function HowItWorksSection() {
+  const t = useTranslations('landing.howItWorks')
+  const steps = t.raw('steps') as Step[]
 
   return (
     <section className="border-y border-border/40 bg-muted/20 py-20 sm:py-28 lg:py-32">
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
-        <div className="text-center">
+        <Reveal className="text-center">
           <span className="text-xs font-semibold uppercase tracking-widest text-primary">
-            {t.badge}
+            {t('badge')}
           </span>
           <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-4xl">
-            {t.title}
+            {t('title')}
           </h2>
-        </div>
+        </Reveal>
 
         <div className="mx-auto mt-14 grid max-w-4xl grid-cols-1 gap-8 sm:mt-16 md:grid-cols-3 md:gap-6">
-          {t.steps.map((step) => (
-            <div key={step.number} className="relative text-center md:text-left">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 md:mx-0">
-                <step.icon size={22} weight="duotone" className="text-primary" />
-              </div>
-              <div className="mt-2 text-xs font-bold text-primary/50">{step.number}</div>
-              <h3 className="mt-1 text-base font-semibold">{step.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {step.description}
-              </p>
-            </div>
-          ))}
+          {steps.map((step, i) => {
+            const IconComp = stepIcons[i] ?? UserPlus
+            return (
+              <Reveal
+                key={step.number}
+                delay={80 * (i + 1)}
+                className="group relative text-center md:text-left"
+              >
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 ring-1 ring-primary/10 transition-all group-hover:scale-110 group-hover:bg-primary/15 group-hover:ring-primary/30 md:mx-0">
+                  <IconComp size={22} weight="duotone" className="text-primary" />
+                </div>
+                <div className="mt-2 text-xs font-bold text-primary/50">{step.number}</div>
+                <h3 className="mt-1 text-base font-semibold">{step.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {step.description}
+                </p>
+              </Reveal>
+            )
+          })}
         </div>
       </div>
     </section>

@@ -67,7 +67,7 @@ export default function InventarioPage() {
   const { data: warehouses = [] } = useQuery({
     queryKey: ['warehouses', activeOrgId],
     queryFn: async () => {
-      const { data } = await apiClient.get('/api/warehouse/warehouses', {
+      const { data } = await apiClient.get('/api/warehouse', {
         headers: { 'x-organization-id': activeOrgId! },
       });
       return data as { id: string; name: string }[];
@@ -78,7 +78,7 @@ export default function InventarioPage() {
   const { data, isLoading } = useQuery({
     queryKey: ['warehouse-inventory', activeOrgId, debouncedSearch, warehouseId],
     queryFn: async () => {
-      const { data } = await apiClient.get('/api/warehouse/inventory', {
+      const { data } = await apiClient.get('/api/warehouse/inventory/list', {
         params: {
           q: debouncedSearch || undefined,
           warehouseId: warehouseId === 'ALL' ? undefined : warehouseId,

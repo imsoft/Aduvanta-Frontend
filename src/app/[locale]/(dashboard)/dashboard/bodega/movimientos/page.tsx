@@ -90,7 +90,7 @@ export default function MovimientosPage() {
   const { data, isLoading } = useQuery({
     queryKey: ['warehouse-movements', activeOrgId, debouncedSearch, movementType, status, page],
     queryFn: async () => {
-      const { data } = await apiClient.get('/api/warehouse/movements', {
+      const { data } = await apiClient.get('/api/warehouse/movements/list', {
         params: {
           q: debouncedSearch || undefined,
           movementType: movementType === 'ALL' ? undefined : movementType,

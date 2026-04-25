@@ -1,11 +1,4 @@
-const content = {
-  'en-US': {
-    label: 'Trusted by customs agencies across Mexico',
-  },
-  'es-MX': {
-    label: 'Agencias aduanales en Mexico ya confian en nosotros',
-  },
-} as const
+import { useTranslations } from 'next-intl'
 
 const logos = [
   'Agencia Alpha',
@@ -15,18 +8,14 @@ const logos = [
   'LogisMex',
 ] as const
 
-type Props = {
-  locale: string
-}
-
-export function LogoBar({ locale }: Props) {
-  const t = locale === 'es-MX' ? content['es-MX'] : content['en-US']
+export function LogoBar() {
+  const t = useTranslations('landing.logoBar')
 
   return (
     <section className="border-y border-border/40 bg-muted/20 py-10">
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
         <p className="text-center text-xs font-medium uppercase tracking-widest text-muted-foreground/70">
-          {t.label}
+          {t('label')}
         </p>
         <div className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 sm:gap-x-14">
           {logos.map((name) => (

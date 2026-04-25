@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { ArrowsLeftRight, Info } from '@phosphor-icons/react';
+import { useLocale, useTranslations } from 'next-intl';
 import { useMarketRates, useFixRate } from '@/features/exchange-rates/hooks/use-exchange-rates';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,7 +22,6 @@ import { cn } from '@/lib/utils';
 
 interface Unit {
   id: string;
-  label: string;
   symbol: string;
   toBase: (v: number) => number;
   fromBase: (v: number) => number;
@@ -29,7 +29,6 @@ interface Unit {
 
 interface Category {
   id: string;
-  label: string;
   emoji: string;
   units: Unit[];
 }
@@ -45,236 +44,194 @@ const linear =
 const CATEGORIES: Category[] = [
   {
     id: 'masa',
-    label: 'Masa / Peso',
     emoji: '⚖️',
     units: [
-      { id: 'kg', label: 'Kilogramo', symbol: 'kg', ...linear(1) },
-      { id: 'g', label: 'Gramo', symbol: 'g', ...linear(0.001) },
-      { id: 'mg', label: 'Miligramo', symbol: 'mg', ...linear(1e-6) },
-      { id: 'ug', label: 'Microgramo', symbol: 'µg', ...linear(1e-9) },
-      { id: 't', label: 'Tonelada métrica', symbol: 't', ...linear(1000) },
-      { id: 'ton_larga', label: 'Tonelada larga (UK)', symbol: 'LT', ...linear(1016.047) },
-      { id: 'ton_corta', label: 'Tonelada corta (US)', symbol: 'ST', ...linear(907.185) },
-      { id: 'lb', label: 'Libra', symbol: 'lb', ...linear(0.453592) },
-      { id: 'oz', label: 'Onza', symbol: 'oz', ...linear(0.0283495) },
-      { id: 'gr', label: 'Grano', symbol: 'gr', ...linear(0.0000647989) },
-      { id: 'quintal', label: 'Quintal métrico', symbol: 'q', ...linear(100) },
-      { id: 'arroba', label: 'Arroba', symbol: '@', ...linear(11.5) },
-      { id: 'stone', label: 'Stone', symbol: 'st', ...linear(6.35029) },
+      { id: 'kg', symbol: 'kg', ...linear(1) },
+      { id: 'g', symbol: 'g', ...linear(0.001) },
+      { id: 'mg', symbol: 'mg', ...linear(1e-6) },
+      { id: 'ug', symbol: 'µg', ...linear(1e-9) },
+      { id: 't', symbol: 't', ...linear(1000) },
+      { id: 'ton_larga', symbol: 'LT', ...linear(1016.047) },
+      { id: 'ton_corta', symbol: 'ST', ...linear(907.185) },
+      { id: 'lb', symbol: 'lb', ...linear(0.453592) },
+      { id: 'oz', symbol: 'oz', ...linear(0.0283495) },
+      { id: 'gr', symbol: 'gr', ...linear(0.0000647989) },
+      { id: 'quintal', symbol: 'q', ...linear(100) },
+      { id: 'arroba', symbol: '@', ...linear(11.5) },
+      { id: 'stone', symbol: 'st', ...linear(6.35029) },
     ],
   },
   {
     id: 'longitud',
-    label: 'Longitud',
     emoji: '📏',
     units: [
-      { id: 'm', label: 'Metro', symbol: 'm', ...linear(1) },
-      { id: 'km', label: 'Kilómetro', symbol: 'km', ...linear(1000) },
-      { id: 'cm', label: 'Centímetro', symbol: 'cm', ...linear(0.01) },
-      { id: 'mm', label: 'Milímetro', symbol: 'mm', ...linear(0.001) },
-      { id: 'um', label: 'Micrómetro', symbol: 'µm', ...linear(1e-6) },
-      { id: 'nm_len', label: 'Nanómetro', symbol: 'nm', ...linear(1e-9) },
-      { id: 'mi', label: 'Milla terrestre', symbol: 'mi', ...linear(1609.344) },
-      { id: 'nmi', label: 'Milla náutica', symbol: 'nmi', ...linear(1852) },
-      { id: 'yd', label: 'Yarda', symbol: 'yd', ...linear(0.9144) },
-      { id: 'ft', label: 'Pie', symbol: 'ft', ...linear(0.3048) },
-      { id: 'in', label: 'Pulgada', symbol: 'in', ...linear(0.0254) },
-      { id: 'fur', label: 'Furlong', symbol: 'fur', ...linear(201.168) },
-      { id: 'ly', label: 'Año luz', symbol: 'ly', ...linear(9.461e15) },
-      { id: 'au', label: 'Unidad astronómica', symbol: 'AU', ...linear(1.496e11) },
+      { id: 'm', symbol: 'm', ...linear(1) },
+      { id: 'km', symbol: 'km', ...linear(1000) },
+      { id: 'cm', symbol: 'cm', ...linear(0.01) },
+      { id: 'mm', symbol: 'mm', ...linear(0.001) },
+      { id: 'um', symbol: 'µm', ...linear(1e-6) },
+      { id: 'nm_len', symbol: 'nm', ...linear(1e-9) },
+      { id: 'mi', symbol: 'mi', ...linear(1609.344) },
+      { id: 'nmi', symbol: 'nmi', ...linear(1852) },
+      { id: 'yd', symbol: 'yd', ...linear(0.9144) },
+      { id: 'ft', symbol: 'ft', ...linear(0.3048) },
+      { id: 'in', symbol: 'in', ...linear(0.0254) },
+      { id: 'fur', symbol: 'fur', ...linear(201.168) },
+      { id: 'ly', symbol: 'ly', ...linear(9.461e15) },
+      { id: 'au', symbol: 'AU', ...linear(1.496e11) },
     ],
   },
   {
     id: 'volumen',
-    label: 'Volumen',
     emoji: '🧴',
     units: [
-      { id: 'l', label: 'Litro', symbol: 'L', ...linear(1) },
-      { id: 'ml', label: 'Mililitro', symbol: 'mL', ...linear(0.001) },
-      { id: 'cl', label: 'Centilitro', symbol: 'cL', ...linear(0.01) },
-      { id: 'dl', label: 'Decilitro', symbol: 'dL', ...linear(0.1) },
-      { id: 'm3', label: 'Metro cúbico', symbol: 'm³', ...linear(1000) },
-      { id: 'cm3', label: 'Centímetro cúbico', symbol: 'cm³', ...linear(0.001) },
-      { id: 'mm3', label: 'Milímetro cúbico', symbol: 'mm³', ...linear(1e-6) },
-      { id: 'gal_us', label: 'Galón US', symbol: 'gal (US)', ...linear(3.78541) },
-      { id: 'gal_uk', label: 'Galón UK', symbol: 'gal (UK)', ...linear(4.54609) },
-      { id: 'qt_us', label: 'Cuarto US', symbol: 'qt', ...linear(0.946353) },
-      { id: 'pt_us', label: 'Pinta US', symbol: 'pt', ...linear(0.473176) },
-      { id: 'cup', label: 'Taza US', symbol: 'cup', ...linear(0.236588) },
-      { id: 'floz_us', label: 'Onza líquida US', symbol: 'fl oz', ...linear(0.0295735) },
-      { id: 'ft3', label: 'Pie cúbico', symbol: 'ft³', ...linear(28.3168) },
-      { id: 'in3', label: 'Pulgada cúbica', symbol: 'in³', ...linear(0.0163871) },
-      { id: 'bbl_oil', label: 'Barril (petróleo)', symbol: 'bbl', ...linear(158.987) },
-      { id: 'bbl_beer', label: 'Barril (cerveza US)', symbol: 'bbl (beer)', ...linear(117.348) },
+      { id: 'l', symbol: 'L', ...linear(1) },
+      { id: 'ml', symbol: 'mL', ...linear(0.001) },
+      { id: 'cl', symbol: 'cL', ...linear(0.01) },
+      { id: 'dl', symbol: 'dL', ...linear(0.1) },
+      { id: 'm3', symbol: 'm³', ...linear(1000) },
+      { id: 'cm3', symbol: 'cm³', ...linear(0.001) },
+      { id: 'mm3', symbol: 'mm³', ...linear(1e-6) },
+      { id: 'gal_us', symbol: 'gal (US)', ...linear(3.78541) },
+      { id: 'gal_uk', symbol: 'gal (UK)', ...linear(4.54609) },
+      { id: 'qt_us', symbol: 'qt', ...linear(0.946353) },
+      { id: 'pt_us', symbol: 'pt', ...linear(0.473176) },
+      { id: 'cup', symbol: 'cup', ...linear(0.236588) },
+      { id: 'floz_us', symbol: 'fl oz', ...linear(0.0295735) },
+      { id: 'ft3', symbol: 'ft³', ...linear(28.3168) },
+      { id: 'in3', symbol: 'in³', ...linear(0.0163871) },
+      { id: 'bbl_oil', symbol: 'bbl', ...linear(158.987) },
+      { id: 'bbl_beer', symbol: 'bbl (beer)', ...linear(117.348) },
     ],
   },
   {
     id: 'area',
-    label: 'Área',
     emoji: '🗺️',
     units: [
-      { id: 'm2', label: 'Metro cuadrado', symbol: 'm²', ...linear(1) },
-      { id: 'km2', label: 'Kilómetro cuadrado', symbol: 'km²', ...linear(1e6) },
-      { id: 'cm2', label: 'Centímetro cuadrado', symbol: 'cm²', ...linear(0.0001) },
-      { id: 'mm2', label: 'Milímetro cuadrado', symbol: 'mm²', ...linear(1e-6) },
-      { id: 'ha', label: 'Hectárea', symbol: 'ha', ...linear(10000) },
-      { id: 'a', label: 'Área', symbol: 'a', ...linear(100) },
-      { id: 'ac', label: 'Acre', symbol: 'ac', ...linear(4046.86) },
-      { id: 'mi2', label: 'Milla cuadrada', symbol: 'mi²', ...linear(2.59e6) },
-      { id: 'yd2', label: 'Yarda cuadrada', symbol: 'yd²', ...linear(0.836127) },
-      { id: 'ft2', label: 'Pie cuadrado', symbol: 'ft²', ...linear(0.092903) },
-      { id: 'in2', label: 'Pulgada cuadrada', symbol: 'in²', ...linear(0.00064516) },
+      { id: 'm2', symbol: 'm²', ...linear(1) },
+      { id: 'km2', symbol: 'km²', ...linear(1e6) },
+      { id: 'cm2', symbol: 'cm²', ...linear(0.0001) },
+      { id: 'mm2', symbol: 'mm²', ...linear(1e-6) },
+      { id: 'ha', symbol: 'ha', ...linear(10000) },
+      { id: 'a', symbol: 'a', ...linear(100) },
+      { id: 'ac', symbol: 'ac', ...linear(4046.86) },
+      { id: 'mi2', symbol: 'mi²', ...linear(2.59e6) },
+      { id: 'yd2', symbol: 'yd²', ...linear(0.836127) },
+      { id: 'ft2', symbol: 'ft²', ...linear(0.092903) },
+      { id: 'in2', symbol: 'in²', ...linear(0.00064516) },
     ],
   },
   {
     id: 'temperatura',
-    label: 'Temperatura',
     emoji: '🌡️',
     units: [
-      {
-        id: 'c',
-        label: 'Celsius',
-        symbol: '°C',
-        toBase: (v) => v,
-        fromBase: (v) => v,
-      },
-      {
-        id: 'f',
-        label: 'Fahrenheit',
-        symbol: '°F',
-        toBase: (v) => (v - 32) * (5 / 9),
-        fromBase: (v) => v * (9 / 5) + 32,
-      },
-      {
-        id: 'k',
-        label: 'Kelvin',
-        symbol: 'K',
-        toBase: (v) => v - 273.15,
-        fromBase: (v) => v + 273.15,
-      },
-      {
-        id: 'r',
-        label: 'Rankine',
-        symbol: '°R',
-        toBase: (v) => (v - 491.67) * (5 / 9),
-        fromBase: (v) => (v + 273.15) * (9 / 5),
-      },
-      {
-        id: 'reaumur',
-        label: 'Réaumur',
-        symbol: '°Ré',
-        toBase: (v) => v * (5 / 4),
-        fromBase: (v) => v * (4 / 5),
-      },
+      { id: 'c', symbol: '°C', toBase: (v) => v, fromBase: (v) => v },
+      { id: 'f', symbol: '°F', toBase: (v) => (v - 32) * (5 / 9), fromBase: (v) => v * (9 / 5) + 32 },
+      { id: 'k', symbol: 'K', toBase: (v) => v - 273.15, fromBase: (v) => v + 273.15 },
+      { id: 'r', symbol: '°R', toBase: (v) => (v - 491.67) * (5 / 9), fromBase: (v) => (v + 273.15) * (9 / 5) },
+      { id: 'reaumur', symbol: '°Ré', toBase: (v) => v * (5 / 4), fromBase: (v) => v * (4 / 5) },
     ],
   },
   {
     id: 'velocidad',
-    label: 'Velocidad',
     emoji: '💨',
     units: [
-      { id: 'ms', label: 'Metro por segundo', symbol: 'm/s', ...linear(1) },
-      { id: 'kmh', label: 'Kilómetro por hora', symbol: 'km/h', ...linear(1 / 3.6) },
-      { id: 'mph', label: 'Milla por hora', symbol: 'mph', ...linear(0.44704) },
-      { id: 'fts', label: 'Pie por segundo', symbol: 'ft/s', ...linear(0.3048) },
-      { id: 'kn', label: 'Nudo', symbol: 'kn', ...linear(0.514444) },
-      { id: 'mach', label: 'Mach (ISA)', symbol: 'Ma', ...linear(340.29) },
-      { id: 'c_light', label: 'Velocidad de la luz', symbol: 'c', ...linear(299792458) },
+      { id: 'ms', symbol: 'm/s', ...linear(1) },
+      { id: 'kmh', symbol: 'km/h', ...linear(1 / 3.6) },
+      { id: 'mph', symbol: 'mph', ...linear(0.44704) },
+      { id: 'fts', symbol: 'ft/s', ...linear(0.3048) },
+      { id: 'kn', symbol: 'kn', ...linear(0.514444) },
+      { id: 'mach', symbol: 'Ma', ...linear(340.29) },
+      { id: 'c_light', symbol: 'c', ...linear(299792458) },
     ],
   },
   {
     id: 'presion',
-    label: 'Presión',
     emoji: '🔵',
     units: [
-      { id: 'pa', label: 'Pascal', symbol: 'Pa', ...linear(1) },
-      { id: 'kpa', label: 'Kilopascal', symbol: 'kPa', ...linear(1000) },
-      { id: 'mpa', label: 'Megapascal', symbol: 'MPa', ...linear(1e6) },
-      { id: 'bar', label: 'Bar', symbol: 'bar', ...linear(100000) },
-      { id: 'mbar', label: 'Milibar', symbol: 'mbar', ...linear(100) },
-      { id: 'atm', label: 'Atmósfera', symbol: 'atm', ...linear(101325) },
-      { id: 'psi', label: 'PSI', symbol: 'psi', ...linear(6894.76) },
-      { id: 'mmhg', label: 'Milímetro de mercurio', symbol: 'mmHg', ...linear(133.322) },
-      { id: 'inhg', label: 'Pulgada de mercurio', symbol: 'inHg', ...linear(3386.39) },
-      { id: 'torr', label: 'Torr', symbol: 'Torr', ...linear(133.322) },
+      { id: 'pa', symbol: 'Pa', ...linear(1) },
+      { id: 'kpa', symbol: 'kPa', ...linear(1000) },
+      { id: 'mpa', symbol: 'MPa', ...linear(1e6) },
+      { id: 'bar', symbol: 'bar', ...linear(100000) },
+      { id: 'mbar', symbol: 'mbar', ...linear(100) },
+      { id: 'atm', symbol: 'atm', ...linear(101325) },
+      { id: 'psi', symbol: 'psi', ...linear(6894.76) },
+      { id: 'mmhg', symbol: 'mmHg', ...linear(133.322) },
+      { id: 'inhg', symbol: 'inHg', ...linear(3386.39) },
+      { id: 'torr', symbol: 'Torr', ...linear(133.322) },
     ],
   },
   {
     id: 'energia',
-    label: 'Energía',
     emoji: '⚡',
     units: [
-      { id: 'j', label: 'Julio', symbol: 'J', ...linear(1) },
-      { id: 'kj', label: 'Kilojulio', symbol: 'kJ', ...linear(1000) },
-      { id: 'mj', label: 'Megajulio', symbol: 'MJ', ...linear(1e6) },
-      { id: 'cal', label: 'Caloría', symbol: 'cal', ...linear(4.184) },
-      { id: 'kcal', label: 'Kilocaloría', symbol: 'kcal', ...linear(4184) },
-      { id: 'wh', label: 'Vatio hora', symbol: 'Wh', ...linear(3600) },
-      { id: 'kwh', label: 'Kilowatt hora', symbol: 'kWh', ...linear(3.6e6) },
-      { id: 'ev', label: 'Electronvolt', symbol: 'eV', ...linear(1.602e-19) },
-      { id: 'btu', label: 'BTU', symbol: 'BTU', ...linear(1055.06) },
-      { id: 'ftlbf', label: 'Pie-libra fuerza', symbol: 'ft·lbf', ...linear(1.35582) },
+      { id: 'j', symbol: 'J', ...linear(1) },
+      { id: 'kj', symbol: 'kJ', ...linear(1000) },
+      { id: 'mj', symbol: 'MJ', ...linear(1e6) },
+      { id: 'cal', symbol: 'cal', ...linear(4.184) },
+      { id: 'kcal', symbol: 'kcal', ...linear(4184) },
+      { id: 'wh', symbol: 'Wh', ...linear(3600) },
+      { id: 'kwh', symbol: 'kWh', ...linear(3.6e6) },
+      { id: 'ev', symbol: 'eV', ...linear(1.602e-19) },
+      { id: 'btu', symbol: 'BTU', ...linear(1055.06) },
+      { id: 'ftlbf', symbol: 'ft·lbf', ...linear(1.35582) },
     ],
   },
   {
     id: 'potencia',
-    label: 'Potencia',
     emoji: '🔋',
     units: [
-      { id: 'w', label: 'Vatio', symbol: 'W', ...linear(1) },
-      { id: 'kw', label: 'Kilovatio', symbol: 'kW', ...linear(1000) },
-      { id: 'mw', label: 'Megavatio', symbol: 'MW', ...linear(1e6) },
-      { id: 'hp_met', label: 'Caballo de vapor métrico', symbol: 'CV', ...linear(735.499) },
-      { id: 'hp_imp', label: 'Horsepower (imperial)', symbol: 'hp', ...linear(745.7) },
-      { id: 'btuhr', label: 'BTU/hora', symbol: 'BTU/h', ...linear(0.293071) },
-      { id: 'kcalhr', label: 'kcal/hora', symbol: 'kcal/h', ...linear(1.163) },
+      { id: 'w', symbol: 'W', ...linear(1) },
+      { id: 'kw', symbol: 'kW', ...linear(1000) },
+      { id: 'mw', symbol: 'MW', ...linear(1e6) },
+      { id: 'hp_met', symbol: 'CV', ...linear(735.499) },
+      { id: 'hp_imp', symbol: 'hp', ...linear(745.7) },
+      { id: 'btuhr', symbol: 'BTU/h', ...linear(0.293071) },
+      { id: 'kcalhr', symbol: 'kcal/h', ...linear(1.163) },
     ],
   },
   {
     id: 'datos',
-    label: 'Datos digitales',
     emoji: '💾',
     units: [
-      { id: 'bit', label: 'Bit', symbol: 'bit', ...linear(1) },
-      { id: 'byte', label: 'Byte', symbol: 'B', ...linear(8) },
-      { id: 'kb', label: 'Kilobyte', symbol: 'KB', ...linear(8 * 1024) },
-      { id: 'mb', label: 'Megabyte', symbol: 'MB', ...linear(8 * 1024 ** 2) },
-      { id: 'gb', label: 'Gigabyte', symbol: 'GB', ...linear(8 * 1024 ** 3) },
-      { id: 'tb', label: 'Terabyte', symbol: 'TB', ...linear(8 * 1024 ** 4) },
-      { id: 'pb', label: 'Petabyte', symbol: 'PB', ...linear(8 * 1024 ** 5) },
-      { id: 'kbit', label: 'Kilobit', symbol: 'Kbit', ...linear(1024) },
-      { id: 'mbit', label: 'Megabit', symbol: 'Mbit', ...linear(1024 ** 2) },
-      { id: 'gbit', label: 'Gigabit', symbol: 'Gbit', ...linear(1024 ** 3) },
+      { id: 'bit', symbol: 'bit', ...linear(1) },
+      { id: 'byte', symbol: 'B', ...linear(8) },
+      { id: 'kb', symbol: 'KB', ...linear(8 * 1024) },
+      { id: 'mb', symbol: 'MB', ...linear(8 * 1024 ** 2) },
+      { id: 'gb', symbol: 'GB', ...linear(8 * 1024 ** 3) },
+      { id: 'tb', symbol: 'TB', ...linear(8 * 1024 ** 4) },
+      { id: 'pb', symbol: 'PB', ...linear(8 * 1024 ** 5) },
+      { id: 'kbit', symbol: 'Kbit', ...linear(1024) },
+      { id: 'mbit', symbol: 'Mbit', ...linear(1024 ** 2) },
+      { id: 'gbit', symbol: 'Gbit', ...linear(1024 ** 3) },
     ],
   },
   {
     id: 'tiempo',
-    label: 'Tiempo',
     emoji: '⏱️',
     units: [
-      { id: 's', label: 'Segundo', symbol: 's', ...linear(1) },
-      { id: 'ms_t', label: 'Milisegundo', symbol: 'ms', ...linear(0.001) },
-      { id: 'us_t', label: 'Microsegundo', symbol: 'µs', ...linear(1e-6) },
-      { id: 'ns_t', label: 'Nanosegundo', symbol: 'ns', ...linear(1e-9) },
-      { id: 'min', label: 'Minuto', symbol: 'min', ...linear(60) },
-      { id: 'h', label: 'Hora', symbol: 'h', ...linear(3600) },
-      { id: 'd', label: 'Día', symbol: 'd', ...linear(86400) },
-      { id: 'semana', label: 'Semana', symbol: 'sem', ...linear(604800) },
-      { id: 'mes', label: 'Mes (30 días)', symbol: 'mes', ...linear(2592000) },
-      { id: 'anio', label: 'Año (365 días)', symbol: 'año', ...linear(31536000) },
+      { id: 's', symbol: 's', ...linear(1) },
+      { id: 'ms_t', symbol: 'ms', ...linear(0.001) },
+      { id: 'us_t', symbol: 'µs', ...linear(1e-6) },
+      { id: 'ns_t', symbol: 'ns', ...linear(1e-9) },
+      { id: 'min', symbol: 'min', ...linear(60) },
+      { id: 'h', symbol: 'h', ...linear(3600) },
+      { id: 'd', symbol: 'd', ...linear(86400) },
+      { id: 'semana', symbol: 'sem', ...linear(604800) },
+      { id: 'mes', symbol: 'mes', ...linear(2592000) },
+      { id: 'anio', symbol: 'año', ...linear(31536000) },
     ],
   },
   {
     id: 'angulo',
-    label: 'Ángulo',
     emoji: '📐',
     units: [
-      { id: 'deg', label: 'Grado', symbol: '°', ...linear(1) },
-      { id: 'rad', label: 'Radián', symbol: 'rad', ...linear(180 / Math.PI) },
-      { id: 'grad', label: 'Gradián', symbol: 'grad', ...linear(0.9) },
-      { id: 'arcmin', label: 'Minuto de arco', symbol: "'", ...linear(1 / 60) },
-      { id: 'arcsec', label: 'Segundo de arco', symbol: '"', ...linear(1 / 3600) },
-      { id: 'turn', label: 'Vuelta completa', symbol: 'vuelta', ...linear(360) },
+      { id: 'deg', symbol: '°', ...linear(1) },
+      { id: 'rad', symbol: 'rad', ...linear(180 / Math.PI) },
+      { id: 'grad', symbol: 'grad', ...linear(0.9) },
+      { id: 'arcmin', symbol: "'", ...linear(1 / 60) },
+      { id: 'arcsec', symbol: '"', ...linear(1 / 3600) },
+      { id: 'turn', symbol: 'vuelta', ...linear(360) },
     ],
   },
 ];
@@ -298,21 +255,16 @@ function convert(value: number, from: Unit, to: Unit): number {
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
-// Priority currencies to show first in the currency converter
 const PRIORITY_CURRENCIES = ['MXN', 'USD', 'EUR', 'GBP', 'CAD', 'JPY', 'CNY', 'CHF', 'AUD', 'BRL', 'KRW', 'SGD', 'HKD', 'NOK', 'SEK'];
 
-function fmtCurrency(value: number, decimals = 4): string {
-  if (!isFinite(value)) return '—';
-  return parseFloat(value.toFixed(decimals)).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: decimals });
-}
-
 export default function ConversionesPag() {
+  const t = useTranslations('converter');
+  const locale = useLocale();
   const [activeCat, setActiveCat] = useState<string>('masa');
   const [fromUnitId, setFromUnitId] = useState<string>('kg');
   const [toUnitId, setToUnitId] = useState<string>('lb');
   const [inputValue, setInputValue] = useState<string>('1');
 
-  // Currency state
   const [currencyBase, setCurrencyBase] = useState<string>('MXN');
   const [currencyTarget, setCurrencyTarget] = useState<string>('USD');
   const [currencyAmount, setCurrencyAmount] = useState<string>('1');
@@ -335,13 +287,26 @@ export default function ConversionesPag() {
   const numInput = parseFloat(inputValue);
   const result = isNaN(numInput) ? null : convert(numInput, fromUnit, toUnit);
 
+  const unitLabel = (id: string) => t(`units.${id}`);
+  const categoryLabel = (id: string) => t(`categories.${id}`);
+
+  const fmtCurrency = useCallback(
+    (value: number, decimals = 4): string => {
+      if (!isFinite(value)) return '—';
+      return parseFloat(value.toFixed(decimals)).toLocaleString(locale, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: decimals,
+      });
+    },
+    [locale],
+  );
+
   const handleSwap = useCallback(() => {
     setFromUnitId(toUnitId);
     setToUnitId(fromUnitId);
     if (result !== null) setInputValue(fmt(result));
   }, [fromUnitId, toUnitId, result]);
 
-  // All conversions from the input value
   const allConversions =
     result !== null
       ? category.units
@@ -352,10 +317,8 @@ export default function ConversionesPag() {
   return (
     <div className="w-full space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Conversiones</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Conversor universal de unidades — masa, longitud, volumen, temperatura y más
-        </p>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('title')}</h1>
+        <p className="text-sm text-muted-foreground mt-1">{t('subtitle')}</p>
       </div>
 
       {/* Category selector */}
@@ -372,7 +335,7 @@ export default function ConversionesPag() {
             )}
           >
             <span>{cat.emoji}</span>
-            <span>{cat.label}</span>
+            <span>{categoryLabel(cat.id)}</span>
           </button>
         ))}
       </div>
@@ -380,10 +343,9 @@ export default function ConversionesPag() {
       {/* Main converter */}
       <div className="rounded-xl border bg-card p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row items-center gap-4">
-          {/* From */}
           <div className="flex-1 w-full space-y-2">
             <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              De
+              {t('from')}
             </Label>
             <div className="flex gap-2">
               <Input
@@ -399,10 +361,10 @@ export default function ConversionesPag() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>{category.label}</SelectLabel>
+                    <SelectLabel>{categoryLabel(category.id)}</SelectLabel>
                     {category.units.map((u) => (
                       <SelectItem key={u.id} value={u.id}>
-                        {u.label} ({u.symbol})
+                        {unitLabel(u.id)} ({u.symbol})
                       </SelectItem>
                     ))}
                   </SelectGroup>
@@ -410,26 +372,24 @@ export default function ConversionesPag() {
               </Select>
             </div>
             <p className="text-xs text-muted-foreground">
-              {fromUnit.label} · <span className="font-mono">{fromUnit.symbol}</span>
+              {unitLabel(fromUnit.id)} · <span className="font-mono">{fromUnit.symbol}</span>
             </p>
           </div>
 
-          {/* Swap button */}
           <button
             onClick={handleSwap}
             className="mt-2 sm:mt-6 rounded-full border p-2.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors shrink-0"
-            aria-label="Intercambiar unidades"
+            aria-label={t('swapUnits')}
           >
             <ArrowsLeftRight size={18} weight="bold" />
           </button>
 
-          {/* To */}
           <div className="flex-1 w-full space-y-2">
             <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              A
+              {t('to')}
             </Label>
             <div className="flex gap-2">
-              <div className="flex-1 flex items-center rounded-md border bg-muted/40 px-3 font-mono text-lg select-all min-h-[2.5rem] overflow-x-auto whitespace-nowrap">
+              <div className="flex-1 flex items-center rounded-md border bg-muted/40 px-3 font-mono text-lg select-all min-h-10 overflow-x-auto whitespace-nowrap">
                 {result !== null ? fmt(result) : '—'}
               </div>
               <Select value={toUnitId} onValueChange={setToUnitId}>
@@ -438,10 +398,10 @@ export default function ConversionesPag() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>{category.label}</SelectLabel>
+                    <SelectLabel>{categoryLabel(category.id)}</SelectLabel>
                     {category.units.map((u) => (
                       <SelectItem key={u.id} value={u.id}>
-                        {u.label} ({u.symbol})
+                        {unitLabel(u.id)} ({u.symbol})
                       </SelectItem>
                     ))}
                   </SelectGroup>
@@ -449,12 +409,11 @@ export default function ConversionesPag() {
               </Select>
             </div>
             <p className="text-xs text-muted-foreground">
-              {toUnit.label} · <span className="font-mono">{toUnit.symbol}</span>
+              {unitLabel(toUnit.id)} · <span className="font-mono">{toUnit.symbol}</span>
             </p>
           </div>
         </div>
 
-        {/* Formula badge */}
         {result !== null && (
           <div className="mt-4 rounded-lg bg-muted/40 px-4 py-2.5 text-sm font-mono text-center">
             <span className="text-foreground font-semibold">{inputValue}</span>
@@ -466,22 +425,21 @@ export default function ConversionesPag() {
         )}
       </div>
 
-      {/* Reference table — all units */}
+      {/* Reference table */}
       {result !== null && allConversions.length > 0 && (
         <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
           <div className="px-5 py-3 border-b bg-muted/20">
             <p className="text-sm font-medium">
-              Tabla de referencia —{' '}
+              {t('referenceTableTitle')} —{' '}
               <span className="text-muted-foreground font-normal">
-                {inputValue} {fromUnit.symbol} en todas las unidades
+                {t('referenceTableDescription', { amount: inputValue, symbol: fromUnit.symbol })}
               </span>
             </p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 divide-x divide-y">
-            {/* Highlight the source */}
             <div className="px-4 py-3 bg-primary/5 border-primary/20">
               <p className="text-[11px] font-medium uppercase tracking-wide text-primary truncate">
-                {fromUnit.label}
+                {unitLabel(fromUnit.id)}
               </p>
               <p className="mt-0.5 font-mono text-base font-semibold text-foreground truncate">
                 {inputValue}
@@ -499,7 +457,7 @@ export default function ConversionesPag() {
                 )}
               >
                 <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground truncate">
-                  {unit.label}
+                  {unitLabel(unit.id)}
                 </p>
                 <p className="mt-0.5 font-mono text-base font-semibold text-foreground truncate">
                   {fmt(value)}
@@ -516,17 +474,17 @@ export default function ConversionesPag() {
       {/* Quick reference cards */}
       <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
         <div className="px-5 py-3 border-b bg-muted/20">
-          <p className="text-sm font-medium">Equivalencias frecuentes en comercio exterior</p>
+          <p className="text-sm font-medium">{t('frequentEquivalences')}</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 divide-y sm:divide-x sm:divide-y-0">
           {[
-            { label: 'Peso', items: ['1 t = 1 000 kg', '1 kg = 2.2046 lb', '1 lb = 453.59 g', '1 oz = 28.35 g', '1 quintal = 100 kg'] },
-            { label: 'Volumen', items: ['1 m³ = 1 000 L', '1 gal US = 3.785 L', '1 bbl = 158.987 L', '1 ft³ = 28.317 L', '1 gal UK = 4.546 L'] },
-            { label: 'Longitud', items: ['1 m = 3.2808 ft', '1 km = 0.6214 mi', '1 in = 2.54 cm', '1 yd = 91.44 cm', '1 nmi = 1 852 m'] },
+            { key: 'weight', items: ['1 t = 1 000 kg', '1 kg = 2.2046 lb', '1 lb = 453.59 g', '1 oz = 28.35 g', '1 quintal = 100 kg'] },
+            { key: 'volume', items: ['1 m³ = 1 000 L', '1 gal US = 3.785 L', '1 bbl = 158.987 L', '1 ft³ = 28.317 L', '1 gal UK = 4.546 L'] },
+            { key: 'length', items: ['1 m = 3.2808 ft', '1 km = 0.6214 mi', '1 in = 2.54 cm', '1 yd = 91.44 cm', '1 nmi = 1 852 m'] },
           ].map((card) => (
-            <div key={card.label} className="px-5 py-4">
+            <div key={card.key} className="px-5 py-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
-                {card.label}
+                {t(`equivalencesCards.${card.key}`)}
               </p>
               <ul className="space-y-1">
                 {card.items.map((item) => (
@@ -543,10 +501,8 @@ export default function ConversionesPag() {
       {/* ─── Currency section ─────────────────────────────────────── */}
       <div className="space-y-4">
         <div>
-          <h2 className="text-lg font-semibold tracking-tight">💱 Tipos de cambio</h2>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            Tasas de mercado (ExchangeRate-API) y tipo oficial SAT (Banco de México FIX)
-          </p>
+          <h2 className="text-lg font-semibold tracking-tight">💱 {t('exchange.title')}</h2>
+          <p className="text-sm text-muted-foreground mt-0.5">{t('exchange.subtitle')}</p>
         </div>
 
         {/* FIX card */}
@@ -554,15 +510,15 @@ export default function ConversionesPag() {
           <div className="px-5 py-3 border-b bg-amber-50 dark:bg-amber-950/20 flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className="text-sm font-semibold text-amber-700 dark:text-amber-400">
-                Tipo de cambio FIX — Banco de México
+                {t('exchange.fixTitle')}
               </span>
               <Badge variant="outline" className="text-[10px] border-amber-400 text-amber-700 dark:text-amber-400">
-                Obligatorio para pedimentos (Art. 20 CFF)
+                {t('exchange.fixBadge')}
               </Badge>
             </div>
             {fixRate && (
               <span className="text-xs text-muted-foreground">
-                Publicado: {fixRate.date}
+                {t('exchange.publishedOn', { date: fixRate.date })}
               </span>
             )}
           </div>
@@ -594,7 +550,11 @@ export default function ConversionesPag() {
             )}
             {!loadingFix && !fixRate && (
               <p className="text-sm text-muted-foreground">
-                Configura <code className="text-xs bg-muted px-1 rounded">BANXICO_TOKEN</code> en el backend para ver el FIX en tiempo real.
+                {t.rich('exchange.fixMissing', {
+                  tokenName: () => (
+                    <code className="text-xs bg-muted px-1 rounded">BANXICO_TOKEN</code>
+                  ),
+                })}
               </p>
             )}
           </div>
@@ -603,18 +563,21 @@ export default function ConversionesPag() {
         {/* Market rates converter */}
         <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
           <div className="px-5 py-3 border-b bg-muted/20 flex items-center justify-between">
-            <p className="text-sm font-medium">Conversor de monedas — tasas de mercado</p>
+            <p className="text-sm font-medium">{t('exchange.converterTitle')}</p>
             {marketRates && (
               <span className="text-xs text-muted-foreground">
-                Base: {marketRates.base} · {marketRates.source === 'cache' ? '📦 caché' : '🌐 en vivo'} · {new Date(marketRates.updatedAt).toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' })}
+                {t('exchange.baseLabel')}: {marketRates.base} ·{' '}
+                {marketRates.source === 'cache'
+                  ? `📦 ${t('exchange.cacheLabel')}`
+                  : `🌐 ${t('exchange.liveLabel')}`}{' '}
+                · {new Date(marketRates.updatedAt).toLocaleString(locale, { dateStyle: 'short', timeStyle: 'short' })}
               </span>
             )}
           </div>
           <div className="p-5 space-y-4">
-            {/* Currency converter inputs */}
             <div className="flex flex-col sm:flex-row items-center gap-4">
               <div className="flex-1 w-full space-y-2">
-                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">De</Label>
+                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('from')}</Label>
                 <div className="flex gap-2">
                   <Input
                     type="number"
@@ -629,14 +592,14 @@ export default function ConversionesPag() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectLabel>Prioritarias</SelectLabel>
+                        <SelectLabel>{t('exchange.priority')}</SelectLabel>
                         {PRIORITY_CURRENCIES.map((c) => (
                           <SelectItem key={c} value={c}>{c}</SelectItem>
                         ))}
                       </SelectGroup>
                       {marketRates && (
                         <SelectGroup>
-                          <SelectLabel>Todas</SelectLabel>
+                          <SelectLabel>{t('exchange.all')}</SelectLabel>
                           {Object.keys(marketRates.rates)
                             .filter((c) => !PRIORITY_CURRENCIES.includes(c))
                             .sort()
@@ -653,17 +616,17 @@ export default function ConversionesPag() {
               <button
                 onClick={() => { setCurrencyBase(currencyTarget); setCurrencyTarget(currencyBase); }}
                 className="mt-2 sm:mt-6 rounded-full border p-2.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors shrink-0"
-                aria-label="Intercambiar monedas"
+                aria-label={t('swapCurrencies')}
               >
                 <ArrowsLeftRight size={18} weight="bold" />
               </button>
 
               <div className="flex-1 w-full space-y-2">
-                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">A</Label>
+                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('to')}</Label>
                 <div className="flex gap-2">
-                  <div className="flex-1 flex items-center rounded-md border bg-muted/40 px-3 font-mono text-lg min-h-[2.5rem]">
+                  <div className="flex-1 flex items-center rounded-md border bg-muted/40 px-3 font-mono text-lg min-h-10">
                     {loadingMarket ? (
-                      <span className="text-muted-foreground text-sm">Cargando...</span>
+                      <span className="text-muted-foreground text-sm">{t('loading')}</span>
                     ) : marketRates?.rates[currencyTarget] != null && currencyAmount !== '' ? (
                       fmtCurrency(parseFloat(currencyAmount) * (marketRates.rates[currencyTarget] ?? 1), 4)
                     ) : '—'}
@@ -674,14 +637,14 @@ export default function ConversionesPag() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectLabel>Prioritarias</SelectLabel>
+                        <SelectLabel>{t('exchange.priority')}</SelectLabel>
                         {PRIORITY_CURRENCIES.map((c) => (
                           <SelectItem key={c} value={c}>{c}</SelectItem>
                         ))}
                       </SelectGroup>
                       {marketRates && (
                         <SelectGroup>
-                          <SelectLabel>Todas</SelectLabel>
+                          <SelectLabel>{t('exchange.all')}</SelectLabel>
                           {Object.keys(marketRates.rates)
                             .filter((c) => !PRIORITY_CURRENCIES.includes(c))
                             .sort()
@@ -696,18 +659,20 @@ export default function ConversionesPag() {
               </div>
             </div>
 
-            {/* Error state */}
             {marketError && (
               <p className="text-sm text-destructive rounded-md border border-destructive/30 bg-destructive/5 px-4 py-2">
-                No se pudo cargar tasas de cambio. Verifica que <code className="text-xs bg-muted px-1 rounded">EXCHANGE_RATE_API_KEY</code> esté configurada en el backend.
+                {t.rich('exchange.error', {
+                  keyName: () => (
+                    <code className="text-xs bg-muted px-1 rounded">EXCHANGE_RATE_API_KEY</code>
+                  ),
+                })}
               </p>
             )}
 
-            {/* All currencies grid */}
             {!loadingMarket && marketRates && (
               <div>
                 <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wide font-medium">
-                  {currencyAmount || '1'} {currencyBase} en monedas principales
+                  {t('exchange.mainCurrenciesTitle', { amount: currencyAmount || '1', base: currencyBase })}
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
                   {PRIORITY_CURRENCIES

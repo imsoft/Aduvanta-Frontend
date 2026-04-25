@@ -29,12 +29,14 @@ import {
   Bank,
   Receipt,
   ArrowsLeftRight,
+  ShieldStar,
   type Icon,
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { useSidebar } from '@/components/layout/sidebar-context'
+import { useIsSystemAdmin } from '@/features/system-admin/hooks/use-system-admin'
 
 type NavItem = {
   labelKey: string
@@ -98,10 +100,17 @@ const navGroups: NavGroup[] = [
   },
 ]
 
+const adminNavItems = [
+  { label: 'Panel', href: '/dashboard/admin', icon: ShieldStar },
+  { label: 'Organizaciones', href: '/dashboard/admin/organizations', icon: Buildings },
+  { label: 'Usuarios', href: '/dashboard/admin/users', icon: UsersThree },
+]
+
 export const AppSidebar = () => {
   const t = useTranslations()
   const pathname = usePathname()
   const { collapsed, toggle } = useSidebar()
+  const { data: adminStatus } = useIsSystemAdmin()
 
   return (
     <aside
@@ -188,6 +197,45 @@ export const AppSidebar = () => {
           </div>
         ))}
       </nav>
+
+      {/* System admin section */}
+      {adminStatus?.isSystemAdmin && (
+        <>
+          <Separator />
+          <nav className="flex flex-col gap-0.5 overflow-x-hidden p-2">
+            {!collapsed && (
+              <p className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-wider text-amber-500/80">
+                Plataforma
+              </p>
+            )}
+            {adminNavItems.map(({ label, href, icon: Icon }) => {
+              const active = href === '/dashboard/admin' ? pathname === href : pathname.startsWith(href)
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  title={collapsed ? label : undefined}
+                  className={cn(
+                    'flex items-center rounded-md py-2 text-sm transition-colors',
+                    collapsed ? 'justify-center px-0' : 'gap-2.5 px-3',
+                    active
+                      ? 'bg-amber-500/10 font-medium text-amber-600 dark:text-amber-400'
+                      : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                  )}
+                >
+                  <Icon
+                    size={16}
+                    className={cn('shrink-0', active && 'text-amber-500')}
+                    weight={active ? 'fill' : 'regular'}
+                    aria-hidden
+                  />
+                  <span className={cn(collapsed && 'sr-only')}>{label}</span>
+                </Link>
+              )
+            })}
+          </nav>
+        </>
+      )}
 
       <Separator />
 

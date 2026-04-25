@@ -45,6 +45,7 @@ export function ClientAddressesSection({
   clientId,
   canManage,
 }: ClientAddressesSectionProps) {
+  const t = useTranslations('clientAddresses');
   const tCommon = useTranslations('common');
   const { data: addresses = [], isLoading } = useClientAddresses(clientId);
   const createAddress = useCreateClientAddress(clientId);
@@ -69,7 +70,7 @@ export function ClientAddressesSection({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-base font-semibold">Addresses</h2>
+        <h2 className="text-base font-semibold">{t('title')}</h2>
         {canManage && (
           <Button
             size="sm"
@@ -78,7 +79,7 @@ export function ClientAddressesSection({
             className="gap-2"
           >
             <MapPin size={14} />
-            Add address
+            {t('add')}
           </Button>
         )}
       </div>
@@ -86,7 +87,7 @@ export function ClientAddressesSection({
       {isLoading && <TableSkeleton rows={3} columns={canManage ? 5 : 4} />}
 
       {!isLoading && addresses.length === 0 && (
-        <EmptyState title="No addresses yet." />
+        <EmptyState title={t('empty')} />
       )}
 
       {!isLoading && addresses.length > 0 && (
@@ -94,10 +95,10 @@ export function ClientAddressesSection({
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Label</TableHead>
-                <TableHead>Address</TableHead>
-                <TableHead>City / State</TableHead>
-                <TableHead>Country</TableHead>
+                <TableHead>{t('columns.label')}</TableHead>
+                <TableHead>{t('columns.address')}</TableHead>
+                <TableHead>{t('columns.cityState')}</TableHead>
+                <TableHead>{t('columns.country')}</TableHead>
                 <TableHead className="w-24" />
               </TableRow>
             </TableHeader>
@@ -108,7 +109,7 @@ export function ClientAddressesSection({
                     <div className="flex items-center gap-2">
                       {addr.label}
                       {addr.isPrimary && (
-                        <Badge variant="outline" className="text-xs">Primary</Badge>
+                        <Badge variant="outline" className="text-xs">{t('primary')}</Badge>
                       )}
                     </div>
                   </TableCell>
@@ -145,9 +146,9 @@ export function ClientAddressesSection({
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Remove address?</AlertDialogTitle>
+                              <AlertDialogTitle>{t('removeTitle')}</AlertDialogTitle>
                               <AlertDialogDescription>
-                                {addr.label} will be permanently removed.
+                                {t('removeDescription', { label: addr.label })}
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
@@ -156,7 +157,7 @@ export function ClientAddressesSection({
                                 onClick={() => removeAddress.mutate(addr.id)}
                                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                               >
-                                Remove
+                                {tCommon('remove')}
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
@@ -176,7 +177,7 @@ export function ClientAddressesSection({
         onOpenChange={setCreateOpen}
         onSubmit={handleCreate}
         isPending={createAddress.isPending}
-        title="Add address"
+        title={t('addDialogTitle')}
       />
 
       <AddressDialog
@@ -185,7 +186,7 @@ export function ClientAddressesSection({
         defaultValues={editTarget ?? undefined}
         onSubmit={handleUpdate}
         isPending={updateAddress.isPending}
-        title="Edit address"
+        title={t('editDialogTitle')}
       />
     </div>
   );

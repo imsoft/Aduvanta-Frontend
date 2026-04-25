@@ -45,11 +45,12 @@ export function OperationChargesTable({
   isDeactivatePending,
 }: OperationChargesTableProps) {
   const tCommon = useTranslations('common');
+  const t = useTranslations('finance');
   const [editingCharge, setEditingCharge] = useState<OperationCharge | null>(null);
 
   if (charges.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">No charges recorded yet.</p>
+      <p className="text-sm text-muted-foreground">{t('noCharges')}</p>
     );
   }
 
@@ -58,12 +59,12 @@ export function OperationChargesTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Type</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
-            <TableHead>Currency</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Created</TableHead>
+            <TableHead>{t('columns.type')}</TableHead>
+            <TableHead>{t('columns.description')}</TableHead>
+            <TableHead className="text-right">{t('columns.amount')}</TableHead>
+            <TableHead>{t('columns.currency')}</TableHead>
+            <TableHead>{t('columns.status')}</TableHead>
+            <TableHead>{t('columns.created')}</TableHead>
             {canManage && <TableHead />}
           </TableRow>
         </TableHeader>
@@ -120,10 +121,9 @@ export function OperationChargesTable({
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Deactivate charge?</AlertDialogTitle>
+                              <AlertDialogTitle>{t('dialogs.deactivateChargeTitle')}</AlertDialogTitle>
                               <AlertDialogDescription>
-                                This charge will be marked as inactive and excluded from the
-                                finance summary.
+                                {t('dialogs.deactivateChargeDescription')}
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
@@ -133,7 +133,7 @@ export function OperationChargesTable({
                                 disabled={isDeactivatePending}
                                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                               >
-                                Deactivate
+                                {t('dialogs.deactivate')}
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>

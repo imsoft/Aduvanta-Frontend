@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { buildPageMetadata, buildBreadcrumbJsonLd, BASE_URL } from '@/lib/seo'
 import { getAllPosts, getPostBySlug } from '@/data/blog/posts'
+import { Reveal } from '@/components/ui/reveal'
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>
@@ -45,6 +47,8 @@ function formatDate(isoDate: string, locale: string): string {
 
 export default async function BlogPostPage({ params }: Props) {
   const { locale, slug } = await params
+  setRequestLocale(locale)
+  const t = await getTranslations({ locale, namespace: 'landing.blog' })
   const lang = locale === 'es-MX' ? 'es-MX' : 'en-US'
   const post = getPostBySlug(slug)
 
@@ -58,7 +62,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     {
-      name: locale === 'es-MX' ? 'Inicio' : 'Home',
+      name: t('home'),
       url: `${BASE_URL}/${locale}`,
     },
     {
@@ -112,10 +116,10 @@ export default async function BlogPostPage({ params }: Props) {
       />
 
       <article className="mx-auto max-w-3xl px-6 py-20">
-        <header className="mb-10">
+        <header className="animate-fade-up mb-10">
           <nav className="mb-6 text-sm text-muted-foreground">
             <Link href="/" className="hover:text-foreground transition-colors">
-              {locale === 'es-MX' ? 'Inicio' : 'Home'}
+              {t('home')}
             </Link>
             <span className="mx-2">/</span>
             <Link
@@ -134,68 +138,78 @@ export default async function BlogPostPage({ params }: Props) {
 
           <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
             <span className="font-medium text-foreground">{post.author}</span>
-            <time dateTime={post.date}>
-              {formatDate(post.date, locale)}
-            </time>
-            <span>{post.readingTime} min</span>
+            <time dateTime={post.date}>{formatDate(post.date, locale)}</time>
+            <span>
+              {post.readingTime} {t('readingTimeSuffix')}
+            </span>
           </div>
         </header>
 
-        <div className="space-y-4">
+        <div className="animate-fade-up reveal-delay-2 space-y-4">
           {paragraphs.map((paragraph, i) => (
-            <p key={i} className="text-base leading-relaxed text-muted-foreground">
+            <p
+              key={i}
+              className="text-base leading-relaxed text-muted-foreground"
+            >
               {paragraph}
             </p>
           ))}
         </div>
 
-        <aside className="mt-14 rounded-2xl border border-primary/20 bg-primary/[0.03] p-8 text-center">
-          <h2 className="text-2xl font-bold">
-            {locale === 'es-MX'
-              ? 'Prueba Aduvanta gratis'
-              : 'Try Aduvanta for free'}
-          </h2>
-          <p className="mt-2 text-muted-foreground">
-            {locale === 'es-MX'
-              ? 'Simplifica tus operaciones aduanales con validaciones automaticas, TIGIE integrada y calculo de impuestos en tiempo real. 14 dias gratis, sin tarjeta de credito.'
-              : 'Simplify your customs operations with automatic validations, integrated TIGIE, and real-time tax calculations. 14-day free trial, no credit card required.'}
-          </p>
+        <Reveal
+          variant="scale"
+          as="article"
+          className="relative mt-14 overflow-hidden rounded-2xl border border-primary/20 bg-primary/3 p-8 text-center"
+        >
+          <div
+            className="pointer-events-none absolute inset-0 -z-10"
+            aria-hidden="true"
+          >
+            <div className="animate-aurora absolute -left-20 -top-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
+            <div
+              className="animate-aurora absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-chart-2/10 blur-3xl"
+              style={{ animationDelay: '-8s' }}
+            />
+          </div>
+          <h2 className="text-2xl font-bold">{t('ctaTitle')}</h2>
+          <p className="mt-2 text-muted-foreground">{t('ctaBody')}</p>
           <Link
             href="/sign-up"
-            className="mt-6 inline-block rounded-lg bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+            className="mt-6 inline-block rounded-lg bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
           >
-            {locale === 'es-MX' ? 'Comenzar gratis' : 'Start for free'}
+            {t('ctaButton')}
           </Link>
-        </aside>
+        </Reveal>
 
         {relatedPosts.length > 0 && (
           <section className="mt-16">
-            <h2 className="text-xl font-bold">
-              {locale === 'es-MX'
-                ? 'Articulos relacionados'
-                : 'Related articles'}
-            </h2>
+            <Reveal>
+              <h2 className="text-xl font-bold">{t('relatedArticles')}</h2>
+            </Reveal>
             <div className="mt-6 grid gap-6 sm:grid-cols-2">
-              {relatedPosts.map((related) => (
-                <Link
-                  key={related.slug}
-                  href={`/blog/${related.slug}`}
-                  className="group rounded-xl border border-border/50 bg-card p-5 transition-shadow hover:shadow-md"
-                >
-                  <h3 className="text-base font-semibold group-hover:text-primary transition-colors">
-                    {related.title[lang]}
-                  </h3>
-                  <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
-                    {related.description[lang]}
-                  </p>
-                  <div className="mt-3 text-xs text-muted-foreground">
-                    <time dateTime={related.date}>
-                      {formatDate(related.date, locale)}
-                    </time>
-                    <span className="mx-1">&middot;</span>
-                    <span>{related.readingTime} min</span>
-                  </div>
-                </Link>
+              {relatedPosts.map((related, i) => (
+                <Reveal key={related.slug} delay={80 * i}>
+                  <Link
+                    href={`/blog/${related.slug}`}
+                    className="group block rounded-xl border border-border/50 bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
+                  >
+                    <h3 className="text-base font-semibold transition-colors group-hover:text-primary">
+                      {related.title[lang]}
+                    </h3>
+                    <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
+                      {related.description[lang]}
+                    </p>
+                    <div className="mt-3 text-xs text-muted-foreground">
+                      <time dateTime={related.date}>
+                        {formatDate(related.date, locale)}
+                      </time>
+                      <span className="mx-1">&middot;</span>
+                      <span>
+                        {related.readingTime} {t('readingTimeSuffix')}
+                      </span>
+                    </div>
+                  </Link>
+                </Reveal>
               ))}
             </div>
           </section>

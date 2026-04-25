@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { ChatCircle } from '@phosphor-icons/react';
 import { AddOperationCommentForm } from './add-operation-comment-form';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -18,17 +19,18 @@ export function OperationCommentsSection({
   operationId,
   canComment,
 }: OperationCommentsSectionProps) {
+  const t = useTranslations('operationComments');
   const { data: comments = [], isLoading } = useOperationComments(operationId);
   const createComment = useCreateOperationComment(operationId);
 
   return (
     <div className="space-y-4">
-      <h2 className="text-base font-semibold">Comments</h2>
+      <h2 className="text-base font-semibold">{t('title')}</h2>
 
       {isLoading && <ListSkeleton rows={3} />}
 
       {!isLoading && comments.length === 0 && (
-        <EmptyState icon={<ChatCircle size={20} />} title="No comments yet." />
+        <EmptyState icon={<ChatCircle size={20} />} title={t('empty')} />
       )}
 
       {!isLoading && comments.length > 0 && (

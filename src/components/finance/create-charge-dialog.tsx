@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -31,6 +32,8 @@ export function CreateChargeDialog({
   onSubmit,
   isPending,
 }: CreateChargeDialogProps) {
+  const t = useTranslations('finance');
+  const tCommon = useTranslations('common');
   const [values, setValues] = useState<typeof EMPTY>(EMPTY);
 
   function handleOpenChange(next: boolean) {
@@ -52,17 +55,17 @@ export function CreateChargeDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Add charge</DialogTitle>
+          <DialogTitle>{t('dialogs.addCharge')}</DialogTitle>
         </DialogHeader>
         <div className="space-y-3">
-          <Field label="Type *">
+          <Field label={t('fields.typeRequired')}>
             <input
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={values.type}
               onChange={(e) => setValues((v) => ({ ...v, type: e.target.value }))}
             />
           </Field>
-          <Field label="Description">
+          <Field label={t('fields.description')}>
             <textarea
               rows={2}
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
@@ -71,7 +74,7 @@ export function CreateChargeDialog({
             />
           </Field>
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Amount *">
+            <Field label={t('fields.amountRequired')}>
               <input
                 type="number"
                 min="0"
@@ -83,7 +86,7 @@ export function CreateChargeDialog({
                 }
               />
             </Field>
-            <Field label="Currency *">
+            <Field label={t('fields.currencyRequired')}>
               <input
                 className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 value={values.currency}
@@ -96,13 +99,13 @@ export function CreateChargeDialog({
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => handleOpenChange(false)} disabled={isPending}>
-            Cancel
+            {tCommon('cancel')}
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={!values.type || !values.currency || values.amount <= 0 || isPending}
           >
-            {isPending ? 'Adding…' : 'Add charge'}
+            {isPending ? t('dialogs.adding') : t('dialogs.addCharge')}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -41,12 +41,13 @@ export function DocumentRequirementsTable({
   isDeletePending,
 }: DocumentRequirementsTableProps) {
   const tCommon = useTranslations('common');
+  const t = useTranslations('compliance.docRequirementsTable');
   const categoryMap = Object.fromEntries(categories.map((c) => [c.id, c]));
 
   if (requirements.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
-        No document requirements defined yet.
+        {t('empty')}
       </p>
     );
   }
@@ -55,9 +56,9 @@ export function DocumentRequirementsTable({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Category</TableHead>
-          <TableHead>Code</TableHead>
-          <TableHead>Required</TableHead>
+          <TableHead>{t('columns.category')}</TableHead>
+          <TableHead>{t('columns.code')}</TableHead>
+          <TableHead>{t('columns.required')}</TableHead>
           {canManage && <TableHead />}
         </TableRow>
       </TableHeader>
@@ -76,7 +77,7 @@ export function DocumentRequirementsTable({
                       : 'text-xs text-muted-foreground'
                   }
                 >
-                  {req.isRequired ? 'Required' : 'Optional'}
+                  {req.isRequired ? t('isRequired') : t('isOptional')}
                 </span>
               </TableCell>
               {canManage && (
@@ -93,9 +94,9 @@ export function DocumentRequirementsTable({
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Remove requirement?</AlertDialogTitle>
+                        <AlertDialogTitle>{t('removeTitle')}</AlertDialogTitle>
                         <AlertDialogDescription>
-                          "{cat?.name}" will no longer be required by this rule set.
+                          {t('removeDescription', { name: cat?.name ?? '' })}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
@@ -105,7 +106,7 @@ export function DocumentRequirementsTable({
                           disabled={isDeletePending}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
-                          Remove
+                          {tCommon('remove')}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>

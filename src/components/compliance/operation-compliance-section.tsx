@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useOperationCompliance } from '@/features/operation-compliance/hooks/use-operation-compliance';
 import type { ComplianceAlert, AllowedTransition, CategoryRef } from '@/features/operation-compliance/types/operation-compliance.types';
 import { Warning, CheckCircle, XCircle } from '@phosphor-icons/react';
@@ -11,10 +12,11 @@ interface OperationComplianceSectionProps {
 export function OperationComplianceSection({
   operationId,
 }: OperationComplianceSectionProps) {
+  const t = useTranslations('compliance.operation');
   const { data: evaluation, isLoading } = useOperationCompliance(operationId);
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground">Evaluating compliance…</p>;
+    return <p className="text-sm text-muted-foreground">{t('evaluating')}</p>;
   }
 
   if (!evaluation) return null;
@@ -26,17 +28,17 @@ export function OperationComplianceSection({
       {/* Summary */}
       <section className="space-y-3">
         <div className="flex items-center gap-3">
-          <h2 className="text-base font-semibold">Compliance</h2>
+          <h2 className="text-base font-semibold">{t('title')}</h2>
           {!noRuleSet && (
             evaluation.canCurrentWorkflowAdvance ? (
               <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-950 dark:text-green-300">
                 <CheckCircle size={12} weight="fill" />
-                Can advance
+                {t('canAdvance')}
               </span>
             ) : (
               <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-950 dark:text-amber-300">
                 <Warning size={12} weight="fill" />
-                Blocked
+                {t('blocked')}
               </span>
             )
           )}
@@ -44,7 +46,7 @@ export function OperationComplianceSection({
 
         {evaluation.ruleSetName && (
           <p className="text-sm text-muted-foreground">
-            Rule set: <span className="font-medium text-foreground">{evaluation.ruleSetName}</span>
+            {t('ruleSet')}: <span className="font-medium text-foreground">{evaluation.ruleSetName}</span>
           </p>
         )}
       </section>
@@ -52,7 +54,7 @@ export function OperationComplianceSection({
       {/* Alerts */}
       {evaluation.alerts.length > 0 && (
         <section className="space-y-2">
-          <h3 className="text-sm font-semibold">Alerts</h3>
+          <h3 className="text-sm font-semibold">{t('alerts')}</h3>
           <AlertsList alerts={evaluation.alerts} />
         </section>
       )}
@@ -60,7 +62,7 @@ export function OperationComplianceSection({
       {/* Missing documents */}
       {!noRuleSet && evaluation.missingRequiredDocumentCategories.length > 0 && (
         <section className="space-y-2">
-          <h3 className="text-sm font-semibold">Missing required documents</h3>
+          <h3 className="text-sm font-semibold">{t('missingDocuments')}</h3>
           <MissingDocumentsList categories={evaluation.missingRequiredDocumentCategories} />
         </section>
       )}
@@ -68,7 +70,7 @@ export function OperationComplianceSection({
       {/* Required documents */}
       {!noRuleSet && evaluation.requiredDocumentCategories.length > 0 && (
         <section className="space-y-2">
-          <h3 className="text-sm font-semibold">Required documents</h3>
+          <h3 className="text-sm font-semibold">{t('requiredDocuments')}</h3>
           <DocumentCategoryList
             required={evaluation.requiredDocumentCategories}
             present={evaluation.presentDocumentCategories}
@@ -79,7 +81,7 @@ export function OperationComplianceSection({
       {/* Allowed transitions */}
       {!noRuleSet && evaluation.allowedTransitions.length > 0 && (
         <section className="space-y-2">
-          <h3 className="text-sm font-semibold">Status transitions from current status</h3>
+          <h3 className="text-sm font-semibold">{t('transitionsTitle')}</h3>
           <AllowedTransitionsList transitions={evaluation.allowedTransitions} />
         </section>
       )}

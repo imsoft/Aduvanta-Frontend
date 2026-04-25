@@ -1,20 +1,12 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useOperationFinanceSummary } from '@/features/operation-finance/hooks/use-operation-finance';
 import type { FinancialStatus } from '@/features/operation-finance/types/operation-finance.types';
 import { CardsSkeleton } from '@/components/ui/loading-skeletons';
 
 interface OperationFinanceSummaryCardsProps {
   operationId: string;
-}
-
-function financialStatusLabel(status: FinancialStatus): string {
-  switch (status) {
-    case 'PAID': return 'Paid';
-    case 'PARTIALLY_PAID': return 'Partially paid';
-    case 'PENDING': return 'Pending';
-    case 'NO_CHARGES': return 'No charges';
-  }
 }
 
 function financialStatusClass(status: FinancialStatus): string {
@@ -29,6 +21,7 @@ function financialStatusClass(status: FinancialStatus): string {
 export function OperationFinanceSummaryCards({
   operationId,
 }: OperationFinanceSummaryCardsProps) {
+  const t = useTranslations('finance');
   const { data: summary, isLoading } = useOperationFinanceSummary(operationId);
 
   if (isLoading) {
@@ -44,15 +37,15 @@ export function OperationFinanceSummaryCards({
 
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-      <SummaryCard label="Total charges" value={summary.totalCharges} />
-      <SummaryCard label="Total advances" value={summary.totalAdvances} />
-      <SummaryCard label="Pending balance" value={summary.pendingBalance} />
+      <SummaryCard label={t('summaryCards.totalCharges')} value={summary.totalCharges} />
+      <SummaryCard label={t('summaryCards.totalAdvances')} value={summary.totalAdvances} />
+      <SummaryCard label={t('summaryCards.pendingBalance')} value={summary.pendingBalance} />
       <div className="rounded-md border px-4 py-3">
         <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          Status
+          {t('summaryCards.status')}
         </p>
         <p className={`mt-1 text-sm font-semibold ${financialStatusClass(summary.financialStatus)}`}>
-          {financialStatusLabel(summary.financialStatus)}
+          {t(`financialStatus.${summary.financialStatus}`)}
         </p>
       </div>
     </div>

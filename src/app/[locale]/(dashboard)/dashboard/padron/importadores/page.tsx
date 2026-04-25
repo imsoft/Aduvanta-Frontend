@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { IdentificationCard, Warning, Plus } from '@phosphor-icons/react';
+import { useLocale, useTranslations } from 'next-intl';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -36,14 +37,6 @@ import {
 } from '@/features/importer-registry/hooks/use-importer-registry';
 import { useDebounce } from '@/hooks/use-debounce';
 
-const STATUS_LABELS: Record<string, string> = {
-  ACTIVE: 'Activo',
-  SUSPENDED: 'Suspendido',
-  CANCELLED: 'Cancelado',
-  EXPIRED: 'Vencido',
-  PENDING: 'En trámite',
-};
-
 const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'outline' | 'destructive'> = {
   ACTIVE: 'secondary',
   SUSPENDED: 'outline',
@@ -52,13 +45,13 @@ const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'outline' | 'dest
   PENDING: 'default',
 };
 
-const REGISTRY_TYPE_LABELS: Record<string, string> = {
-  GENERAL: 'General',
-  SECTORIAL: 'Sectorial (PISE)',
-  BOTH: 'General + Sectorial',
-};
+const STATUS_KEYS = ['ACTIVE', 'SUSPENDED', 'CANCELLED', 'EXPIRED', 'PENDING'] as const;
+const REGISTRY_TYPE_KEYS = ['GENERAL', 'SECTORIAL', 'BOTH'] as const;
 
 export default function ImportadoresPage() {
+  const t = useTranslations('importerRegistry');
+  const tCommon = useTranslations('common');
+  const locale = useLocale();
   const { data: clients = [] } = useClients();
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('ALL');
@@ -106,34 +99,42 @@ export default function ImportadoresPage() {
     setForm({ clientId: '', rfc: '', businessName: '', registryType: 'GENERAL', satFolio: '', inscriptionDate: '', expirationDate: '', notes: '' });
   };
 
+  const statusLabel = (s: string) => {
+    const key = `status.${s}`;
+    const translated = t(key);
+    return translated === key ? s : translated;
+  };
+
+  const typeLabel = (type: string) => {
+    const key = `types.${type}`;
+    const translated = t(key);
+    return translated === key ? type : translated;
+  };
+
   return (
     <div className="w-full space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Padrón de Importadores
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Padrón general y sectorial (PISE) de importadores
-          </p>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('title')}</h1>
+          <p className="text-sm text-muted-foreground mt-1">{t('subtitle')}</p>
         </div>
         <Dialog open={createOpen} onOpenChange={setCreateOpen}>
           <DialogTrigger asChild>
             <Button size="sm">
               <Plus size={14} />
-              Nuevo registro
+              {t('newRecord')}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-lg">
             <DialogHeader>
-              <DialogTitle>Nuevo registro de padrón</DialogTitle>
+              <DialogTitle>{t('newRecordTitle')}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 py-2">
               <div className="space-y-2">
-                <Label>Cliente</Label>
+                <Label>{t('fields.client')}</Label>
                 <Select value={form.clientId} onValueChange={(v) => setForm((f) => ({ ...f, clientId: v }))}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Selecciona un cliente..." />
+                    <SelectValue placeholder={t('fields.clientPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {(clients as any[]).map((c) => (
@@ -146,59 +147,59 @@ export default function ImportadoresPage() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <Label>RFC</Label>
+                  <Label>{t('fields.rfc')}</Label>
                   <Input
                     value={form.rfc}
                     onChange={(e) => setForm((f) => ({ ...f, rfc: e.target.value.toUpperCase() }))}
-                    placeholder="RFC del importador"
+                    placeholder={t('fields.rfcPlaceholder')}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Tipo de padrón</Label>
+                  <Label>{t('fields.registryType')}</Label>
                   <Select value={form.registryType} onValueChange={(v) => setForm((f) => ({ ...f, registryType: v }))}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      {Object.entries(REGISTRY_TYPE_LABELS).map(([k, v]) => (
-                        <SelectItem key={k} value={k}>{v}</SelectItem>
+                      {REGISTRY_TYPE_KEYS.map((k) => (
+                        <SelectItem key={k} value={k}>{typeLabel(k)}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
               </div>
               <div className="space-y-2">
-                <Label>Razón social</Label>
+                <Label>{t('fields.businessName')}</Label>
                 <Input
                   value={form.businessName}
                   onChange={(e) => setForm((f) => ({ ...f, businessName: e.target.value }))}
-                  placeholder="Nombre o razón social"
+                  placeholder={t('fields.businessNamePlaceholder')}
                 />
               </div>
               <div className="space-y-2">
-                <Label>Folio SAT</Label>
+                <Label>{t('fields.satFolio')}</Label>
                 <Input
                   value={form.satFolio}
                   onChange={(e) => setForm((f) => ({ ...f, satFolio: e.target.value }))}
-                  placeholder="Folio de inscripción al padrón"
+                  placeholder={t('fields.satFolioPlaceholder')}
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <Label>Fecha de inscripción</Label>
+                  <Label>{t('fields.inscriptionDate')}</Label>
                   <Input type="date" value={form.inscriptionDate} onChange={(e) => setForm((f) => ({ ...f, inscriptionDate: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Fecha de vencimiento</Label>
+                  <Label>{t('fields.expirationDate')}</Label>
                   <Input type="date" value={form.expirationDate} onChange={(e) => setForm((f) => ({ ...f, expirationDate: e.target.value }))} />
                 </div>
               </div>
             </div>
             <div className="flex gap-2 justify-end">
-              <Button variant="outline" onClick={() => setCreateOpen(false)}>Cancelar</Button>
+              <Button variant="outline" onClick={() => setCreateOpen(false)}>{tCommon('cancel')}</Button>
               <Button
                 onClick={handleCreate}
                 disabled={!form.clientId || !form.rfc || !form.businessName || createRegistry.isPending}
               >
-                {createRegistry.isPending ? 'Guardando...' : 'Crear registro'}
+                {createRegistry.isPending ? t('saving') : t('createRecord')}
               </Button>
             </div>
           </DialogContent>
@@ -208,15 +209,13 @@ export default function ImportadoresPage() {
       {expiringCount > 0 && (
         <div className="flex items-center gap-2 rounded-lg border border-yellow-300 bg-yellow-50 p-3 text-sm text-yellow-800">
           <Warning size={16} className="shrink-0" />
-          <span>
-            {expiringCount} registro{expiringCount > 1 ? 's' : ''} con vencimiento en los próximos 30 días
-          </span>
+          <span>{t('expiringBanner', { count: expiringCount })}</span>
         </div>
       )}
 
       <div className="flex flex-wrap gap-3">
         <Input
-          placeholder="Buscar por RFC o razón social..."
+          placeholder={t('searchPlaceholder')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-xs min-w-0"
@@ -226,9 +225,9 @@ export default function ImportadoresPage() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">Todos los estados</SelectItem>
-            {Object.entries(STATUS_LABELS).map(([k, v]) => (
-              <SelectItem key={k} value={k}>{v}</SelectItem>
+            <SelectItem value="ALL">{t('allStatuses')}</SelectItem>
+            {STATUS_KEYS.map((k) => (
+              <SelectItem key={k} value={k}>{statusLabel(k)}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -241,10 +240,8 @@ export default function ImportadoresPage() {
       {!isLoading && records.length === 0 && (
         <div className="rounded-lg border border-dashed p-12 text-center">
           <IdentificationCard size={32} className="mx-auto mb-3 text-muted-foreground" />
-          <p className="text-sm font-medium">Sin registros de padrón</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            Agrega el primer registro de padrón de importadores
-          </p>
+          <p className="text-sm font-medium">{t('emptyTitle')}</p>
+          <p className="text-sm text-muted-foreground mt-1">{t('emptyDescription')}</p>
         </div>
       )}
 
@@ -253,13 +250,13 @@ export default function ImportadoresPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>RFC</TableHead>
-                <TableHead>Razón social</TableHead>
-                <TableHead>Tipo</TableHead>
-                <TableHead>Folio SAT</TableHead>
-                <TableHead>Inscripción</TableHead>
-                <TableHead>Vencimiento</TableHead>
-                <TableHead>Estado</TableHead>
+                <TableHead>{t('columns.rfc')}</TableHead>
+                <TableHead>{t('columns.businessName')}</TableHead>
+                <TableHead>{t('columns.type')}</TableHead>
+                <TableHead>{t('columns.satFolio')}</TableHead>
+                <TableHead>{t('columns.inscription')}</TableHead>
+                <TableHead>{t('columns.expiration')}</TableHead>
+                <TableHead>{t('columns.status')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -271,25 +268,25 @@ export default function ImportadoresPage() {
                     <TableCell className="font-mono text-sm font-medium">{r.rfc}</TableCell>
                     <TableCell className="text-sm max-w-48 truncate">{r.businessName}</TableCell>
                     <TableCell className="text-xs text-muted-foreground">
-                      {REGISTRY_TYPE_LABELS[r.registryType] ?? r.registryType}
+                      {typeLabel(r.registryType)}
                     </TableCell>
                     <TableCell className="font-mono text-xs text-muted-foreground">
                       {r.satFolio ?? '—'}
                     </TableCell>
                     <TableCell className="text-sm">
-                      {r.inscriptionDate ? new Date(r.inscriptionDate).toLocaleDateString('es-MX') : '—'}
+                      {r.inscriptionDate ? new Date(r.inscriptionDate).toLocaleDateString(locale) : '—'}
                     </TableCell>
                     <TableCell className={`text-sm ${isExpiringSoon ? 'text-yellow-700 font-medium' : ''}`}>
                       {r.expirationDate ? (
                         <span className="flex items-center gap-1">
                           {isExpiringSoon && <Warning size={12} />}
-                          {new Date(r.expirationDate).toLocaleDateString('es-MX')}
+                          {new Date(r.expirationDate).toLocaleDateString(locale)}
                         </span>
                       ) : '—'}
                     </TableCell>
                     <TableCell>
                       <Badge variant={STATUS_VARIANT[r.status] ?? 'outline'}>
-                        {STATUS_LABELS[r.status] ?? r.status}
+                        {statusLabel(r.status)}
                       </Badge>
                     </TableCell>
                   </TableRow>

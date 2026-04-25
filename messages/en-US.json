@@ -468,6 +468,56 @@
         "deleteTitle": "Delete rule set?",
         "deleteDescription": "\"{name}\" and all its requirements and status rules will be permanently deleted."
       }
+    },
+    "operation": {
+      "title": "Compliance",
+      "evaluating": "Evaluating compliance…",
+      "canAdvance": "Can advance",
+      "blocked": "Blocked",
+      "ruleSet": "Rule set",
+      "alerts": "Alerts",
+      "missingDocuments": "Missing required documents",
+      "requiredDocuments": "Required documents",
+      "transitionsTitle": "Status transitions from current status"
+    },
+    "statusRulesTable": {
+      "empty": "No status transition rules defined yet.",
+      "columns": {
+        "from": "From status",
+        "to": "To status",
+        "requiresAllDocs": "Requires all docs"
+      },
+      "removeTitle": "Remove status rule?",
+      "removeDescription": "The transition {from} → {to} will no longer be governed by this rule set."
+    },
+    "docRequirementsTable": {
+      "empty": "No document requirements defined yet.",
+      "columns": {
+        "category": "Category",
+        "code": "Code",
+        "required": "Required"
+      },
+      "isRequired": "Required",
+      "isOptional": "Optional",
+      "removeTitle": "Remove requirement?",
+      "removeDescription": "\"{name}\" will no longer be required by this rule set."
+    },
+    "createStatusRuleDialog": {
+      "title": "Add status transition rule",
+      "fromStatus": "From status",
+      "toStatus": "To status",
+      "requiresAllDocs": "Requires all required documents",
+      "duplicate": "This transition already exists in this rule set.",
+      "adding": "Adding…",
+      "add": "Add rule"
+    },
+    "createDocRequirementDialog": {
+      "title": "Add document requirement",
+      "category": "Document category *",
+      "selectCategory": "Select a category…",
+      "markAsRequired": "Mark as required",
+      "adding": "Adding…",
+      "add": "Add requirement"
     }
   },
   "exports": {
@@ -673,5 +723,1546 @@
     "writeComment": "Write a comment…",
     "statusChangeReason": "Reason for status change…",
     "addressLabel": "Main office"
+  },
+  "finance": {
+    "summary": "Summary",
+    "charges": "Charges",
+    "advances": "Advances",
+    "addCharge": "Add charge",
+    "registerAdvance": "Register advance",
+    "noCharges": "No charges recorded yet.",
+    "noAdvances": "No advances recorded yet.",
+    "columns": {
+      "type": "Type",
+      "description": "Description",
+      "amount": "Amount",
+      "currency": "Currency",
+      "status": "Status",
+      "created": "Created",
+      "reference": "Reference",
+      "receivedAt": "Received at"
+    },
+    "summaryCards": {
+      "totalCharges": "Total charges",
+      "totalAdvances": "Total advances",
+      "pendingBalance": "Pending balance",
+      "status": "Status"
+    },
+    "financialStatus": {
+      "PAID": "Paid",
+      "PARTIALLY_PAID": "Partially paid",
+      "PENDING": "Pending",
+      "NO_CHARGES": "No charges"
+    },
+    "fields": {
+      "typeRequired": "Type *",
+      "description": "Description",
+      "amountRequired": "Amount *",
+      "currencyRequired": "Currency *",
+      "receivedAtRequired": "Received at *",
+      "reference": "Reference",
+      "notes": "Notes"
+    },
+    "dialogs": {
+      "addCharge": "Add charge",
+      "editCharge": "Edit charge",
+      "registerAdvance": "Register advance",
+      "editAdvance": "Edit advance",
+      "deactivateChargeTitle": "Deactivate charge?",
+      "deactivateChargeDescription": "This charge will be marked as inactive and excluded from the finance summary.",
+      "deactivateAdvanceTitle": "Deactivate advance?",
+      "deactivateAdvanceDescription": "This advance will be marked as inactive and excluded from the finance summary.",
+      "deactivate": "Deactivate",
+      "adding": "Adding…",
+      "registering": "Registering…"
+    }
+  },
+  "operationDocuments": {
+    "title": "Documents",
+    "upload": "Upload",
+    "uploading": "Uploading…",
+    "empty": "No documents yet.",
+    "columns": {
+      "name": "Name",
+      "category": "Category",
+      "version": "Version",
+      "size": "Size",
+      "status": "Status"
+    },
+    "fields": {
+      "file": "File",
+      "name": "Name",
+      "category": "Category",
+      "description": "Description"
+    },
+    "dialogs": {
+      "upload": "Upload document",
+      "edit": "Edit document"
+    }
+  },
+  "portalDocs": {
+    "empty": "No documents available.",
+    "columns": {
+      "name": "Name",
+      "type": "Type",
+      "size": "Size",
+      "uploaded": "Uploaded"
+    },
+    "download": "Download"
+  },
+  "clientAccess": {
+    "title": "Portal access",
+    "grant": "Grant access",
+    "grantDialogTitle": "Grant portal access",
+    "granting": "Granting…",
+    "selectUser": "User",
+    "selectUserPlaceholder": "Select a user…",
+    "empty": "No users have portal access to this client.",
+    "revokeTitle": "Revoke portal access?",
+    "revokeDescription": "{name} will lose access to this client's portal.",
+    "revoke": "Revoke"
+  },
+  "clientAddresses": {
+    "title": "Addresses",
+    "add": "Add address",
+    "addDialogTitle": "Add address",
+    "editDialogTitle": "Edit address",
+    "empty": "No addresses yet.",
+    "columns": {
+      "label": "Label",
+      "address": "Address",
+      "cityState": "City / State",
+      "country": "Country"
+    },
+    "primary": "Primary",
+    "removeTitle": "Remove address?",
+    "removeDescription": "{label} will be permanently removed."
+  },
+  "operationComments": {
+    "title": "Comments",
+    "empty": "No comments yet."
+  },
+  "customsEntries": {
+    "table": {
+      "entryNumber": "Entry No.",
+      "reference": "Reference",
+      "key": "Key",
+      "regime": "Regime",
+      "status": "Status",
+      "customsValue": "Customs value",
+      "totalContributions": "Total contributions",
+      "date": "Date",
+      "pending": "Pending"
+    },
+    "regimes": {
+      "IMP_DEFINITIVA": "A1 — Definitive import",
+      "EXP_DEFINITIVA": "A2 — Definitive export",
+      "IMP_TEMPORAL": "Temporary import",
+      "EXP_TEMPORAL": "Temporary export",
+      "DEPOSITO_FISCAL": "Customs warehouse",
+      "TRANSITO_INTERNO": "Domestic transit",
+      "TRANSITO_INTERNACIONAL": "International transit",
+      "VIRTUAL": "Virtual (IMMEX)",
+      "OTHER": "Other"
+    }
+  },
+  "importerRegistry": {
+    "title": "Importer registry",
+    "subtitle": "General and sectoral (PISE) importer registry",
+    "newRecord": "New record",
+    "newRecordTitle": "New registry record",
+    "expiringBanner": "{count, plural, one {# record} other {# records}} expiring within the next 30 days",
+    "searchPlaceholder": "Search by RFC or business name…",
+    "allStatuses": "All statuses",
+    "emptyTitle": "No registry records",
+    "emptyDescription": "Add the first importer registry record",
+    "saving": "Saving…",
+    "createRecord": "Create record",
+    "fields": {
+      "client": "Client",
+      "clientPlaceholder": "Select a client…",
+      "rfc": "RFC",
+      "rfcPlaceholder": "Importer RFC",
+      "registryType": "Registry type",
+      "businessName": "Business name",
+      "businessNamePlaceholder": "Name or business name",
+      "satFolio": "SAT folio",
+      "satFolioPlaceholder": "Registry inscription folio",
+      "inscriptionDate": "Inscription date",
+      "expirationDate": "Expiration date"
+    },
+    "columns": {
+      "rfc": "RFC",
+      "businessName": "Business name",
+      "type": "Type",
+      "satFolio": "SAT folio",
+      "inscription": "Inscription",
+      "expiration": "Expiration",
+      "status": "Status"
+    },
+    "status": {
+      "ACTIVE": "Active",
+      "SUSPENDED": "Suspended",
+      "CANCELLED": "Cancelled",
+      "EXPIRED": "Expired",
+      "PENDING": "Pending"
+    },
+    "types": {
+      "GENERAL": "General",
+      "SECTORIAL": "Sectoral (PISE)",
+      "BOTH": "General + Sectoral"
+    }
+  },
+  "converter": {
+    "title": "Conversions",
+    "subtitle": "Universal unit converter — mass, length, volume, temperature and more",
+    "from": "From",
+    "to": "To",
+    "swapUnits": "Swap units",
+    "swapCurrencies": "Swap currencies",
+    "loading": "Loading…",
+    "referenceTableTitle": "Reference table",
+    "referenceTableDescription": "{amount} {symbol} in all units",
+    "frequentEquivalences": "Frequent equivalences in foreign trade",
+    "equivalencesCards": {
+      "weight": "Weight",
+      "volume": "Volume",
+      "length": "Length"
+    },
+    "exchange": {
+      "title": "Exchange rates",
+      "subtitle": "Market rates (ExchangeRate-API) and official SAT rate (Bank of Mexico FIX)",
+      "fixTitle": "FIX exchange rate — Bank of Mexico",
+      "fixBadge": "Required for entries (Art. 20 CFF)",
+      "publishedOn": "Published: {date}",
+      "fixMissing": "Configure {tokenName} in the backend to view the FIX rate in real time.",
+      "converterTitle": "Currency converter — market rates",
+      "baseLabel": "Base",
+      "cacheLabel": "cached",
+      "liveLabel": "live",
+      "priority": "Priority",
+      "all": "All",
+      "mainCurrenciesTitle": "{amount} {base} in main currencies",
+      "error": "Could not load exchange rates. Verify that {keyName} is configured in the backend."
+    },
+    "categories": {
+      "masa": "Mass / Weight",
+      "longitud": "Length",
+      "volumen": "Volume",
+      "area": "Area",
+      "temperatura": "Temperature",
+      "velocidad": "Speed",
+      "presion": "Pressure",
+      "energia": "Energy",
+      "potencia": "Power",
+      "datos": "Digital data",
+      "tiempo": "Time",
+      "angulo": "Angle"
+    },
+    "units": {
+      "kg": "Kilogram",
+      "g": "Gram",
+      "mg": "Milligram",
+      "ug": "Microgram",
+      "t": "Metric ton",
+      "ton_larga": "Long ton (UK)",
+      "ton_corta": "Short ton (US)",
+      "lb": "Pound",
+      "oz": "Ounce",
+      "gr": "Grain",
+      "quintal": "Metric quintal",
+      "arroba": "Arroba",
+      "stone": "Stone",
+      "m": "Meter",
+      "km": "Kilometer",
+      "cm": "Centimeter",
+      "mm": "Millimeter",
+      "um": "Micrometer",
+      "nm_len": "Nanometer",
+      "mi": "Mile",
+      "nmi": "Nautical mile",
+      "yd": "Yard",
+      "ft": "Foot",
+      "in": "Inch",
+      "fur": "Furlong",
+      "ly": "Light year",
+      "au": "Astronomical unit",
+      "l": "Liter",
+      "ml": "Milliliter",
+      "cl": "Centiliter",
+      "dl": "Deciliter",
+      "m3": "Cubic meter",
+      "cm3": "Cubic centimeter",
+      "mm3": "Cubic millimeter",
+      "gal_us": "US gallon",
+      "gal_uk": "UK gallon",
+      "qt_us": "US quart",
+      "pt_us": "US pint",
+      "cup": "US cup",
+      "floz_us": "US fluid ounce",
+      "ft3": "Cubic foot",
+      "in3": "Cubic inch",
+      "bbl_oil": "Barrel (oil)",
+      "bbl_beer": "Barrel (US beer)",
+      "m2": "Square meter",
+      "km2": "Square kilometer",
+      "cm2": "Square centimeter",
+      "mm2": "Square millimeter",
+      "ha": "Hectare",
+      "a": "Are",
+      "ac": "Acre",
+      "mi2": "Square mile",
+      "yd2": "Square yard",
+      "ft2": "Square foot",
+      "in2": "Square inch",
+      "c": "Celsius",
+      "f": "Fahrenheit",
+      "k": "Kelvin",
+      "r": "Rankine",
+      "reaumur": "Réaumur",
+      "ms": "Meter per second",
+      "kmh": "Kilometer per hour",
+      "mph": "Mile per hour",
+      "fts": "Foot per second",
+      "kn": "Knot",
+      "mach": "Mach (ISA)",
+      "c_light": "Speed of light",
+      "pa": "Pascal",
+      "kpa": "Kilopascal",
+      "mpa": "Megapascal",
+      "bar": "Bar",
+      "mbar": "Millibar",
+      "atm": "Atmosphere",
+      "psi": "PSI",
+      "mmhg": "Millimeter of mercury",
+      "inhg": "Inch of mercury",
+      "torr": "Torr",
+      "j": "Joule",
+      "kj": "Kilojoule",
+      "mj": "Megajoule",
+      "cal": "Calorie",
+      "kcal": "Kilocalorie",
+      "wh": "Watt hour",
+      "kwh": "Kilowatt hour",
+      "ev": "Electronvolt",
+      "btu": "BTU",
+      "ftlbf": "Foot-pound force",
+      "w": "Watt",
+      "kw": "Kilowatt",
+      "mw": "Megawatt",
+      "hp_met": "Metric horsepower",
+      "hp_imp": "Horsepower (imperial)",
+      "btuhr": "BTU/hour",
+      "kcalhr": "kcal/hour",
+      "bit": "Bit",
+      "byte": "Byte",
+      "kb": "Kilobyte",
+      "mb": "Megabyte",
+      "gb": "Gigabyte",
+      "tb": "Terabyte",
+      "pb": "Petabyte",
+      "kbit": "Kilobit",
+      "mbit": "Megabit",
+      "gbit": "Gigabit",
+      "s": "Second",
+      "ms_t": "Millisecond",
+      "us_t": "Microsecond",
+      "ns_t": "Nanosecond",
+      "min": "Minute",
+      "h": "Hour",
+      "d": "Day",
+      "semana": "Week",
+      "mes": "Month (30 days)",
+      "anio": "Year (365 days)",
+      "deg": "Degree",
+      "rad": "Radian",
+      "grad": "Gradian",
+      "arcmin": "Arc minute",
+      "arcsec": "Arc second",
+      "turn": "Full turn"
+    }
+  },
+  "landing": {
+    "common": {
+      "getStarted": "Get Started",
+      "comenzar": "Get Started"
+    },
+    "navbar": {
+      "product": "Product",
+      "pricing": "Pricing",
+      "compare": "Compare",
+      "faq": "FAQ",
+      "signIn": "Sign In",
+      "cta": "Start Free",
+      "switchLocale": "ES",
+      "switchLocaleLabel": "Cambiar a Español",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu",
+      "brandHome": "Aduvanta home",
+      "mainNavigation": "Main navigation"
+    },
+    "logoBar": {
+      "label": "Trusted by customs agencies across Mexico"
+    },
+    "footer": {
+      "tagline": "The modern customs operations platform.",
+      "productTitle": "Product",
+      "toolsTitle": "Free Tools",
+      "companyTitle": "Company",
+      "rights": "All rights reserved.",
+      "productLinks": [
+        {
+          "label": "Features",
+          "href": "/software-aduanal"
+        },
+        {
+          "label": "Pricing",
+          "href": "/precios"
+        },
+        {
+          "label": "Compare",
+          "href": "/comparar/sistemas-casa"
+        },
+        {
+          "label": "Blog",
+          "href": "/blog"
+        }
+      ],
+      "toolLinks": [
+        {
+          "label": "TIGIE Lookup",
+          "href": "/herramientas/consulta-tigie"
+        },
+        {
+          "label": "Anexo 22 Catalogs",
+          "href": "/sign-up"
+        },
+        {
+          "label": "SAAI Error Codes",
+          "href": "/sign-up"
+        },
+        {
+          "label": "Unit Converter",
+          "href": "/sign-up"
+        }
+      ],
+      "companyLinks": [
+        {
+          "label": "About",
+          "href": "/software-aduanal"
+        },
+        {
+          "label": "Contact",
+          "href": "mailto:contacto@aduvanta.com"
+        },
+        {
+          "label": "Privacy",
+          "href": "/privacidad"
+        },
+        {
+          "label": "Terms",
+          "href": "/terminos"
+        }
+      ]
+    },
+    "hero": {
+      "eyebrow": "New — AI-assisted tariff classification",
+      "headline": "Cloud Customs Software for Mexico.",
+      "headlineAccent": "One Platform. Zero Installs.",
+      "subheadline": "Aduvanta replaces 13 disconnected desktop apps with one cloud-based platform. Pedimentos, TIGIE classification, billing, warehouse, and client portal — all in your browser.",
+      "cta": "Start 14-day free trial",
+      "ctaSecondary": "Watch demo",
+      "noCard": "No credit card required",
+      "preview": "Platform preview",
+      "playLabel": "Play Aduvanta product demo",
+      "playCaption": "Watch demo",
+      "posterAlt": "Aduvanta product demo preview",
+      "stats": [
+        {
+          "value": "80%",
+          "label": "less time on pedimentos"
+        },
+        {
+          "value": "0",
+          "label": "software to install"
+        },
+        {
+          "value": "100%",
+          "label": "online, from anywhere"
+        }
+      ]
+    },
+    "problem": {
+      "badge": "The Problem",
+      "title": "Legacy customs software is costing you money",
+      "description": "Every hour spent fighting slow desktop apps, copying data between systems, and calling clients for status updates is an hour not spent on operations that generate revenue.",
+      "beforeLabel": "Without Aduvanta",
+      "beforeItems": [
+        "Manual data entry across 5+ disconnected systems",
+        "Clients calling every hour asking for status",
+        "Pedimento errors caught after submission",
+        "Documents scattered in emails and USB drives",
+        "No way to know who changed what and when",
+        "Tied to a single office computer"
+      ],
+      "afterLabel": "With Aduvanta",
+      "afterItems": [
+        "One platform for everything — enter data once",
+        "Clients track their own operations in real time",
+        "Validation before submission, fewer rejections",
+        "All documents organized with version control",
+        "Complete audit trail on every action",
+        "Work from anywhere, on any device"
+      ]
+    },
+    "howItWorks": {
+      "badge": "How It Works",
+      "title": "Start managing pedimentos in 15 minutes",
+      "steps": [
+        {
+          "number": "01",
+          "title": "Create your account",
+          "description": "Sign up, verify your email, and you're in. No downloads, no installations, no IT department needed."
+        },
+        {
+          "number": "02",
+          "title": "Set up your organization",
+          "description": "Add your team, assign roles, and configure permissions. Invite your clients to their own portal."
+        },
+        {
+          "number": "03",
+          "title": "Start operating",
+          "description": "Create your first pedimento, upload documents, track operations. Everything from your browser."
+        }
+      ]
+    },
+    "features": {
+      "sectionBadge": "Product",
+      "sectionTitle": "Pedimentos, TIGIE, Portal & Compliance — Built In",
+      "items": [
+        {
+          "iconKey": "fileText",
+          "badge": "Pedimentos",
+          "title": "From draft to release, tracked end to end",
+          "description": "Create, validate, and submit pedimentos without switching between systems. Every field validated against SAAI rules before submission.",
+          "bullets": [
+            "Full lifecycle management (draft, prevalidation, submission, release)",
+            "SAAI error reference built in — fix rejections fast",
+            "Automatic Anexo 22 catalog lookups while you type"
+          ],
+          "imageSrc": "/images/landing/features/pedimentos.jpg",
+          "imageAlt": "Illustration of a pedimento lifecycle: draft on laptop, SAAI validation and customs release of a truck"
+        },
+        {
+          "iconKey": "users",
+          "badge": "Client Portal",
+          "title": "Stop answering the same call 10 times a day",
+          "description": "Give each client their own login to track operations, view documents, and check status. They see what you want them to see — nothing more.",
+          "bullets": [
+            "Clients self-serve their own status updates",
+            "Permission-controlled visibility per client",
+            "Professional image for your agency"
+          ],
+          "imageSrc": "/images/landing/features/portal-clientes.jpg",
+          "imageAlt": "Client portal dashboard showing tracking and permission-controlled access to status, costs and internal notes"
+        },
+        {
+          "iconKey": "shieldCheck",
+          "badge": "Compliance & Audit",
+          "title": "Every action recorded. Every change traceable.",
+          "description": "When SAT asks for documentation, you have it. Complete audit trail with who did what, when, and why — across every module.",
+          "bullets": [
+            "Immutable audit logs on all sensitive mutations",
+            "Role-based access with 60+ permission codes",
+            "Organization-level data isolation"
+          ],
+          "imageSrc": "/images/landing/features/cumplimiento-auditoria.jpg",
+          "imageAlt": "Immutable audit vault chained to pedimentos and audit certificates, representing SAT-ready compliance records"
+        },
+        {
+          "iconKey": "sparkle",
+          "badge": "AI-Powered",
+          "title": "Classify faster. Make fewer mistakes.",
+          "description": "AI-assisted tariff classification suggests fractions based on product descriptions. Cross-referenced with TIGIE in real time.",
+          "bullets": [
+            "Intelligent tariff fraction suggestions",
+            "Document analysis and data extraction",
+            "Insights on operation patterns and anomalies"
+          ],
+          "imageSrc": "/images/landing/features/inteligencia-artificial.jpg",
+          "imageAlt": "AI-assisted tariff classification suggesting TIGIE fractions in real time for a product description on a pedimento"
+        }
+      ]
+    },
+    "platform": {
+      "badge": "Platform",
+      "title": "14 Modules. One Customs Operations Platform.",
+      "description": "Stop paying for 13 separate desktop apps. Aduvanta covers your entire customs and foreign trade operation in the cloud.",
+      "categories": [
+        {
+          "title": "Customs & Trade",
+          "modules": [
+            {
+              "iconKey": "fileText",
+              "name": "Pedimentos"
+            },
+            {
+              "iconKey": "scales",
+              "name": "Tariff Classification"
+            },
+            {
+              "iconKey": "currencyDollar",
+              "name": "Customs Valuation"
+            },
+            {
+              "iconKey": "truck",
+              "name": "Operations & Traffic"
+            }
+          ]
+        },
+        {
+          "title": "Finance & Billing",
+          "modules": [
+            {
+              "iconKey": "invoice",
+              "name": "Invoicing"
+            },
+            {
+              "iconKey": "vault",
+              "name": "Treasury"
+            },
+            {
+              "iconKey": "chartBar",
+              "name": "Analytics & BI"
+            }
+          ]
+        },
+        {
+          "title": "Documents & Compliance",
+          "modules": [
+            {
+              "iconKey": "folder",
+              "name": "Document Management"
+            },
+            {
+              "iconKey": "warehouse",
+              "name": "Warehouse Control"
+            },
+            {
+              "iconKey": "bookOpen",
+              "name": "Anexo 22 Catalogs"
+            }
+          ]
+        },
+        {
+          "title": "Reference Tools",
+          "modules": [
+            {
+              "iconKey": "warning",
+              "name": "SAAI Error Codes"
+            },
+            {
+              "iconKey": "calculator",
+              "name": "Unit Converter"
+            }
+          ]
+        }
+      ]
+    },
+    "comparison": {
+      "badge": "Compare",
+      "title": "Competition vs. Aduvanta",
+      "legacy": "Competition",
+      "aduvanta": "Aduvanta",
+      "footer": "Same core functionality. A completely different experience.",
+      "rows": [
+        {
+          "feature": "Web-based — no installation",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "Access from any device",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "Client portal included",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "AI-powered classification",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "Real-time collaboration",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "Full audit trail",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "Multi-organization support",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "API for integrations",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "Pedimento management",
+          "legacy": true,
+          "aduvanta": true
+        },
+        {
+          "feature": "Tariff classification",
+          "legacy": true,
+          "aduvanta": true
+        },
+        {
+          "feature": "Automatic updates",
+          "legacy": false,
+          "aduvanta": true
+        },
+        {
+          "feature": "Unified billing & treasury",
+          "legacy": false,
+          "aduvanta": true
+        }
+      ]
+    },
+    "pricing": {
+      "badge": "Pricing",
+      "title": "Invest in your operation, not your tools",
+      "description": "All plans include a 14-day free trial. No credit card required.",
+      "monthly": "Monthly",
+      "annual": "Annual",
+      "annualSave": "Save 20%",
+      "popular": "Most popular",
+      "guarantee": "14-day free trial on all plans. Cancel anytime.",
+      "contact": "Need something custom?",
+      "contactCta": "Talk to us",
+      "tiers": [
+        {
+          "name": "Starter",
+          "monthlyPrice": "$2,500",
+          "annualPrice": "$2,000",
+          "period": "MXN/mo",
+          "description": "For independent brokers managing their own operations.",
+          "features": [
+            "1 organization",
+            "3 users included",
+            "Pedimentos & entries",
+            "Tariff classification (TIGIE)",
+            "Anexo 22 & SAAI reference",
+            "Unit converter",
+            "Email support"
+          ],
+          "cta": "Start free trial",
+          "highlighted": false
+        },
+        {
+          "name": "Professional",
+          "monthlyPrice": "$12,000",
+          "annualPrice": "$9,600",
+          "period": "MXN/mo",
+          "description": "For agencies that need full operational control and client management.",
+          "features": [
+            "1 organization",
+            "15 users included",
+            "Everything in Starter",
+            "Full operations & traffic",
+            "Warehouse control",
+            "Billing & treasury",
+            "Document management",
+            "Client portal",
+            "Priority support"
+          ],
+          "cta": "Start free trial",
+          "highlighted": true
+        },
+        {
+          "name": "Enterprise",
+          "monthlyPrice": "$35,000",
+          "annualPrice": "$28,000",
+          "period": "MXN/mo",
+          "description": "For customs groups and IMMEX companies at scale.",
+          "features": [
+            "Unlimited organizations",
+            "Unlimited users",
+            "Everything in Professional",
+            "Analytics & BI dashboards",
+            "AI Assistant",
+            "Full API access",
+            "Custom integrations",
+            "SSO / SAML",
+            "Dedicated account manager"
+          ],
+          "cta": "Talk to sales",
+          "highlighted": false
+        }
+      ]
+    },
+    "testimonials": {
+      "badge": "Testimonials",
+      "title": "What our users are saying",
+      "items": [
+        {
+          "quote": "We switched from CASA and saved 3 hours per day just on pedimento entry. Our clients love the portal — they stopped calling for status updates.",
+          "name": "Maria Gonzalez",
+          "role": "Director, Agencia Aduanal MG"
+        },
+        {
+          "quote": "The audit trail alone justified the switch. When SAT audited us, we pulled every record in minutes instead of days.",
+          "name": "Carlos Hernandez",
+          "role": "Compliance Manager, TradeLink MX"
+        },
+        {
+          "quote": "Finally, a customs platform that feels like software built in this decade. My team was up and running the same day.",
+          "name": "Ana Torres",
+          "role": "Operations Lead, GlobalFreight"
+        }
+      ]
+    },
+    "faq": {
+      "badge": "FAQ",
+      "title": "Common questions",
+      "items": [
+        {
+          "question": "How long does it take to get started?",
+          "answer": "About 15 minutes. Sign up, create your organization, invite your team, and you can start creating pedimentos immediately. No installation, no IT setup, no migration required to begin."
+        },
+        {
+          "question": "Can I migrate my data from CASA or other systems?",
+          "answer": "Yes. We offer guided migration for Professional and Enterprise plans. Our team helps you import historical data so you don't lose continuity. Starter users can begin fresh and import data as needed."
+        },
+        {
+          "question": "Is my data safe?",
+          "answer": "Your data is encrypted at rest and in transit, hosted on Neon PostgreSQL with automated daily backups. Each organization's data is fully isolated. We maintain complete audit trails and role-based access control with 60+ granular permissions."
+        },
+        {
+          "question": "Can my clients access the platform?",
+          "answer": "Yes. The Client Portal gives each client their own login to track operations, view documents, and check status — with permission controls so they only see what you allow. Available on Professional and Enterprise plans."
+        },
+        {
+          "question": "What happens after the 14-day trial?",
+          "answer": "You choose a plan and continue using the platform with all your data intact. If you decide not to continue, your data is available for export for 30 days after the trial ends. No surprise charges."
+        },
+        {
+          "question": "Do I need to install anything?",
+          "answer": "No. Aduvanta is entirely web-based and works in any modern browser (Chrome, Firefox, Safari, Edge). No downloads, no plugins, no Java — just open your browser and log in."
+        }
+      ]
+    },
+    "ctaSection": {
+      "title": "Modernize your customs agency today.",
+      "subtitle": "Start your free trial now.",
+      "description": "14-day free trial. No credit card. No installation. Creating pedimentos in 15 minutes.",
+      "cta": "Try Aduvanta free for 14 days",
+      "secondary": "Schedule a call"
+    },
+    "consultaTigie": {
+      "meta": {
+        "title": "Free TIGIE Lookup — Mexican Tariff Fractions",
+        "description": "Free TIGIE tariff fraction lookup. Search Mexican import and export duty rates, regulations, and supplementary notes from the official tariff schedule.",
+        "keywords": "TIGIE lookup, Mexican tariff fractions, tariff classification Mexico, TIGIE search, duty rates Mexico",
+        "breadcrumbTools": "Tools",
+        "breadcrumbTigie": "TIGIE Lookup"
+      },
+      "title": "Free TIGIE Tariff Lookup Tool",
+      "subtitle": "Search the Mexican TIGIE tariff schedule by fraction, description, or keyword. Find duty rates, regulations, and applicable notes instantly.",
+      "searchPlaceholder": "Search by tariff fraction or keyword (e.g. 8471.30 or \"laptops\")...",
+      "searchButton": "Search TIGIE",
+      "signUpNote": "Full TIGIE lookup available after free sign-up. No credit card required.",
+      "features": [
+        {
+          "title": "Complete TIGIE Database",
+          "description": "Access the full Tarifa de la Ley de los Impuestos Generales de Importacion y de Exportacion. Over 12,000 tariff fractions with duty rates, units of measure, and supplementary notes."
+        },
+        {
+          "title": "Duty Rates & Regulations",
+          "description": "View import and export duty rates (ad valorem, specific, mixed), applicable regulations (NOMs, permits, quotas), and restricted merchandise flags for each fraction."
+        },
+        {
+          "title": "Anexo 22 Integration",
+          "description": "Cross-reference tariff fractions with Anexo 22 catalogs including units of measure, customs offices, country codes, and NICO codes — all in one place."
+        },
+        {
+          "title": "Always Up to Date",
+          "description": "Our TIGIE database is synchronized with official SAT publications. When tariff fractions change, our database reflects it automatically."
+        }
+      ],
+      "ctaTitle": "Need more than lookups?",
+      "ctaDescription": "Aduvanta integrates TIGIE classification directly into pedimento creation. AI-assisted suggestions, automatic validation, and full audit trail.",
+      "ctaCta": "Try Aduvanta free for 14 days"
+    },
+    "softwareAduanal": {
+      "meta": {
+        "title": "Cloud Customs Software for Customs Agencies",
+        "description": "Cloud-based customs software. Pedimentos, TIGIE tariff classification, Anexo 22, client portal, billing, and audit in one platform for customs agencies in Mexico.",
+        "keywords": "software aduanal, software aduanal Mexico, sistema aduanero, agencia aduanal software"
+      },
+      "title": "Cloud Customs Software for Customs Agencies",
+      "heroSubtitle": "One platform to run your entire customs agency. Pedimentos, tariff classification, client portal, billing, compliance — all in the cloud.",
+      "heroCta": "Start your free trial",
+      "heroSecondaryCta": "See pricing",
+      "painTitle": "Why Customs Agencies Need Modern Software",
+      "painSubtitle": "The tools that built the customs industry are holding it back.",
+      "pains": [
+        {
+          "title": "Disconnected desktop apps",
+          "description": "Running 5-10 separate Windows programs that do not talk to each other wastes hours every day. Data gets re-entered, errors multiply, and nothing is in sync."
+        },
+        {
+          "title": "No remote access",
+          "description": "Desktop-only software ties your team to the office. When a client calls at 8 PM, you cannot check the status of their pedimento from your phone."
+        },
+        {
+          "title": "Zero visibility for clients",
+          "description": "Clients call and email to ask \"where is my shipment?\" because they have no way to check themselves. Your team spends hours fielding status requests."
+        },
+        {
+          "title": "Compliance risk without audit trails",
+          "description": "When SAT audits your agency, can you show exactly who modified a pedimento, when, and why? Most legacy systems cannot."
+        },
+        {
+          "title": "Scaling means more chaos",
+          "description": "Adding staff, clients, or a second office with legacy tools means more licenses, more data silos, and more things that can break."
+        }
+      ],
+      "modulesTitle": "14 Integrated Modules. One Platform.",
+      "modulesSubtitle": "Every function your customs agency needs, built to work together from day one.",
+      "modules": [
+        {
+          "name": "Tariff Classification (TIGIE)",
+          "description": "AI-powered tariff lookup with Anexo 22 cross-reference. Classify goods in seconds, not hours."
+        },
+        {
+          "name": "Customs Entries (Pedimentos)",
+          "description": "Full lifecycle management from draft to release. Built-in SAAI error validation and prevalidation."
+        },
+        {
+          "name": "Customs Operations / Traffic",
+          "description": "Real-time tracking of every operation across ports, warehouses, and transport legs."
+        },
+        {
+          "name": "Customs Valuation",
+          "description": "Automated valuation calculations with method selection and adjustment tracking."
+        },
+        {
+          "name": "COVE / E-Documents",
+          "description": "Digital document submission to VUCEM with validation before upload."
+        },
+        {
+          "name": "Billing",
+          "description": "Invoice generation tied to operations. CFDI-compliant with automatic tax calculation."
+        },
+        {
+          "name": "Treasury",
+          "description": "Payment tracking, bank reconciliation, and cash flow visibility across operations."
+        },
+        {
+          "name": "Document Management",
+          "description": "Centralized document storage with versioning, tagging, and permission-controlled access."
+        },
+        {
+          "name": "Warehouse Control",
+          "description": "Inventory tracking for bonded and fiscal warehouses with movement history."
+        },
+        {
+          "name": "CUPO Letters",
+          "description": "Quota management and tracking for preferential tariff programs."
+        },
+        {
+          "name": "Notifications",
+          "description": "Real-time alerts for operation status changes, deadlines, and compliance events."
+        },
+        {
+          "name": "Client Portal",
+          "description": "Self-service portal for your clients to track operations and download documents."
+        },
+        {
+          "name": "Analytics & BI",
+          "description": "Dashboards and reports for operational performance, revenue, and compliance metrics."
+        },
+        {
+          "name": "AI Assistant",
+          "description": "Intelligent assistant for tariff classification, regulation lookup, and operational guidance."
+        }
+      ],
+      "diffTitle": "What Makes Aduvanta Different",
+      "diffs": [
+        {
+          "iconKey": "cloud",
+          "title": "100% Cloud-Based",
+          "description": "Access from any browser, any device, anywhere. No installations, no VPNs, no Windows dependency."
+        },
+        {
+          "iconKey": "shield",
+          "title": "Enterprise Security",
+          "description": "Role-based access control, multi-tenant data isolation, encrypted storage, and complete audit trails for every action."
+        },
+        {
+          "iconKey": "users",
+          "title": "Multi-Organization",
+          "description": "Manage multiple customs agencies or client organizations from a single account. Each with isolated data and independent permissions."
+        },
+        {
+          "iconKey": "sparkle",
+          "title": "AI-Powered",
+          "description": "Tariff classification suggestions, automated validation, and intelligent error detection that gets smarter with every operation."
+        }
+      ],
+      "socialTitle": "Trusted by Growing Customs Agencies",
+      "socialDescription": "Agencies across Mexico are switching from legacy desktop software to Aduvanta to modernize their operations, reduce errors, and give their clients a better experience.",
+      "ctaTitle": "Ready to modernize your customs agency?",
+      "ctaDescription": "14-day free trial. No credit card required. No installation. Up and running in 15 minutes.",
+      "ctaButton": "Start your free trial"
+    },
+    "precios": {
+      "meta": {
+        "title": "Pricing — Aduvanta Customs Software",
+        "description": "Aduvanta pricing plans starting at $2,000 MXN/month. 14-day free trial, no credit card required. Cloud customs software for Mexican agencies.",
+        "keywords": "precios software aduanal, pricing customs software, costo sistema aduanero"
+      },
+      "title": "Pricing — Aduvanta Customs Software",
+      "heading": "Simple, transparent pricing",
+      "subheading": "Choose the plan that fits your agency. All plans include a 14-day free trial — no credit card required.",
+      "currency": "MXN",
+      "faqHeading": "Frequently asked questions",
+      "ctaHeading": "Ready to modernize your customs operations?",
+      "ctaBody": "Start your 14-day free trial today. No credit card required, no commitments.",
+      "ctaButton": "Start free trial",
+      "popular": "Most popular",
+      "tiers": [
+        {
+          "name": "Starter",
+          "price": "$2,000",
+          "period": "/mo",
+          "description": "For small agencies getting started with modern customs software.",
+          "features": [
+            "Up to 5 users",
+            "100 pedimentos/month",
+            "Tariff classification (TIGIE)",
+            "Anexo 22 catalogs",
+            "Basic audit logging",
+            "Email support"
+          ],
+          "cta": "Start free trial",
+          "highlighted": false
+        },
+        {
+          "name": "Professional",
+          "price": "$8,000",
+          "period": "/mo",
+          "description": "For growing agencies that need the full platform.",
+          "features": [
+            "Up to 20 users",
+            "Unlimited pedimentos",
+            "All operational modules",
+            "Client portal",
+            "Advanced analytics",
+            "Priority support",
+            "Data migration assistance",
+            "Custom reports"
+          ],
+          "cta": "Start free trial",
+          "highlighted": true
+        },
+        {
+          "name": "Enterprise",
+          "price": "$35,000",
+          "period": "/mo",
+          "description": "For large operations with custom requirements.",
+          "features": [
+            "Unlimited users",
+            "Unlimited pedimentos",
+            "All Professional features",
+            "Custom integrations",
+            "Dedicated account manager",
+            "SLA guarantee",
+            "Full data migration",
+            "On-boarding training",
+            "API access"
+          ],
+          "cta": "Contact sales",
+          "highlighted": false
+        }
+      ],
+      "faq": [
+        {
+          "question": "Is there a free trial?",
+          "answer": "Yes. All plans include a 14-day free trial with full access. No credit card required."
+        },
+        {
+          "question": "Can I change plans later?",
+          "answer": "Absolutely. You can upgrade or downgrade at any time. Changes take effect on your next billing cycle."
+        },
+        {
+          "question": "What payment methods do you accept?",
+          "answer": "We accept bank transfers, credit/debit cards, and SPEI. All prices are in Mexican pesos (MXN) plus applicable taxes."
+        },
+        {
+          "question": "Do you offer annual billing?",
+          "answer": "Yes. Annual plans receive a 15% discount compared to monthly billing."
+        },
+        {
+          "question": "What happens to my data if I cancel?",
+          "answer": "Your data remains available for 30 days after cancellation. You can export everything at any time."
+        },
+        {
+          "question": "Do you issue CFDI invoices?",
+          "answer": "Yes. We issue CFDI-compliant invoices for all payments automatically."
+        }
+      ]
+    },
+    "compararCasa": {
+      "meta": {
+        "title": "Aduvanta vs Sistemas CASA — Customs Software Comparison",
+        "description": "Compare Aduvanta vs Sistemas CASA. One unified web platform vs 13 desktop apps. See why customs agencies are switching.",
+        "keywords": "aduvanta vs sistemas casa, comparar software aduanal, alternativa sistemas casa",
+        "breadcrumbCompare": "Compare"
+      },
+      "title": "Aduvanta vs Sistemas CASA — Customs Software Comparison",
+      "heading": "Aduvanta vs Sistemas CASA",
+      "subheading": "See how a unified cloud platform compares to 13 separate desktop applications.",
+      "introTitle": "Why agencies are switching from CASA",
+      "introBody": "Sistemas CASA has been a staple of the Mexican customs industry for decades, offering a suite of 13 separate Windows desktop applications. But the industry has evolved — agencies need real-time collaboration, cloud access, client portals, and modern security. Aduvanta delivers all of this in a single platform.",
+      "tableFeature": "Feature",
+      "summaryTitle": "The bottom line",
+      "summaryItems": [
+        {
+          "heading": "13 apps vs 1 platform",
+          "body": "CASA requires installing and managing 13 separate Windows applications. Aduvanta runs entirely in the browser — one login, one platform, all modules."
+        },
+        {
+          "heading": "Local installation vs cloud",
+          "body": "CASA must be installed on each workstation and updated manually. Aduvanta is 100% cloud — access it from anywhere, on any device, always up to date."
+        },
+        {
+          "heading": "Single-tenant vs multi-tenant",
+          "body": "CASA operates as isolated local installations. Aduvanta is multi-tenant from day one — manage multiple organizations, clients, and teams from a single account."
+        },
+        {
+          "heading": "Limited audit trail vs comprehensive logging",
+          "body": "CASA provides basic operation records. Aduvanta logs every sensitive action with full context: who did what, when, and from where."
+        },
+        {
+          "heading": "No client portal vs built-in portal",
+          "body": "CASA has no way for your clients to check their operation status. Aduvanta includes a client portal where your clients can track their pedimentos and documents in real time."
+        }
+      ],
+      "ctaHeading": "Ready to upgrade from CASA?",
+      "ctaBody": "Start your 14-day free trial. We offer guided data migration for Professional and Enterprise plans.",
+      "ctaButton": "Start free trial",
+      "ctaPricing": "View pricing",
+      "rows": [
+        {
+          "feature": "Unified web platform",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Number of separate apps",
+          "aduvanta": "1 platform",
+          "casa": "13 desktop apps"
+        },
+        {
+          "feature": "100% cloud — zero installation",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Multi-tenant architecture",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Automatic updates",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Built-in client portal",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Comprehensive audit logging",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Role-based access control (RBAC)",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Works on Mac, Windows, mobile",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Real-time multi-user collaboration",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Encrypted data at rest and in transit",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "Automated daily backups",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "API access for integrations",
+          "aduvanta": true,
+          "casa": false
+        },
+        {
+          "feature": "TIGIE tariff classification",
+          "aduvanta": true,
+          "casa": true
+        },
+        {
+          "feature": "Pedimentos",
+          "aduvanta": true,
+          "casa": true
+        },
+        {
+          "feature": "Anexo 22 catalogs",
+          "aduvanta": true,
+          "casa": true
+        }
+      ]
+    },
+    "privacidad": {
+      "meta": {
+        "title": "Privacy Policy",
+        "description": "Aduvanta Privacy Policy. Learn how we collect, use, and protect your personal data in compliance with Mexican data protection law (LFPDPPP)."
+      },
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: March 1, 2026",
+      "intro": "Aduvanta Technologies, S.A.P.I. de C.V. (\"Aduvanta\", \"we\", \"us\", or \"our\") is committed to protecting your personal data. This Privacy Policy explains how we collect, use, store, and share your personal information when you use our cloud-based customs software platform (\"the Service\"), in compliance with Mexico's Federal Law on Protection of Personal Data Held by Private Parties (Ley Federal de Proteccion de Datos Personales en Posesion de los Particulares, \"LFPDPPP\") and its Regulations.",
+      "termsLinkPrefix": "You may also review our ",
+      "termsLinkText": "Terms of Service",
+      "termsLinkSuffix": ".",
+      "sections": [
+        {
+          "heading": "Data Controller",
+          "body": "Aduvanta Technologies, S.A.P.I. de C.V., with registered address at Monterrey, Nuevo Leon, Mexico, is the data controller responsible for collecting, using, and protecting your personal data. For any inquiries regarding this Privacy Policy, you may contact our Data Protection Officer at privacy@aduvanta.com."
+        },
+        {
+          "heading": "Personal Data We Collect",
+          "body": "We collect the following categories of personal data:\n\n• Identification data: Full name, email address, phone number, tax identification number (RFC), and CURP when applicable.\n• Account data: Username, encrypted password, organization membership, role assignments, and permissions.\n• Billing data: Company name, tax address, payment method details (processed through certified third-party payment processors), and invoicing information.\n• Usage data: IP address, browser type, device information, access timestamps, pages visited, and features used within the platform.\n• Operational data: Customs declarations (pedimentos), tariff classifications, client records, and other information you input into the platform as part of your customs operations.\n• Communications data: Support tickets, emails, and chat transcripts when you contact our support team."
+        },
+        {
+          "heading": "Purpose of Data Collection",
+          "body": "We process your personal data for the following purposes:\n\n• Providing and maintaining the Service, including account creation, authentication, and authorization.\n• Processing payments, issuing invoices, and managing your subscription.\n• Sending transactional communications such as account confirmations, security alerts, and service updates.\n• Providing technical support and responding to your inquiries.\n• Improving the Service through anonymized usage analytics.\n• Complying with legal and regulatory obligations, including tax reporting and audit requirements.\n• Enforcing our Terms of Service and protecting the security of the platform.\n\nWe will not use your personal data for purposes incompatible with those stated above without your prior consent."
+        },
+        {
+          "heading": "Legal Basis for Processing",
+          "body": "We process your personal data based on the following legal grounds under the LFPDPPP:\n\n• Contractual necessity: Processing required to fulfill our contractual obligations when you subscribe to and use the Service.\n• Legal obligations: Processing required to comply with applicable Mexican laws, including tax, accounting, and customs regulations.\n• Legitimate interest: Processing necessary for the security, improvement, and proper functioning of the Service.\n• Consent: For optional processing activities such as marketing communications, which you may opt into or out of at any time."
+        },
+        {
+          "heading": "Data Storage and Security",
+          "body": "Your personal data is stored on secure servers provided by trusted infrastructure partners with data centers that comply with industry-standard certifications (SOC 2, ISO 27001). We implement the following security measures:\n\n• Encryption of data at rest and in transit using TLS 1.3 and AES-256.\n• Role-based access control (RBAC) ensuring that only authorized personnel can access specific data.\n• Multi-tenant data isolation ensuring that each organization's data is logically separated.\n• Automated daily backups with point-in-time recovery capabilities.\n• Comprehensive audit logging of all access and modifications to sensitive data.\n• Regular security assessments and vulnerability testing.\n\nWhile we employ industry-standard security practices, no method of electronic transmission or storage is 100% secure. We cannot guarantee absolute security but commit to promptly notifying affected users in the event of a data breach, in accordance with the LFPDPPP."
+        },
+        {
+          "heading": "Data Sharing and Third Parties",
+          "body": "We may share your personal data with the following categories of third parties, solely to the extent necessary for the purposes described in this Privacy Policy:\n\n• Infrastructure providers: Cloud hosting, database, and storage services for platform operation.\n• Payment processors: Certified payment service providers for subscription billing.\n• Analytics services: Anonymized usage data for service improvement (no personally identifiable information is shared).\n• Legal and regulatory authorities: When required by law, court order, or government regulation.\n• Professional advisors: Auditors, lawyers, and accountants as necessary for business operations.\n\nWe do not sell, rent, or trade your personal data to third parties for marketing purposes. All third-party service providers are contractually bound to maintain the confidentiality and security of your data."
+        },
+        {
+          "heading": "Cookies and Tracking Technologies",
+          "body": "We use cookies and similar technologies for the following purposes:\n\n• Essential cookies: Required for authentication, session management, and security. These cannot be disabled.\n• Functional cookies: Remember your preferences such as language selection and interface settings.\n• Analytics cookies: Help us understand how users interact with the platform to improve the Service.\n\nYou can manage cookie preferences through your browser settings. Disabling essential cookies may prevent you from using the Service."
+        },
+        {
+          "heading": "Your Rights Under the LFPDPPP (ARCO Rights)",
+          "body": "Under the LFPDPPP, you have the following rights regarding your personal data (known as ARCO rights):\n\n• Access (Acceso): You may request access to the personal data we hold about you.\n• Rectification (Rectificacion): You may request correction of inaccurate or incomplete personal data.\n• Cancellation (Cancelacion): You may request deletion of your personal data when it is no longer necessary for the purposes for which it was collected.\n• Opposition (Oposicion): You may object to the processing of your personal data for specific purposes.\n\nTo exercise your ARCO rights, please send a written request to privacy@aduvanta.com including your full name, a copy of your official identification, a clear description of the data and the right you wish to exercise, and any supporting documentation. We will respond to your request within 20 business days, as required by the LFPDPPP."
+        },
+        {
+          "heading": "Data Retention",
+          "body": "We retain your personal data for as long as your account is active or as needed to provide the Service. After account termination, we retain certain data for the following periods:\n\n• Billing and tax records: 5 years, as required by Mexican tax law.\n• Audit logs: 5 years, for compliance and dispute resolution purposes.\n• Anonymized usage data: Indefinitely, as it cannot be linked to individual users.\n\nUpon expiration of the applicable retention period, your data will be securely deleted or anonymized."
+        },
+        {
+          "heading": "International Data Transfers",
+          "body": "Your personal data may be processed on servers located outside of Mexico. In such cases, we ensure that appropriate safeguards are in place, including contractual clauses that require the receiving party to maintain equivalent data protection standards in accordance with the LFPDPPP and its Regulations."
+        },
+        {
+          "heading": "Changes to This Privacy Policy",
+          "body": "We may update this Privacy Policy from time to time. Significant changes will be communicated through the platform or via email. Your continued use of the Service after such changes constitutes acceptance of the updated Privacy Policy. We encourage you to review this page periodically."
+        },
+        {
+          "heading": "Contact Information",
+          "body": "If you have questions about this Privacy Policy or wish to exercise your ARCO rights, please contact us at:\n\nAduvanta Technologies, S.A.P.I. de C.V.\nEmail: privacy@aduvanta.com\nWebsite: https://aduvanta.com\n\nYou also have the right to file a complaint with Mexico's National Institute for Transparency, Access to Information, and Personal Data Protection (INAI) if you believe your data protection rights have been violated."
+        }
+      ]
+    },
+    "terminos": {
+      "meta": {
+        "title": "Terms of Service",
+        "description": "Aduvanta Terms of Service. Review the conditions governing the use of our customs and foreign trade software platform."
+      },
+      "title": "Terms of Service",
+      "lastUpdated": "Last updated: March 1, 2026",
+      "intro": "These Terms of Service (\"Terms\") govern your access to and use of the cloud-based customs and foreign trade operations platform (\"the Service\") provided by Aduvanta Technologies, S.A.P.I. de C.V. (\"Aduvanta\", \"we\", \"us\", or \"our\"). By accessing or using the Service, you agree to be bound by these Terms. If you do not agree, you may not use the Service.",
+      "privacyLinkPrefix": "You may also review our ",
+      "privacyLinkText": "Privacy Policy",
+      "privacyLinkSuffix": ".",
+      "sections": [
+        {
+          "heading": "1. Definitions",
+          "body": "\"Customer\" refers to the legal entity or individual that registers for the Service and enters into a subscription agreement with Aduvanta.\n\n\"Organization\" refers to the tenant workspace created within the Service, representing a company, customs brokerage, or business unit.\n\n\"User\" refers to any individual authorized by the Customer to access the Service under the Customer's Organization.\n\n\"Subscription\" refers to the paid plan selected by the Customer that determines service tier, feature access, and usage limits.\n\n\"Customer Data\" refers to all data, files, documents, records, and information uploaded, entered, or generated by the Customer or its Users within the Service.\n\n\"Platform\" refers to the Aduvanta web application, APIs, and all related infrastructure and services."
+        },
+        {
+          "heading": "2. Account Registration and Organization Setup",
+          "body": "To use the Service, you must create an account and set up an Organization. You agree to provide accurate, complete, and current information during registration and to keep your account information updated.\n\nEach Organization must designate at least one administrator who is responsible for managing Users, roles, permissions, and Organization settings.\n\nYou are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account or Organization. You must notify Aduvanta immediately of any unauthorized use of your account.\n\nAduvanta reserves the right to refuse registration or to suspend accounts that violate these Terms or that provide false or misleading information."
+        },
+        {
+          "heading": "3. Subscription and Billing",
+          "body": "The Service is offered on a subscription basis. All prices are quoted and payable in Mexican Pesos (MXN) plus applicable taxes (IVA).\n\nNew Customers are eligible for a 14-day free trial with full access to the selected plan features. No payment information is required to start the trial. At the end of the trial period, the Customer must select a paid plan to continue using the Service.\n\nSubscriptions are billed monthly or annually, as selected by the Customer. Annual subscriptions receive a discount as published on our pricing page. Payment is due at the beginning of each billing cycle.\n\nAduvanta will issue a valid CFDI (Comprobante Fiscal Digital por Internet) for each payment received.\n\nIf payment is not received within 15 calendar days of the due date, Aduvanta reserves the right to suspend access to the Service until payment is received. Repeated payment failures may result in account termination.\n\nAduvanta may adjust pricing with at least 30 days prior written notice. Price changes will take effect at the start of the next billing cycle."
+        },
+        {
+          "heading": "4. Acceptable Use",
+          "body": "You agree to use the Service only for lawful purposes and in accordance with these Terms. You must not:\n\n• Use the Service to violate any applicable law or regulation, including Mexican customs, tax, and trade laws.\n• Attempt to gain unauthorized access to any part of the Service, other accounts, or systems connected to the Service.\n• Interfere with or disrupt the integrity or performance of the Service or its infrastructure.\n• Reverse engineer, decompile, disassemble, or otherwise attempt to derive the source code of the Service.\n• Use the Service to transmit malware, viruses, or any harmful code.\n• Share account credentials or allow unauthorized third parties to access the Service through your account.\n• Use automated tools (bots, scrapers) to access the Service without prior written authorization from Aduvanta.\n• Upload or transmit content that infringes intellectual property rights of third parties.\n\nAduvanta reserves the right to suspend or terminate access for any Customer or User that violates these acceptable use provisions."
+        },
+        {
+          "heading": "5. Customer Data Ownership",
+          "body": "The Customer retains all ownership rights to Customer Data. Aduvanta does not acquire any ownership interest in Customer Data by virtue of providing the Service.\n\nAduvanta acts as a data processor with respect to Customer Data. We process Customer Data solely as necessary to provide the Service and as instructed by the Customer, in compliance with our Privacy Policy and applicable data protection laws.\n\nAduvanta will not access, use, or disclose Customer Data except: (a) as necessary to provide and maintain the Service; (b) to comply with applicable law or a valid legal order; (c) as expressly authorized by the Customer; or (d) to protect the security and integrity of the Service.\n\nUpon termination of the subscription, the Customer may request an export of their Customer Data within 30 calendar days. After this period, Aduvanta may permanently delete Customer Data, except where retention is required by law."
+        },
+        {
+          "heading": "6. Intellectual Property",
+          "body": "The Service, including its software, architecture, design, user interface, documentation, APIs, trademarks, and all related intellectual property, is and remains the exclusive property of Aduvanta Technologies, S.A.P.I. de C.V.\n\nThese Terms grant the Customer a limited, non-exclusive, non-transferable, revocable license to access and use the Service during the active subscription period, solely for the Customer's internal business operations.\n\nNo rights are granted to copy, modify, distribute, sell, or create derivative works based on the Service or any part thereof.\n\nFeedback, suggestions, or feature requests submitted by Customers or Users may be used by Aduvanta without any obligation of compensation or attribution."
+        },
+        {
+          "heading": "7. Service Availability and SLA",
+          "body": "Aduvanta commits to a target availability of 99.9% for the Service, measured monthly, excluding scheduled maintenance windows.\n\nScheduled maintenance will be communicated at least 48 hours in advance and will be performed during low-usage periods whenever possible.\n\nIn the event of unscheduled downtime exceeding the 99.9% target in a given calendar month, Customers on annual plans may request service credits in accordance with the applicable Service Level Agreement (SLA) published on our website.\n\nAduvanta is not responsible for downtime caused by: (a) factors outside our reasonable control, including force majeure events; (b) the Customer's equipment, software, or network connections; (c) third-party services or APIs not operated by Aduvanta; or (d) Customer actions that violate these Terms."
+        },
+        {
+          "heading": "8. Limitation of Liability",
+          "body": "To the maximum extent permitted by applicable law:\n\nAduvanta shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, revenue, data, business opportunities, or goodwill, arising out of or in connection with the use of or inability to use the Service.\n\nAduvanta's total aggregate liability for any claims arising out of or related to these Terms or the Service shall not exceed the total amount paid by the Customer to Aduvanta during the 12-month period immediately preceding the event giving rise to the claim.\n\nThe Service is provided for business operational support. Aduvanta does not guarantee that the use of the Service will ensure compliance with any regulatory requirements. The Customer remains solely responsible for verifying the accuracy of customs declarations, tariff classifications, and all regulatory filings.\n\nThese limitations apply regardless of the legal theory upon which the claim is based, whether in contract, tort, negligence, strict liability, or otherwise."
+        },
+        {
+          "heading": "9. Termination",
+          "body": "The Customer may terminate the subscription at any time by providing written notice through the platform or via email to legal@aduvanta.com. Termination will take effect at the end of the current billing cycle. No refunds will be issued for partial billing periods.\n\nAduvanta may terminate or suspend the Customer's access to the Service immediately, without prior notice, if: (a) the Customer materially breaches these Terms and fails to cure the breach within 15 calendar days of written notice; (b) the Customer engages in illegal activity using the Service; (c) the Customer fails to pay fees for more than 30 calendar days past due; or (d) Aduvanta is required to do so by law.\n\nUpon termination: (a) all rights granted to the Customer under these Terms will cease immediately; (b) the Customer must cease all use of the Service; (c) the Customer may request a data export within 30 calendar days as described in Section 5; and (d) outstanding payment obligations survive termination."
+        },
+        {
+          "heading": "10. Governing Law and Jurisdiction",
+          "body": "These Terms shall be governed by and construed in accordance with the laws of the United Mexican States (Mexico).\n\nAny dispute, controversy, or claim arising out of or relating to these Terms or the Service shall be submitted to the exclusive jurisdiction of the competent courts located in Monterrey, Nuevo Leon, Mexico.\n\nThe parties agree to waive any other jurisdiction that may correspond to them by reason of their present or future domicile or for any other reason."
+        },
+        {
+          "heading": "11. General Provisions",
+          "body": "Entire Agreement: These Terms, together with the Privacy Policy and any applicable Service Level Agreement, constitute the entire agreement between the Customer and Aduvanta regarding the Service.\n\nSeverability: If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions shall continue in full force and effect.\n\nWaiver: The failure of Aduvanta to enforce any right or provision of these Terms shall not constitute a waiver of such right or provision.\n\nAssignment: The Customer may not assign or transfer these Terms without the prior written consent of Aduvanta. Aduvanta may assign these Terms in connection with a merger, acquisition, or sale of all or substantially all of its assets.\n\nNotices: Notices from Aduvanta to the Customer will be sent to the email address associated with the Customer's account. Notices from the Customer to Aduvanta must be sent to legal@aduvanta.com."
+        },
+        {
+          "heading": "12. Contact Information",
+          "body": "For questions about these Terms of Service, please contact us at:\n\nAduvanta Technologies, S.A.P.I. de C.V.\nEmail: legal@aduvanta.com\nWebsite: https://aduvanta.com"
+        }
+      ]
+    },
+    "home": {
+      "meta": {
+        "title": "Cloud Customs Software for Mexico | Pedimentos, TIGIE & Client Portal",
+        "description": "Aduvanta is web-based customs software for Mexican customs agencies. Pedimentos, TIGIE tariff classification, Anexo 22, client portal, billing and audit — one platform. 14-day free trial.",
+        "keywords": "customs software Mexico, pedimentos software, software aduanal, customs operations platform, TIGIE classification, Anexo 22, customs agency software, comercio exterior",
+        "ogAlt": "Aduvanta — Customs Software"
+      },
+      "schema": {
+        "description": "Web-based customs software for Mexican customs agencies. Pedimentos, TIGIE tariff classification, Anexo 22, client portal, billing and audit.",
+        "applicationSubCategory": "Customs Software",
+        "featureList": "Pedimentos, Tariff Classification, TIGIE, Anexo 22, Client Portal, Billing, Audit, Warehouse Control"
+      },
+      "faq": [
+        {
+          "question": "How long does it take to get started?",
+          "answer": "About 15 minutes. Sign up, create your organization, invite your team, and start creating pedimentos immediately."
+        },
+        {
+          "question": "Can I migrate my data from CASA or other systems?",
+          "answer": "Yes. We offer guided migration for Professional and Enterprise plans."
+        },
+        {
+          "question": "Is my data safe?",
+          "answer": "Your data is encrypted at rest and in transit, with automated daily backups and role-based access control."
+        },
+        {
+          "question": "Can my clients access the platform?",
+          "answer": "Yes. The Client Portal gives each client their own login to track operations and view documents."
+        },
+        {
+          "question": "What happens after the 14-day trial?",
+          "answer": "You choose a plan and continue with all your data intact. No surprise charges."
+        },
+        {
+          "question": "Do I need to install anything?",
+          "answer": "No. Aduvanta works in any modern browser. No downloads, no plugins."
+        }
+      ]
+    },
+    "pedimentos": {
+      "meta": {
+        "title": "Pedimentos Module — Customs Declaration Software",
+        "description": "Customs declaration software with auto-validation, SAAI integration, error detection, and real-time tracking. Streamline your pedimentos with Aduvanta.",
+        "keywords": "pedimentos, customs declarations Mexico, customs declaration software, SAAI integration, Mexican customs filing"
+      },
+      "breadcrumbTitle": "Pedimentos Module",
+      "hero": {
+        "heading": "Pedimentos Made Simple",
+        "subheading": "A pedimento is the official customs declaration required for every import and export operation in Mexico. Aduvanta streamlines the entire lifecycle — from creation and validation to submission and archival — so your team can focus on operations, not paperwork."
+      },
+      "features": [
+        {
+          "title": "Automated Validation",
+          "description": "Every pedimento is validated against SAAI error codes and Anexo 22 rules before submission. Catch data errors, missing fields, and inconsistencies before they reach customs authorities, reducing rejections and costly delays."
+        },
+        {
+          "title": "SAAI Integration",
+          "description": "Aduvanta is designed to integrate with Mexico's SAAI (Automated Customs System). Generate compliant electronic files, track submission status, and receive acknowledgments directly within the platform."
+        },
+        {
+          "title": "Document Attachment and Management",
+          "description": "Attach invoices, packing lists, certificates of origin, and any required documentation directly to each pedimento. All documents are stored securely in the cloud and linked to their corresponding operations for instant retrieval."
+        },
+        {
+          "title": "Real-Time Status Tracking",
+          "description": "Track every pedimento through its lifecycle: draft, validated, submitted, paid, and archived. Configurable notifications keep your team and clients informed at every stage."
+        }
+      ],
+      "cta": {
+        "heading": "Streamline your pedimentos workflow",
+        "description": "Create your free account and see how Aduvanta simplifies customs declarations.",
+        "button": "Get Started"
+      }
+    },
+    "clasificacionArancelaria": {
+      "meta": {
+        "title": "TIGIE Tariff Classification — Tariff Code Lookup",
+        "description": "Look up tariff codes, duty rates, and regulations using Aduvanta's integrated TIGIE database. Accurate classification linked directly to your customs declarations.",
+        "keywords": "TIGIE, tariff classification Mexico, Mexican customs tariff, HS codes Mexico, tariff code lookup"
+      },
+      "breadcrumbTitle": "TIGIE Tariff Classification",
+      "hero": {
+        "heading": "Tariff Classification with TIGIE Integration",
+        "subheading": "The TIGIE (Tarifa de la Ley de los Impuestos Generales de Importacion y de Exportacion) is Mexico's official tariff schedule. Aduvanta provides a complete, searchable TIGIE database so you can classify goods accurately and link classifications directly to pedimentos."
+      },
+      "features": [
+        {
+          "title": "Complete TIGIE Database",
+          "description": "Access the full Mexican tariff schedule with chapters, headings, subheadings, and tariff fractions. Search by code, description, or keyword. The database is kept up to date with official SAT publications."
+        },
+        {
+          "title": "Duty Rates and Regulations",
+          "description": "View import and export duty rates, applicable taxes (IGI, DTA, IVA), regulatory notes, and supplementary units for each tariff fraction. All the information you need for accurate cost calculations in one place."
+        },
+        {
+          "title": "Classification Notes and Rules",
+          "description": "Access section notes, chapter notes, and general interpretation rules directly within the platform. These references help ensure consistent and defensible classification decisions across your team."
+        },
+        {
+          "title": "Linked to Pedimentos",
+          "description": "When you classify a product, the tariff fraction flows directly into your pedimento. Duty rates, regulatory requirements, and applicable restrictions are applied automatically, reducing manual entry and classification errors."
+        }
+      ],
+      "cta": {
+        "heading": "Classify with confidence",
+        "description": "Create your free account and explore the TIGIE database integrated into Aduvanta.",
+        "button": "Get Started"
+      }
+    },
+    "cumplimientoAduanero": {
+      "meta": {
+        "title": "Customs Compliance & Audit — Operations Control",
+        "description": "Ensure regulatory compliance and maintain full audit trails with Aduvanta. Automated validation, error prevention, compliance rules, and immutable audit logs for every customs operation.",
+        "keywords": "customs compliance Mexico, customs audit trail, compliance rules, SAAI validation, customs error detection"
+      },
+      "breadcrumbTitle": "Customs Compliance & Audit",
+      "hero": {
+        "heading": "Customs Compliance You Can Rely On",
+        "subheading": "Compliance failures in customs operations lead to fines, delays, and reputational damage. Aduvanta embeds compliance into every workflow — automated validation rules, real-time error detection, and immutable audit logs that give you complete control over your operations."
+      },
+      "features": [
+        {
+          "title": "Automated Compliance Rules",
+          "description": "Define and enforce compliance rules that run automatically on every pedimento and customs operation. Rules cover tariff classification accuracy, required documentation, value thresholds, country restrictions, and regulatory requirements. When a rule is violated, the system flags it before submission."
+        },
+        {
+          "title": "Immutable Audit Trail",
+          "description": "Every action in Aduvanta is logged: who did what, when, and in what context. Audit records are append-only and cannot be modified or deleted. This provides a defensible record for regulatory audits, internal reviews, and dispute resolution."
+        },
+        {
+          "title": "Error Prevention and Detection",
+          "description": "Aduvanta validates data against SAAI error codes, Anexo 22 catalogs, and your own custom rules. Errors are caught at the point of entry, not after submission. Dashboards highlight operations with warnings so your team can resolve issues proactively."
+        },
+        {
+          "title": "Regulatory Reporting",
+          "description": "Generate compliance reports for internal audits, client reporting, and regulatory authorities. Track compliance metrics over time, identify recurring issues, and demonstrate due diligence to authorities when required."
+        }
+      ],
+      "cta": {
+        "heading": "Take control of your compliance",
+        "description": "Create your free account and see how Aduvanta makes compliance manageable.",
+        "button": "Get Started"
+      }
+    },
+    "portalClientes": {
+      "meta": {
+        "title": "Client Portal for Customs Agencies",
+        "description": "Give your clients visibility into their customs operations. Aduvanta's client portal provides self-service access to operation status, documents, and reports — with role-based permissions.",
+        "keywords": "client portal, customs agency portal, client self-service customs, customs operation tracking"
+      },
+      "breadcrumbTitle": "Client Portal",
+      "hero": {
+        "heading": "A Client Portal Built for Customs Agencies",
+        "subheading": "Your clients expect transparency. Aduvanta's client portal lets importers and exporters track their operations, download documents, and review status updates in real time — without calling your office."
+      },
+      "features": [
+        {
+          "title": "Self-Service Operation Tracking",
+          "description": "Clients can log in and see the current status of every pedimento, shipment, and customs operation associated with their account. No more phone calls or email chains asking for updates."
+        },
+        {
+          "title": "Document Access",
+          "description": "Share pedimentos, invoices, packing lists, certificates, and compliance documents directly through the portal. Clients download what they need, when they need it, from a secure and organized repository."
+        },
+        {
+          "title": "Role-Based Permissions",
+          "description": "Control exactly what each client user can see and do. Assign read-only access for operation viewing, document download permissions, or restricted access to specific operations. Every permission is enforced by the backend."
+        },
+        {
+          "title": "Branded and Professional",
+          "description": "The client portal reflects your agency's professionalism. Clients interact with a modern, responsive interface that works on any device — a significant upgrade from email-based workflows and legacy systems."
+        }
+      ],
+      "cta": {
+        "heading": "Deliver a better client experience",
+        "description": "Create your free account and set up your client portal in minutes.",
+        "button": "Get Started"
+      }
+    },
+    "blog": {
+      "meta": {
+        "title": "Blog — Foreign Trade & Customs Software",
+        "description": "Articles, guides, and tips about pedimentos, tariff classification, TIGIE, foreign trade, and customs operations in Mexico.",
+        "keywords": "customs blog, pedimentos, tariff classification, Mexico foreign trade, TIGIE, customs software"
+      },
+      "subtitle": "Guides, tips, and news about foreign trade and customs operations in Mexico.",
+      "home": "Home",
+      "readMore": "Read more",
+      "ctaTitle": "Try Aduvanta for free",
+      "ctaBody": "Simplify your customs operations with automatic validations, integrated TIGIE, and real-time tax calculations. 14-day free trial, no credit card required.",
+      "ctaButton": "Start for free",
+      "relatedArticles": "Related articles",
+      "readingTimeSuffix": "min"
+    }
   }
 }

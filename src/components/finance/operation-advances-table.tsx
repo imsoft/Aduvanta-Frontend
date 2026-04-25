@@ -45,11 +45,12 @@ export function OperationAdvancesTable({
   isDeactivatePending,
 }: OperationAdvancesTableProps) {
   const tCommon = useTranslations('common');
+  const t = useTranslations('finance');
   const [editingAdvance, setEditingAdvance] = useState<OperationAdvance | null>(null);
 
   if (advances.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">No advances recorded yet.</p>
+      <p className="text-sm text-muted-foreground">{t('noAdvances')}</p>
     );
   }
 
@@ -58,11 +59,11 @@ export function OperationAdvancesTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="text-right">Amount</TableHead>
-            <TableHead>Currency</TableHead>
-            <TableHead>Reference</TableHead>
-            <TableHead>Received at</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead className="text-right">{t('columns.amount')}</TableHead>
+            <TableHead>{t('columns.currency')}</TableHead>
+            <TableHead>{t('columns.reference')}</TableHead>
+            <TableHead>{t('columns.receivedAt')}</TableHead>
+            <TableHead>{t('columns.status')}</TableHead>
             {canManage && <TableHead />}
           </TableRow>
         </TableHeader>
@@ -118,10 +119,9 @@ export function OperationAdvancesTable({
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Deactivate advance?</AlertDialogTitle>
+                              <AlertDialogTitle>{t('dialogs.deactivateAdvanceTitle')}</AlertDialogTitle>
                               <AlertDialogDescription>
-                                This advance will be marked as inactive and excluded from the
-                                finance summary.
+                                {t('dialogs.deactivateAdvanceDescription')}
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
@@ -131,7 +131,7 @@ export function OperationAdvancesTable({
                                 disabled={isDeactivatePending}
                                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                               >
-                                Deactivate
+                                {t('dialogs.deactivate')}
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>

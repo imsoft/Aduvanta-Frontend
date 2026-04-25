@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -33,6 +34,8 @@ export function UploadDocumentDialog({
   onSubmit,
   isPending,
 }: UploadDocumentDialogProps) {
+  const t = useTranslations('operationDocuments');
+  const tCommon = useTranslations('common');
   const fileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [name, setName] = useState('');
@@ -62,13 +65,13 @@ export function UploadDocumentDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Upload document</DialogTitle>
+          <DialogTitle>{t('dialogs.upload')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              File <span className="text-destructive">*</span>
+              {t('fields.file')} <span className="text-destructive">*</span>
             </label>
             <input
               ref={fileRef}
@@ -80,7 +83,7 @@ export function UploadDocumentDialog({
 
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              Name
+              {t('fields.name')}
             </label>
             <input
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
@@ -91,7 +94,7 @@ export function UploadDocumentDialog({
 
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              Category
+              {t('fields.category')}
             </label>
             <Select value={categoryId} onValueChange={setCategoryId}>
               <SelectTrigger className="w-full">
@@ -110,7 +113,7 @@ export function UploadDocumentDialog({
 
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              Description
+              {t('fields.description')}
             </label>
             <textarea
               rows={2}
@@ -123,10 +126,10 @@ export function UploadDocumentDialog({
 
         <DialogFooter>
           <Button variant="outline" onClick={() => handleOpenChange(false)} disabled={isPending}>
-            Cancel
+            {tCommon('cancel')}
           </Button>
           <Button onClick={handleSubmit} disabled={!file || isPending}>
-            {isPending ? 'Uploading…' : 'Upload'}
+            {isPending ? t('uploading') : t('upload')}
           </Button>
         </DialogFooter>
       </DialogContent>

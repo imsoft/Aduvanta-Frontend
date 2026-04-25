@@ -1,70 +1,23 @@
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 
-const content = {
-  'en-US': {
-    tagline: 'The modern customs operations platform.',
-    product: 'Product',
-    productLinks: [
-      { label: 'Features', href: '/software-aduanal' },
-      { label: 'Pricing', href: '/precios' },
-      { label: 'Compare', href: '/comparar/sistemas-casa' },
-      { label: 'Blog', href: '/blog' },
-    ],
-    tools: 'Free Tools',
-    toolLinks: [
-      { label: 'TIGIE Lookup', href: '/herramientas/consulta-tigie' },
-      { label: 'Anexo 22 Catalogs', href: '/sign-up' },
-      { label: 'SAAI Error Codes', href: '/sign-up' },
-      { label: 'Unit Converter', href: '/sign-up' },
-    ],
-    company: 'Company',
-    companyLinks: [
-      { label: 'About', href: '/software-aduanal' },
-      { label: 'Contact', href: 'mailto:contacto@aduvanta.com' },
-      { label: 'Privacy', href: '/privacidad' },
-      { label: 'Terms', href: '/terminos' },
-    ],
-    rights: 'All rights reserved.',
-  },
-  'es-MX': {
-    tagline: 'La plataforma moderna de operaciones aduaneras.',
-    product: 'Producto',
-    productLinks: [
-      { label: 'Funcionalidades', href: '/software-aduanal' },
-      { label: 'Precios', href: '/precios' },
-      { label: 'Comparar', href: '/comparar/sistemas-casa' },
-      { label: 'Blog', href: '/blog' },
-    ],
-    tools: 'Herramientas Gratis',
-    toolLinks: [
-      { label: 'Consulta TIGIE', href: '/herramientas/consulta-tigie' },
-      { label: 'Catalogos Anexo 22', href: '/sign-up' },
-      { label: 'Errores SAAI', href: '/sign-up' },
-      { label: 'Conversor de Unidades', href: '/sign-up' },
-    ],
-    company: 'Empresa',
-    companyLinks: [
-      { label: 'Acerca de', href: '/software-aduanal' },
-      { label: 'Contacto', href: 'mailto:contacto@aduvanta.com' },
-      { label: 'Privacidad', href: '/privacidad' },
-      { label: 'Terminos', href: '/terminos' },
-    ],
-    rights: 'Todos los derechos reservados.',
-  },
-} as const
-
-type Props = {
-  locale: string
+type FooterLink = {
+  label: string
+  href: string
 }
 
-export function LandingFooter({ locale }: Props) {
-  const t = locale === 'es-MX' ? content['es-MX'] : content['en-US']
+export function LandingFooter() {
+  const t = useTranslations('landing.footer')
   const year = new Date().getFullYear()
 
+  const productLinks = t.raw('productLinks') as FooterLink[]
+  const toolLinks = t.raw('toolLinks') as FooterLink[]
+  const companyLinks = t.raw('companyLinks') as FooterLink[]
+
   const sections = [
-    { title: t.product, links: t.productLinks },
-    { title: t.tools, links: t.toolLinks },
-    { title: t.company, links: t.companyLinks },
+    { title: t('productTitle'), links: productLinks },
+    { title: t('toolsTitle'), links: toolLinks },
+    { title: t('companyTitle'), links: companyLinks },
   ]
 
   return (
@@ -79,7 +32,7 @@ export function LandingFooter({ locale }: Props) {
               <span className="text-base font-bold tracking-tight">Aduvanta</span>
             </div>
             <p className="mt-3 max-w-[200px] text-xs leading-relaxed text-muted-foreground">
-              {t.tagline}
+              {t('tagline')}
             </p>
           </div>
 
@@ -118,7 +71,7 @@ export function LandingFooter({ locale }: Props) {
 
         <div className="mt-10 border-t border-border/30 pt-6">
           <p className="text-xs text-muted-foreground/60">
-            &copy; {year} Aduvanta. {t.rights}
+            &copy; {year} Aduvanta. {t('rights')}
           </p>
         </div>
       </div>

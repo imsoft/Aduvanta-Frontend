@@ -47,6 +47,7 @@ export function ClientPortalAccessSection({
   canManage,
   members,
 }: ClientPortalAccessSectionProps) {
+  const t = useTranslations('clientAccess');
   const tCommon = useTranslations('common');
   const [grantOpen, setGrantOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState('');
@@ -74,11 +75,11 @@ export function ClientPortalAccessSection({
   return (
     <section className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-base font-semibold">Portal access</h2>
+        <h2 className="text-base font-semibold">{t('title')}</h2>
         {canManage && availableMembers.length > 0 && (
           <Button size="sm" variant="outline" onClick={() => setGrantOpen(true)} className="gap-2">
             <Plus size={14} />
-            Grant access
+            {t('grant')}
           </Button>
         )}
       </div>
@@ -86,7 +87,7 @@ export function ClientPortalAccessSection({
       {isLoading ? (
         <ListSkeleton rows={3} />
       ) : accessList.length === 0 ? (
-        <EmptyState title="No users have portal access to this client." />
+        <EmptyState title={t('empty')} />
       ) : (
         <ul className="space-y-2">
           {accessList.map((access) => {
@@ -120,10 +121,9 @@ export function ClientPortalAccessSection({
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Revoke portal access?</AlertDialogTitle>
+                        <AlertDialogTitle>{t('revokeTitle')}</AlertDialogTitle>
                         <AlertDialogDescription>
-                          {member?.name ?? access.userId} will lose access to this client&apos;s
-                          portal.
+                          {t('revokeDescription', { name: member?.name ?? access.userId })}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
@@ -132,7 +132,7 @@ export function ClientPortalAccessSection({
                           onClick={() => revokeAccess.mutate(access.id)}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
-                          Revoke
+                          {t('revoke')}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -147,18 +147,18 @@ export function ClientPortalAccessSection({
       <Dialog open={grantOpen} onOpenChange={setGrantOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Grant portal access</DialogTitle>
+            <DialogTitle>{t('grantDialogTitle')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              User
+              {t('selectUser')}
             </label>
             <select
               className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={selectedUserId}
               onChange={(e) => setSelectedUserId(e.target.value)}
             >
-              <option value="">Select a user…</option>
+              <option value="">{t('selectUserPlaceholder')}</option>
               {availableMembers.map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.name} ({m.email})
@@ -178,7 +178,7 @@ export function ClientPortalAccessSection({
               onClick={handleGrant}
               disabled={!selectedUserId || grantAccess.isPending}
             >
-              {grantAccess.isPending ? 'Granting…' : 'Grant access'}
+              {grantAccess.isPending ? t('granting') : t('grant')}
             </Button>
           </DialogFooter>
         </DialogContent>
