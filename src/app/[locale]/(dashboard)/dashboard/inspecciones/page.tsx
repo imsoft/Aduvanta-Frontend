@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { useLocale } from 'next-intl';
 import { MagnifyingGlass, Warning, CheckCircle } from '@phosphor-icons/react';
+import { parseApiDate } from '@/lib/date-utils';
 import { Badge } from '@/components/ui/badge';
 import {
   Select,
@@ -55,6 +57,7 @@ function SemaphoreBadge({ color }: { color: string | null }) {
 }
 
 export default function InspeccionesPage() {
+  const locale = useLocale();
   const [result, setResult] = useState('ALL');
   const [semaphoreColor, setSemaphoreColor] = useState('ALL');
   const [page, setPage] = useState(0);
@@ -196,8 +199,8 @@ export default function InspeccionesPage() {
                     </TableCell>
                     <TableCell className="text-sm">
                       {insp.inspectionDate
-                        ? new Date(insp.inspectionDate).toLocaleDateString('es-MX')
-                        : new Date(insp.createdAt).toLocaleDateString('es-MX')}
+                        ? parseApiDate(insp.inspectionDate).toLocaleDateString(locale)
+                        : new Date(insp.createdAt).toLocaleDateString(locale)}
                     </TableCell>
                   </TableRow>
                 ))}

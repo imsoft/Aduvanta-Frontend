@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLocale } from 'next-intl';
 import { Bank, Warning } from '@phosphor-icons/react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -36,6 +37,7 @@ const formatMXN = (v: string | number | null | undefined) =>
     : '—';
 
 export default function FondosPage() {
+  const locale = useLocale();
   const { activeOrgId } = useOrgStore();
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 300);
@@ -147,7 +149,7 @@ export default function FondosPage() {
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
                     {f.lastMovementAt
-                      ? new Date(f.lastMovementAt).toLocaleDateString('es-MX')
+                      ? new Date(f.lastMovementAt).toLocaleDateString(locale)
                       : '—'}
                   </TableCell>
                   <TableCell>

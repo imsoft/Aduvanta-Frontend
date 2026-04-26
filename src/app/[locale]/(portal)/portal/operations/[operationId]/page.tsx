@@ -2,6 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { Link } from '@/i18n/navigation'
+import { parseApiDate } from '@/lib/date-utils';
 import { ArrowLeft } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -79,7 +80,7 @@ export default function PortalOperationDetailPage() {
               label="Due date"
               value={
                 operation.dueAt
-                  ? new Date(operation.dueAt).toLocaleDateString()
+                  ? parseApiDate(operation.dueAt).toLocaleDateString()
                   : undefined
               }
             />
@@ -87,7 +88,7 @@ export default function PortalOperationDetailPage() {
               label="Opened"
               value={
                 operation.openedAt
-                  ? new Date(operation.openedAt).toLocaleDateString()
+                  ? parseApiDate(operation.openedAt).toLocaleDateString()
                   : undefined
               }
             />
@@ -95,7 +96,7 @@ export default function PortalOperationDetailPage() {
               label="Closed"
               value={
                 operation.closedAt
-                  ? new Date(operation.closedAt).toLocaleDateString()
+                  ? parseApiDate(operation.closedAt).toLocaleDateString()
                   : undefined
               }
             />

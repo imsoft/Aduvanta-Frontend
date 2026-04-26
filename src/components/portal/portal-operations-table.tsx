@@ -2,6 +2,7 @@
 
 import { Link } from '@/i18n/navigation'
 import { ArrowRight } from '@phosphor-icons/react';
+import { parseApiDate } from '@/lib/date-utils';
 import {
   Table,
   TableBody,
@@ -53,7 +54,7 @@ export function PortalOperationsTable({ operations }: PortalOperationsTableProps
               <OperationPriorityBadge priority={op.priority} />
             </TableCell>
             <TableCell className="text-sm text-muted-foreground">
-              {op.dueAt ? new Date(op.dueAt).toLocaleDateString() : '—'}
+              {op.dueAt ? parseApiDate(op.dueAt).toLocaleDateString() : '—'}
             </TableCell>
             <TableCell>
               <Link

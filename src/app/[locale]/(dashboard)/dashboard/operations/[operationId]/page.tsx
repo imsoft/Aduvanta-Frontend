@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl'
+import { parseApiDate, toDateInputValue } from '@/lib/date-utils'
 import { useParams } from 'next/navigation'
 import { useRouter } from '@/i18n/navigation'
 import { Link } from '@/i18n/navigation'
@@ -228,15 +229,15 @@ export default function OperationDetailPage() {
               <InfoField label={t('operations.assignedTo')} value={operation.assignedUserId ? (userNames[operation.assignedUserId] ?? operation.assignedUserId) : undefined} />
               <InfoField
                 label={t('operations.dueDate')}
-                value={operation.dueAt ? new Date(operation.dueAt).toLocaleDateString() : undefined}
+                value={operation.dueAt ? parseApiDate(operation.dueAt).toLocaleDateString() : undefined}
               />
               <InfoField
                 label={t('operations.opened')}
-                value={operation.openedAt ? new Date(operation.openedAt).toLocaleDateString() : undefined}
+                value={operation.openedAt ? parseApiDate(operation.openedAt).toLocaleDateString() : undefined}
               />
               <InfoField
                 label={t('operations.closed')}
-                value={operation.closedAt ? new Date(operation.closedAt).toLocaleDateString() : undefined}
+                value={operation.closedAt ? parseApiDate(operation.closedAt).toLocaleDateString() : undefined}
               />
               {operation.description && (
                 <div className="sm:col-span-2 lg:col-span-3">
@@ -340,9 +341,7 @@ function EditOperationInline({
     description: operation.description ?? '',
     type: operation.type as UpdateOperationFormData['type'],
     priority: operation.priority as UpdateOperationFormData['priority'],
-    dueAt: operation.dueAt
-      ? new Date(operation.dueAt).toISOString().split('T')[0]
-      : '',
+    dueAt: operation.dueAt ? toDateInputValue(operation.dueAt) : '',
   });
 
   return (
