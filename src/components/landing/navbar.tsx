@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { List, X, Globe } from '@phosphor-icons/react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 type Props = {
   locale: string
@@ -62,6 +63,7 @@ export function LandingNavbar({ locale }: Props) {
         </div>
 
         <div className="hidden items-center gap-2 md:flex">
+          <ThemeToggle />
           <a
             href={`/${altLocale}`}
             className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground"
