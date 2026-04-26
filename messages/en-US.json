@@ -303,7 +303,11 @@
     "profile": {
       "title": "Profile",
       "description": "Your account information",
-      "verified": "Email verified"
+      "verified": "Email verified",
+      "changeAvatar": "Change photo",
+      "clickToChangeAvatar": "Click your photo to change it",
+      "avatarUpdated": "Profile photo updated",
+      "avatarError": "Failed to upload photo. Max 5 MB, JPEG/PNG/WebP/GIF only."
     },
     "appearance": {
       "title": "Appearance",

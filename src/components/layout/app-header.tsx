@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
 import { SignOut, User, ShieldStar } from '@phosphor-icons/react';
 import { toast } from 'sonner';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -67,6 +67,7 @@ export function AppHeader() {
               className="flex max-w-full min-w-0 items-center gap-2 rounded-md px-2 py-1 text-left text-sm transition-colors hover:bg-accent outline-none"
             >
               <Avatar className="h-6 w-6 shrink-0">
+                {user?.image && <AvatarImage src={user.image} alt={user.name ?? ''} />}
                 <AvatarFallback className="text-xs bg-primary text-primary-foreground">
                   {user?.name ? getInitials(user.name) : <User size={12} />}
                 </AvatarFallback>

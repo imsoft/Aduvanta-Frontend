@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef, useState } from 'react';
 import { useTheme } from 'next-themes';
 import { useLocale, useTranslations } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/navigation';
@@ -7,12 +8,13 @@ import { useSession, signOut } from '@/lib/auth-client';
 import { useOrgStore } from '@/store/org.store';
 import { routing } from '@/i18n/routing';
 import { toast } from 'sonner';
-import { Sun, Moon, Desktop, Globe, User, SignOut, ShieldCheck } from '@phosphor-icons/react';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Sun, Moon, Desktop, Globe, User, SignOut, ShieldCheck, Camera } from '@phosphor-icons/react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { apiClient } from '@/lib/api-client';
 
 const THEMES = [
   { id: 'light', icon: Sun, labelKey: 'theme.light' },
@@ -64,8 +66,12 @@ export default function SettingsPage() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const { clearOrg } = useOrgStore();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   const user = session?.user;
+  const displayImage = avatarUrl ?? user?.image ?? null;
 
   const handleLocaleChange = (newLocale: string) => {
     router.replace(pathname, { locale: newLocale });
@@ -76,6 +82,34 @@ export default function SettingsPage() {
     clearOrg();
     router.push('/sign-in');
     toast.success(t('header.signedOut'));
+  };
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const preview = URL.createObjectURL(file);
+    setAvatarUrl(preview);
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    setUploading(true);
+    try {
+      const { data } = await apiClient.post<{ imageUrl: string }>(
+        '/api/users/me/avatar',
+        formData,
+        { headers: { 'Content-Type': 'multipart/form-data' } },
+      );
+      setAvatarUrl(data.imageUrl);
+      toast.success(t('settings.profile.avatarUpdated'));
+    } catch {
+      setAvatarUrl(user?.image ?? null);
+      toast.error(t('settings.profile.avatarError'));
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
   };
 
   return (
@@ -91,11 +125,32 @@ export default function SettingsPage() {
         description={t('settings.profile.description')}
       >
         <div className="rounded-xl border bg-card p-5 flex items-center gap-4">
-          <Avatar className="h-14 w-14 shrink-0">
-            <AvatarFallback className="text-lg bg-primary text-primary-foreground">
-              {user?.name ? getInitials(user.name) : <User size={22} />}
-            </AvatarFallback>
-          </Avatar>
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="relative h-14 w-14 shrink-0 rounded-full group"
+            aria-label={t('settings.profile.changeAvatar')}
+          >
+            <Avatar className="h-14 w-14">
+              {displayImage && <AvatarImage src={displayImage} alt={user?.name ?? ''} />}
+              <AvatarFallback className="text-lg bg-primary text-primary-foreground">
+                {user?.name ? getInitials(user.name) : <User size={22} />}
+              </AvatarFallback>
+            </Avatar>
+            <span className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+              {uploading
+                ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                : <Camera size={18} className="text-white" weight="bold" />}
+            </span>
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            className="hidden"
+            onChange={handleAvatarChange}
+          />
           <div className="min-w-0 flex-1">
             <p className="font-semibold truncate">{user?.name ?? '—'}</p>
             <p className="text-sm text-muted-foreground truncate">{user?.email}</p>
@@ -105,6 +160,7 @@ export default function SettingsPage() {
                 {t('settings.profile.verified')}
               </Badge>
             )}
+            <p className="text-xs text-muted-foreground mt-1">{t('settings.profile.clickToChangeAvatar')}</p>
           </div>
         </div>
       </Section>
