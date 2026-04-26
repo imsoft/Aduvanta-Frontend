@@ -65,7 +65,7 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    groupKey: 'Aduanas',
+    groupKey: 'nav.groups.aduanas',
     items: [
       { labelKey: 'nav.pedimentos', href: '/dashboard/pedimentos', icon: ClipboardText },
       { labelKey: 'nav.clasificacion', href: '/dashboard/clasificacion', icon: Scales },
@@ -74,7 +74,7 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    groupKey: 'Control',
+    groupKey: 'nav.groups.control',
     items: [
       { labelKey: 'nav.bodega', href: '/dashboard/bodega', icon: Warehouse },
       { labelKey: 'nav.tesoreria', href: '/dashboard/tesoreria', icon: Bank },
@@ -84,7 +84,7 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    groupKey: 'Sistema',
+    groupKey: 'nav.groups.sistema',
     items: [
       { labelKey: 'nav.compliance', href: '/dashboard/compliance/rule-sets', icon: ListChecks },
       { labelKey: 'nav.docCategories', href: '/dashboard/document-categories', icon: FolderOpen },
@@ -93,7 +93,7 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    groupKey: 'Administración',
+    groupKey: 'nav.groups.administracion',
     items: [
       { labelKey: 'nav.organizations', href: '/dashboard/organizations', icon: Buildings },
       { labelKey: 'nav.users', href: '/dashboard/users', icon: UsersThree },
@@ -106,38 +106,38 @@ const navGroups: NavGroup[] = [
   },
 ]
 
-const adminNavGroups = [
+const adminNavGroups: NavGroup[] = [
   {
     groupKey: '',
     items: [
-      { label: 'Panel', href: '/dashboard/admin', icon: ShieldStar },
-      { label: 'Estado del Sistema', href: '/dashboard/admin/health', icon: Heartbeat },
+      { labelKey: 'nav.admin.panel', href: '/dashboard/admin', icon: ShieldStar },
+      { labelKey: 'nav.admin.health', href: '/dashboard/admin/health', icon: Heartbeat },
     ],
   },
   {
-    groupKey: 'Actividad',
+    groupKey: 'nav.groups.actividad',
     items: [
-      { label: 'Pedimentos', href: '/dashboard/admin/pedimentos', icon: ClipboardText },
-      { label: 'Operaciones', href: '/dashboard/admin/operaciones', icon: FileText },
+      { labelKey: 'nav.admin.pedimentos', href: '/dashboard/admin/pedimentos', icon: ClipboardText },
+      { labelKey: 'nav.admin.operaciones', href: '/dashboard/admin/operaciones', icon: FileText },
     ],
   },
   {
-    groupKey: 'Tenants',
+    groupKey: 'nav.groups.tenants',
     items: [
-      { label: 'Organizaciones', href: '/dashboard/admin/organizations', icon: Buildings },
-      { label: 'Uso por org.', href: '/dashboard/admin/uso', icon: ChartPieSlice },
-      { label: 'Usuarios', href: '/dashboard/admin/users', icon: UsersThree },
-      { label: 'Sesiones activas', href: '/dashboard/admin/sesiones', icon: Devices },
-      { label: 'Suscripciones', href: '/dashboard/admin/suscripciones', icon: CreditCard },
+      { labelKey: 'nav.admin.organizations', href: '/dashboard/admin/organizations', icon: Buildings },
+      { labelKey: 'nav.admin.uso', href: '/dashboard/admin/uso', icon: ChartPieSlice },
+      { labelKey: 'nav.admin.users', href: '/dashboard/admin/users', icon: UsersThree },
+      { labelKey: 'nav.admin.sesiones', href: '/dashboard/admin/sesiones', icon: Devices },
+      { labelKey: 'nav.admin.suscripciones', href: '/dashboard/admin/suscripciones', icon: CreditCard },
     ],
   },
   {
-    groupKey: 'Configuración',
+    groupKey: 'nav.groups.configuracion',
     items: [
-      { label: 'Anuncios', href: '/dashboard/admin/anuncios', icon: BellRinging },
-      { label: 'Feature Flags', href: '/dashboard/admin/feature-flags', icon: Flag },
-      { label: 'Catálogos SAT', href: '/dashboard/admin/catalogos', icon: BookOpen },
-      { label: 'Audit Logs', href: '/dashboard/admin/audit-logs', icon: Receipt },
+      { labelKey: 'nav.admin.anuncios', href: '/dashboard/admin/anuncios', icon: BellRinging },
+      { labelKey: 'nav.admin.featureFlags', href: '/dashboard/admin/feature-flags', icon: Flag },
+      { labelKey: 'nav.admin.catalogos', href: '/dashboard/admin/catalogos', icon: BookOpen },
+      { labelKey: 'nav.admin.auditLogs', href: '/dashboard/admin/audit-logs', icon: Receipt },
     ],
   },
 ]
@@ -203,10 +203,11 @@ export const AppSidebar = () => {
             <div key={group.groupKey || '__top'} className="mb-1">
               {group.groupKey && !collapsed && (
                 <p className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
-                  {group.groupKey}
+                  {t(group.groupKey)}
                 </p>
               )}
-              {group.items.map(({ label, href, icon: Icon }) => {
+              {group.items.map(({ labelKey, href, icon: Icon }) => {
+                const label = t(labelKey)
                 const active = href === '/dashboard/admin' ? pathname === href : pathname.startsWith(href)
                 return (
                   <Link
@@ -240,7 +241,7 @@ export const AppSidebar = () => {
             <div key={group.groupKey || '__top'} className="mb-1">
               {group.groupKey && !collapsed && (
                 <p className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
-                  {group.groupKey}
+                  {t(group.groupKey)}
                 </p>
               )}
               {group.items.map(({ labelKey, href, icon: Icon }) => {

@@ -53,7 +53,31 @@
     "inspecciones": "Inspections",
     "previos": "Previos",
     "reportes": "Reports",
-    "conversiones": "Conversions"
+    "conversiones": "Conversions",
+    "groups": {
+      "aduanas": "Customs",
+      "control": "Control",
+      "sistema": "System",
+      "administracion": "Administration",
+      "actividad": "Activity",
+      "tenants": "Tenants",
+      "configuracion": "Configuration"
+    },
+    "admin": {
+      "panel": "Panel",
+      "health": "System Status",
+      "pedimentos": "Entries",
+      "operaciones": "Operations",
+      "organizations": "Organizations",
+      "uso": "Usage by org.",
+      "users": "Users",
+      "sesiones": "Active Sessions",
+      "suscripciones": "Subscriptions",
+      "anuncios": "Announcements",
+      "featureFlags": "Feature Flags",
+      "catalogos": "SAT Catalogs",
+      "auditLogs": "Audit Logs"
+    }
   },
   "auth": {
     "signIn": "Sign in",
