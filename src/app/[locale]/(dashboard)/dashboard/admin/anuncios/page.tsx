@@ -28,8 +28,9 @@ import {
 } from '@/components/ui/select';
 import { Plus, Trash, PencilSimple, BellRinging, CheckCircle, WarningCircle, XCircle } from '@phosphor-icons/react';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { es, enUS } from 'date-fns/locale';
 import { toast } from 'sonner';
+import { useTranslations, useLocale } from 'next-intl';
 
 const LEVEL_COLORS: Record<string, string> = {
   INFO: 'bg-blue-100 text-blue-700 border-blue-200',
@@ -42,8 +43,6 @@ const LEVEL_ICONS = {
   WARNING: WarningCircle,
   CRITICAL: XCircle,
 };
-
-const LEVEL_LABELS = { INFO: 'Informativo', WARNING: 'Advertencia', CRITICAL: 'Crítico' };
 
 const EMPTY_FORM = {
   title: '',
@@ -58,10 +57,19 @@ export default function AdminAnunciosPage() {
   const create = useCreateAnnouncement();
   const update = useUpdateAnnouncement();
   const del = useDeleteAnnouncement();
+  const t = useTranslations('admin');
+  const locale = useLocale();
+  const dateLocale = locale === 'es-MX' ? es : enUS;
 
   const [createOpen, setCreateOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<AnnouncementRow | null>(null);
   const [form, setForm] = useState(EMPTY_FORM);
+
+  const LEVEL_LABELS = {
+    INFO: t('anuncios.levelInfo'),
+    WARNING: t('anuncios.levelWarning'),
+    CRITICAL: t('anuncios.levelCritical'),
+  };
 
   const openCreate = () => {
     setForm(EMPTY_FORM);
@@ -87,7 +95,7 @@ export default function AdminAnunciosPage() {
       startsAt: form.startsAt,
       endsAt: form.endsAt || undefined,
     });
-    toast.success('Anuncio creado');
+    toast.success(t('anuncios.toastCreated'));
     setCreateOpen(false);
   };
 
@@ -101,39 +109,39 @@ export default function AdminAnunciosPage() {
       startsAt: form.startsAt,
       endsAt: form.endsAt || null,
     });
-    toast.success('Anuncio actualizado');
+    toast.success(t('anuncios.toastUpdated'));
     setEditTarget(null);
   };
 
   const handleToggleActive = async (a: AnnouncementRow) => {
     await update.mutateAsync({ id: a.id, isActive: !a.isActive });
-    toast.success(a.isActive ? 'Anuncio desactivado' : 'Anuncio activado');
+    toast.success(a.isActive ? t('anuncios.toastDeactivated') : t('anuncios.toastActivated'));
   };
 
   const handleDelete = async (id: string) => {
     await del.mutateAsync(id);
-    toast.success('Anuncio eliminado');
+    toast.success(t('anuncios.toastDeleted'));
   };
 
   const AnnouncementForm = (
     <div className="space-y-4 py-2">
       <div className="space-y-2">
-        <Label>Título</Label>
-        <Input value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} placeholder="Ej. Mantenimiento programado" />
+        <Label>{t('anuncios.titleLabel')}</Label>
+        <Input value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} placeholder={t('anuncios.titlePlaceholder')} />
       </div>
       <div className="space-y-2">
-        <Label>Mensaje</Label>
+        <Label>{t('anuncios.bodyLabel')}</Label>
         <textarea
           value={form.body}
           onChange={(e) => setForm((f) => ({ ...f, body: e.target.value }))}
-          placeholder="Detalle del anuncio..."
+          placeholder={t('anuncios.bodyPlaceholder')}
           rows={3}
           className="w-full rounded-md border bg-background px-3 py-2 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-ring"
         />
       </div>
       <div className="grid grid-cols-3 gap-3">
         <div className="space-y-2">
-          <Label>Nivel</Label>
+          <Label>{t('anuncios.levelLabel')}</Label>
           <Select value={form.level} onValueChange={(v) => setForm((f) => ({ ...f, level: v as typeof form.level }))}>
             <SelectTrigger><SelectValue /></SelectTrigger>
             <SelectContent>
@@ -144,11 +152,11 @@ export default function AdminAnunciosPage() {
           </Select>
         </div>
         <div className="space-y-2">
-          <Label>Desde</Label>
+          <Label>{t('anuncios.fromLabel')}</Label>
           <Input type="date" value={form.startsAt} onChange={(e) => setForm((f) => ({ ...f, startsAt: e.target.value }))} />
         </div>
         <div className="space-y-2">
-          <Label>Hasta (opcional)</Label>
+          <Label>{t('anuncios.toLabel')}</Label>
           <Input type="date" value={form.endsAt} onChange={(e) => setForm((f) => ({ ...f, endsAt: e.target.value }))} />
         </div>
       </div>
@@ -160,11 +168,11 @@ export default function AdminAnunciosPage() {
       <div className="flex items-start justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight">Anuncios del Sistema</h1>
-            <Badge variant="destructive" className="text-[10px]">Super Admin</Badge>
+            <h1 className="text-2xl font-semibold tracking-tight">{t('anuncios.title')}</h1>
+            <Badge variant="destructive" className="text-[10px]">{t('common.superAdmin')}</Badge>
           </div>
           <p className="text-sm text-muted-foreground mt-1">
-            Banners visibles para todos los usuarios de la plataforma
+            {t('anuncios.description')}
           </p>
         </div>
 
@@ -172,16 +180,16 @@ export default function AdminAnunciosPage() {
           <DialogTrigger asChild>
             <Button size="sm" onClick={openCreate}>
               <Plus size={14} className="mr-1.5" />
-              Nuevo anuncio
+              {t('anuncios.newButton')}
             </Button>
           </DialogTrigger>
           <DialogContent>
-            <DialogHeader><DialogTitle>Nuevo anuncio</DialogTitle></DialogHeader>
+            <DialogHeader><DialogTitle>{t('anuncios.createDialogTitle')}</DialogTitle></DialogHeader>
             {AnnouncementForm}
             <div className="flex gap-2 justify-end">
-              <Button variant="outline" onClick={() => setCreateOpen(false)}>Cancelar</Button>
+              <Button variant="outline" onClick={() => setCreateOpen(false)}>{t('anuncios.cancel')}</Button>
               <Button onClick={handleCreate} disabled={!form.title || !form.body || create.isPending}>
-                {create.isPending ? 'Creando...' : 'Crear'}
+                {create.isPending ? t('anuncios.creating') : t('anuncios.create')}
               </Button>
             </div>
           </DialogContent>
@@ -191,12 +199,12 @@ export default function AdminAnunciosPage() {
       {/* Edit dialog */}
       <Dialog open={!!editTarget} onOpenChange={(open) => { if (!open) setEditTarget(null); }}>
         <DialogContent>
-          <DialogHeader><DialogTitle>Editar anuncio</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{t('anuncios.editDialogTitle')}</DialogTitle></DialogHeader>
           {AnnouncementForm}
           <div className="flex gap-2 justify-end">
-            <Button variant="outline" onClick={() => setEditTarget(null)}>Cancelar</Button>
+            <Button variant="outline" onClick={() => setEditTarget(null)}>{t('anuncios.cancel')}</Button>
             <Button onClick={handleUpdate} disabled={!form.title || !form.body || update.isPending}>
-              {update.isPending ? 'Guardando...' : 'Guardar'}
+              {update.isPending ? t('anuncios.saving') : t('anuncios.save')}
             </Button>
           </div>
         </DialogContent>
@@ -211,8 +219,8 @@ export default function AdminAnunciosPage() {
       ) : announcements.length === 0 ? (
         <div className="rounded-xl border border-dashed p-12 text-center">
           <BellRinging size={32} className="mx-auto mb-3 text-muted-foreground" />
-          <p className="text-sm font-medium">No hay anuncios</p>
-          <p className="text-sm text-muted-foreground mt-1">Crea el primero para avisar a los usuarios</p>
+          <p className="text-sm font-medium">{t('anuncios.noAnnouncements')}</p>
+          <p className="text-sm text-muted-foreground mt-1">{t('anuncios.noAnnouncementsDescription')}</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -230,7 +238,7 @@ export default function AdminAnunciosPage() {
                   <div className="flex items-center gap-2 flex-wrap">
                     <p className="text-sm font-semibold">{a.title}</p>
                     <Badge variant={a.isActive ? 'secondary' : 'outline'} className="text-[10px]">
-                      {a.isActive ? 'Activo' : 'Inactivo'}
+                      {a.isActive ? t('anuncios.active') : t('anuncios.inactive')}
                     </Badge>
                     <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${LEVEL_COLORS[a.level]}`}>
                       {LEVEL_LABELS[a.level]}
@@ -238,8 +246,8 @@ export default function AdminAnunciosPage() {
                   </div>
                   <p className="text-sm text-muted-foreground mt-1">{a.body}</p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {format(new Date(a.startsAt), 'dd MMM yyyy', { locale: es })}
-                    {a.endsAt && ` → ${format(new Date(a.endsAt), 'dd MMM yyyy', { locale: es })}`}
+                    {format(new Date(a.startsAt), 'dd MMM yyyy', { locale: dateLocale })}
+                    {a.endsAt && ` → ${format(new Date(a.endsAt), 'dd MMM yyyy', { locale: dateLocale })}`}
                   </p>
                 </div>
                 <div className="flex items-center gap-1 shrink-0">

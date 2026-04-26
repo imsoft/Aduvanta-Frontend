@@ -6,30 +6,34 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CaretLeft, CaretRight, DeviceMobile, Desktop, Globe, ShieldStar, Trash } from '@phosphor-icons/react';
 import { format, formatDistanceToNow } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { es, enUS } from 'date-fns/locale';
 import { toast } from 'sonner';
+import { useTranslations, useLocale } from 'next-intl';
 
 const PAGE_SIZE = 50;
 
-function parseDevice(ua: string | null): { icon: typeof Desktop; label: string } {
-  if (!ua) return { icon: Globe, label: 'Desconocido' };
-  if (/Mobile|Android|iPhone|iPad/i.test(ua)) return { icon: DeviceMobile, label: 'Móvil' };
-  return { icon: Desktop, label: 'Escritorio' };
+function parseDevice(ua: string | null, unknownLabel: string, mobileLabel: string, desktopLabel: string): { icon: typeof Desktop; label: string } {
+  if (!ua) return { icon: Globe, label: unknownLabel };
+  if (/Mobile|Android|iPhone|iPad/i.test(ua)) return { icon: DeviceMobile, label: mobileLabel };
+  return { icon: Desktop, label: desktopLabel };
 }
 
-function parseBrowser(ua: string | null): string {
+function parseBrowser(ua: string | null, otherLabel: string): string {
   if (!ua) return '—';
   if (/Chrome/i.test(ua) && !/Chromium|Edge|OPR/i.test(ua)) return 'Chrome';
   if (/Firefox/i.test(ua)) return 'Firefox';
   if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) return 'Safari';
   if (/Edge/i.test(ua)) return 'Edge';
   if (/OPR/i.test(ua)) return 'Opera';
-  return 'Otro';
+  return otherLabel;
 }
 
 export default function AdminSesionesPage() {
   const [offset, setOffset] = useState(0);
   const [revoking, setRevoking] = useState<string | null>(null);
+  const t = useTranslations('admin');
+  const locale = useLocale();
+  const dateLocale = locale === 'es-MX' ? es : enUS;
 
   const { data, isLoading } = useActiveSessions(PAGE_SIZE, offset);
   const revoke = useRevokeSession();
@@ -42,9 +46,9 @@ export default function AdminSesionesPage() {
     setRevoking(sessionId);
     try {
       await revoke.mutateAsync(sessionId);
-      toast.success(`Sesión de ${email} revocada`);
+      toast.success(t('sesiones.toastRevoked', { email }));
     } catch {
-      toast.error('Error al revocar la sesión');
+      toast.error(t('sesiones.toastError'));
     } finally {
       setRevoking(null);
     }
@@ -54,19 +58,19 @@ export default function AdminSesionesPage() {
     <div className="w-full space-y-5">
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight">Sesiones Activas</h1>
-          <Badge variant="destructive" className="text-[10px]">Super Admin</Badge>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('sesiones.title')}</h1>
+          <Badge variant="destructive" className="text-[10px]">{t('common.superAdmin')}</Badge>
         </div>
         <p className="text-sm text-muted-foreground mt-1">
-          Todas las sesiones vigentes en la plataforma — puedes revocar cualquiera
+          {t('sesiones.description')}
         </p>
       </div>
 
       <div className="rounded-xl border bg-card overflow-hidden">
         <div className="px-5 py-3 border-b bg-muted/20 flex items-center justify-between">
-          <p className="text-sm font-medium">{total.toLocaleString('es-MX')} sesiones activas</p>
+          <p className="text-sm font-medium">{t('sesiones.countLabel', { count: total.toLocaleString(locale) })}</p>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span>Página {page} de {totalPages || 1}</span>
+            <span>{t('common.page')} {page} {t('common.of')} {totalPages || 1}</span>
             <Button variant="outline" size="icon" className="h-6 w-6" disabled={offset === 0} onClick={() => setOffset(Math.max(0, offset - PAGE_SIZE))}>
               <CaretLeft size={12} />
             </Button>
@@ -91,8 +95,13 @@ export default function AdminSesionesPage() {
         ) : (
           <div className="divide-y">
             {data?.sessions.map((session) => {
-              const { icon: DeviceIcon, label: deviceLabel } = parseDevice(session.userAgent);
-              const browser = parseBrowser(session.userAgent);
+              const { icon: DeviceIcon, label: deviceLabel } = parseDevice(
+                session.userAgent,
+                t('sesiones.unknown'),
+                t('sesiones.mobile'),
+                t('sesiones.desktop'),
+              );
+              const browser = parseBrowser(session.userAgent, t('sesiones.other'));
               return (
                 <div key={session.id} className="flex items-center gap-4 px-5 py-3 hover:bg-muted/20 transition-colors">
                   <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center shrink-0">
@@ -112,8 +121,8 @@ export default function AdminSesionesPage() {
                     </p>
                   </div>
                   <div className="hidden sm:flex flex-col items-end text-xs text-muted-foreground shrink-0">
-                    <span>Iniciada {formatDistanceToNow(new Date(session.createdAt), { locale: es, addSuffix: true })}</span>
-                    <span>Expira {format(new Date(session.expiresAt), 'dd MMM yyyy', { locale: es })}</span>
+                    <span>{t('sesiones.started', { time: formatDistanceToNow(new Date(session.createdAt), { locale: dateLocale, addSuffix: true }) })}</span>
+                    <span>{t('sesiones.expires', { date: format(new Date(session.expiresAt), 'dd MMM yyyy', { locale: dateLocale }) })}</span>
                   </div>
                   <Button
                     variant="ghost"
@@ -128,7 +137,7 @@ export default function AdminSesionesPage() {
               );
             })}
             {data?.sessions.length === 0 && (
-              <div className="px-5 py-12 text-center text-sm text-muted-foreground">No hay sesiones activas</div>
+              <div className="px-5 py-12 text-center text-sm text-muted-foreground">{t('sesiones.noResults')}</div>
             )}
           </div>
         )}

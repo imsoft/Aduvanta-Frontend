@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { MagnifyingGlass, TreeStructure, MapPin } from '@phosphor-icons/react';
 import { useDebounce } from '@/hooks/use-debounce';
+import { useTranslations } from 'next-intl';
 
 interface TariffFraction {
   id: string;
@@ -32,6 +33,7 @@ export default function AdminCatalogosPage() {
   const [tab, setTab] = useState<Tab>('fracciones');
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 350);
+  const t = useTranslations('admin');
 
   const { data: fractionsData, isLoading: loadingFractions } = useQuery({
     queryKey: ['admin-catalogs-fractions', debouncedSearch],
@@ -69,19 +71,19 @@ export default function AdminCatalogosPage() {
     <div className="w-full space-y-5">
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight">Catálogos SAT</h1>
-          <Badge variant="destructive" className="text-[10px]">Super Admin</Badge>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('catalogos.title')}</h1>
+          <Badge variant="destructive" className="text-[10px]">{t('common.superAdmin')}</Badge>
         </div>
         <p className="text-sm text-muted-foreground mt-1">
-          TIGIE — fracciones arancelarias y aduanas del SAT
+          {t('catalogos.description')}
         </p>
       </div>
 
       {/* Tabs */}
       <div className="flex gap-1 rounded-lg border bg-muted/30 p-1 w-fit">
         {([
-          { key: 'fracciones', label: 'Fracciones TIGIE', icon: TreeStructure },
-          { key: 'aduanas', label: 'Aduanas', icon: MapPin },
+          { key: 'fracciones', label: t('catalogos.tabFracciones'), icon: TreeStructure },
+          { key: 'aduanas', label: t('catalogos.tabAduanas'), icon: MapPin },
         ] as const).map(({ key, label, icon: Icon }) => (
           <button
             key={key}
@@ -103,7 +105,7 @@ export default function AdminCatalogosPage() {
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder={tab === 'fracciones' ? 'Buscar fracción o descripción…' : 'Buscar aduana…'}
+          placeholder={tab === 'fracciones' ? t('catalogos.searchFraccionesPlaceholder') : t('catalogos.searchAduanasPlaceholder')}
           className="pl-8"
         />
       </div>
@@ -114,8 +116,8 @@ export default function AdminCatalogosPage() {
           {!debouncedSearch || debouncedSearch.length < 2 ? (
             <div className="px-5 py-12 text-center">
               <TreeStructure size={32} className="mx-auto mb-3 text-muted-foreground" />
-              <p className="text-sm font-medium">Ingresa al menos 2 caracteres para buscar</p>
-              <p className="text-sm text-muted-foreground mt-1">Busca por código de fracción (ej. 8471) o descripción</p>
+              <p className="text-sm font-medium">{t('catalogos.fraccionesHint')}</p>
+              <p className="text-sm text-muted-foreground mt-1">{t('catalogos.fraccionesHintDescription')}</p>
             </div>
           ) : loadingFractions ? (
             <div className="divide-y">
@@ -127,7 +129,7 @@ export default function AdminCatalogosPage() {
               ))}
             </div>
           ) : fractions.length === 0 ? (
-            <div className="px-5 py-12 text-center text-sm text-muted-foreground">Sin resultados para «{debouncedSearch}»</div>
+            <div className="px-5 py-12 text-center text-sm text-muted-foreground">{t('catalogos.noFracciones', { query: debouncedSearch })}</div>
           ) : (
             <div className="divide-y">
               {fractions.map((f) => (
@@ -151,7 +153,7 @@ export default function AdminCatalogosPage() {
       {tab === 'aduanas' && (
         <div className="rounded-xl border bg-card overflow-hidden">
           <div className="px-5 py-3 border-b bg-muted/20">
-            <p className="text-sm font-medium">{offices.length} aduanas registradas</p>
+            <p className="text-sm font-medium">{t('catalogos.aduanasCount', { count: offices.length })}</p>
           </div>
           {loadingOffices ? (
             <div className="divide-y">
@@ -174,7 +176,7 @@ export default function AdminCatalogosPage() {
                 </div>
               ))}
               {filteredOffices.length === 0 && (
-                <div className="px-5 py-10 text-center text-sm text-muted-foreground">Sin resultados</div>
+                <div className="px-5 py-10 text-center text-sm text-muted-foreground">{t('catalogos.noAduanas')}</div>
               )}
             </div>
           )}

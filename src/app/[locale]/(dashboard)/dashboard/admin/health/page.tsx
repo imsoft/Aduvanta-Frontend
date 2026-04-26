@@ -14,6 +14,7 @@ import {
   ArrowClockwise,
 } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface HealthStatus {
   status: 'ok' | 'error';
@@ -45,6 +46,8 @@ export default function AdminHealthPage() {
   });
 
   const { data: overview } = usePlatformOverview();
+  const t = useTranslations('admin');
+  const locale = useLocale();
 
   const allDetails = { ...(health?.info ?? {}), ...(health?.error ?? {}) };
   const isHealthy = health?.status === 'ok';
@@ -54,16 +57,16 @@ export default function AdminHealthPage() {
       <div className="flex items-start justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight">Estado del Sistema</h1>
-            <Badge variant="destructive" className="text-[10px]">Super Admin</Badge>
+            <h1 className="text-2xl font-semibold tracking-tight">{t('health.title')}</h1>
+            <Badge variant="destructive" className="text-[10px]">{t('common.superAdmin')}</Badge>
           </div>
           <p className="text-sm text-muted-foreground mt-1">
-            Infraestructura, servicios y métricas de la plataforma
+            {t('health.description')}
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={() => refetch()}>
           <ArrowClockwise size={14} className="mr-1.5" />
-          Actualizar
+          {t('health.refresh')}
         </Button>
       </div>
 
@@ -82,11 +85,11 @@ export default function AdminHealthPage() {
         )}
         <div>
           <p className="font-semibold text-lg">
-            {isLoading ? 'Verificando...' : isHealthy ? 'Todos los sistemas operacionales' : 'Degradación detectada'}
+            {isLoading ? t('health.checking') : isHealthy ? t('health.healthy') : t('health.degraded')}
           </p>
           {dataUpdatedAt > 0 && (
             <p className="text-xs text-muted-foreground mt-0.5">
-              Última verificación: {new Date(dataUpdatedAt).toLocaleTimeString('es-MX')}
+              {t('health.lastCheck', { time: new Date(dataUpdatedAt).toLocaleTimeString(locale) })}
             </p>
           )}
         </div>
@@ -122,20 +125,20 @@ export default function AdminHealthPage() {
       {overview && (
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/60 mb-3">
-            Métricas de plataforma
+            {t('health.platformMetrics')}
           </p>
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
             {[
-              { label: 'Organizaciones', value: overview.totalOrganizations },
-              { label: 'Usuarios', value: overview.totalUsers },
-              { label: 'Operaciones totales', value: overview.totalOperations },
-              { label: 'Op. activas', value: overview.activeOperations },
-              { label: 'Pedimentos totales', value: overview.totalEntries },
-              { label: 'Pedimentos este mes', value: overview.entriesThisMonth },
+              { label: t('health.organizations'), value: overview.totalOrganizations },
+              { label: t('health.users'), value: overview.totalUsers },
+              { label: t('health.totalOperations'), value: overview.totalOperations },
+              { label: t('health.activeOperations'), value: overview.activeOperations },
+              { label: t('health.totalEntries'), value: overview.totalEntries },
+              { label: t('health.entriesThisMonth'), value: overview.entriesThisMonth },
             ].map(({ label, value }) => (
               <div key={label} className="rounded-xl border p-4">
                 <p className="text-xs text-muted-foreground">{label}</p>
-                <p className="text-2xl font-semibold font-mono mt-1">{value.toLocaleString('es-MX')}</p>
+                <p className="text-2xl font-semibold font-mono mt-1">{value.toLocaleString(locale)}</p>
               </div>
             ))}
           </div>
@@ -146,7 +149,7 @@ export default function AdminHealthPage() {
       {overview?.recentActivity && overview.recentActivity.length > 0 && (
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/60 mb-3">
-            Actividad reciente
+            {t('health.recentActivity')}
           </p>
           <div className="rounded-xl border divide-y">
             {overview.recentActivity.map((event, i) => (
@@ -156,7 +159,7 @@ export default function AdminHealthPage() {
                 </span>
                 <span className="flex-1">{event.action}</span>
                 <span className="text-xs text-muted-foreground shrink-0">
-                  {new Date(event.createdAt).toLocaleString('es-MX', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' })}
+                  {new Date(event.createdAt).toLocaleString(locale, { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' })}
                 </span>
               </div>
             ))}

@@ -6,7 +6,8 @@ import { CaretLeft, CaretRight, FileText } from '@phosphor-icons/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { es, enUS } from 'date-fns/locale';
+import { useTranslations, useLocale } from 'next-intl';
 
 const PAGE_SIZE = 25;
 
@@ -18,14 +19,6 @@ const STATUS_COLORS: Record<string, string> = {
   CANCELLED: 'bg-red-100 text-red-700',
 };
 
-const STATUS_LABELS: Record<string, string> = {
-  OPEN: 'Abierta',
-  IN_PROGRESS: 'En proceso',
-  ON_HOLD: 'En espera',
-  COMPLETED: 'Completada',
-  CANCELLED: 'Cancelada',
-};
-
 const PRIORITY_COLORS: Record<string, string> = {
   LOW: 'bg-gray-100 text-gray-600',
   MEDIUM: 'bg-blue-100 text-blue-600',
@@ -33,21 +26,32 @@ const PRIORITY_COLORS: Record<string, string> = {
   URGENT: 'bg-red-100 text-red-700',
 };
 
-const PRIORITY_LABELS: Record<string, string> = {
-  LOW: 'Baja',
-  MEDIUM: 'Media',
-  HIGH: 'Alta',
-  URGENT: 'Urgente',
-};
-
-const TYPE_LABELS: Record<string, string> = {
-  IMPORT: 'Importación',
-  EXPORT: 'Exportación',
-  INTERNAL: 'Interno',
-};
-
 export default function AdminOperacionesPage() {
   const [offset, setOffset] = useState(0);
+  const t = useTranslations('admin');
+  const locale = useLocale();
+  const dateLocale = locale === 'es-MX' ? es : enUS;
+
+  const STATUS_LABELS: Record<string, string> = {
+    OPEN: t('operaciones.statusOpen'),
+    IN_PROGRESS: t('operaciones.statusInProgress'),
+    ON_HOLD: t('operaciones.statusOnHold'),
+    COMPLETED: t('operaciones.statusCompleted'),
+    CANCELLED: t('operaciones.statusCancelled'),
+  };
+
+  const PRIORITY_LABELS: Record<string, string> = {
+    LOW: t('operaciones.priorityLow'),
+    MEDIUM: t('operaciones.priorityMedium'),
+    HIGH: t('operaciones.priorityHigh'),
+    URGENT: t('operaciones.priorityUrgent'),
+  };
+
+  const TYPE_LABELS: Record<string, string> = {
+    IMPORT: t('operaciones.typeImport'),
+    EXPORT: t('operaciones.typeExport'),
+    INTERNAL: t('operaciones.typeInternal'),
+  };
 
   const { data, isLoading } = useAllOperations(PAGE_SIZE, offset);
   const total = data?.total ?? 0;
@@ -58,17 +62,17 @@ export default function AdminOperacionesPage() {
     <div className="w-full space-y-5">
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight">Operaciones</h1>
-          <Badge variant="destructive" className="text-[10px]">Super Admin</Badge>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('operaciones.title')}</h1>
+          <Badge variant="destructive" className="text-[10px]">{t('common.superAdmin')}</Badge>
         </div>
-        <p className="text-sm text-muted-foreground mt-1">Todas las operaciones de la plataforma</p>
+        <p className="text-sm text-muted-foreground mt-1">{t('operaciones.description')}</p>
       </div>
 
       <div className="rounded-xl border bg-card overflow-hidden">
         <div className="px-5 py-3 border-b bg-muted/20 flex items-center justify-between">
-          <p className="text-sm font-medium">{total.toLocaleString('es-MX')} operaciones</p>
+          <p className="text-sm font-medium">{t('operaciones.countLabel', { count: total.toLocaleString(locale) })}</p>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span>Página {page} de {totalPages || 1}</span>
+            <span>{t('common.page')} {page} {t('common.of')} {totalPages || 1}</span>
             <Button variant="outline" size="icon" className="h-6 w-6" disabled={offset === 0} onClick={() => setOffset(Math.max(0, offset - PAGE_SIZE))}>
               <CaretLeft size={12} />
             </Button>
@@ -110,12 +114,12 @@ export default function AdminOperacionesPage() {
                 </div>
                 <div className="hidden sm:flex items-center gap-4 text-xs text-muted-foreground shrink-0">
                   <Badge variant="outline" className="text-[10px] font-mono">{op.organizationSlug ?? op.organizationId.slice(0, 8)}</Badge>
-                  <span>{op.createdAt ? format(new Date(op.createdAt), 'dd MMM yyyy', { locale: es }) : '—'}</span>
+                  <span>{op.createdAt ? format(new Date(op.createdAt), 'dd MMM yyyy', { locale: dateLocale }) : '—'}</span>
                 </div>
               </div>
             ))}
             {data?.operations.length === 0 && (
-              <div className="px-5 py-12 text-center text-sm text-muted-foreground">No hay operaciones</div>
+              <div className="px-5 py-12 text-center text-sm text-muted-foreground">{t('operaciones.noResults')}</div>
             )}
           </div>
         )}

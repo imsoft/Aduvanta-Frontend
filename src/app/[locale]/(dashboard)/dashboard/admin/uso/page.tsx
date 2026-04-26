@@ -6,7 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CaretLeft, CaretRight, Buildings } from '@phosphor-icons/react';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { es, enUS } from 'date-fns/locale';
+import { useTranslations, useLocale } from 'next-intl';
 
 const PAGE_SIZE = 25;
 
@@ -18,16 +19,19 @@ const SUB_STATUS_COLORS: Record<string, string> = {
   EXPIRED: 'bg-gray-100 text-gray-600',
 };
 
-const SUB_STATUS_LABELS: Record<string, string> = {
-  ACTIVE: 'Activa',
-  TRIALING: 'Trial',
-  PAST_DUE: 'Vencida',
-  CANCELLED: 'Cancelada',
-  EXPIRED: 'Expirada',
-};
-
 export default function AdminUsoPage() {
   const [offset, setOffset] = useState(0);
+  const t = useTranslations('admin');
+  const locale = useLocale();
+  const dateLocale = locale === 'es-MX' ? es : enUS;
+
+  const SUB_STATUS_LABELS: Record<string, string> = {
+    ACTIVE: t('uso.statusActive'),
+    TRIALING: t('uso.statusTrial'),
+    PAST_DUE: t('uso.statusPastDue'),
+    CANCELLED: t('uso.statusCancelled'),
+    EXPIRED: t('uso.statusExpired'),
+  };
 
   const { data, isLoading } = useOrgUsage(PAGE_SIZE, offset);
   const total = data?.total ?? 0;
@@ -38,19 +42,19 @@ export default function AdminUsoPage() {
     <div className="w-full space-y-5">
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight">Uso por Organización</h1>
-          <Badge variant="destructive" className="text-[10px]">Super Admin</Badge>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('uso.title')}</h1>
+          <Badge variant="destructive" className="text-[10px]">{t('common.superAdmin')}</Badge>
         </div>
         <p className="text-sm text-muted-foreground mt-1">
-          Consumo de recursos, actividad y plan de cada tenant
+          {t('uso.description')}
         </p>
       </div>
 
       <div className="rounded-xl border bg-card overflow-hidden">
         <div className="px-5 py-3 border-b bg-muted/20 flex items-center justify-between">
-          <p className="text-sm font-medium">{total.toLocaleString('es-MX')} organizaciones</p>
+          <p className="text-sm font-medium">{t('uso.countLabel', { count: total.toLocaleString(locale) })}</p>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span>Página {page} de {totalPages || 1}</span>
+            <span>{t('common.page')} {page} {t('common.of')} {totalPages || 1}</span>
             <Button variant="outline" size="icon" className="h-6 w-6" disabled={offset === 0} onClick={() => setOffset(Math.max(0, offset - PAGE_SIZE))}>
               <CaretLeft size={12} />
             </Button>
@@ -90,33 +94,33 @@ export default function AdminUsoPage() {
                     )}
                   </div>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    Creada: {format(new Date(org.createdAt), 'dd MMM yyyy', { locale: es })}
+                    {t('uso.created', { date: format(new Date(org.createdAt), 'dd MMM yyyy', { locale: dateLocale }) })}
                   </p>
                 </div>
                 <div className="hidden md:grid grid-cols-4 gap-6 text-center shrink-0">
                   <div>
                     <p className="text-lg font-semibold font-mono">{org.memberCount}</p>
-                    <p className="text-[10px] text-muted-foreground">Usuarios</p>
+                    <p className="text-[10px] text-muted-foreground">{t('uso.users')}</p>
                   </div>
                   <div>
                     <p className="text-lg font-semibold font-mono">{org.operationCount}</p>
-                    <p className="text-[10px] text-muted-foreground">Operaciones</p>
+                    <p className="text-[10px] text-muted-foreground">{t('uso.operations')}</p>
                   </div>
                   <div>
                     <p className="text-lg font-semibold font-mono">{org.entryCount}</p>
-                    <p className="text-[10px] text-muted-foreground">Pedimentos</p>
+                    <p className="text-[10px] text-muted-foreground">{t('uso.entries')}</p>
                   </div>
                   <div>
                     <p className={`text-lg font-semibold font-mono ${org.entriesThisMonth > 0 ? 'text-blue-600' : ''}`}>
                       {org.entriesThisMonth}
                     </p>
-                    <p className="text-[10px] text-muted-foreground">Este mes</p>
+                    <p className="text-[10px] text-muted-foreground">{t('uso.thisMonth')}</p>
                   </div>
                 </div>
               </div>
             ))}
             {data?.usage.length === 0 && (
-              <div className="px-5 py-12 text-center text-sm text-muted-foreground">No hay organizaciones</div>
+              <div className="px-5 py-12 text-center text-sm text-muted-foreground">{t('uso.noResults')}</div>
             )}
           </div>
         )}

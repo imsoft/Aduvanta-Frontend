@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { es, enUS } from 'date-fns/locale';
+import { useTranslations, useLocale } from 'next-intl';
 
 const PAGE_SIZE = 25;
 
@@ -20,6 +21,9 @@ export default function AdminUsersPage() {
   const [offset, setOffset] = useState(0);
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const t = useTranslations('admin');
+  const locale = useLocale();
+  const dateLocale = locale === 'es-MX' ? es : enUS;
 
   const { data, isLoading } = useAllUsers(PAGE_SIZE, offset, debouncedSearch || undefined);
 
@@ -38,18 +42,18 @@ export default function AdminUsersPage() {
     <div className="w-full space-y-5">
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight">Usuarios</h1>
-          <Badge variant="destructive" className="text-[10px]">Super Admin</Badge>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('users.title')}</h1>
+          <Badge variant="destructive" className="text-[10px]">{t('common.superAdmin')}</Badge>
         </div>
         <p className="text-sm text-muted-foreground mt-1">
-          Todos los usuarios registrados en la plataforma
+          {t('users.description')}
         </p>
       </div>
 
       <div className="relative">
         <MagnifyingGlass size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
         <Input
-          placeholder="Buscar por nombre o correo…"
+          placeholder={t('users.searchPlaceholder')}
           value={search}
           onChange={(e) => handleSearch(e.target.value)}
           className="pl-8"
@@ -58,9 +62,9 @@ export default function AdminUsersPage() {
 
       <div className="rounded-xl border bg-card overflow-hidden">
         <div className="px-5 py-3 border-b bg-muted/20 flex items-center justify-between">
-          <p className="text-sm font-medium">{total.toLocaleString('es-MX')} usuarios</p>
+          <p className="text-sm font-medium">{t('users.countLabel', { count: total.toLocaleString(locale) })}</p>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span>Página {page} de {totalPages || 1}</span>
+            <span>{t('common.page')} {page} {t('common.of')} {totalPages || 1}</span>
             <Button variant="outline" size="icon" className="h-6 w-6" disabled={offset === 0} onClick={() => setOffset(Math.max(0, offset - PAGE_SIZE))}>
               <CaretLeft size={12} />
             </Button>
@@ -102,18 +106,18 @@ export default function AdminUsersPage() {
                 </div>
                 <div className="hidden sm:flex items-center gap-4 text-xs text-muted-foreground shrink-0">
                   {user.emailVerified ? (
-                    <Badge variant="secondary" className="text-[10px] h-4">Verificado</Badge>
+                    <Badge variant="secondary" className="text-[10px] h-4">{t('users.verified')}</Badge>
                   ) : (
-                    <Badge variant="outline" className="text-[10px] h-4">Sin verificar</Badge>
+                    <Badge variant="outline" className="text-[10px] h-4">{t('users.unverified')}</Badge>
                   )}
                   <span>{user.orgCount} org{user.orgCount !== 1 ? 's' : ''}</span>
-                  <span>{format(new Date(user.createdAt), 'dd MMM yyyy', { locale: es })}</span>
+                  <span>{format(new Date(user.createdAt), 'dd MMM yyyy', { locale: dateLocale })}</span>
                 </div>
               </div>
             ))}
             {data?.users.length === 0 && (
               <div className="px-5 py-12 text-center text-sm text-muted-foreground">
-                No se encontraron usuarios
+                {t('users.noResults')}
               </div>
             )}
           </div>

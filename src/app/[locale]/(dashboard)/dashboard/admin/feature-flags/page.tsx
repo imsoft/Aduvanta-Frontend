@@ -3,11 +3,15 @@
 import { useAllFeatureFlags, useSetFeatureFlag } from '@/features/system-admin/hooks/use-system-admin';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { es, enUS } from 'date-fns/locale';
+import { useTranslations, useLocale } from 'next-intl';
 
 export default function AdminFeatureFlagsPage() {
   const { data: flags = [], isLoading } = useAllFeatureFlags();
   const setFlag = useSetFeatureFlag();
+  const t = useTranslations('admin');
+  const locale = useLocale();
+  const dateLocale = locale === 'es-MX' ? es : enUS;
 
   const globalFlags = flags.filter((f) => !f.organizationId);
   const orgFlags = flags.filter((f) => !!f.organizationId);
@@ -20,11 +24,11 @@ export default function AdminFeatureFlagsPage() {
     <div className="w-full space-y-6">
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight">Feature Flags</h1>
-          <Badge variant="destructive" className="text-[10px]">Super Admin</Badge>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('featureFlags.title')}</h1>
+          <Badge variant="destructive" className="text-[10px]">{t('common.superAdmin')}</Badge>
         </div>
         <p className="text-sm text-muted-foreground mt-1">
-          Flags globales de la plataforma y sobreescrituras por organización
+          {t('featureFlags.description')}
         </p>
       </div>
 
@@ -40,25 +44,25 @@ export default function AdminFeatureFlagsPage() {
         <>
           <section className="space-y-3">
             <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider text-[10px]">
-              Globales ({globalFlags.length})
+              {t('featureFlags.globalSection', { count: globalFlags.length })}
             </p>
             {globalFlags.length === 0 && (
               <div className="rounded-xl border border-dashed px-5 py-8 text-center text-sm text-muted-foreground">
-                No hay flags globales
+                {t('featureFlags.noGlobalFlags')}
               </div>
             )}
             {globalFlags.map((flag) => (
-              <FlagRow key={flag.id} flag={flag} onToggle={handleToggle} isPending={setFlag.isPending} />
+              <FlagRow key={flag.id} flag={flag} onToggle={handleToggle} isPending={setFlag.isPending} updatedLabel={t('featureFlags.updatedAt', { date: flag.updatedAt ? format(new Date(flag.updatedAt), 'dd MMM yyyy HH:mm', { locale: dateLocale }) : '—' })} />
             ))}
           </section>
 
           {orgFlags.length > 0 && (
             <section className="space-y-3">
               <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider text-[10px]">
-                Por organización ({orgFlags.length})
+                {t('featureFlags.orgSection', { count: orgFlags.length })}
               </p>
               {orgFlags.map((flag) => (
-                <FlagRow key={flag.id} flag={flag} onToggle={handleToggle} isPending={setFlag.isPending} />
+                <FlagRow key={flag.id} flag={flag} onToggle={handleToggle} isPending={setFlag.isPending} updatedLabel={t('featureFlags.updatedAt', { date: flag.updatedAt ? format(new Date(flag.updatedAt), 'dd MMM yyyy HH:mm', { locale: dateLocale }) : '—' })} />
               ))}
             </section>
           )}
@@ -72,10 +76,12 @@ function FlagRow({
   flag,
   onToggle,
   isPending,
+  updatedLabel,
 }: {
   flag: { id: string; key: string; description: string | null; isEnabled: boolean; organizationId: string | null; updatedAt: string };
   onToggle: (key: string, current: boolean, organizationId?: string | null) => void;
   isPending: boolean;
+  updatedLabel: string;
 }) {
   return (
     <div className="flex items-center gap-4 rounded-xl border px-5 py-3 hover:bg-muted/20 transition-colors">
@@ -92,7 +98,7 @@ function FlagRow({
           <p className="text-xs text-muted-foreground mt-0.5">{flag.description}</p>
         )}
         <p className="text-[10px] text-muted-foreground mt-0.5">
-          Actualizado: {flag.updatedAt ? format(new Date(flag.updatedAt), 'dd MMM yyyy HH:mm', { locale: es }) : '—'}
+          {updatedLabel}
         </p>
       </div>
       <button

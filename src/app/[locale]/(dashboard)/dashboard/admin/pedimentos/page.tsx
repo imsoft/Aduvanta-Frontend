@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Link } from '@/i18n/navigation';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { es, enUS } from 'date-fns/locale';
+import { useTranslations, useLocale } from 'next-intl';
 
 const PAGE_SIZE = 25;
 
@@ -23,16 +24,24 @@ const STATUS_COLORS: Record<string, string> = {
   RECTIFIED: 'bg-gray-100 text-gray-500',
 };
 
-const STATUS_LABELS: Record<string, string> = {
-  DRAFT: 'Borrador', PREVALIDATED: 'Prevalidado', VALIDATED: 'Validado',
-  PAID: 'Pagado', DISPATCHED: 'Modulado', RELEASED: 'Liberado',
-  CANCELLED: 'Cancelado', RECTIFIED: 'Rectificado',
-};
-
 export default function AdminPedimentosPage() {
   const [offset, setOffset] = useState(0);
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const t = useTranslations('admin');
+  const locale = useLocale();
+  const dateLocale = locale === 'es-MX' ? es : enUS;
+
+  const STATUS_LABELS: Record<string, string> = {
+    DRAFT: t('pedimentos.statusDraft'),
+    PREVALIDATED: t('pedimentos.statusPrevalidated'),
+    VALIDATED: t('pedimentos.statusValidated'),
+    PAID: t('pedimentos.statusPaid'),
+    DISPATCHED: t('pedimentos.statusDispatched'),
+    RELEASED: t('pedimentos.statusReleased'),
+    CANCELLED: t('pedimentos.statusCancelled'),
+    RECTIFIED: t('pedimentos.statusRectified'),
+  };
 
   const { data, isLoading } = useAllEntries(PAGE_SIZE, offset, debouncedSearch || undefined);
   const total = data?.total ?? 0;
@@ -46,22 +55,22 @@ export default function AdminPedimentosPage() {
   };
 
   const fmtMXN = (v: string | null) =>
-    v ? new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(parseFloat(v)) : '—';
+    v ? new Intl.NumberFormat(locale, { style: 'currency', currency: 'MXN' }).format(parseFloat(v)) : '—';
 
   return (
     <div className="w-full space-y-5">
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight">Pedimentos</h1>
-          <Badge variant="destructive" className="text-[10px]">Super Admin</Badge>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('pedimentos.title')}</h1>
+          <Badge variant="destructive" className="text-[10px]">{t('common.superAdmin')}</Badge>
         </div>
-        <p className="text-sm text-muted-foreground mt-1">Todos los pedimentos de la plataforma</p>
+        <p className="text-sm text-muted-foreground mt-1">{t('pedimentos.description')}</p>
       </div>
 
       <div className="relative">
         <MagnifyingGlass size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
         <Input
-          placeholder="Buscar por número, referencia o clave…"
+          placeholder={t('pedimentos.searchPlaceholder')}
           value={search}
           onChange={(e) => handleSearch(e.target.value)}
           className="pl-8"
@@ -70,9 +79,9 @@ export default function AdminPedimentosPage() {
 
       <div className="rounded-xl border bg-card overflow-hidden">
         <div className="px-5 py-3 border-b bg-muted/20 flex items-center justify-between">
-          <p className="text-sm font-medium">{total.toLocaleString('es-MX')} pedimentos</p>
+          <p className="text-sm font-medium">{t('pedimentos.countLabel', { count: total.toLocaleString(locale) })}</p>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span>Página {page} de {totalPages || 1}</span>
+            <span>{t('common.page')} {page} {t('common.of')} {totalPages || 1}</span>
             <Button variant="outline" size="icon" className="h-6 w-6" disabled={offset === 0} onClick={() => setOffset(Math.max(0, offset - PAGE_SIZE))}>
               <CaretLeft size={12} />
             </Button>
@@ -100,25 +109,25 @@ export default function AdminPedimentosPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-mono font-medium">{entry.entryNumber ?? 'Sin número'}</p>
+                    <p className="text-sm font-mono font-medium">{entry.entryNumber ?? t('pedimentos.noNumber')}</p>
                     <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${STATUS_COLORS[entry.status] ?? 'bg-gray-100 text-gray-600'}`}>
                       {STATUS_LABELS[entry.status] ?? entry.status}
                     </span>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Cve. {entry.entryKey} · {entry.regime}
-                    {entry.internalReference && ` · Ref: ${entry.internalReference}`}
+                    {t('pedimentos.key')} {entry.entryKey} · {entry.regime}
+                    {entry.internalReference && ` · ${t('pedimentos.ref')}: ${entry.internalReference}`}
                   </p>
                 </div>
                 <div className="hidden sm:flex items-center gap-4 text-xs text-muted-foreground shrink-0">
                   <span className="font-mono">{fmtMXN(entry.grandTotal)}</span>
                   <Badge variant="outline" className="text-[10px] font-mono">{entry.organizationSlug}</Badge>
-                  <span>{entry.createdAt ? format(new Date(entry.createdAt), 'dd MMM yyyy', { locale: es }) : '—'}</span>
+                  <span>{entry.createdAt ? format(new Date(entry.createdAt), 'dd MMM yyyy', { locale: dateLocale }) : '—'}</span>
                 </div>
               </div>
             ))}
             {data?.entries.length === 0 && (
-              <div className="px-5 py-12 text-center text-sm text-muted-foreground">No hay pedimentos</div>
+              <div className="px-5 py-12 text-center text-sm text-muted-foreground">{t('pedimentos.noResults')}</div>
             )}
           </div>
         )}
