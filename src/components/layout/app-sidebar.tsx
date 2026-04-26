@@ -140,6 +140,12 @@ const adminNavGroups: NavGroup[] = [
       { labelKey: 'nav.admin.auditLogs', href: '/dashboard/admin/audit-logs', icon: Receipt },
     ],
   },
+  {
+    groupKey: 'nav.groups.contenido',
+    items: [
+      { labelKey: 'nav.admin.blog', href: '/dashboard/admin/blog', icon: BookOpen },
+    ],
+  },
 ]
 
 export const AppSidebar = () => {

@@ -61,7 +61,8 @@
       "administracion": "Administración",
       "actividad": "Actividad",
       "tenants": "Tenants",
-      "configuracion": "Configuración"
+      "configuracion": "Configuración",
+      "contenido": "Contenido"
     },
     "admin": {
       "panel": "Panel",
@@ -76,7 +77,8 @@
       "anuncios": "Anuncios",
       "featureFlags": "Feature Flags",
       "catalogos": "Catálogos SAT",
-      "auditLogs": "Audit Logs"
+      "auditLogs": "Audit Logs",
+      "blog": "Blog"
     }
   },
   "auth": {
@@ -2498,6 +2500,36 @@
       "statusPastDue": "Vencida",
       "statusCancelled": "Cancelada",
       "statusExpired": "Expirada"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Noticias y novedades de Aduvanta",
+    "readMore": "Leer más",
+    "readingTime": "{minutes} min de lectura",
+    "by": "Por",
+    "backToBlog": "Volver al blog",
+    "noPosts": "Aún no hay artículos publicados.",
+    "admin": {
+      "title": "Gestión de Blog",
+      "newPost": "Nuevo artículo",
+      "editPost": "Editar artículo",
+      "deletePost": "Eliminar artículo",
+      "confirmDelete": "¿Estás seguro de que deseas eliminar este artículo? Esta acción no se puede deshacer.",
+      "titleField": "Título",
+      "slugField": "Slug",
+      "excerptField": "Extracto",
+      "contentField": "Contenido (Markdown)",
+      "coverImageField": "URL de imagen de portada",
+      "statusField": "Estado",
+      "draft": "Borrador",
+      "published": "Publicado",
+      "save": "Guardar",
+      "saving": "Guardando...",
+      "publish": "Publicar",
+      "postCreated": "Artículo creado",
+      "postUpdated": "Artículo actualizado",
+      "postDeleted": "Artículo eliminado"
     }
   }
 }
