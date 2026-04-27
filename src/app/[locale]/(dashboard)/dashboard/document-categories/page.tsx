@@ -204,7 +204,7 @@ function CreateCategoryDialog({
         <div className="w-full space-y-4">
           <Field label={t('docCategories.codeRequired')}>
             <input
-              className="w-full rounded-md border bg-transparent px-3 py-2 text-sm font-mono shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring uppercase"
+              className="w-full rounded-none border bg-transparent px-3 py-2 text-sm font-mono shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring uppercase"
               value={code}
               onChange={(e) => setCode(e.target.value.toUpperCase())}
             />
@@ -212,7 +212,7 @@ function CreateCategoryDialog({
           </Field>
           <Field label={t('docCategories.nameRequired')}>
             <input
-              className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -220,7 +220,7 @@ function CreateCategoryDialog({
           <Field label={t('docCategories.descriptionField')}>
             <textarea
               rows={2}
-              className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -274,14 +274,14 @@ function EditCategoryDialog({
         <div className="w-full space-y-4">
           <Field label={t('docCategories.code')}>
             <input
-              className="w-full rounded-md border bg-transparent px-3 py-2 text-sm font-mono shadow-xs text-muted-foreground"
+              className="w-full rounded-none border bg-transparent px-3 py-2 text-sm font-mono shadow-xs text-muted-foreground"
               value={category.code}
               disabled
             />
           </Field>
           <Field label={t('docCategories.name')}>
             <input
-              className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -289,7 +289,7 @@ function EditCategoryDialog({
           <Field label={t('docCategories.descriptionField')}>
             <textarea
               rows={2}
-              className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />

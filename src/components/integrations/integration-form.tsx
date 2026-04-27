@@ -86,7 +86,7 @@ export function IntegrationForm({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label={t('form.name')}>
           <input
-            className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -94,7 +94,7 @@ export function IntegrationForm({
         <Field label={isEdit ? t('form.targetUrlEdit') : t('form.targetUrl')}>
           <input
             type="url"
-            className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             value={targetUrl}
             onChange={(e) => setTargetUrl(e.target.value)}
           />

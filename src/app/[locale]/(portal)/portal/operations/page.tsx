@@ -47,7 +47,7 @@ export default function PortalOperationsPage() {
             className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
           />
           <input
-            className="w-full rounded-md border bg-transparent pl-8 pr-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="w-full rounded-none border bg-transparent pl-8 pr-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />

@@ -70,7 +70,7 @@ export function CreateStatusRuleDialog({
           <div className="grid grid-cols-2 gap-3">
             <Field label={t('fromStatus')}>
               <select
-                className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 value={fromStatus}
                 onChange={(e) => setFromStatus(e.target.value as OperationStatus)}
               >
@@ -83,7 +83,7 @@ export function CreateStatusRuleDialog({
             </Field>
             <Field label={t('toStatus')}>
               <select
-                className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 value={toStatus}
                 onChange={(e) => setToStatus(e.target.value as OperationStatus)}
               >

@@ -349,14 +349,14 @@ function EditOperationInline({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label={t('operations.reference')}>
           <input
-            className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             value={values.reference ?? ''}
             onChange={(e) => setValues((v) => ({ ...v, reference: e.target.value }))}
           />
         </Field>
         <Field label={t('operations.titleField')}>
           <input
-            className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             value={values.title ?? ''}
             onChange={(e) => setValues((v) => ({ ...v, title: e.target.value }))}
           />
@@ -364,7 +364,7 @@ function EditOperationInline({
         <Field label={t('operations.dueDate')}>
           <input
             type="date"
-            className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             value={values.dueAt ?? ''}
             onChange={(e) => setValues((v) => ({ ...v, dueAt: e.target.value }))}
           />
@@ -373,7 +373,7 @@ function EditOperationInline({
       <Field label={t('operations.descriptionField')}>
         <textarea
           rows={3}
-          className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           value={values.description ?? ''}
           onChange={(e) => setValues((v) => ({ ...v, description: e.target.value }))}
         />

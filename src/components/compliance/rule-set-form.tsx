@@ -54,14 +54,14 @@ export function RuleSetForm({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label={t('ruleSetForm.name')}>
           <input
-            className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             value={values.name}
             onChange={(e) => setValues((v) => ({ ...v, name: e.target.value }))}
           />
         </Field>
         <Field label={t('ruleSetForm.code')}>
           <input
-            className="w-full rounded-md border bg-transparent px-3 py-2 text-sm font-mono shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="w-full rounded-none border bg-transparent px-3 py-2 text-sm font-mono shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             value={values.code}
             onChange={(e) =>
               setValues((v) => ({ ...v, code: e.target.value.toUpperCase() }))
@@ -70,7 +70,7 @@ export function RuleSetForm({
         </Field>
         <Field label={t('ruleSetForm.operationType')}>
           <select
-            className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             value={values.operationType}
             onChange={(e) =>
               setValues((v) => ({

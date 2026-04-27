@@ -45,7 +45,7 @@ export function CreateExportDialog({
               Export type *
             </label>
             <select
-              className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={type}
               onChange={(e) => setType(e.target.value as typeof type)}
             >

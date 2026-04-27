@@ -68,7 +68,7 @@ export function CreateAdvanceDialog({
                 type="number"
                 min="0"
                 step="0.01"
-                className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 value={values.amount === 0 ? '' : values.amount}
                 onChange={(e) =>
                   setValues((v) => ({ ...v, amount: parseFloat(e.target.value) || 0 }))
@@ -77,7 +77,7 @@ export function CreateAdvanceDialog({
             </Field>
             <Field label={t('fields.currencyRequired')}>
               <input
-                className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 value={values.currency}
                 onChange={(e) =>
                   setValues((v) => ({ ...v, currency: e.target.value.toUpperCase() }))
@@ -88,14 +88,14 @@ export function CreateAdvanceDialog({
           <Field label={t('fields.receivedAtRequired')}>
             <input
               type="date"
-              className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={values.receivedAt}
               onChange={(e) => setValues((v) => ({ ...v, receivedAt: e.target.value }))}
             />
           </Field>
           <Field label={t('fields.reference')}>
             <input
-              className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={values.reference}
               onChange={(e) => setValues((v) => ({ ...v, reference: e.target.value }))}
             />
@@ -103,7 +103,7 @@ export function CreateAdvanceDialog({
           <Field label={t('fields.notes')}>
             <textarea
               rows={2}
-              className="w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={values.notes}
               onChange={(e) => setValues((v) => ({ ...v, notes: e.target.value }))}
             />

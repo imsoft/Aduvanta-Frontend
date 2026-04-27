@@ -81,7 +81,7 @@ export function AiSearchForm({ onSubmit, isPending }: AiSearchFormProps) {
         <textarea
           {...register('queryText')}
           rows={2}
-          className="w-full resize-none rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          className="w-full resize-none rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
         />
         {errors.queryText && (
           <p className="text-xs text-destructive">{errors.queryText.message}</p>

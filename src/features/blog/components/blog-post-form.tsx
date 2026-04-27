@@ -127,7 +127,7 @@ export function BlogPostForm({ initialValues, onSubmit, isPending }: Props) {
           placeholder={t('excerptPlaceholder')}
           rows={2}
           required
-          className="w-full rounded-md border bg-background px-3 py-2 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-ring"
+          className="w-full rounded-none border bg-background px-3 py-2 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-ring"
         />
       </div>
 

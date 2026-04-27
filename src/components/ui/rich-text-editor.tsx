@@ -270,7 +270,7 @@ export function RichTextEditor({ value, onChange, placeholder, minHeight = 400 }
     <LexicalComposer initialConfig={initialConfig}>
       <div
         className={cn(
-          'w-full rounded-md border bg-background text-sm transition-colors',
+          'w-full rounded-none border bg-background text-sm transition-colors',
           'focus-within:ring-1 focus-within:ring-ring',
         )}
       >

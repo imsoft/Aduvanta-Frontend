@@ -136,7 +136,7 @@ export default function AdminAnunciosPage() {
           onChange={(e) => setForm((f) => ({ ...f, body: e.target.value }))}
           placeholder={t('anuncios.bodyPlaceholder')}
           rows={3}
-          className="w-full rounded-md border bg-background px-3 py-2 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-ring"
+          className="w-full rounded-none border bg-background px-3 py-2 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-ring"
         />
       </div>
       <div className="grid grid-cols-3 gap-3">
