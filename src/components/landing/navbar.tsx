@@ -45,7 +45,7 @@ export function LandingNavbar({ locale }: Props) {
         aria-label={t('mainNavigation')}
       >
         <a href={`/${locale}`} className="flex items-center gap-2.5" aria-label={t('brandHome')}>
-          <Logo size={32} />
+          <Logo size={42} />
           <span className="text-lg font-bold tracking-tight">Aduvanta</span>
         </a>
 

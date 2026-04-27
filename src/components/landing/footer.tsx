@@ -27,7 +27,7 @@ export function LandingFooter() {
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
           <div className="col-span-2 sm:col-span-1">
             <div className="flex items-center gap-2">
-              <Logo size={26} />
+              <Logo size={36} />
               <span className="text-base font-bold tracking-tight">Aduvanta</span>
             </div>
             <p className="mt-3 max-w-[200px] text-xs leading-relaxed text-muted-foreground">

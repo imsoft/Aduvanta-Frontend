@@ -43,7 +43,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
       {/* Sidebar */}
       <aside className="flex h-full w-52 flex-col border-r bg-background">
         <div className="flex h-14 items-center gap-2 px-3">
-          <Logo size={26} />
+          <Logo size={36} />
           <div className="flex min-w-0 flex-col leading-none">
             <span className="text-xs font-semibold uppercase tracking-widest text-primary">
               Aduvanta

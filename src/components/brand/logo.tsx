@@ -6,7 +6,7 @@ type Props = {
   className?: string;
 };
 
-export function Logo({ size = 28, className }: Props) {
+export function Logo({ size = 36, className }: Props) {
   return (
     <span
       className={cn(

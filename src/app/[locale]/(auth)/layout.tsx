@@ -16,7 +16,7 @@ export default function AuthLayout({
           className="flex items-center gap-2 rounded-lg px-2 py-1.5 transition-opacity hover:opacity-80"
           aria-label="Ir a inicio"
         >
-          <Logo size={26} />
+          <Logo size={36} />
           <span className="text-sm font-semibold">Aduvanta</span>
         </Link>
       </div>

@@ -174,13 +174,13 @@ export const AppSidebar = () => {
             aria-label={t('common.expandSidebar')}
             className="rounded-lg"
           >
-            <Logo size={28} />
+            <Logo size={38} />
           </button>
         </div>
       ) : (
         <div className="flex h-14 items-center justify-between gap-2 border-b px-3">
           <div className="flex min-w-0 items-center gap-2">
-            <Logo size={26} />
+            <Logo size={36} />
             <span className="min-w-0 truncate text-sm font-semibold uppercase tracking-widest text-primary">
               Aduvanta
             </span>
