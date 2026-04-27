@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import {
   Select,
   SelectContent,
@@ -59,7 +60,6 @@ export function BlogPostForm({ initialValues, onSubmit, isPending }: Props) {
     Boolean(initialValues?.slug),
   );
 
-  // Auto-generate slug from title unless user manually edited it
   useEffect(() => {
     if (!slugManuallyEdited && form.title) {
       setForm((f) => ({ ...f, slug: titleToSlug(form.title) }));
@@ -83,7 +83,11 @@ export function BlogPostForm({ initialValues, onSubmit, isPending }: Props) {
     });
   };
 
-  const isValid = form.title.length >= 3 && form.slug.length > 0 && form.excerpt.length > 0 && form.content.length > 0;
+  const isValid =
+    form.title.length >= 3 &&
+    form.slug.length > 0 &&
+    form.excerpt.length > 0 &&
+    form.content.length > 0;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 max-w-3xl">
@@ -111,9 +115,7 @@ export function BlogPostForm({ initialValues, onSubmit, isPending }: Props) {
           pattern="^[a-z0-9-]+$"
           required
         />
-        <p className="text-xs text-muted-foreground">
-          {t('slugHint')}
-        </p>
+        <p className="text-xs text-muted-foreground">{t('slugHint')}</p>
       </div>
 
       <div className="space-y-2">
@@ -130,15 +132,12 @@ export function BlogPostForm({ initialValues, onSubmit, isPending }: Props) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="content">{t('contentField')}</Label>
-        <textarea
-          id="content"
+        <Label>{t('contentField')}</Label>
+        <RichTextEditor
           value={form.content}
-          onChange={(e) => set('content', e.target.value)}
+          onChange={(markdown) => set('content', markdown)}
           placeholder={t('contentPlaceholder')}
-          rows={18}
-          required
-          className="w-full rounded-md border bg-background px-3 py-2 text-sm font-mono resize-y focus:outline-none focus:ring-1 focus:ring-ring"
+          minHeight={420}
         />
       </div>
 
