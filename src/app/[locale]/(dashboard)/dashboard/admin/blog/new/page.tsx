@@ -29,7 +29,7 @@ export default function NewBlogPostPage() {
           className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft size={14} />
-          Back to blog
+          {t('backToBlog')}
         </Link>
 
         <div className="flex items-center gap-2">

@@ -26,16 +26,17 @@ import { toast } from 'sonner';
 const PAGE_LIMIT = 10;
 
 function StatusBadge({ status }: { status: BlogPost['status'] }) {
+  const t = useTranslations('blog.admin');
   if (status === 'PUBLISHED') {
     return (
       <Badge className="bg-green-100 text-green-700 border-green-200 hover:bg-green-100">
-        Published
+        {t('published')}
       </Badge>
     );
   }
   return (
     <Badge variant="outline" className="text-muted-foreground">
-      Draft
+      {t('draft')}
     </Badge>
   );
 }
@@ -66,7 +67,7 @@ export default function AdminBlogPage() {
             <Badge variant="destructive" className="text-[10px]">Super Admin</Badge>
           </div>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage public blog posts visible on the Aduvanta landing page.
+            {t('description')}
           </p>
         </div>
 
@@ -87,9 +88,9 @@ export default function AdminBlogPage() {
       ) : posts.length === 0 ? (
         <div className="rounded-xl border border-dashed p-12 text-center">
           <Article size={32} className="mx-auto mb-3 text-muted-foreground" />
-          <p className="text-sm font-medium">No posts yet</p>
+          <p className="text-sm font-medium">{t('emptyTitle')}</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Create the first blog post to get started.
+            {t('emptyDescription')}
           </p>
         </div>
       ) : (
@@ -98,11 +99,11 @@ export default function AdminBlogPage() {
             <table className="w-full text-sm">
               <thead className="border-b bg-muted/30">
                 <tr>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Title</th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Status</th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Author</th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Date</th>
-                  <th className="px-4 py-3 text-right font-medium text-muted-foreground">Actions</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">{t('colTitle')}</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">{t('colStatus')}</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">{t('colAuthor')}</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">{t('colDate')}</th>
+                  <th className="px-4 py-3 text-right font-medium text-muted-foreground">{t('colActions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -152,12 +153,12 @@ export default function AdminBlogPage() {
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
                               <AlertDialogAction
                                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                                 onClick={() => handleDelete(post.id)}
                               >
-                                Delete
+                                {t('delete')}
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
@@ -173,7 +174,7 @@ export default function AdminBlogPage() {
           {totalPages > 1 && (
             <div className="flex items-center justify-between">
               <p className="text-sm text-muted-foreground">
-                {total} posts total
+                {t('postsTotal', { total })}
               </p>
               <div className="flex items-center gap-2">
                 <Button
@@ -182,7 +183,7 @@ export default function AdminBlogPage() {
                   disabled={page === 1}
                   onClick={() => setPage((p) => p - 1)}
                 >
-                  Previous
+                  {t('previous')}
                 </Button>
                 <span className="text-sm text-muted-foreground">
                   {page} / {totalPages}
@@ -193,7 +194,7 @@ export default function AdminBlogPage() {
                   disabled={page === totalPages}
                   onClick={() => setPage((p) => p + 1)}
                 >
-                  Next
+                  {t('next')}
                 </Button>
               </div>
             </div>

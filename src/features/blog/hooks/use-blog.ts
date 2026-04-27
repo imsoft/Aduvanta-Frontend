@@ -3,6 +3,7 @@ import {
   fetchPublishedPosts,
   fetchPostBySlug,
   fetchAllPostsAdmin,
+  fetchPostByIdAdmin,
   createPost,
   updatePost,
   deletePost,
@@ -36,6 +37,15 @@ export function useAllPostsAdmin(
     queryKey: ['blog', 'admin', 'all', page, limit, status],
     queryFn: () => fetchAllPostsAdmin(page, limit, status),
     staleTime: 1000 * 30,
+  });
+}
+
+export function useAdminPost(id: string) {
+  return useQuery({
+    queryKey: ['blog', 'admin', 'post', id],
+    queryFn: () => fetchPostByIdAdmin(id),
+    staleTime: 1000 * 30,
+    enabled: Boolean(id),
   });
 }
 

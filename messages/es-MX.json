@@ -2510,8 +2510,11 @@
     "by": "Por",
     "backToBlog": "Volver al blog",
     "noPosts": "Aún no hay artículos publicados.",
+    "previous": "Anterior",
+    "next": "Siguiente",
     "admin": {
       "title": "Gestión de Blog",
+      "description": "Gestiona los artículos del blog público de Aduvanta.",
       "newPost": "Nuevo artículo",
       "editPost": "Editar artículo",
       "deletePost": "Eliminar artículo",
@@ -2529,7 +2532,26 @@
       "publish": "Publicar",
       "postCreated": "Artículo creado",
       "postUpdated": "Artículo actualizado",
-      "postDeleted": "Artículo eliminado"
+      "postDeleted": "Artículo eliminado",
+      "colTitle": "Título",
+      "colStatus": "Estado",
+      "colAuthor": "Autor",
+      "colDate": "Fecha",
+      "colActions": "Acciones",
+      "emptyTitle": "Sin artículos aún",
+      "emptyDescription": "Crea el primer artículo del blog para comenzar.",
+      "postsTotal": "{total} artículos en total",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "backToBlog": "Volver al blog",
+      "postNotFound": "Artículo no encontrado.",
+      "slugHint": "Solo letras minúsculas, números y guiones.",
+      "titlePlaceholder": "Título del artículo",
+      "excerptPlaceholder": "Una descripción corta del artículo...",
+      "contentPlaceholder": "# Tu contenido Markdown aquí...",
+      "coverImagePlaceholder": "https://ejemplo.com/portada.jpg"
     }
   }
 }

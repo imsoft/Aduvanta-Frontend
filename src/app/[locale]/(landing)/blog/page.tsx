@@ -118,7 +118,7 @@ export default function BlogIndexPage() {
                   disabled={page === 1}
                   onClick={() => setPage((p) => p - 1)}
                 >
-                  Previous
+                  {t('previous')}
                 </Button>
                 <span className="text-sm text-muted-foreground">
                   {page} / {totalPages}
@@ -129,7 +129,7 @@ export default function BlogIndexPage() {
                   disabled={page === totalPages}
                   onClick={() => setPage((p) => p + 1)}
                 >
-                  Next
+                  {t('next')}
                 </Button>
               </div>
             )}

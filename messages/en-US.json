@@ -2510,8 +2510,11 @@
     "by": "By",
     "backToBlog": "Back to blog",
     "noPosts": "No posts published yet.",
+    "previous": "Previous",
+    "next": "Next",
     "admin": {
       "title": "Blog Management",
+      "description": "Manage public blog posts visible on the Aduvanta landing page.",
       "newPost": "New article",
       "editPost": "Edit article",
       "deletePost": "Delete article",
@@ -2529,7 +2532,26 @@
       "publish": "Publish",
       "postCreated": "Article created",
       "postUpdated": "Article updated",
-      "postDeleted": "Article deleted"
+      "postDeleted": "Article deleted",
+      "colTitle": "Title",
+      "colStatus": "Status",
+      "colAuthor": "Author",
+      "colDate": "Date",
+      "colActions": "Actions",
+      "emptyTitle": "No posts yet",
+      "emptyDescription": "Create the first blog post to get started.",
+      "postsTotal": "{total} posts total",
+      "previous": "Previous",
+      "next": "Next",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "backToBlog": "Back to blog",
+      "postNotFound": "Post not found.",
+      "slugHint": "Only lowercase letters, numbers, and hyphens.",
+      "titlePlaceholder": "Your blog post title",
+      "excerptPlaceholder": "A short description of the post...",
+      "contentPlaceholder": "# Your Markdown content here...",
+      "coverImagePlaceholder": "https://example.com/cover.jpg"
     }
   }
 }

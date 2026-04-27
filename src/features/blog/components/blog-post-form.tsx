@@ -93,7 +93,7 @@ export function BlogPostForm({ initialValues, onSubmit, isPending }: Props) {
           id="title"
           value={form.title}
           onChange={(e) => set('title', e.target.value)}
-          placeholder="Your blog post title"
+          placeholder={t('titlePlaceholder')}
           required
         />
       </div>
@@ -112,7 +112,7 @@ export function BlogPostForm({ initialValues, onSubmit, isPending }: Props) {
           required
         />
         <p className="text-xs text-muted-foreground">
-          Only lowercase letters, numbers, and hyphens.
+          {t('slugHint')}
         </p>
       </div>
 
@@ -122,7 +122,7 @@ export function BlogPostForm({ initialValues, onSubmit, isPending }: Props) {
           id="excerpt"
           value={form.excerpt}
           onChange={(e) => set('excerpt', e.target.value)}
-          placeholder="A short description of the post..."
+          placeholder={t('excerptPlaceholder')}
           rows={2}
           required
           className="w-full rounded-md border bg-background px-3 py-2 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-ring"
@@ -135,7 +135,7 @@ export function BlogPostForm({ initialValues, onSubmit, isPending }: Props) {
           id="content"
           value={form.content}
           onChange={(e) => set('content', e.target.value)}
-          placeholder="# Your Markdown content here..."
+          placeholder={t('contentPlaceholder')}
           rows={18}
           required
           className="w-full rounded-md border bg-background px-3 py-2 text-sm font-mono resize-y focus:outline-none focus:ring-1 focus:ring-ring"
@@ -149,7 +149,7 @@ export function BlogPostForm({ initialValues, onSubmit, isPending }: Props) {
           type="url"
           value={form.coverImageUrl}
           onChange={(e) => set('coverImageUrl', e.target.value)}
-          placeholder="https://example.com/cover.jpg"
+          placeholder={t('coverImagePlaceholder')}
         />
       </div>
 

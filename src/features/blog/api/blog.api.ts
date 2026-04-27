@@ -74,6 +74,11 @@ export async function fetchAllPostsAdmin(
   return data as BlogListResponse;
 }
 
+export async function fetchPostByIdAdmin(id: string): Promise<BlogPost> {
+  const { data } = await apiClient.get(`/blog/admin/posts/${id}`);
+  return data as BlogPost;
+}
+
 export async function createPost(
   payload: CreateBlogPostPayload,
 ): Promise<BlogPost> {

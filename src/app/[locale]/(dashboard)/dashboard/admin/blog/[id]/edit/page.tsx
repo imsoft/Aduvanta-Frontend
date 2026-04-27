@@ -3,32 +3,16 @@
 import { use } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter, Link } from '@/i18n/navigation';
-import { useUpdatePost } from '@/features/blog/hooks/use-blog';
+import { useUpdatePost, useAdminPost } from '@/features/blog/hooks/use-blog';
 import { BlogPostForm } from '@/features/blog/components/blog-post-form';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft } from '@phosphor-icons/react';
 import { toast } from 'sonner';
 import type { UpdateBlogPostPayload } from '@/features/blog/api/blog.api';
-import { useQuery } from '@tanstack/react-query';
-import { apiClient } from '@/lib/api-client';
-import type { BlogPost } from '@/features/blog/api/blog.api';
 
 type Props = {
   params: Promise<{ id: string }>;
 };
-
-function useAdminPost(id: string) {
-  return useQuery({
-    queryKey: ['blog', 'admin', 'post', id],
-    queryFn: async () => {
-      const { data } = await apiClient.get(`/blog/admin/posts?page=1&limit=100`);
-      const list = data as { posts: BlogPost[]; total: number };
-      return list.posts.find((p) => p.id === id) ?? null;
-    },
-    staleTime: 1000 * 30,
-    enabled: Boolean(id),
-  });
-}
 
 export default function EditBlogPostPage({ params }: Props) {
   const { id } = use(params);
@@ -55,7 +39,7 @@ export default function EditBlogPostPage({ params }: Props) {
   if (!post) {
     return (
       <div className="w-full text-center py-20">
-        <p className="text-sm text-muted-foreground">Post not found.</p>
+        <p className="text-sm text-muted-foreground">{t('postNotFound')}</p>
       </div>
     );
   }
@@ -68,7 +52,7 @@ export default function EditBlogPostPage({ params }: Props) {
           className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft size={14} />
-          Back to blog
+          {t('backToBlog')}
         </Link>
 
         <div className="flex items-center gap-2">
