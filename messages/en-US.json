@@ -2565,7 +2565,16 @@
       "slugField": "Slug",
       "excerptField": "Excerpt",
       "contentField": "Content (Markdown)",
-      "coverImageField": "Cover image URL",
+      "coverImageField": "Cover image",
+      "uploadImage": "Click or drag an image here",
+      "uploadImageHint": "PNG, JPG, WebP or GIF · Max 5 MB",
+      "uploadingImage": "Uploading image...",
+      "translateHint": "Translate all fields using Google Translate",
+      "translating": "Translating...",
+      "translated": "Translation applied",
+      "translateFailed": "Translation failed",
+      "uploadFailed": "Image upload failed",
+      "invalidImageType": "Only images are allowed (PNG, JPG, WebP, GIF)",
       "statusField": "Status",
       "draft": "Draft",
       "published": "Published",
@@ -2593,7 +2602,8 @@
       "titlePlaceholder": "Your blog post title",
       "excerptPlaceholder": "A short description of the post...",
       "contentPlaceholder": "# Your Markdown content here...",
-      "coverImagePlaceholder": "https://example.com/cover.jpg"
+      "coverImagePlaceholder": "https://example.com/cover.jpg",
+      "removeImage": "Remove image"
     }
   }
 }

@@ -7,8 +7,11 @@ import {
   createPost,
   updatePost,
   deletePost,
+  uploadCoverImage,
+  translatePost,
   type CreateBlogPostPayload,
   type UpdateBlogPostPayload,
+  type TranslatePostPayload,
 } from '../api/blog.api';
 
 export function usePublishedPosts(page: number, limit: number) {
@@ -80,5 +83,17 @@ export function useDeletePost() {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['blog'] });
     },
+  });
+}
+
+export function useUploadCoverImage() {
+  return useMutation({
+    mutationFn: (file: File) => uploadCoverImage(file),
+  });
+}
+
+export function useTranslatePost() {
+  return useMutation({
+    mutationFn: (payload: TranslatePostPayload) => translatePost(payload),
   });
 }

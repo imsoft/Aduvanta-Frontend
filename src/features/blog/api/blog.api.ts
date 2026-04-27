@@ -97,3 +97,38 @@ export async function updatePost(
 export async function deletePost(id: string): Promise<void> {
   await apiClient.delete(`/blog/admin/posts/${id}`);
 }
+
+export async function uploadCoverImage(file: File): Promise<{ url: string }> {
+  const form = new FormData();
+  form.append('file', file);
+  const { data } = await apiClient.post<{ url: string }>(
+    '/blog/admin/cover-image',
+    form,
+    { headers: { 'Content-Type': 'multipart/form-data' } },
+  );
+  return data;
+}
+
+export interface TranslatePostPayload {
+  title: string;
+  excerpt: string;
+  content: string;
+  source: 'es' | 'en';
+  target: 'es' | 'en';
+}
+
+export interface TranslatePostResult {
+  title: string;
+  excerpt: string;
+  content: string;
+}
+
+export async function translatePost(
+  payload: TranslatePostPayload,
+): Promise<TranslatePostResult> {
+  const { data } = await apiClient.post<TranslatePostResult>(
+    '/blog/admin/translate',
+    payload,
+  );
+  return data;
+}

@@ -2564,7 +2564,16 @@
       "slugField": "Slug",
       "excerptField": "Extracto",
       "contentField": "Contenido (Markdown)",
-      "coverImageField": "URL de imagen de portada",
+      "coverImageField": "Imagen de portada",
+      "uploadImage": "Haz clic o arrastra una imagen aquí",
+      "uploadImageHint": "PNG, JPG, WebP o GIF · Máximo 5 MB",
+      "uploadingImage": "Subiendo imagen...",
+      "translateHint": "Traducir todos los campos con Google Translate",
+      "translating": "Traduciendo...",
+      "translated": "Traducción aplicada",
+      "translateFailed": "Error al traducir",
+      "uploadFailed": "Error al subir la imagen",
+      "invalidImageType": "Solo se permiten imágenes (PNG, JPG, WebP, GIF)",
       "statusField": "Estado",
       "draft": "Borrador",
       "published": "Publicado",
@@ -2592,7 +2601,8 @@
       "titlePlaceholder": "Título del artículo",
       "excerptPlaceholder": "Una descripción corta del artículo...",
       "contentPlaceholder": "# Tu contenido Markdown aquí...",
-      "coverImagePlaceholder": "https://ejemplo.com/portada.jpg"
+      "coverImagePlaceholder": "https://ejemplo.com/portada.jpg",
+      "removeImage": "Quitar imagen"
     }
   }
 }
