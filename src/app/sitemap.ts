@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://aduvanta.com'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000'
 
 const locales = ['en-US', 'es-MX'] as const
 
@@ -8,10 +9,11 @@ function localizedEntry(
   path: string,
   changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'],
   priority: number,
+  lastModified?: Date,
 ): MetadataRoute.Sitemap {
   return locales.map((locale) => ({
     url: `${BASE_URL}/${locale}${path}`,
-    lastModified: new Date(),
+    lastModified: lastModified ?? new Date(),
     changeFrequency,
     priority,
     alternates: {
@@ -22,8 +24,34 @@ function localizedEntry(
   }))
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+async function fetchPublishedBlogPosts(): Promise<
+  Array<{ slug: string; updatedAt: string }>
+> {
+  try {
+    const res = await fetch(`${API_BASE}/blog/posts?page=1&limit=200`, {
+      next: { revalidate: 3600 },
+    })
+    if (!res.ok) return FALLBACK_SLUGS
+    const data = (await res.json()) as {
+      posts: Array<{ slug: string; updatedAt: string }>
+    }
+    return data.posts ?? FALLBACK_SLUGS
+  } catch {
+    return FALLBACK_SLUGS
+  }
+}
+
+const FALLBACK_SLUGS = [
+  { slug: 'que-es-un-pedimento-aduanal', updatedAt: new Date().toISOString() },
+  { slug: 'clasificacion-arancelaria-tigie-guia', updatedAt: new Date().toISOString() },
+  { slug: 'software-aduanal-vs-excel', updatedAt: new Date().toISOString() },
+]
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const blogPosts = await fetchPublishedBlogPosts()
+
   return [
+    // Home
     ...localizedEntry('', 'weekly', 1.0),
 
     // Feature pages
@@ -37,11 +65,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...localizedEntry('/precios', 'monthly', 0.9),
     ...localizedEntry('/comparar/sistemas-casa', 'monthly', 0.7),
 
-    // Blog
+    // Blog index
     ...localizedEntry('/blog', 'daily', 0.7),
-    ...localizedEntry('/blog/que-es-un-pedimento-aduanal', 'monthly', 0.6),
-    ...localizedEntry('/blog/clasificacion-arancelaria-tigie-guia', 'monthly', 0.6),
-    ...localizedEntry('/blog/software-aduanal-vs-excel', 'monthly', 0.6),
+
+    // Blog posts — dynamically fetched from API
+    ...blogPosts.flatMap((post) =>
+      localizedEntry(
+        `/blog/${post.slug}`,
+        'monthly',
+        0.6,
+        new Date(post.updatedAt),
+      ),
+    ),
 
     // Tools
     ...localizedEntry('/herramientas/consulta-tigie', 'monthly', 0.7),

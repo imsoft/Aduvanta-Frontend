@@ -2546,6 +2546,9 @@
   "blog": {
     "title": "Blog",
     "subtitle": "Noticias y novedades de Aduvanta",
+    "metaTitle": "Blog de Comercio Exterior y Aduanas — Aduvanta",
+    "metaDescription": "Artículos, guías y novedades sobre pedimentos, clasificación arancelaria TIGIE, Anexo 22 y software aduanal para agencias en México.",
+    "metaKeywords": "blog aduanas, pedimentos, TIGIE, clasificación arancelaria, software aduanal, comercio exterior México",
     "readMore": "Leer más",
     "readingTime": "{minutes} min de lectura",
     "by": "Por",

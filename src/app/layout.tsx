@@ -11,27 +11,53 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
+  display: 'swap',
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
+  display: 'swap',
 });
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://aduvanta.com'
 
+const DEFAULT_TITLE = 'Aduvanta — Software Aduanal para Mexico'
+const DEFAULT_DESCRIPTION =
+  'Software aduanal 100% web para agencias aduanales en Mexico. Pedimentos, clasificacion arancelaria TIGIE, Anexo 22, portal de clientes, facturacion y auditoria en una sola plataforma.'
+
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'Aduvanta — Software Aduanal para Mexico',
+    default: DEFAULT_TITLE,
     template: '%s | Aduvanta',
   },
-  description:
-    'Software aduanal 100% web para agencias aduanales en Mexico. Pedimentos, clasificacion arancelaria TIGIE, Anexo 22, portal de clientes, facturacion y auditoria en una sola plataforma.',
+  description: DEFAULT_DESCRIPTION,
+  formatDetection: { telephone: false },
   icons: {
     icon: '/brand/aduvanta-logo.svg',
     shortcut: '/brand/aduvanta-logo.svg',
     apple: '/brand/aduvanta-logo.svg',
+  },
+  openGraph: {
+    type: 'website',
+    siteName: 'Aduvanta',
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    images: [
+      {
+        url: `${BASE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: DEFAULT_TITLE,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    images: [`${BASE_URL}/og-image.png`],
   },
   robots: {
     index: true,

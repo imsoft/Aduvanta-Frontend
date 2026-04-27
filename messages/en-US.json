@@ -2547,6 +2547,9 @@
   "blog": {
     "title": "Blog",
     "subtitle": "News and updates from Aduvanta",
+    "metaTitle": "Customs & Foreign Trade Blog — Aduvanta",
+    "metaDescription": "Articles, guides, and updates on customs entries, TIGIE tariff classification, Annex 22, and customs software for agencies in Mexico.",
+    "metaKeywords": "customs blog, pedimentos, TIGIE, tariff classification, customs software, foreign trade Mexico",
     "readMore": "Read more",
     "readingTime": "{minutes} min read",
     "by": "By",

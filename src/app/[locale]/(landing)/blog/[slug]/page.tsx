@@ -1,101 +1,144 @@
-'use client';
-
-import { use } from 'react';
-import { useTranslations, useLocale } from 'next-intl';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Link } from '@/i18n/navigation';
-import { usePostBySlug } from '@/features/blog/hooks/use-blog';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import { CalendarBlank, Clock, ArrowLeft } from '@phosphor-icons/react';
+import { getTranslations } from 'next-intl/server';
+import { BASE_URL } from '@/lib/seo';
+import { BlogPostContent } from './blog-post-content';
+import type { BlogPost } from '@/features/blog/api/blog.api';
 
-type Props = {
-  params: Promise<{ locale: string; slug: string }>;
-};
+type Props = { params: Promise<{ locale: string; slug: string }> };
 
-function formatDate(isoDate: string, locale: string): string {
-  const date = new Date(isoDate);
-  return date.toLocaleDateString(locale === 'es-MX' ? 'es-MX' : 'en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
+
+async function getPost(slug: string): Promise<BlogPost | null> {
+  try {
+    const res = await fetch(`${API_BASE}/blog/posts/${encodeURIComponent(slug)}`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return null;
+    return res.json() as Promise<BlogPost>;
+  } catch {
+    return null;
+  }
 }
 
-export default function BlogPostPage({ params }: Props) {
-  const { slug } = use(params);
-  const locale = useLocale();
-  const t = useTranslations('blog');
-
-  const { data: post, isLoading, isError } = usePostBySlug(slug);
-
-  if (isLoading) {
-    return (
-      <article className="mx-auto max-w-3xl px-6 py-20">
-        <div className="space-y-4 animate-pulse">
-          <div className="h-8 w-3/4 rounded bg-muted" />
-          <div className="h-4 w-1/2 rounded bg-muted" />
-          <div className="mt-8 space-y-3">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="h-4 rounded bg-muted" />
-            ))}
-          </div>
-        </div>
-      </article>
-    );
+async function getAllSlugs(): Promise<string[]> {
+  try {
+    const res = await fetch(`${API_BASE}/blog/posts?page=1&limit=200`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return [];
+    const data = (await res.json()) as { posts: Array<{ slug: string }> };
+    return (data.posts ?? []).map((p) => p.slug);
+  } catch {
+    return [];
   }
+}
 
-  if (isError || !post) {
-    notFound();
-  }
+export async function generateStaticParams() {
+  const slugs = await getAllSlugs();
+  const locales = ['es-MX', 'en-US'];
+  return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const post = await getPost(slug);
+
+  if (!post) return { title: 'Post not found' };
+
+  const url = `${BASE_URL}/${locale}/blog/${slug}`;
+  const ogImage = post.coverImageUrl ?? `${BASE_URL}/og-image.png`;
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    alternates: {
+      canonical: url,
+      languages: {
+        'en-US': `${BASE_URL}/en-US/blog/${slug}`,
+        'es-MX': `${BASE_URL}/es-MX/blog/${slug}`,
+        'x-default': `${BASE_URL}/en-US/blog/${slug}`,
+      },
+    },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url,
+      type: 'article',
+      siteName: 'Aduvanta',
+      locale: locale === 'es-MX' ? 'es_MX' : 'en_US',
+      alternateLocale: locale === 'es-MX' ? 'en_US' : 'es_MX',
+      publishedTime: post.publishedAt ?? undefined,
+      modifiedTime: post.updatedAt,
+      authors: [post.authorName],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: [ogImage],
+    },
+  };
+}
+
+export default async function BlogPostPage({ params }: Props) {
+  const { locale, slug } = await params;
+  const [post, t] = await Promise.all([
+    getPost(slug),
+    getTranslations({ locale, namespace: 'blog' }),
+  ]);
+
+  if (!post) notFound();
+
+  const url = `${BASE_URL}/${locale}/blog/${slug}`;
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    image: post.coverImageUrl ?? `${BASE_URL}/og-image.png`,
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt,
+    inLanguage: locale,
+    url,
+    author: { '@type': 'Person', name: post.authorName },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Aduvanta',
+      logo: { '@type': 'ImageObject', url: `${BASE_URL}/brand/aduvanta-logo.svg` },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Aduvanta', item: `${BASE_URL}/${locale}` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${BASE_URL}/${locale}/blog` },
+      { '@type': 'ListItem', position: 3, name: post.title, item: url },
+    ],
+  };
 
   return (
-    <article className="mx-auto max-w-3xl px-6 py-20">
-      <header className="mb-10">
-        <Link
-          href="/blog"
-          className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeft size={14} />
-          {t('backToBlog')}
-        </Link>
-
-        {post.coverImageUrl && (
-          <div className="mt-4 mb-8 aspect-video w-full overflow-hidden rounded-2xl">
-            <img
-              src={post.coverImageUrl}
-              alt={post.title}
-              className="h-full w-full object-cover"
-            />
-          </div>
-        )}
-
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          {post.title}
-        </h1>
-
-        <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">{post.authorName}</span>
-          {post.publishedAt && (
-            <span className="flex items-center gap-1.5">
-              <CalendarBlank size={14} />
-              <time dateTime={post.publishedAt}>
-                {formatDate(post.publishedAt, locale)}
-              </time>
-            </span>
-          )}
-          <span className="flex items-center gap-1.5">
-            <Clock size={14} />
-            {t('readingTime', { minutes: post.readingTimeMinutes })}
-          </span>
-        </div>
-      </header>
-
-      <div className="prose prose-neutral dark:prose-invert max-w-none">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {post.content}
-        </ReactMarkdown>
-      </div>
-    </article>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <BlogPostContent
+        post={post}
+        locale={locale}
+        backLabel={t('backToBlog')}
+        readingTimeLabel={t('readingTime', { minutes: post.readingTimeMinutes })}
+        baseUrl={BASE_URL}
+      />
+    </>
   );
 }
