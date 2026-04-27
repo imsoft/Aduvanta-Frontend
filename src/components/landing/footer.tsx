@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
+import { Logo } from '@/components/brand/logo'
 
 type FooterLink = {
   label: string
@@ -26,9 +27,7 @@ export function LandingFooter() {
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
           <div className="col-span-2 sm:col-span-1">
             <div className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary">
-                <span className="text-xs font-bold text-primary-foreground">A</span>
-              </div>
+              <Logo size={26} />
               <span className="text-base font-bold tracking-tight">Aduvanta</span>
             </div>
             <p className="mt-3 max-w-[200px] text-xs leading-relaxed text-muted-foreground">

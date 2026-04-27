@@ -43,6 +43,7 @@ import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { useSidebar } from '@/components/layout/sidebar-context'
 import { useIsSystemAdmin } from '@/features/system-admin/hooks/use-system-admin'
+import { Logo } from '@/components/brand/logo'
 
 type NavItem = {
   labelKey: string
@@ -164,23 +165,24 @@ export const AppSidebar = () => {
       {/* Brand + toggle */}
       {collapsed ? (
         <div className="flex h-14 flex-col items-center justify-center gap-1 border-b px-1">
-          <Button
+          <button
             type="button"
-            variant="ghost"
-            size="icon"
-            className="h-9 w-9 shrink-0"
             onClick={toggle}
             aria-expanded={false}
             aria-label={t('common.expandSidebar')}
+            className="rounded-lg"
           >
-            <CaretRight size={18} weight="bold" aria-hidden />
-          </Button>
+            <Logo size={28} />
+          </button>
         </div>
       ) : (
-        <div className="flex h-14 items-center justify-between gap-2 border-b px-2">
-          <span className="min-w-0 truncate text-sm font-semibold uppercase tracking-widest text-primary">
-            Aduvanta
-          </span>
+        <div className="flex h-14 items-center justify-between gap-2 border-b px-3">
+          <div className="flex min-w-0 items-center gap-2">
+            <Logo size={26} />
+            <span className="min-w-0 truncate text-sm font-semibold uppercase tracking-widest text-primary">
+              Aduvanta
+            </span>
+          </div>
           <Button
             type="button"
             variant="ghost"

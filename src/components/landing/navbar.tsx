@@ -5,6 +5,7 @@ import { List, X, Globe } from '@phosphor-icons/react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { Logo } from '@/components/brand/logo'
 
 type Props = {
   locale: string
@@ -44,9 +45,7 @@ export function LandingNavbar({ locale }: Props) {
         aria-label={t('mainNavigation')}
       >
         <a href={`/${locale}`} className="flex items-center gap-2.5" aria-label={t('brandHome')}>
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <span className="text-sm font-bold text-primary-foreground">A</span>
-          </div>
+          <Logo size={32} />
           <span className="text-lg font-bold tracking-tight">Aduvanta</span>
         </a>
 

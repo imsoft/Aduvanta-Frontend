@@ -2,6 +2,7 @@
 
 import { Link, usePathname, useRouter } from '@/i18n/navigation'
 import { ClipboardText, SignOut, User } from '@phosphor-icons/react';
+import { Logo } from '@/components/brand/logo';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
@@ -41,11 +42,14 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
     <div className="flex h-screen overflow-hidden bg-background">
       {/* Sidebar */}
       <aside className="flex h-full w-52 flex-col border-r bg-background">
-        <div className="flex h-14 items-center gap-2 px-4">
-          <span className="text-sm font-semibold tracking-widest uppercase text-primary">
-            Aduvanta
-          </span>
-          <span className="text-xs text-muted-foreground">Portal</span>
+        <div className="flex h-14 items-center gap-2 px-3">
+          <Logo size={26} />
+          <div className="flex min-w-0 flex-col leading-none">
+            <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+              Aduvanta
+            </span>
+            <span className="text-[10px] text-muted-foreground">Portal</span>
+          </div>
         </div>
 
         <Separator />

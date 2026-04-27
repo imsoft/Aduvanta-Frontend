@@ -28,6 +28,11 @@ export const metadata: Metadata = {
   },
   description:
     'Software aduanal 100% web para agencias aduanales en Mexico. Pedimentos, clasificacion arancelaria TIGIE, Anexo 22, portal de clientes, facturacion y auditoria en una sola plataforma.',
+  icons: {
+    icon: '/brand/aduvanta-logo.svg',
+    shortcut: '/brand/aduvanta-logo.svg',
+    apple: '/brand/aduvanta-logo.svg',
+  },
   robots: {
     index: true,
     follow: true,
