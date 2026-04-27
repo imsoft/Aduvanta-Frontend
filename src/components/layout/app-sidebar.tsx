@@ -36,6 +36,7 @@ import {
   CreditCard,
   BellRinging,
   BookOpen,
+  Tag,
   type Icon,
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
@@ -136,6 +137,7 @@ const adminNavGroups: NavGroup[] = [
     groupKey: 'nav.groups.configuracion',
     items: [
       { labelKey: 'nav.admin.anuncios', href: '/dashboard/admin/anuncios', icon: BellRinging },
+      { labelKey: 'nav.admin.descuentos', href: '/dashboard/admin/descuentos', icon: Tag },
       { labelKey: 'nav.admin.featureFlags', href: '/dashboard/admin/feature-flags', icon: Flag },
       { labelKey: 'nav.admin.catalogos', href: '/dashboard/admin/catalogos', icon: BookOpen },
       { labelKey: 'nav.admin.auditLogs', href: '/dashboard/admin/audit-logs', icon: Receipt },
