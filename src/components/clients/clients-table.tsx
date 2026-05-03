@@ -2,6 +2,7 @@
 
 import { Link } from '@/i18n/navigation'
 import { ArrowRight } from '@phosphor-icons/react';
+import { useTranslations } from 'next-intl';
 import {
   Table,
   TableBody,
@@ -19,17 +20,19 @@ interface ClientsTableProps {
 }
 
 export function ClientsTable({ clients }: ClientsTableProps) {
+  const t = useTranslations('clients');
+
   return (
     <div className="rounded-lg border">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Legal name</TableHead>
-            <TableHead>Tax ID</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Phone</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>{t('name')}</TableHead>
+            <TableHead>{t('legalName')}</TableHead>
+            <TableHead>{t('taxId')}</TableHead>
+            <TableHead>{t('email')}</TableHead>
+            <TableHead>{t('phone')}</TableHead>
+            <TableHead>{t('status')}</TableHead>
             <TableHead className="w-16" />
           </TableRow>
         </TableHeader>

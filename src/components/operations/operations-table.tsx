@@ -2,6 +2,7 @@
 
 import { Link } from '@/i18n/navigation'
 import { ArrowRight } from '@phosphor-icons/react';
+import { useTranslations } from 'next-intl';
 import {
   Table,
   TableBody,
@@ -26,19 +27,21 @@ export function OperationsTable({
   clientNames = {},
   userNames = {},
 }: OperationsTableProps) {
+  const t = useTranslations('operations');
+
   return (
     <div className="rounded-lg border">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Reference</TableHead>
-            <TableHead>Client</TableHead>
-            <TableHead>Title</TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Priority</TableHead>
-            <TableHead>Assigned to</TableHead>
-            <TableHead>Opened</TableHead>
+            <TableHead>{t('reference')}</TableHead>
+            <TableHead>{t('client')}</TableHead>
+            <TableHead>{t('titleField')}</TableHead>
+            <TableHead>{t('type')}</TableHead>
+            <TableHead>{t('status')}</TableHead>
+            <TableHead>{t('priority')}</TableHead>
+            <TableHead>{t('assignedTo')}</TableHead>
+            <TableHead>{t('opened')}</TableHead>
             <TableHead className="w-16" />
           </TableRow>
         </TableHeader>

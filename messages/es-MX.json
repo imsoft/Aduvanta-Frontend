@@ -254,7 +254,8 @@
     "descriptionField": "Descripción",
     "statusHistory": "Historial de estado",
     "reference": "Referencia",
-    "titleField": "Título"
+    "titleField": "Título",
+    "priority": "Prioridad"
   },
   "clients": {
     "title": "Clientes",
@@ -465,6 +466,18 @@
       "secretOptional": "Secreto (opcional)",
       "secretKeep": "Secreto (dejar en blanco para mantener)",
       "eventTypes": "Tipos de evento *"
+    },
+    "deliveries": {
+      "table": {
+        "columns": {
+          "event": "Evento",
+          "status": "Estado",
+          "response": "Respuesta",
+          "attempts": "Intentos",
+          "date": "Fecha"
+        },
+        "empty": "Sin registros de entrega todavía."
+      }
     }
   },
   "compliance": {
@@ -2606,6 +2619,31 @@
       "contentPlaceholder": "# Tu contenido Markdown aquí...",
       "coverImagePlaceholder": "https://ejemplo.com/portada.jpg",
       "removeImage": "Quitar imagen"
+    }
+  },
+  "documents": {
+    "versionsTable": {
+      "columns": {
+        "version": "Versión",
+        "mimeType": "Tipo MIME",
+        "size": "Tamaño",
+        "uploaded": "Subido"
+      },
+      "empty": "No se encontraron versiones."
+    }
+  },
+  "portal": {
+    "table": {
+      "columns": {
+        "reference": "Referencia",
+        "title": "Título",
+        "type": "Tipo",
+        "status": "Estado",
+        "priority": "Prioridad",
+        "dueDate": "Fecha límite"
+      },
+      "view": "Ver",
+      "empty": "No se encontraron operaciones."
     }
   }
 }

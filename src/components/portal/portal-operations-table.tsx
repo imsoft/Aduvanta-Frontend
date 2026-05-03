@@ -2,6 +2,7 @@
 
 import { Link } from '@/i18n/navigation'
 import { ArrowRight } from '@phosphor-icons/react';
+import { useTranslations } from 'next-intl';
 import { parseApiDate } from '@/lib/date-utils';
 import {
   Table,
@@ -20,9 +21,11 @@ interface PortalOperationsTableProps {
 }
 
 export function PortalOperationsTable({ operations }: PortalOperationsTableProps) {
+  const t = useTranslations('portal.table');
+
   if (operations.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground py-6 text-center">No operations found.</p>
+      <p className="text-sm text-muted-foreground py-6 text-center">{t('empty')}</p>
     );
   }
 
@@ -30,12 +33,12 @@ export function PortalOperationsTable({ operations }: PortalOperationsTableProps
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Reference</TableHead>
-          <TableHead>Title</TableHead>
-          <TableHead>Type</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Priority</TableHead>
-          <TableHead>Due date</TableHead>
+          <TableHead>{t('columns.reference')}</TableHead>
+          <TableHead>{t('columns.title')}</TableHead>
+          <TableHead>{t('columns.type')}</TableHead>
+          <TableHead>{t('columns.status')}</TableHead>
+          <TableHead>{t('columns.priority')}</TableHead>
+          <TableHead>{t('columns.dueDate')}</TableHead>
           <TableHead />
         </TableRow>
       </TableHeader>
@@ -61,7 +64,7 @@ export function PortalOperationsTable({ operations }: PortalOperationsTableProps
                 href={`/portal/operations/${op.id}`}
                 className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
-                View <ArrowRight size={12} />
+                {t('view')} <ArrowRight size={12} />
               </Link>
             </TableCell>
           </TableRow>

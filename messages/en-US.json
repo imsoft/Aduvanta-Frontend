@@ -254,7 +254,8 @@
     "descriptionField": "Description",
     "statusHistory": "Status history",
     "reference": "Reference",
-    "titleField": "Title"
+    "titleField": "Title",
+    "priority": "Priority"
   },
   "clients": {
     "title": "Clients",
@@ -465,6 +466,18 @@
       "secretOptional": "Secret (optional)",
       "secretKeep": "Secret (leave blank to keep)",
       "eventTypes": "Event types *"
+    },
+    "deliveries": {
+      "table": {
+        "columns": {
+          "event": "Event",
+          "status": "Status",
+          "response": "Response",
+          "attempts": "Attempts",
+          "date": "Date"
+        },
+        "empty": "No delivery records yet."
+      }
     }
   },
   "compliance": {
@@ -1475,12 +1488,11 @@
       "description": "All plans include a 14-day free trial. No credit card required.",
       "monthly": "Monthly",
       "annual": "Annual",
-      "annualSave": "Save 20%",
+      "annualSave": "Save 15%",
       "popular": "Most popular",
       "guarantee": "14-day free trial on all plans. Cancel anytime.",
       "contact": "Need something custom?",
       "contactCta": "Talk to us",
-      "annualSave": "Save 15%",
       "tiers": [
         {
           "name": "Starter",
@@ -2607,6 +2619,31 @@
       "contentPlaceholder": "# Your Markdown content here...",
       "coverImagePlaceholder": "https://example.com/cover.jpg",
       "removeImage": "Remove image"
+    }
+  },
+  "documents": {
+    "versionsTable": {
+      "columns": {
+        "version": "Version",
+        "mimeType": "MIME type",
+        "size": "Size",
+        "uploaded": "Uploaded"
+      },
+      "empty": "No versions found."
+    }
+  },
+  "portal": {
+    "table": {
+      "columns": {
+        "reference": "Reference",
+        "title": "Title",
+        "type": "Type",
+        "status": "Status",
+        "priority": "Priority",
+        "dueDate": "Due date"
+      },
+      "view": "View",
+      "empty": "No operations found."
     }
   }
 }

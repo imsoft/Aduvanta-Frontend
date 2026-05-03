@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import {
   Table,
   TableBody,
@@ -23,6 +24,7 @@ interface DocumentVersionsTableProps {
 }
 
 export function DocumentVersionsTable({ documentId }: DocumentVersionsTableProps) {
+  const t = useTranslations('documents.versionsTable');
   const { data: versions = [], isLoading } = useDocumentVersions(documentId);
 
   if (isLoading) {
@@ -30,17 +32,17 @@ export function DocumentVersionsTable({ documentId }: DocumentVersionsTableProps
   }
 
   if (versions.length === 0) {
-    return <EmptyState title="No versions found." />;
+    return <EmptyState title={t('empty')} />;
   }
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Version</TableHead>
-          <TableHead>MIME type</TableHead>
-          <TableHead>Size</TableHead>
-          <TableHead>Uploaded</TableHead>
+          <TableHead>{t('columns.version')}</TableHead>
+          <TableHead>{t('columns.mimeType')}</TableHead>
+          <TableHead>{t('columns.size')}</TableHead>
+          <TableHead>{t('columns.uploaded')}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

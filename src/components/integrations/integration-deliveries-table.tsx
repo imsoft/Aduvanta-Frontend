@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowClockwise } from '@phosphor-icons/react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -31,9 +32,11 @@ export function IntegrationDeliveriesTable({
   onRetry,
   isRetryPending,
 }: IntegrationDeliveriesTableProps) {
+  const t = useTranslations('integrations.deliveries.table');
+
   if (deliveries.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">No delivery records yet.</p>
+      <p className="text-sm text-muted-foreground">{t('empty')}</p>
     );
   }
 
@@ -41,11 +44,11 @@ export function IntegrationDeliveriesTable({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Event</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Response</TableHead>
-          <TableHead>Attempts</TableHead>
-          <TableHead>Date</TableHead>
+          <TableHead>{t('columns.event')}</TableHead>
+          <TableHead>{t('columns.status')}</TableHead>
+          <TableHead>{t('columns.response')}</TableHead>
+          <TableHead>{t('columns.attempts')}</TableHead>
+          <TableHead>{t('columns.date')}</TableHead>
           {canRetry && <TableHead />}
         </TableRow>
       </TableHeader>
