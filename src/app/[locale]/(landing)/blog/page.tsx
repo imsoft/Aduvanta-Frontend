@@ -53,7 +53,7 @@ export default async function BlogIndexPage({ params }: Props) {
       name: 'Aduvanta',
       logo: {
         '@type': 'ImageObject',
-        url: `${BASE_URL}/brand/aduvanta-logo.svg`,
+        url: `${BASE_URL}/brand/aduvanta-light.png`,
       },
     },
   };

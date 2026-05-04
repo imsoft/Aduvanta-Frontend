@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { MagnifyingGlass, Info, ArrowRight } from '@phosphor-icons/react';
+import { MagnifyingGlass, Info, ArrowRight, Certificate } from '@phosphor-icons/react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -261,6 +261,28 @@ export default function ClasificacionPage() {
           </div>
         </div>
       )}
+
+      <div className="border-t pt-4">
+        <p className="text-xs text-muted-foreground mb-3 font-medium uppercase tracking-wide">
+          Herramientas relacionadas
+        </p>
+        <a
+          href="/dashboard/clasificacion/noms"
+          className="group flex items-center gap-3 rounded-lg border p-4 hover:bg-muted/30 transition-colors"
+        >
+          <Certificate size={20} className="text-muted-foreground shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium">NOMs — Normas Oficiales Mexicanas</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Consulta las normas obligatorias aplicables a importación y exportación
+            </p>
+          </div>
+          <ArrowRight
+            size={14}
+            className="text-muted-foreground group-hover:translate-x-1 transition-transform"
+          />
+        </a>
+      </div>
     </div>
   );
 }

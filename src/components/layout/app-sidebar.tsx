@@ -37,6 +37,9 @@ import {
   BellRinging,
   BookOpen,
   Tag,
+  MapTrifold,
+  Truck,
+  Handshake,
   type Icon,
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
@@ -62,6 +65,7 @@ const navGroups: NavGroup[] = [
     groupKey: '',
     items: [
       { labelKey: 'nav.dashboard', href: '/dashboard', icon: House },
+      { labelKey: 'nav.guide', href: '/dashboard/guia', icon: MapTrifold },
       { labelKey: 'nav.operations', href: '/dashboard/operations', icon: FileText },
       { labelKey: 'nav.clients', href: '/dashboard/clients', icon: UsersFour },
     ],
@@ -70,7 +74,9 @@ const navGroups: NavGroup[] = [
     groupKey: 'nav.groups.aduanas',
     items: [
       { labelKey: 'nav.pedimentos', href: '/dashboard/pedimentos', icon: ClipboardText },
+      { labelKey: 'nav.embarques', href: '/dashboard/embarques', icon: Truck },
       { labelKey: 'nav.clasificacion', href: '/dashboard/clasificacion', icon: Scales },
+      { labelKey: 'nav.tlcs', href: '/dashboard/tlcs', icon: Handshake },
       { labelKey: 'nav.inspecciones', href: '/dashboard/inspecciones', icon: MagnifyingGlass },
       { labelKey: 'nav.previos', href: '/dashboard/previos', icon: Clipboard },
     ],
@@ -114,6 +120,7 @@ const adminNavGroups: NavGroup[] = [
     items: [
       { labelKey: 'nav.admin.panel', href: '/dashboard/admin', icon: ShieldStar },
       { labelKey: 'nav.admin.health', href: '/dashboard/admin/health', icon: Heartbeat },
+      { labelKey: 'nav.guide', href: '/dashboard/guia', icon: MapTrifold },
     ],
   },
   {

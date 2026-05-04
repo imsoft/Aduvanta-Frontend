@@ -29,6 +29,7 @@
   },
   "nav": {
     "dashboard": "Panel",
+    "guide": "Guía",
     "organizations": "Organizaciones",
     "clients": "Clientes",
     "operations": "Operaciones",
@@ -46,7 +47,9 @@
     "featureFlags": "Flags de función",
     "settings": "Configuración",
     "pedimentos": "Pedimentos",
+    "embarques": "Embarques",
     "clasificacion": "Clasificación",
+    "tlcs": "TLCs",
     "bodega": "Bodega",
     "tesoreria": "Tesorería",
     "padron": "Padrón",
@@ -81,6 +84,10 @@
       "auditLogs": "Audit Logs",
       "blog": "Blog"
     }
+  },
+  "guide": {
+    "metaTitle": "Guía del panel",
+    "metaDescription": "Resumen de cada sección del panel Aduvanta: operaciones, aduanas, control, sistema y administración de tu organización."
   },
   "auth": {
     "signIn": "Iniciar sesión",

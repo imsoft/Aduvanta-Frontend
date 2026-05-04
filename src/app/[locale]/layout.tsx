@@ -19,9 +19,9 @@ function buildOrganizationJsonLd(locale: string) {
     url: BASE_URL,
     logo: {
       '@type': 'ImageObject',
-      url: `${BASE_URL}/brand/aduvanta-logo.svg`,
-      width: 512,
-      height: 512,
+      url: `${BASE_URL}/brand/aduvanta-light.png`,
+      width: 6250,
+      height: 6250,
     },
     description: ORGANIZATION_DESCRIPTIONS[locale] ?? ORGANIZATION_DESCRIPTIONS['en-US'],
     inLanguage: locale,

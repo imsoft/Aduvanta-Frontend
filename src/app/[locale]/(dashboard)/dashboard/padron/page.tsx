@@ -1,7 +1,12 @@
 'use client';
 
 import { Link } from '@/i18n/navigation';
-import { IdentificationCard, Factory, ArrowRight } from '@phosphor-icons/react';
+import {
+  IdentificationCard,
+  Factory,
+  ShieldWarning,
+  ArrowRight,
+} from '@phosphor-icons/react';
 
 const sections = [
   {
@@ -17,6 +22,13 @@ const sections = [
     title: 'Programas IMMEX',
     description:
       'Administra los programas IMMEX de tus clientes: tipo de programa, productos autorizados, compromisos de exportación y fechas de vigencia.',
+  },
+  {
+    href: '/dashboard/padron/listas-negras',
+    icon: ShieldWarning,
+    title: 'Listas Negras SAT',
+    description:
+      'Consulta contribuyentes en listas del SAT — Art. 69, 69-B CFF, EFOS y EDOS. Verifica RFC antes de operar.',
   },
 ];
 

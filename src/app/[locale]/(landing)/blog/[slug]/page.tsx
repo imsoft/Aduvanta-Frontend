@@ -107,7 +107,7 @@ export default async function BlogPostPage({ params }: Props) {
     publisher: {
       '@type': 'Organization',
       name: 'Aduvanta',
-      logo: { '@type': 'ImageObject', url: `${BASE_URL}/brand/aduvanta-logo.svg` },
+      logo: { '@type': 'ImageObject', url: `${BASE_URL}/brand/aduvanta-light.png` },
     },
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
   };

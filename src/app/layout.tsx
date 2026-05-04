@@ -35,9 +35,18 @@ export const metadata: Metadata = {
   description: DEFAULT_DESCRIPTION,
   formatDetection: { telephone: false },
   icons: {
-    icon: '/brand/aduvanta-logo.svg',
-    shortcut: '/brand/aduvanta-logo.svg',
-    apple: '/brand/aduvanta-logo.svg',
+    icon: [
+      {
+        url: '/brand/aduvanta-light.png',
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: '/brand/aduvanta-dark.png',
+        media: '(prefers-color-scheme: dark)',
+      },
+    ],
+    shortcut: '/brand/aduvanta-light.png',
+    apple: '/brand/aduvanta-light.png',
   },
   openGraph: {
     type: 'website',

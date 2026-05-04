@@ -29,6 +29,7 @@
   },
   "nav": {
     "dashboard": "Dashboard",
+    "guide": "Guide",
     "organizations": "Organizations",
     "clients": "Clients",
     "operations": "Operations",
@@ -46,7 +47,9 @@
     "featureFlags": "Feature flags",
     "settings": "Settings",
     "pedimentos": "Entries",
+    "embarques": "Shipments",
     "clasificacion": "Classification",
+    "tlcs": "Trade Agreements",
     "bodega": "Warehouse",
     "tesoreria": "Treasury",
     "padron": "Registry",
@@ -81,6 +84,10 @@
       "auditLogs": "Audit Logs",
       "blog": "Blog"
     }
+  },
+  "guide": {
+    "metaTitle": "Dashboard guide",
+    "metaDescription": "Overview of each Aduvanta dashboard area: operations, customs, control, system tools, and organization administration."
   },
   "auth": {
     "signIn": "Sign in",
