@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Clipboard, CheckCircle, XCircle } from '@phosphor-icons/react';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -43,19 +44,6 @@ interface CustomsPrevio {
   createdAt: string;
 }
 
-const PREVIO_TYPE_LABELS: Record<string, string> = {
-  FULL: 'Completo',
-  PARTIAL: 'Parcial',
-  SAMPLING: 'Por muestreo',
-};
-
-const STATUS_LABELS: Record<string, string> = {
-  PENDING: 'Pendiente',
-  IN_PROGRESS: 'En proceso',
-  COMPLETED: 'Completado',
-  CANCELLED: 'Cancelado',
-};
-
 const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'outline' | 'destructive'> = {
   PENDING: 'outline',
   IN_PROGRESS: 'default',
@@ -63,7 +51,11 @@ const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'outline' | 'dest
   CANCELLED: 'destructive',
 };
 
+const PREVIO_TYPE_KEYS = ['FULL', 'PARTIAL', 'SAMPLING'] as const;
+const STATUS_KEYS = ['PENDING', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'] as const;
+
 export default function PreviosPage() {
+  const t = useTranslations('previos');
   const { activeOrgId } = useOrgStore();
   const [status, setStatus] = useState('ALL');
   const [previoType, setPrevioType] = useState('ALL');
@@ -98,27 +90,25 @@ export default function PreviosPage() {
   return (
     <div className="w-full space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Previos Aduanales</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Pre-inspección física de mercancías antes de la presentación del pedimento
-        </p>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('pageTitle')}</h1>
+        <p className="text-sm text-muted-foreground mt-1">{t('pageDescription')}</p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Total previos</p>
+          <p className="text-xs text-muted-foreground">{t('total')}</p>
           <p className="text-2xl font-semibold mt-1">{total}</p>
         </div>
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Pendientes</p>
+          <p className="text-xs text-muted-foreground">{t('pending')}</p>
           <p className="text-2xl font-semibold mt-1 text-orange-600">{pendingCount}</p>
         </div>
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">En proceso</p>
+          <p className="text-xs text-muted-foreground">{t('inProgress')}</p>
           <p className="text-2xl font-semibold mt-1 text-blue-700">{inProgressCount}</p>
         </div>
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Con discrepancias</p>
+          <p className="text-xs text-muted-foreground">{t('withDiscrepancies')}</p>
           <p className="text-2xl font-semibold mt-1 text-red-700">{discrepancyCount}</p>
         </div>
       </div>
@@ -129,9 +119,9 @@ export default function PreviosPage() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">Todos los estados</SelectItem>
-            {Object.entries(STATUS_LABELS).map(([k, v]) => (
-              <SelectItem key={k} value={k}>{v}</SelectItem>
+            <SelectItem value="ALL">{t('allStatuses')}</SelectItem>
+            {STATUS_KEYS.map((k) => (
+              <SelectItem key={k} value={k}>{t(`statuses.${k}`)}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -140,9 +130,9 @@ export default function PreviosPage() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">Todos los tipos</SelectItem>
-            {Object.entries(PREVIO_TYPE_LABELS).map(([k, v]) => (
-              <SelectItem key={k} value={k}>{v}</SelectItem>
+            <SelectItem value="ALL">{t('allTypes')}</SelectItem>
+            {PREVIO_TYPE_KEYS.map((k) => (
+              <SelectItem key={k} value={k}>{t(`types.${k}`)}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -155,10 +145,8 @@ export default function PreviosPage() {
       {!isLoading && previos.length === 0 && (
         <div className="rounded-lg border border-dashed p-12 text-center">
           <Clipboard size={32} className="mx-auto mb-3 text-muted-foreground" />
-          <p className="text-sm font-medium">Sin previos registrados</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            Los previos aduanales se registran desde el expediente de la operación
-          </p>
+          <p className="text-sm font-medium">{t('empty')}</p>
+          <p className="text-sm text-muted-foreground mt-1">{t('emptyHint')}</p>
         </div>
       )}
 
@@ -168,26 +156,26 @@ export default function PreviosPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Tipo</TableHead>
-                  <TableHead>Estado</TableHead>
-                  <TableHead>Ubicación</TableHead>
-                  <TableHead>Responsable</TableHead>
-                  <TableHead className="text-right">Bultos dec.</TableHead>
-                  <TableHead className="text-right">Bultos enc.</TableHead>
-                  <TableHead>Sellos</TableHead>
-                  <TableHead>Discrepancias</TableHead>
-                  <TableHead>Fecha prog.</TableHead>
+                  <TableHead>{t('colType')}</TableHead>
+                  <TableHead>{t('colStatus')}</TableHead>
+                  <TableHead>{t('colLocation')}</TableHead>
+                  <TableHead>{t('colResponsible')}</TableHead>
+                  <TableHead className="text-right">{t('colDeclaredPackages')}</TableHead>
+                  <TableHead className="text-right">{t('colFoundPackages')}</TableHead>
+                  <TableHead>{t('colSeals')}</TableHead>
+                  <TableHead>{t('colDiscrepancies')}</TableHead>
+                  <TableHead>{t('colScheduledDate')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {previos.map((p) => (
                   <TableRow key={p.id}>
                     <TableCell className="text-sm">
-                      {PREVIO_TYPE_LABELS[p.previoType] ?? p.previoType}
+                      {t(`types.${p.previoType}` as any, { default: p.previoType })}
                     </TableCell>
                     <TableCell>
                       <Badge variant={STATUS_VARIANT[p.status] ?? 'outline'}>
-                        {STATUS_LABELS[p.status] ?? p.status}
+                        {t(`statuses.${p.status}` as any, { default: p.status })}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground max-w-32 truncate">
@@ -213,14 +201,14 @@ export default function PreviosPage() {
                     </TableCell>
                     <TableCell>
                       {p.discrepanciesFound ? (
-                        <span className="text-xs text-red-700 font-medium">Sí</span>
+                        <span className="text-xs text-red-700 font-medium">{t('yes')}</span>
                       ) : (
-                        <span className="text-xs text-green-700">No</span>
+                        <span className="text-xs text-green-700">{t('no')}</span>
                       )}
                     </TableCell>
                     <TableCell className="text-sm">
                       {p.scheduledDate
-                        ? new Date(p.scheduledDate).toLocaleDateString('es-MX')
+                        ? new Date(p.scheduledDate).toLocaleDateString()
                         : '—'}
                     </TableCell>
                   </TableRow>
@@ -231,14 +219,14 @@ export default function PreviosPage() {
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between text-sm text-muted-foreground">
-              <span>{total} previos en total</span>
+              <span>{t('totalCount', { total })}</span>
               <div className="flex gap-2">
                 <button
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
                   disabled={page === 0}
                   className="px-3 py-1 rounded border disabled:opacity-40"
                 >
-                  Anterior
+                  {t('prev')}
                 </button>
                 <span className="px-2 py-1">{page + 1} / {totalPages}</span>
                 <button
@@ -246,7 +234,7 @@ export default function PreviosPage() {
                   disabled={page >= totalPages - 1}
                   className="px-3 py-1 rounded border disabled:opacity-40"
                 >
-                  Siguiente
+                  {t('next')}
                 </button>
               </div>
             </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Plus, Warehouse } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -42,14 +43,6 @@ interface InventoryItem {
   lastMovementAt: string | null;
 }
 
-const STATUS_LABELS: Record<string, string> = {
-  AVAILABLE: 'Disponible',
-  RESERVED: 'Reservado',
-  DAMAGED: 'Dañado',
-  EXPIRED: 'Vencido',
-  QUARANTINE: 'Cuarentena',
-};
-
 const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'outline' | 'destructive'> = {
   AVAILABLE: 'secondary',
   RESERVED: 'default',
@@ -58,7 +51,16 @@ const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'outline' | 'dest
   QUARANTINE: 'outline',
 };
 
+const STATUS_LABEL_KEY: Record<string, 'statusAvailable' | 'statusReserved' | 'statusDamaged' | 'statusExpired' | 'statusQuarantine'> = {
+  AVAILABLE: 'statusAvailable',
+  RESERVED: 'statusReserved',
+  DAMAGED: 'statusDamaged',
+  EXPIRED: 'statusExpired',
+  QUARANTINE: 'statusQuarantine',
+};
+
 export default function InventarioPage() {
+  const t = useTranslations('warehouse');
   const { activeOrgId } = useOrgStore();
   const [search, setSearch] = useState('');
   const [warehouseId, setWarehouseId] = useState('ALL');
@@ -105,22 +107,18 @@ export default function InventarioPage() {
     <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Inventario de Bodega
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Control de mercancías en almacén fiscal y general
-          </p>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('inventoryPageTitle')}</h1>
+          <p className="text-sm text-muted-foreground mt-1">{t('inventoryPageDesc')}</p>
         </div>
         <Button size="sm">
           <Plus size={14} />
-          Entrada de inventario
+          {t('addInventory')}
         </Button>
       </div>
 
       <div className="flex flex-wrap gap-3">
         <Input
-          placeholder="Buscar por SKU, descripción, fracción..."
+          placeholder={t('searchInventory')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-xs min-w-0"
@@ -130,7 +128,7 @@ export default function InventarioPage() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">Todas las bodegas</SelectItem>
+            <SelectItem value="ALL">{t('allWarehouses')}</SelectItem>
             {warehouses.map((w) => (
               <SelectItem key={w.id} value={w.id}>
                 {w.name}
@@ -140,26 +138,25 @@ export default function InventarioPage() {
         </Select>
       </div>
 
-      {/* Summary cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Total artículos</p>
+          <p className="text-xs text-muted-foreground">{t('totalItems')}</p>
           <p className="text-2xl font-semibold mt-1">{total}</p>
         </div>
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Disponibles</p>
+          <p className="text-xs text-muted-foreground">{t('available')}</p>
           <p className="text-2xl font-semibold mt-1 text-green-700">
             {inventory.filter((i) => i.status === 'AVAILABLE').length}
           </p>
         </div>
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Reservados</p>
+          <p className="text-xs text-muted-foreground">{t('reserved')}</p>
           <p className="text-2xl font-semibold mt-1 text-blue-700">
             {inventory.filter((i) => i.status === 'RESERVED').length}
           </p>
         </div>
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Con problemas</p>
+          <p className="text-xs text-muted-foreground">{t('withIssues')}</p>
           <p className="text-2xl font-semibold mt-1 text-red-700">
             {inventory.filter((i) => ['DAMAGED', 'EXPIRED', 'QUARANTINE'].includes(i.status)).length}
           </p>
@@ -173,10 +170,8 @@ export default function InventarioPage() {
       {!isLoading && inventory.length === 0 && (
         <div className="rounded-lg border border-dashed p-12 text-center">
           <Warehouse size={32} className="mx-auto mb-3 text-muted-foreground" />
-          <p className="text-sm font-medium">Sin inventario registrado</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            Registra la primera entrada de mercancía para comenzar
-          </p>
+          <p className="text-sm font-medium">{t('emptyInventory')}</p>
+          <p className="text-sm text-muted-foreground mt-1">{t('emptyInventoryHint')}</p>
         </div>
       )}
 
@@ -185,14 +180,14 @@ export default function InventarioPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>SKU / Código</TableHead>
-                <TableHead className="max-w-64">Descripción</TableHead>
-                <TableHead>Fracción</TableHead>
-                <TableHead>Bodega</TableHead>
-                <TableHead>Cantidad</TableHead>
-                <TableHead>Valor unitario</TableHead>
-                <TableHead>Valor total</TableHead>
-                <TableHead>Estado</TableHead>
+                <TableHead>{t('colSku')}</TableHead>
+                <TableHead className="max-w-64">{t('colDescription')}</TableHead>
+                <TableHead>{t('colFraction')}</TableHead>
+                <TableHead>{t('colWarehouse')}</TableHead>
+                <TableHead>{t('colQuantity')}</TableHead>
+                <TableHead>{t('colUnitValue')}</TableHead>
+                <TableHead>{t('colTotalValue')}</TableHead>
+                <TableHead>{t('colStatus')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -211,7 +206,7 @@ export default function InventarioPage() {
                     {item.warehouseName ?? item.warehouseId.slice(0, 8)}
                   </TableCell>
                   <TableCell className="font-mono text-sm">
-                    {parseFloat(item.currentQuantity).toLocaleString('es-MX')}{' '}
+                    {parseFloat(item.currentQuantity).toLocaleString()}{' '}
                     <span className="text-muted-foreground text-xs">
                       {item.unitOfMeasure ?? ''}
                     </span>
@@ -224,7 +219,7 @@ export default function InventarioPage() {
                   </TableCell>
                   <TableCell>
                     <Badge variant={STATUS_VARIANT[item.status] ?? 'outline'}>
-                      {STATUS_LABELS[item.status] ?? item.status}
+                      {STATUS_LABEL_KEY[item.status] ? t(STATUS_LABEL_KEY[item.status]) : item.status}
                     </Badge>
                   </TableCell>
                 </TableRow>

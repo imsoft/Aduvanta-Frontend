@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Factory, Warning, Plus } from '@phosphor-icons/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -36,22 +37,6 @@ import {
 } from '@/features/immex-programs/hooks/use-immex-programs';
 import { useDebounce } from '@/hooks/use-debounce';
 
-const PROGRAM_TYPE_LABELS: Record<string, string> = {
-  MANUFACTURERA: 'Manufacturera',
-  MAQUILADORA: 'Maquiladora',
-  SERVICIOS: 'Servicios',
-  ALBERGUE: 'Albergue',
-  CONTROLADORA: 'Controladora de empresas',
-};
-
-const STATUS_LABELS: Record<string, string> = {
-  ACTIVE: 'Vigente',
-  SUSPENDED: 'Suspendido',
-  CANCELLED: 'Cancelado',
-  EXPIRED: 'Vencido',
-  IN_PROCESS: 'En trámite',
-};
-
 const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'outline' | 'destructive'> = {
   ACTIVE: 'secondary',
   SUSPENDED: 'outline',
@@ -60,12 +45,16 @@ const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'outline' | 'dest
   IN_PROCESS: 'default',
 };
 
+const PROGRAM_TYPE_KEYS = ['MANUFACTURERA', 'MAQUILADORA', 'SERVICIOS', 'ALBERGUE', 'CONTROLADORA'] as const;
+const STATUS_KEYS = ['ACTIVE', 'SUSPENDED', 'CANCELLED', 'EXPIRED', 'IN_PROCESS'] as const;
+
 const formatUSD = (v: string | null) =>
   v
     ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(parseFloat(v))
     : '—';
 
 export default function ImmexPage() {
+  const t = useTranslations('immex');
   const { data: clients = [] } = useClients();
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('ALL');
@@ -125,29 +114,25 @@ export default function ImmexPage() {
     <div className="w-full space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Programas IMMEX
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Programas de Industria Manufacturera, Maquiladora y de Servicios de Exportación
-          </p>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('pageTitle')}</h1>
+          <p className="text-sm text-muted-foreground mt-1">{t('pageDescription')}</p>
         </div>
         <Dialog open={createOpen} onOpenChange={setCreateOpen}>
           <DialogTrigger asChild>
             <Button size="sm">
               <Plus size={14} />
-              Nuevo programa
+              {t('newProgram')}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-lg">
             <DialogHeader>
-              <DialogTitle>Nuevo programa IMMEX</DialogTitle>
+              <DialogTitle>{t('newProgramTitle')}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 py-2">
               <div className="space-y-2">
-                <Label>Cliente</Label>
+                <Label>{t('labelClient')}</Label>
                 <Select value={form.clientId} onValueChange={(v) => setForm((f) => ({ ...f, clientId: v }))}>
-                  <SelectTrigger><SelectValue placeholder="Selecciona un cliente..." /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder={t('selectClient')} /></SelectTrigger>
                   <SelectContent>
                     {(clients as any[]).map((c) => (
                       <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
@@ -157,53 +142,53 @@ export default function ImmexPage() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <Label>Número de programa</Label>
+                  <Label>{t('labelProgramNumber')}</Label>
                   <Input
                     value={form.programNumber}
                     onChange={(e) => setForm((f) => ({ ...f, programNumber: e.target.value }))}
-                    placeholder="Ej. 111-123456"
+                    placeholder={t('programNumberHint')}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Tipo de programa</Label>
+                  <Label>{t('labelProgramType')}</Label>
                   <Select value={form.programType} onValueChange={(v) => setForm((f) => ({ ...f, programType: v }))}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      {Object.entries(PROGRAM_TYPE_LABELS).map(([k, v]) => (
-                        <SelectItem key={k} value={k}>{v}</SelectItem>
+                      {PROGRAM_TYPE_KEYS.map((k) => (
+                        <SelectItem key={k} value={k}>{t(`programTypes.${k}`)}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
               </div>
               <div className="space-y-2">
-                <Label>Razón social</Label>
+                <Label>{t('labelCompanyName')}</Label>
                 <Input
                   value={form.companyName}
                   onChange={(e) => setForm((f) => ({ ...f, companyName: e.target.value }))}
-                  placeholder="Nombre de la empresa"
+                  placeholder={t('companyNameHint')}
                 />
               </div>
               <div className="space-y-2">
-                <Label>RFC</Label>
+                <Label>{t('labelRfc')}</Label>
                 <Input
                   value={form.rfc}
                   onChange={(e) => setForm((f) => ({ ...f, rfc: e.target.value.toUpperCase() }))}
-                  placeholder="RFC de la empresa"
+                  placeholder={t('rfcHint')}
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <Label>Fecha de autorización</Label>
+                  <Label>{t('labelApprovalDate')}</Label>
                   <Input type="date" value={form.approvalDate} onChange={(e) => setForm((f) => ({ ...f, approvalDate: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Fecha de vencimiento</Label>
+                  <Label>{t('labelExpirationDate')}</Label>
                   <Input type="date" value={form.expirationDate} onChange={(e) => setForm((f) => ({ ...f, expirationDate: e.target.value }))} />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label>Compromiso anual de exportación (USD)</Label>
+                <Label>{t('labelExportCommitment')}</Label>
                 <Input
                   type="number"
                   min="0"
@@ -215,12 +200,12 @@ export default function ImmexPage() {
               </div>
             </div>
             <div className="flex gap-2 justify-end">
-              <Button variant="outline" onClick={() => setCreateOpen(false)}>Cancelar</Button>
+              <Button variant="outline" onClick={() => setCreateOpen(false)}>{t('cancel')}</Button>
               <Button
                 onClick={handleCreate}
                 disabled={!form.clientId || !form.programNumber || !form.companyName || !form.rfc || createProgram.isPending}
               >
-                {createProgram.isPending ? 'Guardando...' : 'Crear programa'}
+                {createProgram.isPending ? t('saving') : t('save')}
               </Button>
             </div>
           </DialogContent>
@@ -231,14 +216,16 @@ export default function ImmexPage() {
         <div className="flex items-center gap-2 rounded-lg border border-yellow-300 bg-yellow-50 p-3 text-sm text-yellow-800">
           <Warning size={16} className="shrink-0" />
           <span>
-            {expiringCount} programa{expiringCount > 1 ? 's' : ''} con vencimiento en los próximos 60 días
+            {expiringCount === 1
+              ? t('expiringWarning', { count: expiringCount })
+              : t('expiringWarningPlural', { count: expiringCount })}
           </span>
         </div>
       )}
 
       <div className="flex flex-wrap gap-3">
         <Input
-          placeholder="Buscar por no. programa, RFC, razón social..."
+          placeholder={t('searchPlaceholder')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-xs min-w-0"
@@ -248,9 +235,9 @@ export default function ImmexPage() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">Todos los tipos</SelectItem>
-            {Object.entries(PROGRAM_TYPE_LABELS).map(([k, v]) => (
-              <SelectItem key={k} value={k}>{v}</SelectItem>
+            <SelectItem value="ALL">{t('allTypes')}</SelectItem>
+            {PROGRAM_TYPE_KEYS.map((k) => (
+              <SelectItem key={k} value={k}>{t(`programTypes.${k}`)}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -259,9 +246,9 @@ export default function ImmexPage() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">Todos los estados</SelectItem>
-            {Object.entries(STATUS_LABELS).map(([k, v]) => (
-              <SelectItem key={k} value={k}>{v}</SelectItem>
+            <SelectItem value="ALL">{t('allStatuses')}</SelectItem>
+            {STATUS_KEYS.map((k) => (
+              <SelectItem key={k} value={k}>{t(`statuses.${k}`)}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -274,10 +261,8 @@ export default function ImmexPage() {
       {!isLoading && programs.length === 0 && (
         <div className="rounded-lg border border-dashed p-12 text-center">
           <Factory size={32} className="mx-auto mb-3 text-muted-foreground" />
-          <p className="text-sm font-medium">Sin programas IMMEX registrados</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            Agrega el primer programa IMMEX de tus clientes
-          </p>
+          <p className="text-sm font-medium">{t('empty')}</p>
+          <p className="text-sm text-muted-foreground mt-1">{t('emptyHint')}</p>
         </div>
       )}
 
@@ -286,14 +271,14 @@ export default function ImmexPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>No. Programa</TableHead>
-                <TableHead>Empresa</TableHead>
-                <TableHead>RFC</TableHead>
-                <TableHead>Tipo</TableHead>
-                <TableHead className="text-right">Comp. exportación</TableHead>
-                <TableHead>Autorización</TableHead>
-                <TableHead>Vencimiento</TableHead>
-                <TableHead>Estado</TableHead>
+                <TableHead>{t('colProgram')}</TableHead>
+                <TableHead>{t('colCompany')}</TableHead>
+                <TableHead>{t('colRfc')}</TableHead>
+                <TableHead>{t('colType')}</TableHead>
+                <TableHead className="text-right">{t('colExportCommitment')}</TableHead>
+                <TableHead>{t('colApproval')}</TableHead>
+                <TableHead>{t('colExpiration')}</TableHead>
+                <TableHead>{t('colStatus')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -306,25 +291,25 @@ export default function ImmexPage() {
                     <TableCell className="text-sm max-w-40 truncate">{p.companyName}</TableCell>
                     <TableCell className="font-mono text-xs text-muted-foreground">{p.rfc}</TableCell>
                     <TableCell className="text-xs text-muted-foreground">
-                      {PROGRAM_TYPE_LABELS[p.programType] ?? p.programType}
+                      {t(`programTypes.${p.programType}` as any, { default: p.programType })}
                     </TableCell>
                     <TableCell className="text-right font-mono text-sm">
                       {formatUSD(p.annualExportCommitmentUsd)}
                     </TableCell>
                     <TableCell className="text-sm">
-                      {p.approvalDate ? new Date(p.approvalDate).toLocaleDateString('es-MX') : '—'}
+                      {p.approvalDate ? new Date(p.approvalDate).toLocaleDateString() : '—'}
                     </TableCell>
                     <TableCell className={`text-sm ${isExpiringSoon ? 'text-yellow-700 font-medium' : ''}`}>
                       {p.expirationDate ? (
                         <span className="flex items-center gap-1">
                           {isExpiringSoon && <Warning size={12} />}
-                          {new Date(p.expirationDate).toLocaleDateString('es-MX')}
+                          {new Date(p.expirationDate).toLocaleDateString()}
                         </span>
                       ) : '—'}
                     </TableCell>
                     <TableCell>
                       <Badge variant={STATUS_VARIANT[p.status] ?? 'outline'}>
-                        {STATUS_LABELS[p.status] ?? p.status}
+                        {t(`statuses.${p.status}` as any, { default: p.status })}
                       </Badge>
                     </TableCell>
                   </TableRow>

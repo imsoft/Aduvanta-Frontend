@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { CurrencyDollar, ArrowUp, ArrowDown, FileText } from '@phosphor-icons/react';
+import { useTranslations } from 'next-intl';
+import { CurrencyDollar, ArrowDown, FileText } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -37,20 +38,20 @@ import {
   useGenerateStatement,
 } from '@/features/client-accounts/hooks/use-client-accounts';
 
-const MOVEMENT_TYPE_LABELS: Record<string, string> = {
-  ADVANCE_RECEIVED: 'Anticipo recibido',
-  OVERPAYMENT_CREDIT: 'Crédito por excedente',
-  CORRECTION_CREDIT: 'Crédito por corrección',
-  CUSTOMS_DUTIES_PAID: 'Derechos aduaneros pagados',
-  STORAGE_PAID: 'Almacenaje pagado',
-  TRANSPORT_PAID: 'Transporte pagado',
-  AGENCY_FEE: 'Honorarios agencia',
-  OTHER_EXPENSES: 'Otros gastos',
-  INVOICE_CHARGED: 'Cargo por factura',
-  CORRECTION_DEBIT: 'Débito por corrección',
-};
-
 const CREDIT_TYPES = ['ADVANCE_RECEIVED', 'OVERPAYMENT_CREDIT', 'CORRECTION_CREDIT'];
+
+const MOVEMENT_TYPE_KEYS = [
+  'ADVANCE_RECEIVED',
+  'OVERPAYMENT_CREDIT',
+  'CORRECTION_CREDIT',
+  'CUSTOMS_DUTIES_PAID',
+  'STORAGE_PAID',
+  'TRANSPORT_PAID',
+  'AGENCY_FEE',
+  'OTHER_EXPENSES',
+  'INVOICE_CHARGED',
+  'CORRECTION_DEBIT',
+] as const;
 
 const formatMXN = (v: string | number | null | undefined) =>
   v != null
@@ -60,6 +61,7 @@ const formatMXN = (v: string | number | null | undefined) =>
     : '—';
 
 function ClientAccountPanel({ clientId }: { clientId: string }) {
+  const t = useTranslations('treasury');
   const { data: balance } = useClientBalance(clientId);
   const { data: movementsData } = useClientMovements(clientId, { limit: 50 });
   const recordMovement = useRecordMovement();
@@ -114,34 +116,31 @@ function ClientAccountPanel({ clientId }: { clientId: string }) {
 
   return (
     <div className="space-y-4">
-      {/* Balance card */}
       <div className="grid grid-cols-3 gap-4">
         <div
           className={`rounded-lg border p-4 ${balanceNum >= 0 ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}
         >
-          <p className="text-xs text-muted-foreground">Saldo actual</p>
+          <p className="text-xs text-muted-foreground">{t('currentBalance')}</p>
           <p
             className={`text-2xl font-semibold font-mono mt-1 ${balanceNum >= 0 ? 'text-green-700' : 'text-red-700'}`}
           >
             {formatMXN(balance?.balance)}
           </p>
           <p className="text-xs text-muted-foreground mt-0.5">
-            {balanceNum >= 0 ? 'A favor del cliente' : 'Cliente debe a la agencia'}
+            {balanceNum >= 0 ? t('clientCredit') : t('clientOwes')}
           </p>
         </div>
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Fondos disponibles</p>
+          <p className="text-xs text-muted-foreground">{t('availableFunds')}</p>
           <p className="text-2xl font-semibold font-mono mt-1">
             {formatMXN(balance?.funds?.availableBalance)}
           </p>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Para pago de derechos
-          </p>
+          <p className="text-xs text-muted-foreground mt-0.5">{t('forDuties')}</p>
         </div>
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Movimientos</p>
+          <p className="text-xs text-muted-foreground">{t('movements')}</p>
           <p className="text-2xl font-semibold mt-1">{movementsData?.total ?? 0}</p>
-          <p className="text-xs text-muted-foreground mt-0.5">Total registrados</p>
+          <p className="text-xs text-muted-foreground mt-0.5">{t('totalMovements')}</p>
         </div>
       </div>
 
@@ -150,16 +149,16 @@ function ClientAccountPanel({ clientId }: { clientId: string }) {
           <DialogTrigger asChild>
             <Button size="sm" variant="outline">
               <ArrowDown size={14} className="mr-1.5" />
-              Registrar movimiento
+              {t('recordMovement')}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Nuevo movimiento de cuenta</DialogTitle>
+              <DialogTitle>{t('newMovement')}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 py-2">
               <div className="space-y-2">
-                <Label>Tipo de movimiento</Label>
+                <Label>{t('movementType')}</Label>
                 <Select
                   value={movForm.type}
                   onValueChange={(v) => setMovForm((f) => ({ ...f, type: v }))}
@@ -168,9 +167,9 @@ function ClientAccountPanel({ clientId }: { clientId: string }) {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(MOVEMENT_TYPE_LABELS).map(([k, v]) => (
+                    {MOVEMENT_TYPE_KEYS.map((k) => (
                       <SelectItem key={k} value={k}>
-                        {v}
+                        {t(`movementTypes.${k}`)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -178,7 +177,7 @@ function ClientAccountPanel({ clientId }: { clientId: string }) {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <Label>Importe (MXN)</Label>
+                  <Label>{t('amount')}</Label>
                   <Input
                     type="number"
                     min="0"
@@ -189,7 +188,7 @@ function ClientAccountPanel({ clientId }: { clientId: string }) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Fecha</Label>
+                  <Label>{t('date')}</Label>
                   <Input
                     type="date"
                     value={movForm.movementDate}
@@ -198,31 +197,31 @@ function ClientAccountPanel({ clientId }: { clientId: string }) {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label>Descripción</Label>
+                <Label>{t('description')}</Label>
                 <Input
                   value={movForm.description}
                   onChange={(e) => setMovForm((f) => ({ ...f, description: e.target.value }))}
-                  placeholder="Detalle del movimiento..."
+                  placeholder={t('descriptionHint')}
                 />
               </div>
               <div className="space-y-2">
-                <Label>Referencia (opcional)</Label>
+                <Label>{t('reference')}</Label>
                 <Input
                   value={movForm.reference}
                   onChange={(e) => setMovForm((f) => ({ ...f, reference: e.target.value }))}
-                  placeholder="No. de factura, pedimento, etc."
+                  placeholder={t('referenceHint')}
                 />
               </div>
             </div>
             <div className="flex gap-2 justify-end">
               <Button variant="outline" onClick={() => setNewMovementOpen(false)}>
-                Cancelar
+                {t('cancel')}
               </Button>
               <Button
                 onClick={handleRecordMovement}
                 disabled={!movForm.amount || !movForm.description || recordMovement.isPending}
               >
-                {recordMovement.isPending ? 'Guardando...' : 'Registrar'}
+                {recordMovement.isPending ? t('saving') : t('save')}
               </Button>
             </div>
           </DialogContent>
@@ -232,17 +231,17 @@ function ClientAccountPanel({ clientId }: { clientId: string }) {
           <DialogTrigger asChild>
             <Button size="sm" variant="outline">
               <FileText size={14} className="mr-1.5" />
-              Generar estado de cuenta
+              {t('generateStatement')}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Generar estado de cuenta</DialogTitle>
+              <DialogTitle>{t('generateStatement')}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 py-2">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <Label>Desde</Label>
+                  <Label>{t('from')}</Label>
                   <Input
                     type="date"
                     value={stmtPeriod.from}
@@ -250,7 +249,7 @@ function ClientAccountPanel({ clientId }: { clientId: string }) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Hasta</Label>
+                  <Label>{t('to')}</Label>
                   <Input
                     type="date"
                     value={stmtPeriod.to}
@@ -261,38 +260,37 @@ function ClientAccountPanel({ clientId }: { clientId: string }) {
             </div>
             <div className="flex gap-2 justify-end">
               <Button variant="outline" onClick={() => setStatementOpen(false)}>
-                Cancelar
+                {t('cancel')}
               </Button>
               <Button
                 onClick={handleGenerateStatement}
                 disabled={generateStatement.isPending}
               >
-                {generateStatement.isPending ? 'Generando...' : 'Generar'}
+                {generateStatement.isPending ? t('generating') : t('generate')}
               </Button>
             </div>
           </DialogContent>
         </Dialog>
       </div>
 
-      {/* Movements table */}
       <div className="rounded-lg border overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Fecha</TableHead>
-              <TableHead>Tipo</TableHead>
-              <TableHead>Descripción</TableHead>
-              <TableHead>Referencia</TableHead>
-              <TableHead className="text-right">Cargo</TableHead>
-              <TableHead className="text-right">Abono</TableHead>
-              <TableHead className="text-right">Saldo</TableHead>
+              <TableHead>{t('colDate')}</TableHead>
+              <TableHead>{t('colType')}</TableHead>
+              <TableHead>{t('colDescription')}</TableHead>
+              <TableHead>{t('colReference')}</TableHead>
+              <TableHead className="text-right">{t('colDebit')}</TableHead>
+              <TableHead className="text-right">{t('colCredit')}</TableHead>
+              <TableHead className="text-right">{t('colBalance')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {movements.length === 0 && (
               <TableRow>
                 <TableCell colSpan={7} className="text-center text-sm text-muted-foreground py-8">
-                  Sin movimientos registrados
+                  {t('noMovements')}
                 </TableCell>
               </TableRow>
             )}
@@ -301,11 +299,11 @@ function ClientAccountPanel({ clientId }: { clientId: string }) {
               return (
                 <TableRow key={mov.id}>
                   <TableCell className="text-sm">
-                    {new Date(mov.movementDate).toLocaleDateString('es-MX')}
+                    {new Date(mov.movementDate).toLocaleDateString()}
                   </TableCell>
                   <TableCell>
                     <Badge variant={CREDIT_TYPES.includes(mov.type) ? 'secondary' : 'outline'} className="text-xs">
-                      {MOVEMENT_TYPE_LABELS[mov.type] ?? mov.type}
+                      {t(`movementTypes.${mov.type}` as any, { default: mov.type })}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-sm max-w-48 truncate">
@@ -334,6 +332,7 @@ function ClientAccountPanel({ clientId }: { clientId: string }) {
 }
 
 export default function CuentasCorrientesPage() {
+  const t = useTranslations('treasury');
   const { activeOrgId } = useOrgStore();
   const { data: clients = [] } = useClients();
   const [selectedClientId, setSelectedClientId] = useState('');
@@ -341,19 +340,15 @@ export default function CuentasCorrientesPage() {
   return (
     <div className="w-full space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Cuentas Corrientes
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Anticipo de fondos, cargos, abonos y estado de cuenta por cliente
-        </p>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('accountsPageTitle')}</h1>
+        <p className="text-sm text-muted-foreground mt-1">{t('accountsPageDesc')}</p>
       </div>
 
       <div className="flex items-center gap-3">
         <CurrencyDollar size={18} className="text-muted-foreground" />
         <Select value={selectedClientId} onValueChange={setSelectedClientId}>
           <SelectTrigger className="w-72">
-            <SelectValue placeholder="Selecciona un cliente..." />
+            <SelectValue placeholder={t('selectClient')} />
           </SelectTrigger>
           <SelectContent>
             {clients.map((c: any) => (
@@ -370,10 +365,8 @@ export default function CuentasCorrientesPage() {
       ) : (
         <div className="rounded-lg border border-dashed p-12 text-center">
           <CurrencyDollar size={32} className="mx-auto mb-3 text-muted-foreground" />
-          <p className="text-sm font-medium">Selecciona un cliente</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            Elige un cliente para ver su cuenta corriente y registrar movimientos
-          </p>
+          <p className="text-sm font-medium">{t('selectClient')}</p>
+          <p className="text-sm text-muted-foreground mt-1">{t('selectClientHint')}</p>
         </div>
       )}
     </div>

@@ -171,46 +171,19 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+              <MetricCard label={t('activeOperations')} value={m.activeOperations} href="/dashboard/operations" />
+              <MetricCard label={t('entriesThisMonth')} value={m.entriesThisMonth} href="/dashboard/pedimentos" />
               <MetricCard
-                label="Operaciones activas"
-                value={m.activeOperations}
-                href="/dashboard/operations"
-              />
-              <MetricCard
-                label="Pedimentos este mes"
-                value={m.entriesThisMonth}
-                href="/dashboard/pedimentos"
-              />
-              <MetricCard
-                label="Pagos pendientes"
-                value={m.pendingPayments}
-                sub={
-                  m.pendingPaymentsAmount && parseFloat(m.pendingPaymentsAmount) > 0
-                    ? new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(
-                        parseFloat(m.pendingPaymentsAmount),
-                      )
-                    : undefined
-                }
+                label={t('pendingPayments')} value={m.pendingPayments}
+                sub={m.pendingPaymentsAmount && parseFloat(m.pendingPaymentsAmount) > 0
+                  ? new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(parseFloat(m.pendingPaymentsAmount))
+                  : undefined}
                 accent={m.pendingPayments > 0 ? 'yellow' : undefined}
                 href="/dashboard/tesoreria/cuentas"
               />
-              <MetricCard
-                label="Padrones por vencer"
-                value={m.expiringRegistries}
-                accent={m.expiringRegistries > 0 ? 'red' : undefined}
-                href="/dashboard/padron/importadores"
-              />
-              <MetricCard
-                label="Items en bodega"
-                value={m.warehouseItems}
-                href="/dashboard/bodega/inventario"
-              />
-              <MetricCard
-                label="En despacho"
-                value={m.entriesByStatus?.DISPATCHED ?? 0}
-                accent="blue"
-                href="/dashboard/pedimentos"
-              />
+              <MetricCard label={t('expiringRegistries')} value={m.expiringRegistries} accent={m.expiringRegistries > 0 ? 'red' : undefined} href="/dashboard/padron/importadores" />
+              <MetricCard label={t('warehouseItems')} value={m.warehouseItems} href="/dashboard/bodega/inventario" />
+              <MetricCard label={t('dispatching')} value={m.entriesByStatus?.DISPATCHED ?? 0} accent="blue" href="/dashboard/pedimentos" />
             </div>
           )}
 
@@ -218,16 +191,16 @@ export default function DashboardPage() {
             <div className="rounded-lg border p-4 space-y-3">
               <div className="flex items-center gap-2">
                 <ClipboardText size={16} className="text-muted-foreground" />
-                <p className="text-sm font-medium">Estado de pedimentos</p>
+                <p className="text-sm font-medium">{t('entryStatus')}</p>
               </div>
               <div className="space-y-2">
                 {[
-                  { key: 'DRAFT', label: 'Borrador', color: 'bg-gray-200' },
-                  { key: 'PREVALIDATED', label: 'Prevalidado', color: 'bg-yellow-300' },
-                  { key: 'VALIDATED', label: 'Validado', color: 'bg-blue-300' },
-                  { key: 'PAID', label: 'Pagado', color: 'bg-purple-300' },
-                  { key: 'DISPATCHED', label: 'Despachado', color: 'bg-orange-300' },
-                  { key: 'RELEASED', label: 'Liberado', color: 'bg-green-400' },
+                  { key: 'DRAFT', label: t('statusDraft'), color: 'bg-gray-200' },
+                  { key: 'PREVALIDATED', label: t('statusPrevalidated'), color: 'bg-yellow-300' },
+                  { key: 'VALIDATED', label: t('statusValidated'), color: 'bg-blue-300' },
+                  { key: 'PAID', label: t('statusPaid'), color: 'bg-purple-300' },
+                  { key: 'DISPATCHED', label: t('statusDispatched'), color: 'bg-orange-300' },
+                  { key: 'RELEASED', label: t('statusReleased'), color: 'bg-green-400' },
                 ].map(({ key, label, color }) => {
                   const count = m.entriesByStatus?.[key as keyof typeof m.entriesByStatus] ?? 0;
                   const total = Object.values(m.entriesByStatus ?? {}).reduce((a, b) => a + b, 0);
@@ -248,7 +221,7 @@ export default function DashboardPage() {
             <div className="rounded-lg border p-4 space-y-3">
               <div className="flex items-center gap-2">
                 <TrendUp size={16} className="text-muted-foreground" />
-                <p className="text-sm font-medium">Accesos rápidos</p>
+                <p className="text-sm font-medium">{t('quickLinks')}</p>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 {[

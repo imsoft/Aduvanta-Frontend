@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { ArrowsLeftRight, ArrowUp, ArrowDown, ArrowRight } from '@phosphor-icons/react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -42,14 +43,6 @@ interface WarehouseMovement {
   createdAt: string;
 }
 
-const MOVEMENT_TYPE_LABELS: Record<string, string> = {
-  ENTRY: 'Entrada',
-  EXIT: 'Salida',
-  TRANSFER: 'Transferencia',
-  ADJUSTMENT: 'Ajuste',
-  RETURN: 'Devolución',
-};
-
 const MOVEMENT_TYPE_ICON: Record<string, typeof ArrowUp> = {
   ENTRY: ArrowDown,
   EXIT: ArrowUp,
@@ -66,19 +59,17 @@ const MOVEMENT_TYPE_COLOR: Record<string, string> = {
   RETURN: 'text-purple-700',
 };
 
-const STATUS_LABELS: Record<string, string> = {
-  PENDING: 'Pendiente',
-  COMPLETED: 'Completado',
-  CANCELLED: 'Cancelado',
-};
-
 const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'outline' | 'destructive'> = {
   PENDING: 'outline',
   COMPLETED: 'secondary',
   CANCELLED: 'destructive',
 };
 
+const MOVEMENT_TYPE_KEYS = ['ENTRY', 'EXIT', 'TRANSFER', 'ADJUSTMENT', 'RETURN'] as const;
+const STATUS_KEYS = ['PENDING', 'COMPLETED', 'CANCELLED'] as const;
+
 export default function MovimientosPage() {
+  const t = useTranslations('warehouse');
   const { activeOrgId } = useOrgStore();
   const [search, setSearch] = useState('');
   const [movementType, setMovementType] = useState('ALL');
@@ -112,17 +103,13 @@ export default function MovimientosPage() {
   return (
     <div className="w-full space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Movimientos de Bodega
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Entradas, salidas, transferencias y ajustes de mercancía
-        </p>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('movementsPageTitle')}</h1>
+        <p className="text-sm text-muted-foreground mt-1">{t('movementsPageDesc')}</p>
       </div>
 
       <div className="flex flex-wrap gap-3">
         <Input
-          placeholder="Buscar por referencia, descripción..."
+          placeholder={t('searchMovements')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-xs min-w-0"
@@ -132,9 +119,9 @@ export default function MovimientosPage() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">Todos los tipos</SelectItem>
-            {Object.entries(MOVEMENT_TYPE_LABELS).map(([k, v]) => (
-              <SelectItem key={k} value={k}>{v}</SelectItem>
+            <SelectItem value="ALL">{t('allMovementTypes')}</SelectItem>
+            {MOVEMENT_TYPE_KEYS.map((k) => (
+              <SelectItem key={k} value={k}>{t(`movementTypes.${k}`)}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -143,9 +130,9 @@ export default function MovimientosPage() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">Todos los estados</SelectItem>
-            {Object.entries(STATUS_LABELS).map(([k, v]) => (
-              <SelectItem key={k} value={k}>{v}</SelectItem>
+            <SelectItem value="ALL">{t('allStatuses')}</SelectItem>
+            {STATUS_KEYS.map((k) => (
+              <SelectItem key={k} value={k}>{t(`movementStatuses.${k}`)}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -158,10 +145,8 @@ export default function MovimientosPage() {
       {!isLoading && movements.length === 0 && (
         <div className="rounded-lg border border-dashed p-12 text-center">
           <ArrowsLeftRight size={32} className="mx-auto mb-3 text-muted-foreground" />
-          <p className="text-sm font-medium">Sin movimientos registrados</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            Los movimientos de mercancía aparecerán aquí
-          </p>
+          <p className="text-sm font-medium">{t('emptyMovements')}</p>
+          <p className="text-sm text-muted-foreground mt-1">{t('emptyMovementsHint')}</p>
         </div>
       )}
 
@@ -171,14 +156,14 @@ export default function MovimientosPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Tipo</TableHead>
-                  <TableHead>Referencia</TableHead>
-                  <TableHead className="max-w-48">Descripción</TableHead>
-                  <TableHead>Origen</TableHead>
-                  <TableHead>Destino</TableHead>
-                  <TableHead className="text-right">Cantidad</TableHead>
-                  <TableHead>Fecha</TableHead>
-                  <TableHead>Estado</TableHead>
+                  <TableHead>{t('colType')}</TableHead>
+                  <TableHead>{t('colReference')}</TableHead>
+                  <TableHead className="max-w-48">{t('colDescription')}</TableHead>
+                  <TableHead>{t('colOrigin')}</TableHead>
+                  <TableHead>{t('colDestination')}</TableHead>
+                  <TableHead className="text-right">{t('colAmount')}</TableHead>
+                  <TableHead>{t('colDate')}</TableHead>
+                  <TableHead>{t('colStatus')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -189,7 +174,7 @@ export default function MovimientosPage() {
                       <TableCell>
                         <div className={`flex items-center gap-1.5 text-sm font-medium ${MOVEMENT_TYPE_COLOR[mov.movementType] ?? ''}`}>
                           <Icon size={14} />
-                          {MOVEMENT_TYPE_LABELS[mov.movementType] ?? mov.movementType}
+                          {t(`movementTypes.${mov.movementType}` as any, { default: mov.movementType })}
                         </div>
                       </TableCell>
                       <TableCell className="font-mono text-xs text-muted-foreground">
@@ -205,15 +190,15 @@ export default function MovimientosPage() {
                         {mov.destinationWarehouseName ?? (mov.destinationWarehouseId ? mov.destinationWarehouseId.slice(0, 8) : '—')}
                       </TableCell>
                       <TableCell className="text-right font-mono text-sm">
-                        {parseFloat(mov.quantity).toLocaleString('es-MX')}{' '}
+                        {parseFloat(mov.quantity).toLocaleString()}{' '}
                         <span className="text-muted-foreground text-xs">{mov.unitOfMeasure ?? ''}</span>
                       </TableCell>
                       <TableCell className="text-sm">
-                        {new Date(mov.movementDate).toLocaleDateString('es-MX')}
+                        {new Date(mov.movementDate).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
                         <Badge variant={STATUS_VARIANT[mov.status] ?? 'outline'}>
-                          {STATUS_LABELS[mov.status] ?? mov.status}
+                          {t(`movementStatuses.${mov.status}` as any, { default: mov.status })}
                         </Badge>
                       </TableCell>
                     </TableRow>
@@ -225,14 +210,14 @@ export default function MovimientosPage() {
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between text-sm text-muted-foreground">
-              <span>{total} movimientos en total</span>
+              <span>{t('totalMovements', { total })}</span>
               <div className="flex gap-2">
                 <button
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
                   disabled={page === 0}
                   className="px-3 py-1 rounded border disabled:opacity-40"
                 >
-                  Anterior
+                  {t('prev')}
                 </button>
                 <span className="px-2 py-1">
                   {page + 1} / {totalPages}
@@ -242,7 +227,7 @@ export default function MovimientosPage() {
                   disabled={page >= totalPages - 1}
                   className="px-3 py-1 rounded border disabled:opacity-40"
                 >
-                  Siguiente
+                  {t('next')}
                 </button>
               </div>
             </div>

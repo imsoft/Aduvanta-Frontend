@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { MagnifyingGlass, Info, ArrowRight, Certificate } from '@phosphor-icons/react';
+import { useTranslations } from 'next-intl';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -41,6 +42,7 @@ function TariffRateBadge({ rate }: { rate: string | null }) {
 }
 
 export default function ClasificacionPage() {
+  const t = useTranslations('classification');
   const [query, setQuery] = useState('');
   const [selected, setSelected] =
     useState<Awaited<ReturnType<typeof tariffApi.getByFraction>> | null>(null);
@@ -67,13 +69,8 @@ export default function ClasificacionPage() {
   return (
     <div className="w-full space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Clasificación Arancelaria — TIGIE
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Consultor de la Tarifa de la Ley de los Impuestos Generales de
-          Importación y de Exportación
-        </p>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('pageTitle')}</h1>
+        <p className="text-sm text-muted-foreground mt-1">{t('pageDescription')}</p>
       </div>
 
       <div className="relative max-w-2xl">
@@ -83,7 +80,7 @@ export default function ClasificacionPage() {
         />
         <Input
           className="pl-9"
-          placeholder="Busca por fracción (ej. 8471.30), descripción o palabra clave..."
+          placeholder={t('searchPlaceholder')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
@@ -95,16 +92,13 @@ export default function ClasificacionPage() {
             size={32}
             className="mx-auto mb-3 text-muted-foreground"
           />
-          <p className="text-sm font-medium">Consulta el TIGIE</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            Escribe al menos 2 caracteres para buscar fracciones arancelarias
-          </p>
+          <p className="text-sm font-medium">{t('searchHintTitle')}</p>
+          <p className="text-sm text-muted-foreground mt-1">{t('searchHint')}</p>
         </div>
       )}
 
       {query.length >= 2 && (
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-          {/* Resultados */}
           <div className="lg:col-span-3 space-y-3">
             {isLoading && (
               <div className="h-40 bg-muted/20 rounded-lg animate-pulse" />
@@ -112,23 +106,23 @@ export default function ClasificacionPage() {
 
             {!isLoading && fractions.length === 0 && (
               <div className="rounded-lg border p-8 text-center text-sm text-muted-foreground">
-                No se encontraron fracciones para "{query}"
+                {t('noResults', { query })}
               </div>
             )}
 
             {!isLoading && fractions.length > 0 && (
               <>
                 <p className="text-xs text-muted-foreground">
-                  {total} resultado{total !== 1 ? 's' : ''}
+                  {total === 1 ? t('results', { total }) : t('resultsPlural', { total })}
                 </p>
                 <div className="rounded-lg border overflow-hidden">
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead className="w-28">Fracción</TableHead>
-                        <TableHead>Descripción</TableHead>
-                        <TableHead className="w-20">IGI</TableHead>
-                        <TableHead className="w-20">IVA</TableHead>
+                        <TableHead className="w-28">{t('columnFraction')}</TableHead>
+                        <TableHead>{t('columnDescription')}</TableHead>
+                        <TableHead className="w-20">{t('columnIGI')}</TableHead>
+                        <TableHead className="w-20">{t('columnIVA')}</TableHead>
                         <TableHead className="w-10" />
                       </TableRow>
                     </TableHeader>
@@ -168,7 +162,6 @@ export default function ClasificacionPage() {
             )}
           </div>
 
-          {/* Detalle */}
           <div className="lg:col-span-2">
             {selected ? (
               <Card className="sticky top-6">
@@ -187,7 +180,7 @@ export default function ClasificacionPage() {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-3 gap-3">
                     <div className="rounded-lg bg-muted/50 p-3 text-center">
-                      <p className="text-xs text-muted-foreground">IGI</p>
+                      <p className="text-xs text-muted-foreground">{t('columnIGI')}</p>
                       <p className="font-mono font-bold text-base mt-1">
                         {selected.generalDutyRate
                           ? `${parseFloat(selected.generalDutyRate)}%`
@@ -195,7 +188,7 @@ export default function ClasificacionPage() {
                       </p>
                     </div>
                     <div className="rounded-lg bg-muted/50 p-3 text-center">
-                      <p className="text-xs text-muted-foreground">IVA</p>
+                      <p className="text-xs text-muted-foreground">{t('columnIVA')}</p>
                       <p className="font-mono font-bold text-base mt-1">
                         {selected.vatRate
                           ? `${parseFloat(selected.vatRate)}%`
@@ -214,7 +207,7 @@ export default function ClasificacionPage() {
                     selected.tradeAgreementRates.length > 0 && (
                       <div>
                         <p className="text-xs font-medium text-muted-foreground mb-2">
-                          Tratados comerciales
+                          {t('tradeAgreements')}
                         </p>
                         <div className="space-y-1.5">
                           {selected.tradeAgreementRates.map((ta, i) => (
@@ -235,7 +228,7 @@ export default function ClasificacionPage() {
                   {selected.regulations && selected.regulations.length > 0 && (
                     <div>
                       <p className="text-xs font-medium text-muted-foreground mb-2">
-                        Regulaciones y restricciones
+                        {t('regulations')}
                       </p>
                       <div className="flex flex-wrap gap-1">
                         {selected.regulations.map((r, i) => (
@@ -249,13 +242,13 @@ export default function ClasificacionPage() {
 
                   <Button size="sm" variant="outline" className="w-full">
                     <Info size={14} className="mr-1.5" />
-                    Ver notas del capítulo
+                    {t('notesLink')}
                   </Button>
                 </CardContent>
               </Card>
             ) : (
               <div className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">
-                Selecciona una fracción para ver el detalle
+                {t('selectFraction')}
               </div>
             )}
           </div>
@@ -264,7 +257,7 @@ export default function ClasificacionPage() {
 
       <div className="border-t pt-4">
         <p className="text-xs text-muted-foreground mb-3 font-medium uppercase tracking-wide">
-          Herramientas relacionadas
+          {t('relatedTools')}
         </p>
         <a
           href="/dashboard/clasificacion/noms"
@@ -272,10 +265,8 @@ export default function ClasificacionPage() {
         >
           <Certificate size={20} className="text-muted-foreground shrink-0" />
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium">NOMs — Normas Oficiales Mexicanas</p>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              Consulta las normas obligatorias aplicables a importación y exportación
-            </p>
+            <p className="text-sm font-medium">{t('nomsTitle')}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{t('nomsDesc')}</p>
           </div>
           <ArrowRight
             size={14}

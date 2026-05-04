@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Bank, Warning } from '@phosphor-icons/react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -37,6 +37,7 @@ const formatMXN = (v: string | number | null | undefined) =>
     : '—';
 
 export default function FondosPage() {
+  const t = useTranslations('treasury');
   const locale = useLocale();
   const { activeOrgId } = useOrgStore();
   const [search, setSearch] = useState('');
@@ -64,36 +65,34 @@ export default function FondosPage() {
   return (
     <div className="w-full space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Fondos de Clientes
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Resumen de fondos disponibles para el pago de derechos aduaneros
-        </p>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('fundsPageTitle')}</h1>
+        <p className="text-sm text-muted-foreground mt-1">{t('fundsPageDesc')}</p>
       </div>
 
       {alertCount > 0 && (
         <div className="flex items-center gap-2 rounded-lg border border-yellow-300 bg-yellow-50 p-3 text-sm text-yellow-800">
           <Warning size={16} className="shrink-0" />
           <span>
-            {alertCount} cliente{alertCount > 1 ? 's' : ''} con fondos insuficientes para nuevas operaciones
+            {alertCount === 1
+              ? t('lowFundsWarning', { count: alertCount })
+              : t('lowFundsWarningPlural', { count: alertCount })}
           </span>
         </div>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Total clientes con fondos</p>
+          <p className="text-xs text-muted-foreground">{t('totalClientsWithFunds')}</p>
           <p className="text-2xl font-semibold mt-1">{total}</p>
         </div>
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Fondos disponibles totales</p>
+          <p className="text-xs text-muted-foreground">{t('totalAvailableFunds')}</p>
           <p className="text-2xl font-semibold font-mono mt-1 text-green-700">
             {formatMXN(totalAvailable)}
           </p>
         </div>
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Fondos reservados totales</p>
+          <p className="text-xs text-muted-foreground">{t('totalReservedFunds')}</p>
           <p className="text-2xl font-semibold font-mono mt-1 text-blue-700">
             {formatMXN(totalReserved)}
           </p>
@@ -101,7 +100,7 @@ export default function FondosPage() {
       </div>
 
       <Input
-        placeholder="Buscar por nombre o RFC..."
+        placeholder={t('searchClients')}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="max-w-xs"
@@ -114,10 +113,8 @@ export default function FondosPage() {
       {!isLoading && funds.length === 0 && (
         <div className="rounded-lg border border-dashed p-12 text-center">
           <Bank size={32} className="mx-auto mb-3 text-muted-foreground" />
-          <p className="text-sm font-medium">Sin fondos registrados</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            Los anticipos de clientes aparecerán aquí
-          </p>
+          <p className="text-sm font-medium">{t('emptyFunds')}</p>
+          <p className="text-sm text-muted-foreground mt-1">{t('emptyFundsHint')}</p>
         </div>
       )}
 
@@ -126,12 +123,12 @@ export default function FondosPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Cliente</TableHead>
-                <TableHead>RFC</TableHead>
-                <TableHead className="text-right">Fondos disponibles</TableHead>
-                <TableHead className="text-right">Reservados</TableHead>
-                <TableHead>Último movimiento</TableHead>
-                <TableHead>Estado</TableHead>
+                <TableHead>{t('colClient')}</TableHead>
+                <TableHead>{t('colRfc')}</TableHead>
+                <TableHead className="text-right">{t('colAvailable')}</TableHead>
+                <TableHead className="text-right">{t('colReserved')}</TableHead>
+                <TableHead>{t('colLastMovement')}</TableHead>
+                <TableHead>{t('colFundStatus')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -156,7 +153,7 @@ export default function FondosPage() {
                     {f.lowFundsAlert ? (
                       <Badge variant="outline" className="text-yellow-700 border-yellow-400 bg-yellow-50">
                         <Warning size={12} className="mr-1" />
-                        Fondos bajos
+                        {t('lowFunds')}
                       </Badge>
                     ) : (
                       <Badge variant="secondary">OK</Badge>

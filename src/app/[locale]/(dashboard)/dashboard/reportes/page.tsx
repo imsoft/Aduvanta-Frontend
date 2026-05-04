@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { ChartBar, Download, FileCsv, FileXls } from '@phosphor-icons/react';
+import { useTranslations } from 'next-intl';
+import { ChartBar, FileCsv } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,48 +21,21 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
 import { useOrgStore } from '@/store/org.store';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api-client';
 
 type ReportType = 'BALANZA_MERCANCIAS' | 'PEDIMENTOS_PERIODO' | 'CONTRIBUCIONES' | 'OPERACIONES_CLIENTE';
 
-const REPORT_DEFINITIONS = [
-  {
-    type: 'BALANZA_MERCANCIAS' as ReportType,
-    title: 'Balanza de mercancías',
-    description: 'Total de importaciones y exportaciones en el período, por fracción arancelaria.',
-  },
-  {
-    type: 'PEDIMENTOS_PERIODO' as ReportType,
-    title: 'Pedimentos por período',
-    description: 'Listado de pedimentos tramitados en el período con sus contribuciones y valores.',
-  },
-  {
-    type: 'CONTRIBUCIONES' as ReportType,
-    title: 'Contribuciones pagadas',
-    description: 'Resumen de IGI, IVA, DTA y otras contribuciones pagadas por pedimento.',
-  },
-  {
-    type: 'OPERACIONES_CLIENTE' as ReportType,
-    title: 'Operaciones por cliente',
-    description: 'Número de operaciones, pedimentos, valores y contribuciones agrupados por cliente.',
-  },
-];
+const REPORT_TYPE_KEYS: ReportType[] = ['BALANZA_MERCANCIAS', 'PEDIMENTOS_PERIODO', 'CONTRIBUCIONES', 'OPERACIONES_CLIENTE'];
+const REGIME_KEYS = ['IMD', 'EXD', 'IMT', 'EXT'] as const;
 
 interface ReportRow {
   [key: string]: string | number | null;
 }
 
-const formatMXN = (v: string | number | null) =>
-  v != null
-    ? new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(
-        typeof v === 'string' ? parseFloat(v) : v,
-      )
-    : '—';
-
 export default function ReportesPage() {
+  const t = useTranslations('reports');
   const { activeOrgId } = useOrgStore();
   const [selectedType, setSelectedType] = useState<ReportType | null>(null);
   const [dateFrom, setDateFrom] = useState(
@@ -91,10 +65,6 @@ export default function ReportesPage() {
   const columns = data?.columns ?? [];
   const rows = data?.rows ?? [];
 
-  const handleGenerate = () => {
-    setRunQuery(true);
-  };
-
   const handleDownloadCsv = async () => {
     if (!selectedType || !activeOrgId) return;
     const response = await apiClient.get('/api/reports/export', {
@@ -113,22 +83,19 @@ export default function ReportesPage() {
   return (
     <div className="w-full space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Reportes</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Balanza de mercancías, pedimentos, contribuciones y análisis operacionales
-        </p>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('pageTitle')}</h1>
+        <p className="text-sm text-muted-foreground mt-1">{t('pageDescription')}</p>
       </div>
 
-      {/* Report type selector */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {REPORT_DEFINITIONS.map((def) => (
+        {REPORT_TYPE_KEYS.map((type) => (
           <button
-            key={def.type}
-            onClick={() => { setSelectedType(def.type); setRunQuery(false); }}
-            className={`text-left rounded-lg border p-4 transition-colors hover:bg-muted/30 ${selectedType === def.type ? 'border-primary bg-primary/5' : ''}`}
+            key={type}
+            onClick={() => { setSelectedType(type); setRunQuery(false); }}
+            className={`text-left rounded-lg border p-4 transition-colors hover:bg-muted/30 ${selectedType === type ? 'border-primary bg-primary/5' : ''}`}
           >
-            <p className="font-medium text-sm">{def.title}</p>
-            <p className="text-xs text-muted-foreground mt-0.5">{def.description}</p>
+            <p className="font-medium text-sm">{t(`reportTypes.${type}.title`)}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{t(`reportTypes.${type}.description`)}</p>
           </button>
         ))}
       </div>
@@ -136,14 +103,14 @@ export default function ReportesPage() {
       {selectedType && (
         <div className="rounded-lg border p-4 space-y-4">
           <p className="text-sm font-medium">
-            Parámetros del reporte:{' '}
+            {t('params')}{' '}
             <span className="text-muted-foreground font-normal">
-              {REPORT_DEFINITIONS.find((d) => d.type === selectedType)?.title}
+              {t(`reportTypes.${selectedType}.title`)}
             </span>
           </p>
           <div className="flex flex-wrap gap-4 items-end">
             <div className="space-y-1.5">
-              <Label className="text-xs">Desde</Label>
+              <Label className="text-xs">{t('from')}</Label>
               <Input
                 type="date"
                 value={dateFrom}
@@ -152,7 +119,7 @@ export default function ReportesPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-xs">Hasta</Label>
+              <Label className="text-xs">{t('to')}</Label>
               <Input
                 type="date"
                 value={dateTo}
@@ -161,28 +128,27 @@ export default function ReportesPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-xs">Régimen</Label>
+              <Label className="text-xs">{t('regime')}</Label>
               <Select value={regime} onValueChange={(v) => { setRegime(v); setRunQuery(false); }}>
                 <SelectTrigger className="w-40">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ALL">Todos</SelectItem>
-                  <SelectItem value="IMD">IMD — Definitiva importación</SelectItem>
-                  <SelectItem value="EXD">EXD — Definitiva exportación</SelectItem>
-                  <SelectItem value="IMT">IMT — Temporal importación</SelectItem>
-                  <SelectItem value="EXT">EXT — Temporal exportación</SelectItem>
+                  <SelectItem value="ALL">{t('allRegimes')}</SelectItem>
+                  {REGIME_KEYS.map((k) => (
+                    <SelectItem key={k} value={k}>{t(`regimes.${k}`)}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
-            <Button onClick={handleGenerate} disabled={isLoading || isFetching}>
+            <Button onClick={() => setRunQuery(true)} disabled={isLoading || isFetching}>
               <ChartBar size={14} className="mr-1.5" />
-              {isLoading || isFetching ? 'Generando...' : 'Generar reporte'}
+              {isLoading || isFetching ? t('generating') : t('generate')}
             </Button>
             {rows.length > 0 && (
               <Button variant="outline" size="sm" onClick={handleDownloadCsv}>
                 <FileCsv size={14} className="mr-1.5" />
-                Exportar CSV
+                {t('exportCsv')}
               </Button>
             )}
           </div>
@@ -196,17 +162,15 @@ export default function ReportesPage() {
       {!isLoading && !isFetching && runQuery && rows.length === 0 && (
         <div className="rounded-lg border border-dashed p-12 text-center">
           <ChartBar size={32} className="mx-auto mb-3 text-muted-foreground" />
-          <p className="text-sm font-medium">Sin datos para el período seleccionado</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            Ajusta las fechas o el régimen e intenta de nuevo
-          </p>
+          <p className="text-sm font-medium">{t('noData')}</p>
+          <p className="text-sm text-muted-foreground mt-1">{t('noDataHint')}</p>
         </div>
       )}
 
       {!isLoading && !isFetching && rows.length > 0 && (
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">{data?.total} registros encontrados</p>
+            <p className="text-sm text-muted-foreground">{t('recordsFound', { total: data?.total ?? 0 })}</p>
           </div>
           <div className="rounded-lg border overflow-x-auto">
             <Table>
@@ -238,10 +202,8 @@ export default function ReportesPage() {
       {!selectedType && (
         <div className="rounded-lg border border-dashed p-12 text-center">
           <ChartBar size={32} className="mx-auto mb-3 text-muted-foreground" />
-          <p className="text-sm font-medium">Selecciona un tipo de reporte</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            Elige uno de los reportes disponibles y configura los parámetros
-          </p>
+          <p className="text-sm font-medium">{t('selectReport')}</p>
+          <p className="text-sm text-muted-foreground mt-1">{t('selectReportHint')}</p>
         </div>
       )}
     </div>

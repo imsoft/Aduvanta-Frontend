@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { MagnifyingGlass, Warning, CheckCircle } from '@phosphor-icons/react';
 import { parseApiDate } from '@/lib/date-utils';
 import { Badge } from '@/components/ui/badge';
@@ -22,22 +22,6 @@ import {
 } from '@/components/ui/table';
 import { useCustomsInspections } from '@/features/customs-inspections/hooks/use-customs-inspections';
 
-const INSPECTION_TYPE_LABELS: Record<string, string> = {
-  DOCUMENTAL: 'Documental',
-  FISICO_ALEATORIO: 'Físico aleatorio',
-  FISICO_SELECTIVO: 'Físico selectivo',
-  FISICO_TOTAL: 'Físico total',
-  RECONOCIMIENTO_ADUANERO: 'Reconocimiento aduanero',
-};
-
-const RESULT_LABELS: Record<string, string> = {
-  CONFORMING: 'Conforme',
-  DISCREPANCY_FOUND: 'Discrepancia',
-  PENALTY_APPLIED: 'Sanción aplicada',
-  SAMPLES_TAKEN: 'Muestras tomadas',
-  CLEARED: 'Liberado',
-};
-
 const RESULT_VARIANT: Record<string, 'default' | 'secondary' | 'outline' | 'destructive'> = {
   CONFORMING: 'secondary',
   DISCREPANCY_FOUND: 'outline',
@@ -46,17 +30,18 @@ const RESULT_VARIANT: Record<string, 'default' | 'secondary' | 'outline' | 'dest
   CLEARED: 'secondary',
 };
 
-function SemaphoreBadge({ color }: { color: string | null }) {
+function SemaphoreBadge({ color, greenLabel, redLabel }: { color: string | null; greenLabel: string; redLabel: string }) {
   if (!color) return <span className="text-muted-foreground text-xs">—</span>;
   return (
     <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full ${color === 'GREEN' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
       {color === 'GREEN' ? <CheckCircle size={12} /> : <Warning size={12} />}
-      {color === 'GREEN' ? 'Verde' : 'Rojo'}
+      {color === 'GREEN' ? greenLabel : redLabel}
     </span>
   );
 }
 
 export default function InspeccionesPage() {
+  const t = useTranslations('inspections');
   const locale = useLocale();
   const [result, setResult] = useState('ALL');
   const [semaphoreColor, setSemaphoreColor] = useState('ALL');
@@ -77,34 +62,32 @@ export default function InspeccionesPage() {
   const redCount = inspections.filter((i) => i.semaphoreColor === 'RED').length;
   const discrepancyCount = inspections.filter((i) => i.discrepanciesFound).length;
 
+  const RESULT_KEYS = ['CONFORMING', 'DISCREPANCY_FOUND', 'PENALTY_APPLIED', 'SAMPLES_TAKEN', 'CLEARED'] as const;
+
   return (
     <div className="w-full space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Inspecciones Aduaneras
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Reconocimiento aduanero, semáforo fiscal e inspecciones físicas
-        </p>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('pageTitle')}</h1>
+        <p className="text-sm text-muted-foreground mt-1">{t('pageDescription')}</p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Total inspecciones</p>
+          <p className="text-xs text-muted-foreground">{t('totalInspections')}</p>
           <p className="text-2xl font-semibold mt-1">{total}</p>
         </div>
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Semáforo verde</p>
+          <p className="text-xs text-muted-foreground">{t('greenSemaphore')}</p>
           <p className="text-2xl font-semibold mt-1 text-green-700">
             {inspections.filter((i) => i.semaphoreColor === 'GREEN').length}
           </p>
         </div>
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Semáforo rojo</p>
+          <p className="text-xs text-muted-foreground">{t('redSemaphore')}</p>
           <p className="text-2xl font-semibold mt-1 text-red-700">{redCount}</p>
         </div>
         <div className="rounded-lg border p-4">
-          <p className="text-xs text-muted-foreground">Con discrepancias</p>
+          <p className="text-xs text-muted-foreground">{t('withDiscrepancies')}</p>
           <p className="text-2xl font-semibold mt-1 text-orange-700">{discrepancyCount}</p>
         </div>
       </div>
@@ -115,9 +98,9 @@ export default function InspeccionesPage() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">Todos los semáforos</SelectItem>
-            <SelectItem value="GREEN">Verde</SelectItem>
-            <SelectItem value="RED">Rojo</SelectItem>
+            <SelectItem value="ALL">{t('allSemaphores')}</SelectItem>
+            <SelectItem value="GREEN">{t('green')}</SelectItem>
+            <SelectItem value="RED">{t('red')}</SelectItem>
           </SelectContent>
         </Select>
         <Select value={result} onValueChange={(v) => { setResult(v); setPage(0); }}>
@@ -125,9 +108,9 @@ export default function InspeccionesPage() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">Todos los resultados</SelectItem>
-            {Object.entries(RESULT_LABELS).map(([k, v]) => (
-              <SelectItem key={k} value={k}>{v}</SelectItem>
+            <SelectItem value="ALL">{t('allResults')}</SelectItem>
+            {RESULT_KEYS.map((k) => (
+              <SelectItem key={k} value={k}>{t(`results.${k}`)}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -140,10 +123,8 @@ export default function InspeccionesPage() {
       {!isLoading && inspections.length === 0 && (
         <div className="rounded-lg border border-dashed p-12 text-center">
           <MagnifyingGlass size={32} className="mx-auto mb-3 text-muted-foreground" />
-          <p className="text-sm font-medium">Sin inspecciones registradas</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            Las inspecciones y resultados de semáforo aparecerán aquí
-          </p>
+          <p className="text-sm font-medium">{t('empty')}</p>
+          <p className="text-sm text-muted-foreground mt-1">{t('emptyHint')}</p>
         </div>
       )}
 
@@ -153,24 +134,24 @@ export default function InspeccionesPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Semáforo</TableHead>
-                  <TableHead>Tipo</TableHead>
-                  <TableHead>Aduana</TableHead>
-                  <TableHead>Inspector</TableHead>
-                  <TableHead>No. Acta</TableHead>
-                  <TableHead>Discrepancias</TableHead>
-                  <TableHead>Resultado</TableHead>
-                  <TableHead>Fecha</TableHead>
+                  <TableHead>{t('colSemaphore')}</TableHead>
+                  <TableHead>{t('colType')}</TableHead>
+                  <TableHead>{t('colCustomsOffice')}</TableHead>
+                  <TableHead>{t('colInspector')}</TableHead>
+                  <TableHead>{t('colActaNumber')}</TableHead>
+                  <TableHead>{t('colDiscrepancies')}</TableHead>
+                  <TableHead>{t('colResult')}</TableHead>
+                  <TableHead>{t('colDate')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {inspections.map((insp) => (
                   <TableRow key={insp.id}>
                     <TableCell>
-                      <SemaphoreBadge color={insp.semaphoreColor} />
+                      <SemaphoreBadge color={insp.semaphoreColor} greenLabel={t('green')} redLabel={t('red')} />
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {INSPECTION_TYPE_LABELS[insp.inspectionType] ?? insp.inspectionType}
+                      {t(`types.${insp.inspectionType}` as any, { default: insp.inspectionType })}
                     </TableCell>
                     <TableCell className="font-mono text-xs">
                       {insp.customsOffice ?? '—'}
@@ -184,16 +165,16 @@ export default function InspeccionesPage() {
                     <TableCell>
                       {insp.discrepanciesFound ? (
                         <span className="text-xs text-red-700 font-medium flex items-center gap-1">
-                          <Warning size={12} /> Sí
+                          <Warning size={12} /> {t('yes')}
                         </span>
                       ) : (
-                        <span className="text-xs text-green-700">No</span>
+                        <span className="text-xs text-green-700">{t('no')}</span>
                       )}
                     </TableCell>
                     <TableCell>
                       {insp.result ? (
                         <Badge variant={RESULT_VARIANT[insp.result] ?? 'outline'}>
-                          {RESULT_LABELS[insp.result] ?? insp.result}
+                          {t(`results.${insp.result}` as any, { default: insp.result })}
                         </Badge>
                       ) : '—'}
                     </TableCell>
@@ -210,14 +191,14 @@ export default function InspeccionesPage() {
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between text-sm text-muted-foreground">
-              <span>{total} inspecciones en total</span>
+              <span>{t('total', { total })}</span>
               <div className="flex gap-2">
                 <button
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
                   disabled={page === 0}
                   className="px-3 py-1 rounded border disabled:opacity-40"
                 >
-                  Anterior
+                  {t('prev')}
                 </button>
                 <span className="px-2 py-1">{page + 1} / {totalPages}</span>
                 <button
@@ -225,7 +206,7 @@ export default function InspeccionesPage() {
                   disabled={page >= totalPages - 1}
                   className="px-3 py-1 rounded border disabled:opacity-40"
                 >
-                  Siguiente
+                  {t('next')}
                 </button>
               </div>
             </div>
