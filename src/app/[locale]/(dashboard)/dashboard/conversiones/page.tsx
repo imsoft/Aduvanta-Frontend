@@ -600,7 +600,7 @@ export default function ConversionesPag() {
                       {marketRates && (
                         <SelectGroup>
                           <SelectLabel>{t('exchange.all')}</SelectLabel>
-                          {Object.keys(marketRates.rates)
+                          {Object.keys(marketRates.rates ?? {})
                             .filter((c) => !PRIORITY_CURRENCIES.includes(c))
                             .sort()
                             .map((c) => (
@@ -645,7 +645,7 @@ export default function ConversionesPag() {
                       {marketRates && (
                         <SelectGroup>
                           <SelectLabel>{t('exchange.all')}</SelectLabel>
-                          {Object.keys(marketRates.rates)
+                          {Object.keys(marketRates.rates ?? {})
                             .filter((c) => !PRIORITY_CURRENCIES.includes(c))
                             .sort()
                             .map((c) => (
