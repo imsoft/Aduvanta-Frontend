@@ -24,6 +24,15 @@ export function useMySubscription() {
   })
 }
 
+export function usePaymentMethods() {
+  const { activeOrgId } = useOrgStore()
+  return useQuery({
+    queryKey: ['payment-methods', activeOrgId],
+    queryFn: () => subscriptionsApi.getPaymentMethods(activeOrgId!),
+    enabled: !!activeOrgId,
+  })
+}
+
 export function useAssignPlan() {
   const { activeOrgId } = useOrgStore()
   const queryClient = useQueryClient()

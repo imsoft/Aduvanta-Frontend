@@ -345,7 +345,14 @@
     "upToOperations": "Up to {count} operations",
     "upToIntegrations": "Up to {count} integrations",
     "currentPlan": "Current plan",
-    "switchPlan": "Switch to this plan"
+    "switchPlan": "Switch to this plan",
+    "paymentMethods": "Payment methods",
+    "paymentMethodsDesc": "Cards saved for subscription billing.",
+    "noPaymentMethods": "No saved cards",
+    "noPaymentMethodsHint": "Add a card through the billing portal.",
+    "defaultBadge": "Default",
+    "cardExpiry": "Expires {month}/{year}",
+    "manageCards": "Manage cards"
   },
   "usage": {
     "title": "Usage",

@@ -345,7 +345,14 @@
     "upToOperations": "Hasta {count} operaciones",
     "upToIntegrations": "Hasta {count} integraciones",
     "currentPlan": "Plan actual",
-    "switchPlan": "Cambiar a este plan"
+    "switchPlan": "Cambiar a este plan",
+    "paymentMethods": "Métodos de pago",
+    "paymentMethodsDesc": "Tarjetas guardadas para el cobro de la suscripción.",
+    "noPaymentMethods": "Sin tarjetas guardadas",
+    "noPaymentMethodsHint": "Agrega una tarjeta desde el portal de facturación.",
+    "defaultBadge": "Predeterminada",
+    "cardExpiry": "Vence {month}/{year}",
+    "manageCards": "Administrar tarjetas"
   },
   "usage": {
     "title": "Uso",
