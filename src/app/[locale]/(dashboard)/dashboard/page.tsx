@@ -12,6 +12,8 @@ import {
   TrendUp,
   Package,
   IdentificationCard,
+  Truck,
+  ShieldWarning,
 } from '@phosphor-icons/react';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from '@/lib/auth-client';
@@ -41,6 +43,16 @@ interface DashboardMetrics {
     RELEASED: number;
   };
 }
+
+const EMPTY_METRICS: DashboardMetrics = {
+  activeOperations: 0,
+  entriesThisMonth: 0,
+  pendingPayments: 0,
+  pendingPaymentsAmount: '0',
+  expiringRegistries: 0,
+  warehouseItems: 0,
+  entriesByStatus: { DRAFT: 0, PREVALIDATED: 0, VALIDATED: 0, PAID: 0, DISPATCHED: 0, RELEASED: 0 },
+};
 
 function MetricCard({
   label,
@@ -108,7 +120,7 @@ export default function DashboardPage() {
   const activeOrg = organizations.find((o) => o.id === activeOrgId);
   const user = session?.user;
 
-  const { data: metrics } = useQuery<DashboardMetrics>({
+  const { data: metrics, isLoading: metricsLoading } = useQuery<DashboardMetrics>({
     queryKey: ['dashboard-metrics', activeOrgId],
     queryFn: async () => {
       const { data } = await apiClient.get('/api/analytics/dashboard', {
@@ -117,12 +129,13 @@ export default function DashboardPage() {
       return data;
     },
     enabled: !!activeOrgId,
+    retry: 1,
   });
 
   if (adminStatus?.isSystemAdmin) return null;
-  if (isSuccess && orgs && orgs.length === 0) {
-    return null;
-  }
+  if (isSuccess && orgs && orgs.length === 0) return null;
+
+  const m = metrics ?? EMPTY_METRICS;
 
   return (
     <div className="w-full space-y-6">
@@ -148,51 +161,60 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {activeOrg && metrics && (
+      {activeOrg && (
         <>
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
-            <MetricCard
-              label="Operaciones activas"
-              value={metrics.activeOperations}
-              href="/dashboard/operations"
-            />
-            <MetricCard
-              label="Pedimentos este mes"
-              value={metrics.entriesThisMonth}
-              href="/dashboard/pedimentos"
-            />
-            <MetricCard
-              label="Pagos pendientes"
-              value={metrics.pendingPayments}
-              sub={metrics.pendingPaymentsAmount
-                ? new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(
-                    parseFloat(metrics.pendingPaymentsAmount),
-                  )
-                : undefined}
-              accent={metrics.pendingPayments > 0 ? 'yellow' : undefined}
-              href="/dashboard/tesoreria/cuentas"
-            />
-            <MetricCard
-              label="Padrones por vencer"
-              value={metrics.expiringRegistries}
-              accent={metrics.expiringRegistries > 0 ? 'red' : undefined}
-              href="/dashboard/padron/importadores"
-            />
-            <MetricCard
-              label="Items en bodega"
-              value={metrics.warehouseItems}
-              href="/dashboard/bodega/inventario"
-            />
-            <MetricCard
-              label="En despacho"
-              value={metrics.entriesByStatus?.DISPATCHED ?? 0}
-              accent="blue"
-              href="/dashboard/pedimentos"
-            />
-          </div>
+          {metricsLoading ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="h-20 rounded-lg border bg-muted/20 animate-pulse" />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+              <MetricCard
+                label="Operaciones activas"
+                value={m.activeOperations}
+                href="/dashboard/operations"
+              />
+              <MetricCard
+                label="Pedimentos este mes"
+                value={m.entriesThisMonth}
+                href="/dashboard/pedimentos"
+              />
+              <MetricCard
+                label="Pagos pendientes"
+                value={m.pendingPayments}
+                sub={
+                  m.pendingPaymentsAmount && parseFloat(m.pendingPaymentsAmount) > 0
+                    ? new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(
+                        parseFloat(m.pendingPaymentsAmount),
+                      )
+                    : undefined
+                }
+                accent={m.pendingPayments > 0 ? 'yellow' : undefined}
+                href="/dashboard/tesoreria/cuentas"
+              />
+              <MetricCard
+                label="Padrones por vencer"
+                value={m.expiringRegistries}
+                accent={m.expiringRegistries > 0 ? 'red' : undefined}
+                href="/dashboard/padron/importadores"
+              />
+              <MetricCard
+                label="Items en bodega"
+                value={m.warehouseItems}
+                href="/dashboard/bodega/inventario"
+              />
+              <MetricCard
+                label="En despacho"
+                value={m.entriesByStatus?.DISPATCHED ?? 0}
+                accent="blue"
+                href="/dashboard/pedimentos"
+              />
+            </div>
+          )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Pedimentos by status */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="rounded-lg border p-4 space-y-3">
               <div className="flex items-center gap-2">
                 <ClipboardText size={16} className="text-muted-foreground" />
@@ -207,8 +229,8 @@ export default function DashboardPage() {
                   { key: 'DISPATCHED', label: 'Despachado', color: 'bg-orange-300' },
                   { key: 'RELEASED', label: 'Liberado', color: 'bg-green-400' },
                 ].map(({ key, label, color }) => {
-                  const count = metrics.entriesByStatus?.[key as keyof typeof metrics.entriesByStatus] ?? 0;
-                  const total = Object.values(metrics.entriesByStatus ?? {}).reduce((a, b) => a + b, 0);
+                  const count = m.entriesByStatus?.[key as keyof typeof m.entriesByStatus] ?? 0;
+                  const total = Object.values(m.entriesByStatus ?? {}).reduce((a, b) => a + b, 0);
                   const pct = total > 0 ? Math.round((count / total) * 100) : 0;
                   return (
                     <div key={key} className="flex items-center gap-3">
@@ -223,7 +245,6 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* Quick links */}
             <div className="rounded-lg border p-4 space-y-3">
               <div className="flex items-center gap-2">
                 <TrendUp size={16} className="text-muted-foreground" />
@@ -232,8 +253,10 @@ export default function DashboardPage() {
               <div className="grid grid-cols-2 gap-2">
                 {[
                   { href: '/dashboard/pedimentos/nuevo', label: 'Nuevo pedimento', icon: ClipboardText },
+                  { href: '/dashboard/embarques', label: 'Embarques', icon: Truck },
                   { href: '/dashboard/clasificacion', label: 'Clasificar fracción', icon: IdentificationCard },
                   { href: '/dashboard/tesoreria/cuentas', label: 'Cuenta corriente', icon: CurrencyDollar },
+                  { href: '/dashboard/padron/listas-negras', label: 'Consultar RFC SAT', icon: ShieldWarning },
                   { href: '/dashboard/bodega/inventario', label: 'Inventario bodega', icon: Package },
                   { href: '/dashboard/padron/importadores', label: 'Padrón importadores', icon: IdentificationCard },
                   { href: '/dashboard/inspecciones', label: 'Inspecciones', icon: Warning },
