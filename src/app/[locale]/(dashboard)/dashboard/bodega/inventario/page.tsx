@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Plus, Warehouse } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import {
   Table,
@@ -21,10 +22,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useQuery } from '@tanstack/react-query';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useOrgStore } from '@/store/org.store';
 import { apiClient } from '@/lib/api-client';
 import { useDebounce } from '@/hooks/use-debounce';
+import { toast } from 'sonner';
 
 interface InventoryItem {
   id: string;
@@ -59,12 +68,26 @@ const STATUS_LABEL_KEY: Record<string, 'statusAvailable' | 'statusReserved' | 's
   QUARANTINE: 'statusQuarantine',
 };
 
+const EMPTY_FORM = {
+  warehouseId: '',
+  productDescription: '',
+  quantity: '',
+  unitOfMeasure: '',
+  sku: '',
+  tariffFraction: '',
+};
+
 export default function InventarioPage() {
   const t = useTranslations('warehouse');
   const { activeOrgId } = useOrgStore();
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [warehouseId, setWarehouseId] = useState('ALL');
   const debouncedSearch = useDebounce(search, 300);
+
+  const [addOpen, setAddOpen] = useState(false);
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [isPending, setIsPending] = useState(false);
 
   const { data: warehouses = [] } = useQuery({
     queryKey: ['warehouses', activeOrgId],
@@ -103,6 +126,38 @@ export default function InventarioPage() {
         )
       : '—';
 
+  const handleAdd = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!activeOrgId) return;
+    if (!form.warehouseId || !form.productDescription || !form.quantity || !form.unitOfMeasure) {
+      toast.error(t('addInventoryValidation'));
+      return;
+    }
+    setIsPending(true);
+    try {
+      await apiClient.post(
+        '/api/warehouse/inventory',
+        {
+          warehouseId: form.warehouseId,
+          productDescription: form.productDescription,
+          quantity: parseFloat(form.quantity),
+          unitOfMeasure: form.unitOfMeasure,
+          sku: form.sku || undefined,
+          tariffFraction: form.tariffFraction || undefined,
+        },
+        { headers: { 'x-organization-id': activeOrgId } },
+      );
+      toast.success(t('addInventorySuccess'));
+      setForm(EMPTY_FORM);
+      setAddOpen(false);
+      queryClient.invalidateQueries({ queryKey: ['warehouse-inventory', activeOrgId] });
+    } catch (err: any) {
+      toast.error(err.response?.data?.message ?? t('addInventoryError'));
+    } finally {
+      setIsPending(false);
+    }
+  };
+
   return (
     <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
@@ -110,7 +165,7 @@ export default function InventarioPage() {
           <h1 className="text-2xl font-semibold tracking-tight">{t('inventoryPageTitle')}</h1>
           <p className="text-sm text-muted-foreground mt-1">{t('inventoryPageDesc')}</p>
         </div>
-        <Button size="sm">
+        <Button size="sm" onClick={() => setAddOpen(true)}>
           <Plus size={14} />
           {t('addInventory')}
         </Button>
@@ -228,6 +283,93 @@ export default function InventarioPage() {
           </Table>
         </div>
       )}
+
+      <Dialog open={addOpen} onOpenChange={setAddOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{t('addInventoryTitle')}</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleAdd} className="space-y-4">
+            <div className="space-y-1.5">
+              <Label>{t('colWarehouse')} *</Label>
+              <Select
+                value={form.warehouseId}
+                onValueChange={(v) => setForm((f) => ({ ...f, warehouseId: v }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t('selectWarehouse')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {warehouses.map((w) => (
+                    <SelectItem key={w.id} value={w.id}>
+                      {w.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>{t('colDescription')} *</Label>
+              <Input
+                value={form.productDescription}
+                onChange={(e) => setForm((f) => ({ ...f, productDescription: e.target.value }))}
+                placeholder={t('descriptionPlaceholder')}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label>{t('colQuantity')} *</Label>
+                <Input
+                  type="number"
+                  min="0"
+                  step="any"
+                  value={form.quantity}
+                  onChange={(e) => setForm((f) => ({ ...f, quantity: e.target.value }))}
+                  placeholder="0"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label>{t('unitOfMeasure')} *</Label>
+                <Input
+                  value={form.unitOfMeasure}
+                  onChange={(e) => setForm((f) => ({ ...f, unitOfMeasure: e.target.value }))}
+                  placeholder="KG, PZA, LT…"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label>{t('colSku')}</Label>
+                <Input
+                  value={form.sku}
+                  onChange={(e) => setForm((f) => ({ ...f, sku: e.target.value }))}
+                  placeholder="SKU-001"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label>{t('colFraction')}</Label>
+                <Input
+                  value={form.tariffFraction}
+                  onChange={(e) => setForm((f) => ({ ...f, tariffFraction: e.target.value }))}
+                  placeholder="8471.30.01"
+                />
+              </div>
+            </div>
+
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setAddOpen(false)}>
+                {t('cancel')}
+              </Button>
+              <Button type="submit" disabled={isPending}>
+                {isPending ? t('saving') : t('addInventory')}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

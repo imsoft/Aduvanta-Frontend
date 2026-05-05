@@ -185,10 +185,13 @@ export default function UsersPage() {
             </Select>
           </div>
 
-          <Button type="submit" disabled={invite.isPending} className="gap-2">
-            <UserPlus size={14} />
-            {invite.isPending ? t('members.inviting') : t('members.invite')}
-          </Button>
+          <div className="space-y-1.5">
+            <Label className="invisible select-none">·</Label>
+            <Button type="submit" disabled={invite.isPending} className="gap-2">
+              <UserPlus size={14} />
+              {invite.isPending ? t('members.inviting') : t('members.invite')}
+            </Button>
+          </div>
         </form>
       )}
 
