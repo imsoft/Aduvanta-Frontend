@@ -277,4 +277,9 @@ export const systemAdminApi = {
   deleteAnnouncement: async (id: string): Promise<void> => {
     await apiClient.delete(`/api/system-admin/announcements/${id}`);
   },
+
+  clearMyAbuseBlock: async (): Promise<{ cleared: boolean }> => {
+    const { data } = await apiClient.delete<{ cleared: boolean }>('/api/system-admin/abuse/me');
+    return data;
+  },
 };

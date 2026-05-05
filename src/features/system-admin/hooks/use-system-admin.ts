@@ -160,3 +160,9 @@ export function useDeleteAnnouncement() {
     },
   });
 }
+
+export function useClearMyAbuseBlock() {
+  return useMutation({
+    mutationFn: () => systemAdminApi.clearMyAbuseBlock(),
+  });
+}

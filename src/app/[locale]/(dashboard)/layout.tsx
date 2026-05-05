@@ -9,6 +9,7 @@ import { SidebarProvider } from '@/components/layout/sidebar-context';
 import { AnnouncementBanner } from '@/components/layout/announcement-banner';
 import { AnalyticsTracker } from '@/components/analytics-tracker';
 import { DashboardShellSkeleton } from '@/components/ui/loading-skeletons';
+import { AbuseBlockCleaner } from '@/components/layout/abuse-block-cleaner';
 
 export default function DashboardLayout({
   children,
@@ -35,6 +36,7 @@ export default function DashboardLayout({
   return (
     <SidebarProvider>
       <div className="flex h-screen overflow-hidden bg-background">
+        <AbuseBlockCleaner />
         <AnalyticsTracker />
         <AppSidebar />
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
