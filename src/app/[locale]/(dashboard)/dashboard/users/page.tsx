@@ -155,7 +155,7 @@ export default function UsersPage() {
       {canManage && (
         <form
           onSubmit={handleSubmit((data) => invite.mutate(data))}
-          className="flex items-end gap-3 rounded-lg border p-4"
+          className="flex items-center gap-3 rounded-lg border p-4"
         >
           <div className="flex-1 space-y-1.5">
             <Label htmlFor="invite-email">{t('members.inviteByEmail')}</Label>
@@ -185,13 +185,10 @@ export default function UsersPage() {
             </Select>
           </div>
 
-          <div className="space-y-1.5">
-            <Label className="invisible select-none">·</Label>
-            <Button type="submit" disabled={invite.isPending} className="gap-2">
-              <UserPlus size={14} />
-              {invite.isPending ? t('members.inviting') : t('members.invite')}
-            </Button>
-          </div>
+          <Button type="submit" disabled={invite.isPending} className="gap-2 shrink-0">
+            <UserPlus size={14} />
+            {invite.isPending ? t('members.inviting') : t('members.invite')}
+          </Button>
         </form>
       )}
 
