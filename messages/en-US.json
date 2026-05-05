@@ -352,7 +352,8 @@
     "noPaymentMethodsHint": "Add a card through the billing portal.",
     "defaultBadge": "Default",
     "cardExpiry": "Expires {month}/{year}",
-    "manageCards": "Manage cards"
+    "manageCards": "Manage cards",
+    "planLoadError": "Plan details could not be loaded. Check your organization subscription or try again later."
   },
   "usage": {
     "title": "Usage",

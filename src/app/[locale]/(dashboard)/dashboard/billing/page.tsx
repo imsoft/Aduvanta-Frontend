@@ -159,11 +159,11 @@ export default function BillingPage() {
                       onClick={() => assignPlan.mutate(plan.id)}
                       disabled={
                         assignPlan.isPending ||
-                        subscription?.plan.id === plan.id
+                        subscription?.plan?.id === plan.id
                       }
                       className="text-xs text-primary hover:underline disabled:opacity-50 disabled:no-underline"
                     >
-                      {subscription?.plan.id === plan.id
+                      {subscription?.plan?.id === plan.id
                         ? t('billing.currentPlan')
                         : t('billing.switchPlan')}
                     </button>

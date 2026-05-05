@@ -28,7 +28,8 @@ export interface Subscription {
 
 export interface SubscriptionWithPlan {
   subscription: Subscription;
-  plan: Plan;
+  /** Puede faltar si la API devolvió datos incompletos o hubo error al enlazar el plan */
+  plan?: Plan | null;
 }
 
 export interface PaymentMethod {

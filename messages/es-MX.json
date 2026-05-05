@@ -352,7 +352,8 @@
     "noPaymentMethodsHint": "Agrega una tarjeta desde el portal de facturación.",
     "defaultBadge": "Predeterminada",
     "cardExpiry": "Vence {month}/{year}",
-    "manageCards": "Administrar tarjetas"
+    "manageCards": "Administrar tarjetas",
+    "planLoadError": "No se pudo cargar la información del plan. Revisa la suscripción de la organización o intenta de nuevo más tarde."
   },
   "usage": {
     "title": "Uso",

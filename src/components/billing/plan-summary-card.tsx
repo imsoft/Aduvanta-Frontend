@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import type { SubscriptionWithPlan } from '@/features/subscriptions/types/subscription.types';
 
 interface PlanSummaryCardProps {
@@ -7,7 +8,16 @@ interface PlanSummaryCardProps {
 }
 
 export function PlanSummaryCard({ data }: PlanSummaryCardProps) {
+  const t = useTranslations('billing');
   const { subscription, plan } = data;
+
+  if (!plan) {
+    return (
+      <div className="rounded-lg border border-dashed p-6 text-sm text-muted-foreground">
+        {t('planLoadError')}
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-lg border p-6 space-y-4">
