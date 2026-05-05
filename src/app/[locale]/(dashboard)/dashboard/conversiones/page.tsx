@@ -627,8 +627,8 @@ export default function ConversionesPag() {
                   <div className="flex-1 flex items-center rounded-md border bg-muted/40 px-3 font-mono text-lg min-h-10">
                     {loadingMarket ? (
                       <span className="text-muted-foreground text-sm">{t('loading')}</span>
-                    ) : marketRates?.rates[currencyTarget] != null && currencyAmount !== '' ? (
-                      fmtCurrency(parseFloat(currencyAmount) * (marketRates.rates[currencyTarget] ?? 1), 4)
+                    ) : marketRates?.rates?.[currencyTarget] != null && currencyAmount !== '' ? (
+                      fmtCurrency(parseFloat(currencyAmount) * (marketRates.rates?.[currencyTarget] ?? 1), 4)
                     ) : '—'}
                   </div>
                   <Select value={currencyTarget} onValueChange={setCurrencyTarget}>
@@ -676,9 +676,9 @@ export default function ConversionesPag() {
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
                   {PRIORITY_CURRENCIES
-                    .filter((c) => c !== currencyBase && marketRates.rates[c] != null)
+                    .filter((c) => c !== currencyBase && marketRates.rates?.[c] != null)
                     .map((code) => {
-                      const rate = marketRates.rates[code]!;
+                      const rate = marketRates.rates?.[code] ?? 1;
                       const converted = parseFloat(currencyAmount || '1') * rate;
                       return (
                         <button

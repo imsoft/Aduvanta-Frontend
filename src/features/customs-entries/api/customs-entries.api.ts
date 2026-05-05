@@ -18,14 +18,14 @@ export interface ListEntriesParams {
 export const customsEntriesApi = {
   listOffices: async (): Promise<CustomsOffice[]> => {
     const { data } = await apiClient.get<CustomsOffice[]>(
-      '/api/customs-entries/offices',
+      '/api/customs/offices',
     );
     return data;
   },
 
   listPatents: async (orgId: string): Promise<CustomsPatent[]> => {
     const { data } = await apiClient.get<CustomsPatent[]>(
-      '/api/customs-entries/patents',
+      '/api/customs/patents',
       { headers: { 'x-organization-id': orgId } },
     );
     return data;
@@ -36,7 +36,7 @@ export const customsEntriesApi = {
     params?: ListEntriesParams,
   ): Promise<ListCustomsEntriesResult> => {
     const { data } = await apiClient.get<ListCustomsEntriesResult>(
-      '/api/customs-entries',
+      '/api/customs/entries',
       { params, headers: { 'x-organization-id': orgId } },
     );
     return data;
@@ -48,7 +48,7 @@ export const customsEntriesApi = {
     params?: { limit?: number; offset?: number },
   ): Promise<ListCustomsEntriesResult> => {
     const { data } = await apiClient.get<ListCustomsEntriesResult>(
-      '/api/customs-entries/search',
+      '/api/customs/entries/search',
       { params: { q, ...params }, headers: { 'x-organization-id': orgId } },
     );
     return data;
@@ -59,7 +59,7 @@ export const customsEntriesApi = {
     entryId: string,
   ): Promise<CustomsEntryDetail> => {
     const { data } = await apiClient.get<CustomsEntryDetail>(
-      `/api/customs-entries/${entryId}`,
+      `/api/customs/entries/${entryId}`,
       { headers: { 'x-organization-id': orgId } },
     );
     return data;
@@ -79,7 +79,7 @@ export const customsEntriesApi = {
     },
   ): Promise<CustomsEntry> => {
     const { data } = await apiClient.post<CustomsEntry>(
-      '/api/customs-entries',
+      '/api/customs/entries',
       dto,
       { headers: { 'x-organization-id': orgId } },
     );
@@ -102,7 +102,7 @@ export const customsEntriesApi = {
     }>,
   ): Promise<CustomsEntry> => {
     const { data } = await apiClient.patch<CustomsEntry>(
-      `/api/customs-entries/${entryId}`,
+      `/api/customs/entries/${entryId}`,
       dto,
       { headers: { 'x-organization-id': orgId } },
     );
@@ -116,7 +116,7 @@ export const customsEntriesApi = {
     comment?: string,
   ): Promise<CustomsEntry> => {
     const { data } = await apiClient.post<CustomsEntry>(
-      `/api/customs-entries/${entryId}/status`,
+      `/api/customs/entries/${entryId}/status`,
       { status, comment },
       { headers: { 'x-organization-id': orgId } },
     );
