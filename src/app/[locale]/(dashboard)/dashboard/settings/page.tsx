@@ -4,17 +4,23 @@ import { useRef, useState } from 'react';
 import { useTheme } from 'next-themes';
 import { useLocale, useTranslations } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/navigation';
-import { useSession, signOut } from '@/lib/auth-client';
+import { useSession, signOut, authClient } from '@/lib/auth-client';
 import { useOrgStore } from '@/store/org.store';
 import { routing } from '@/i18n/routing';
 import { toast } from 'sonner';
-import { Sun, Moon, Desktop, Globe, User, SignOut, ShieldCheck, Camera } from '@phosphor-icons/react';
+import {
+  Sun, Moon, Desktop, Globe, User, SignOut, ShieldCheck, Camera,
+  LockKey, ShieldWarning, DeviceMobile, QrCode, X,
+} from '@phosphor-icons/react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { apiClient } from '@/lib/api-client';
+import Image from 'next/image';
 
 const THEMES = [
   { id: 'light', icon: Sun, labelKey: 'theme.light' },
@@ -28,35 +34,366 @@ const LOCALE_META: Record<string, { label: string; flag: string }> = {
 };
 
 function getInitials(name: string): string {
-  return name
-    .split(' ')
-    .slice(0, 2)
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase();
+  return name.split(' ').slice(0, 2).map((n) => n[0]).join('').toUpperCase();
 }
 
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string;
-  description?: string;
-  children: React.ReactNode;
-}) {
+function Section({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
   return (
     <section className="space-y-4">
       <div>
         <h2 className="text-base font-semibold">{title}</h2>
-        {description && (
-          <p className="text-sm text-muted-foreground mt-0.5">{description}</p>
-        )}
+        {description && <p className="text-sm text-muted-foreground mt-0.5">{description}</p>}
       </div>
       {children}
     </section>
   );
 }
+
+// --- 2FA Section ---
+
+type TwoFaStep = 'idle' | 'qr' | 'verify' | 'backup-codes' | 'disable-confirm';
+
+function TwoFaSection() {
+  const { data: session, refetch } = useSession();
+  const [step, setStep] = useState<TwoFaStep>('idle');
+  const [password, setPassword] = useState('');
+  const [totpUri, setTotpUri] = useState('');
+  const [qrUrl, setQrUrl] = useState('');
+  const [code, setCode] = useState('');
+  const [backupCodes, setBackupCodes] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const isEnabled = (session?.user as Record<string, unknown> | undefined)?.twoFactorEnabled === true;
+
+  const handleEnable = async () => {
+    if (!password) { setError('Ingresa tu contraseña para continuar.'); return; }
+    setLoading(true);
+    setError('');
+    try {
+      const res = await authClient.twoFactor.enable({ password });
+      if (res.error) { setError(res.error.message ?? 'Error al activar 2FA.'); return; }
+      const uri = res.data?.totpURI ?? '';
+      setTotpUri(uri);
+      setQrUrl(`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(uri)}`);
+      setBackupCodes((res.data as Record<string, unknown>)?.backupCodes as string[] ?? []);
+      setStep('qr');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerify = async () => {
+    if (!code || code.length !== 6) { setError('Ingresa el código de 6 dígitos.'); return; }
+    setLoading(true);
+    setError('');
+    try {
+      const res = await authClient.twoFactor.verifyTotp({ code });
+      if (res.error) { setError('Código incorrecto. Intenta de nuevo.'); return; }
+      setStep('backup-codes');
+      await refetch();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDisable = async () => {
+    if (!password) { setError('Ingresa tu contraseña para continuar.'); return; }
+    setLoading(true);
+    setError('');
+    try {
+      const res = await authClient.twoFactor.disable({ password });
+      if (res.error) { setError(res.error.message ?? 'Error al desactivar 2FA.'); return; }
+      toast.success('Verificación en dos pasos desactivada.');
+      setStep('idle');
+      setPassword('');
+      await refetch();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const reset = () => { setStep('idle'); setPassword(''); setCode(''); setError(''); };
+
+  return (
+    <div className="border p-5 space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <ShieldWarning size={20} className={isEnabled ? 'text-green-600' : 'text-muted-foreground'} />
+          <div>
+            <p className="text-sm font-medium">Verificación en dos pasos (2FA)</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {isEnabled
+                ? 'Activo — tu cuenta requiere código TOTP al iniciar sesión.'
+                : 'Inactivo — cualquiera con tu contraseña puede acceder.'}
+            </p>
+          </div>
+        </div>
+        <Badge variant={isEnabled ? 'default' : 'secondary'} className="shrink-0">
+          {isEnabled ? 'Activado' : 'Inactivo'}
+        </Badge>
+      </div>
+
+      {error && <p className="text-sm text-red-600 bg-red-50 border border-red-200 px-3 py-2">{error}</p>}
+
+      {step === 'idle' && !isEnabled && (
+        <div className="space-y-3">
+          <div className="space-y-1.5">
+            <Label className="text-xs">Tu contraseña actual</Label>
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Confirmar contraseña"
+              onKeyDown={(e) => e.key === 'Enter' && handleEnable()}
+            />
+          </div>
+          <Button size="sm" onClick={handleEnable} disabled={loading || !password}>
+            {loading ? 'Activando…' : 'Activar 2FA'}
+          </Button>
+        </div>
+      )}
+
+      {step === 'qr' && (
+        <div className="space-y-4">
+          <p className="text-sm">
+            Escanea este código QR con tu app de autenticación (Google Authenticator, Authy, etc.).
+          </p>
+          {qrUrl && (
+            <div className="border inline-block p-2">
+              <Image src={qrUrl} alt="QR 2FA" width={200} height={200} unoptimized />
+            </div>
+          )}
+          <div className="space-y-1.5">
+            <Label className="text-xs">Código de verificación (6 dígitos)</Label>
+            <Input
+              value={code}
+              onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+              placeholder="000000"
+              maxLength={6}
+              className="font-mono w-32"
+              onKeyDown={(e) => e.key === 'Enter' && handleVerify()}
+            />
+          </div>
+          <div className="flex gap-2">
+            <Button size="sm" onClick={handleVerify} disabled={loading || code.length !== 6}>
+              {loading ? 'Verificando…' : 'Verificar y activar'}
+            </Button>
+            <Button size="sm" variant="ghost" onClick={reset}>Cancelar</Button>
+          </div>
+        </div>
+      )}
+
+      {step === 'backup-codes' && (
+        <div className="space-y-3">
+          <div className="bg-yellow-50 border border-yellow-200 p-3">
+            <p className="text-sm font-medium text-yellow-800">Guarda tus códigos de respaldo</p>
+            <p className="text-xs text-yellow-700 mt-1">
+              Si pierdes acceso a tu app, usa uno de estos códigos. Cada código es de un solo uso.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            {backupCodes.map((c) => (
+              <code key={c} className="text-xs font-mono bg-muted px-2 py-1 border">{c}</code>
+            ))}
+          </div>
+          <Button size="sm" onClick={() => { toast.success('2FA activado correctamente.'); reset(); }}>
+            He guardado los códigos
+          </Button>
+        </div>
+      )}
+
+      {step === 'idle' && isEnabled && (
+        <div className="space-y-3">
+          <div className="space-y-1.5">
+            <Label className="text-xs">Confirma tu contraseña para desactivar</Label>
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Tu contraseña actual"
+            />
+          </div>
+          <Button size="sm" variant="destructive" onClick={handleDisable} disabled={loading || !password}>
+            {loading ? 'Desactivando…' : 'Desactivar 2FA'}
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// --- Password Change Section ---
+
+function PasswordSection() {
+  const [current, setCurrent] = useState('');
+  const [next, setNext] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleChange = async () => {
+    setError('');
+    if (next !== confirm) { setError('Las contraseñas no coinciden.'); return; }
+    if (next.length < 12) { setError('La contraseña debe tener al menos 12 caracteres.'); return; }
+    if (!/[A-Z]/.test(next)) { setError('Debe incluir al menos una mayúscula.'); return; }
+    if (!/[0-9]/.test(next)) { setError('Debe incluir al menos un número.'); return; }
+    if (!/[^A-Za-z0-9]/.test(next)) { setError('Debe incluir al menos un carácter especial.'); return; }
+
+    setLoading(true);
+    try {
+      const res = await authClient.changePassword({ currentPassword: current, newPassword: next });
+      if (res.error) { setError(res.error.message ?? 'Error al cambiar contraseña.'); return; }
+      toast.success('Contraseña actualizada correctamente.');
+      setCurrent(''); setNext(''); setConfirm('');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="border p-5 space-y-4">
+      <div className="flex items-center gap-3">
+        <LockKey size={20} className="text-muted-foreground" />
+        <div>
+          <p className="text-sm font-medium">Cambiar contraseña</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Mínimo 12 caracteres, mayúsculas, números y símbolos.
+          </p>
+        </div>
+      </div>
+
+      {error && <p className="text-sm text-red-600 bg-red-50 border border-red-200 px-3 py-2">{error}</p>}
+
+      <div className="space-y-3">
+        <div className="space-y-1.5">
+          <Label className="text-xs">Contraseña actual</Label>
+          <Input type="password" value={current} onChange={(e) => setCurrent(e.target.value)} />
+        </div>
+        <div className="space-y-1.5">
+          <Label className="text-xs">Nueva contraseña</Label>
+          <Input type="password" value={next} onChange={(e) => setNext(e.target.value)} />
+        </div>
+        <div className="space-y-1.5">
+          <Label className="text-xs">Confirmar nueva contraseña</Label>
+          <Input
+            type="password"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleChange()}
+          />
+        </div>
+        <Button size="sm" onClick={handleChange} disabled={loading || !current || !next || !confirm}>
+          {loading ? 'Guardando…' : 'Actualizar contraseña'}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+// --- Sessions Section ---
+
+interface ActiveSessionData {
+  id: string;
+  ipAddress?: string;
+  userAgent?: string;
+  createdAt: string;
+  expiresAt: string;
+  current?: boolean;
+}
+
+function SessionsSection() {
+  const [sessions, setSessions] = useState<ActiveSessionData[] | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [revoking, setRevoking] = useState<string | null>(null);
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const res = await authClient.listSessions();
+      setSessions((res.data as ActiveSessionData[] | null) ?? []);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const revoke = async (sessionId: string) => {
+    setRevoking(sessionId);
+    try {
+      await authClient.revokeSession({ token: sessionId });
+      setSessions((prev) => prev?.filter((s) => s.id !== sessionId) ?? null);
+      toast.success('Sesión cerrada.');
+    } finally {
+      setRevoking(null);
+    }
+  };
+
+  const revokeAll = async () => {
+    setLoading(true);
+    try {
+      await authClient.revokeOtherSessions();
+      toast.success('Otras sesiones cerradas.');
+      setSessions(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="border p-5 space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <DeviceMobile size={20} className="text-muted-foreground" />
+          <div>
+            <p className="text-sm font-medium">Sesiones activas</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Dispositivos y navegadores con sesión abierta.
+            </p>
+          </div>
+        </div>
+        <div className="flex gap-2">
+          {sessions && sessions.length > 1 && (
+            <Button size="sm" variant="outline" onClick={revokeAll} disabled={loading}>
+              Cerrar otras
+            </Button>
+          )}
+          <Button size="sm" variant="ghost" onClick={load} disabled={loading}>
+            {loading ? 'Cargando…' : sessions ? 'Actualizar' : 'Ver sesiones'}
+          </Button>
+        </div>
+      </div>
+
+      {sessions && (
+        <div className="space-y-2">
+          {sessions.length === 0 && (
+            <p className="text-sm text-muted-foreground">Sin sesiones activas.</p>
+          )}
+          {sessions.map((s) => (
+            <div key={s.id} className="flex items-center justify-between gap-3 border p-3 text-xs">
+              <div className="min-w-0">
+                <p className="font-medium truncate">{s.userAgent ?? 'Dispositivo desconocido'}</p>
+                <p className="text-muted-foreground mt-0.5">
+                  {s.ipAddress ?? 'IP desconocida'} — Iniciada {new Date(s.createdAt).toLocaleDateString('es-MX')}
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="shrink-0 text-destructive hover:text-destructive"
+                onClick={() => revoke(s.id)}
+                disabled={revoking === s.id}
+              >
+                <X size={14} />
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// --- Main Page ---
 
 export default function SettingsPage() {
   const t = useTranslations();
@@ -120,10 +457,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Perfil */}
-      <Section
-        title={t('settings.profile.title')}
-        description={t('settings.profile.description')}
-      >
+      <Section title={t('settings.profile.title')} description={t('settings.profile.description')}>
         <div className="rounded-xl border bg-card p-5 flex items-center gap-4">
           <button
             type="button"
@@ -167,11 +501,17 @@ export default function SettingsPage() {
 
       <Separator />
 
+      {/* Seguridad */}
+      <Section title="Seguridad" description="Gestiona la autenticación y protección de tu cuenta.">
+        <TwoFaSection />
+        <PasswordSection />
+        <SessionsSection />
+      </Section>
+
+      <Separator />
+
       {/* Apariencia */}
-      <Section
-        title={t('settings.appearance.title')}
-        description={t('settings.appearance.description')}
-      >
+      <Section title={t('settings.appearance.title')} description={t('settings.appearance.description')}>
         <div className="grid grid-cols-3 gap-3">
           {THEMES.map(({ id, icon: Icon, labelKey }) => {
             const active = theme === id;
@@ -181,18 +521,11 @@ export default function SettingsPage() {
                 onClick={() => setTheme(id)}
                 className={cn(
                   'flex flex-col items-center gap-3 rounded-xl border p-4 transition-all hover:bg-accent/40',
-                  active
-                    ? 'border-primary bg-primary/5 ring-1 ring-primary'
-                    : 'border-border',
+                  active ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-border',
                 )}
               >
-                {/* Mini preview */}
-                <div
-                  className={cn(
-                    'w-full rounded-lg border overflow-hidden',
-                    id === 'dark' ? 'bg-zinc-900 border-zinc-700' : id === 'light' ? 'bg-white border-zinc-200' : 'bg-linear-to-br from-white to-zinc-800 border-zinc-300',
-                  )}
-                >
+                <div className={cn('w-full rounded-lg border overflow-hidden',
+                  id === 'dark' ? 'bg-zinc-900 border-zinc-700' : id === 'light' ? 'bg-white border-zinc-200' : 'bg-linear-to-br from-white to-zinc-800 border-zinc-300')}>
                   <div className={cn('h-2 w-full', id === 'dark' ? 'bg-zinc-800' : 'bg-zinc-100')} />
                   <div className="p-2 space-y-1">
                     <div className={cn('h-1.5 w-3/4 rounded-full', id === 'dark' ? 'bg-zinc-600' : 'bg-zinc-200')} />
@@ -215,10 +548,7 @@ export default function SettingsPage() {
       <Separator />
 
       {/* Idioma */}
-      <Section
-        title={t('settings.language.title')}
-        description={t('settings.language.description')}
-      >
+      <Section title={t('settings.language.title')} description={t('settings.language.description')}>
         <div className="flex flex-col gap-2">
           {routing.locales.map((loc) => {
             const meta = LOCALE_META[loc] ?? { label: loc, flag: '🌐' };
@@ -233,9 +563,7 @@ export default function SettingsPage() {
                 )}
               >
                 <span className="text-xl leading-none">{meta.flag}</span>
-                <span className={cn('flex-1 text-sm font-medium', active && 'text-primary')}>
-                  {meta.label}
-                </span>
+                <span className={cn('flex-1 text-sm font-medium', active && 'text-primary')}>{meta.label}</span>
                 {active && (
                   <Badge variant="secondary" className="text-[10px] h-4 shrink-0">
                     {t('settings.language.active')}
@@ -250,10 +578,7 @@ export default function SettingsPage() {
       <Separator />
 
       {/* Sesión */}
-      <Section
-        title={t('settings.session.title')}
-        description={t('settings.session.description')}
-      >
+      <Section title={t('settings.session.title')} description={t('settings.session.description')}>
         <div className="rounded-xl border bg-card p-5 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 min-w-0">
             <Globe size={16} className="text-muted-foreground shrink-0" />
@@ -262,12 +587,7 @@ export default function SettingsPage() {
               <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
             </div>
           </div>
-          <Button
-            variant="destructive"
-            size="sm"
-            className="shrink-0 gap-1.5"
-            onClick={handleSignOut}
-          >
+          <Button variant="destructive" size="sm" className="shrink-0 gap-1.5" onClick={handleSignOut}>
             <SignOut size={14} />
             {t('auth.signOut')}
           </Button>
