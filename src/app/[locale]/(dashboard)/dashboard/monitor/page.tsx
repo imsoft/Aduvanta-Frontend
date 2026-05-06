@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Activity, ArrowsClockwise, Truck, ClipboardText, Package } from '@phosphor-icons/react';
+import { ChartLine, ArrowsClockwise, Truck, ClipboardText, Package } from '@phosphor-icons/react';
 import { useRealtimeEvents, type RealtimeEvent } from '@/hooks/use-realtime-events';
 import { useOrgStore } from '@/store/org.store';
 import { apiClient } from '@/lib/api-client';
@@ -81,7 +81,7 @@ export default function MonitorPage() {
         headers: { 'x-organization-id': activeOrgId! },
       });
       return {
-        pendingEntries: data.entriesByStatus?.DRAFT + data.entriesByStatus?.PREVALIDATED ?? 0,
+        pendingEntries: (data.entriesByStatus?.DRAFT ?? 0) + (data.entriesByStatus?.PREVALIDATED ?? 0),
         activeShipments: data.activeOperations ?? 0,
         pendingOperations: data.activeOperations ?? 0,
         warehouseItems: data.warehouseItems ?? 0,
@@ -162,7 +162,7 @@ export default function MonitorPage() {
 
       <div className="border">
         <div className="flex items-center gap-2 p-4 border-b">
-          <Activity size={16} className="text-muted-foreground" />
+          <ChartLine size={16} className="text-muted-foreground" />
           <p className="text-sm font-medium">Eventos en tiempo real</p>
           {events.length > 0 && (
             <Badge variant="secondary" className="ml-auto text-xs">
@@ -173,7 +173,7 @@ export default function MonitorPage() {
 
         {events.length === 0 ? (
           <div className="p-12 text-center text-muted-foreground">
-            <Activity size={32} className="mx-auto mb-3 opacity-30" />
+            <ChartLine size={32} className="mx-auto mb-3 opacity-30" />
             <p className="text-sm">Esperando eventos…</p>
             <p className="text-xs mt-1">
               Los cambios de estado aparecerán aquí automáticamente

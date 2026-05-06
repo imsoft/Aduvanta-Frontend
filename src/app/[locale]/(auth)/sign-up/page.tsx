@@ -29,9 +29,7 @@ const createSignUpSchema = (t: (k: string) => string) =>
       .refine((p) => /[a-z]/.test(p), 'Debe incluir al menos una minúscula')
       .refine((p) => /[0-9]/.test(p), 'Debe incluir al menos un número')
       .refine((p) => /[^A-Za-z0-9]/.test(p), 'Debe incluir al menos un carácter especial'),
-    privacyConsent: z.literal(true, {
-      errorMap: () => ({ message: 'Debes aceptar el Aviso de Privacidad para continuar' }),
-    }),
+    privacyConsent: z.literal(true, { error: 'Debes aceptar el Aviso de Privacidad para continuar' }),
   })
 
 type SignUpFormData = z.infer<ReturnType<typeof createSignUpSchema>>
