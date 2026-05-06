@@ -532,9 +532,11 @@ export default function SettingsPage() {
   const [provider, setProvider] = useState<'google' | 'credential' | null>(null);
 
   useEffect(() => {
-    apiClient.get<Array<{ provider: string }>>('/api/auth/list-accounts')
-      .then(({ data }) => {
-        if (data.some((a) => a.provider === 'google')) setProvider('google');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (authClient as any).listAccounts()
+      .then((res: { data?: Array<{ provider: string }> }) => {
+        const accounts = res.data ?? [];
+        if (accounts.some((a) => a.provider === 'google')) setProvider('google');
         else setProvider('credential');
       })
       .catch(() => setProvider('credential'));
