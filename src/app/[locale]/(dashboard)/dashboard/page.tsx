@@ -1,9 +1,8 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { useEffect } from 'react';
-import { useRouter } from '@/i18n/navigation';
 import {
   Buildings,
   ClipboardText,
@@ -21,6 +20,7 @@ import { useOrgStore, type OrgOption } from '@/store/org.store';
 import { Button } from '@/components/ui/button';
 import { apiClient } from '@/lib/api-client';
 import { useIsSystemAdmin } from '@/features/system-admin/hooks/use-system-admin';
+import { useOnboardingStore } from '@/store/onboarding.store';
 
 async function fetchOrganizations(): Promise<OrgOption[]> {
   const { data } = await apiClient.get<OrgOption[]>('/api/organizations');
@@ -89,6 +89,35 @@ function MetricCard({
   return href ? <Link href={href}>{card}</Link> : card;
 }
 
+function OnboardingBanner() {
+  const { isComplete, dismissed, dismiss } = useOnboardingStore();
+  if (isComplete() || dismissed) return null;
+  return (
+    <div className="flex items-center justify-between border border-dashed p-4 bg-muted/20">
+      <div className="flex items-center gap-3">
+        <div className="h-2 w-2 rounded-full bg-foreground shrink-0" />
+        <div>
+          <p className="text-sm font-medium">Completa la configuración inicial</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Unos pasos rápidos para dejar todo listo.
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <Button asChild size="sm" variant="outline">
+          <Link href="/dashboard/onboarding">Continuar</Link>
+        </Button>
+        <button
+          onClick={dismiss}
+          className="text-xs text-muted-foreground hover:text-foreground transition-colors p-1"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function DashboardPage() {
   const t = useTranslations('dashboard');
   const router = useRouter();
@@ -139,6 +168,7 @@ export default function DashboardPage() {
 
   return (
     <div className="w-full space-y-6">
+      <OnboardingBanner />
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">
           {activeOrg ? activeOrg.name : t('title')}
