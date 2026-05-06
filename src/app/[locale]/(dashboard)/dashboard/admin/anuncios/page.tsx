@@ -10,6 +10,7 @@ import {
 import type { AnnouncementRow } from '@/features/system-admin/api/system-admin.api';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -153,11 +154,11 @@ export default function AdminAnunciosPage() {
         </div>
         <div className="space-y-2">
           <Label>{t('anuncios.fromLabel')}</Label>
-          <Input type="date" value={form.startsAt} onChange={(e) => setForm((f) => ({ ...f, startsAt: e.target.value }))} />
+          <DatePicker value={form.startsAt} onChange={(val) => setForm((f) => ({ ...f, startsAt: val }))} />
         </div>
         <div className="space-y-2">
           <Label>{t('anuncios.toLabel')}</Label>
-          <Input type="date" value={form.endsAt} onChange={(e) => setForm((f) => ({ ...f, endsAt: e.target.value }))} />
+          <DatePicker value={form.endsAt} onChange={(val) => setForm((f) => ({ ...f, endsAt: val }))} />
         </div>
       </div>
     </div>

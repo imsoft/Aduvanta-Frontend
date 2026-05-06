@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -185,11 +186,11 @@ export default function ImportadoresPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
                   <Label>{t('fields.inscriptionDate')}</Label>
-                  <Input type="date" value={form.inscriptionDate} onChange={(e) => setForm((f) => ({ ...f, inscriptionDate: e.target.value }))} />
+                  <DatePicker value={form.inscriptionDate} onChange={(val) => setForm((f) => ({ ...f, inscriptionDate: val }))} />
                 </div>
                 <div className="space-y-2">
                   <Label>{t('fields.expirationDate')}</Label>
-                  <Input type="date" value={form.expirationDate} onChange={(e) => setForm((f) => ({ ...f, expirationDate: e.target.value }))} />
+                  <DatePicker value={form.expirationDate} onChange={(val) => setForm((f) => ({ ...f, expirationDate: val }))} />
                 </div>
               </div>
             </div>

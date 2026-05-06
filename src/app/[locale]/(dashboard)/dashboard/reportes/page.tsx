@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { ChartBar, FileCsv } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -111,19 +111,17 @@ export default function ReportesPage() {
           <div className="flex flex-wrap gap-4 items-end">
             <div className="space-y-1.5">
               <Label className="text-xs">{t('from')}</Label>
-              <Input
-                type="date"
+              <DatePicker
                 value={dateFrom}
-                onChange={(e) => { setDateFrom(e.target.value); setRunQuery(false); }}
+                onChange={(val) => { setDateFrom(val); setRunQuery(false); }}
                 className="w-40"
               />
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs">{t('to')}</Label>
-              <Input
-                type="date"
+              <DatePicker
                 value={dateTo}
-                onChange={(e) => { setDateTo(e.target.value); setRunQuery(false); }}
+                onChange={(val) => { setDateTo(val); setRunQuery(false); }}
                 className="w-40"
               />
             </div>

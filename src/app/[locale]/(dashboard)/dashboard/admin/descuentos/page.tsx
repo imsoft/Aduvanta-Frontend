@@ -7,6 +7,7 @@ import { apiClient } from '@/lib/api-client';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Label } from '@/components/ui/label';
 import {
   Dialog,
@@ -341,10 +342,9 @@ export default function DescuentosPage() {
 
             <div className="space-y-1.5">
               <Label>{t('formExpiry')}</Label>
-              <Input
-                type="date"
+              <DatePicker
                 value={form.validUntil}
-                onChange={(e) => set('validUntil', e.target.value)}
+                onChange={(val) => set('validUntil', val)}
               />
               <p className="text-xs text-muted-foreground">{t('formExpiryHint')}</p>
             </div>

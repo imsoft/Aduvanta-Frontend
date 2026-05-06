@@ -6,6 +6,7 @@ import { Factory, Warning, Plus } from '@phosphor-icons/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -180,11 +181,11 @@ export default function ImmexPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
                   <Label>{t('labelApprovalDate')}</Label>
-                  <Input type="date" value={form.approvalDate} onChange={(e) => setForm((f) => ({ ...f, approvalDate: e.target.value }))} />
+                  <DatePicker value={form.approvalDate} onChange={(val) => setForm((f) => ({ ...f, approvalDate: val }))} />
                 </div>
                 <div className="space-y-2">
                   <Label>{t('labelExpirationDate')}</Label>
-                  <Input type="date" value={form.expirationDate} onChange={(e) => setForm((f) => ({ ...f, expirationDate: e.target.value }))} />
+                  <DatePicker value={form.expirationDate} onChange={(val) => setForm((f) => ({ ...f, expirationDate: val }))} />
                 </div>
               </div>
               <div className="space-y-2">

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/ui/date-picker';
 import {
   Dialog,
   DialogContent,
@@ -86,11 +87,9 @@ export function CreateAdvanceDialog({
             </Field>
           </div>
           <Field label={t('fields.receivedAtRequired')}>
-            <input
-              type="date"
-              className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            <DatePicker
               value={values.receivedAt}
-              onChange={(e) => setValues((v) => ({ ...v, receivedAt: e.target.value }))}
+              onChange={(val) => setValues((v) => ({ ...v, receivedAt: val }))}
             />
           </Field>
           <Field label={t('fields.reference')}>

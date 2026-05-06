@@ -38,6 +38,7 @@ import { OperationAiInsightsSection } from '@/components/ai/operation-ai-insight
 import { ChangeOperationStatusDialog } from '@/components/operation-status/change-operation-status-dialog';
 import { AssignOperationDialog } from '@/components/operation-assignment/assign-operation-dialog';
 import { InfoField } from '@/components/ui/info-field';
+import { DatePicker } from '@/components/ui/date-picker';
 import { DetailPageSkeleton } from '@/components/ui/loading-skeletons';
 import { EmptyState } from '@/components/ui/empty-state';
 import {
@@ -362,11 +363,9 @@ function EditOperationInline({
           />
         </Field>
         <Field label={t('operations.dueDate')}>
-          <input
-            type="date"
-            className="w-full rounded-none border bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          <DatePicker
             value={values.dueAt ?? ''}
-            onChange={(e) => setValues((v) => ({ ...v, dueAt: e.target.value }))}
+            onChange={(val) => setValues((v) => ({ ...v, dueAt: val }))}
           />
         </Field>
       </div>

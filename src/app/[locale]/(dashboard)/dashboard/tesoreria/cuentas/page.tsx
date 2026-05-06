@@ -28,6 +28,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Label } from '@/components/ui/label';
 import { useOrgStore } from '@/store/org.store';
 import { useClients } from '@/features/clients/hooks/use-clients';
@@ -189,10 +190,9 @@ function ClientAccountPanel({ clientId }: { clientId: string }) {
                 </div>
                 <div className="space-y-2">
                   <Label>{t('date')}</Label>
-                  <Input
-                    type="date"
+                  <DatePicker
                     value={movForm.movementDate}
-                    onChange={(e) => setMovForm((f) => ({ ...f, movementDate: e.target.value }))}
+                    onChange={(val) => setMovForm((f) => ({ ...f, movementDate: val }))}
                   />
                 </div>
               </div>
@@ -242,18 +242,16 @@ function ClientAccountPanel({ clientId }: { clientId: string }) {
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
                   <Label>{t('from')}</Label>
-                  <Input
-                    type="date"
+                  <DatePicker
                     value={stmtPeriod.from}
-                    onChange={(e) => setStmtPeriod((p) => ({ ...p, from: e.target.value }))}
+                    onChange={(val) => setStmtPeriod((p) => ({ ...p, from: val }))}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>{t('to')}</Label>
-                  <Input
-                    type="date"
+                  <DatePicker
                     value={stmtPeriod.to}
-                    onChange={(e) => setStmtPeriod((p) => ({ ...p, to: e.target.value }))}
+                    onChange={(val) => setStmtPeriod((p) => ({ ...p, to: val }))}
                   />
                 </div>
               </div>

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { useTranslations } from 'next-intl'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { Input } from '@/components/ui/input'
+import { DatePicker } from '@/components/ui/date-picker'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import {
@@ -183,7 +184,11 @@ export function OperationForm({
 
         <div className="space-y-1.5">
           <Label htmlFor="dueAt">{tForm('dueDate')}</Label>
-          <Input id="dueAt" type="date" {...register('dueAt')} />
+          <DatePicker
+              id="dueAt"
+              value={watch('dueAt')}
+              onChange={(val) => setValue('dueAt', val)}
+            />
         </div>
       </div>
 
