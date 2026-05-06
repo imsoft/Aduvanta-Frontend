@@ -580,7 +580,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="w-full max-w-2xl space-y-8">
+    <div className="w-full max-w-2xl mx-auto space-y-8">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">{t('settings.title')}</h1>
         <p className="text-sm text-muted-foreground mt-1">{t('settings.description')}</p>
