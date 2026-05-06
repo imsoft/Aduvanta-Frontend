@@ -34,15 +34,15 @@ function isRedirectToDashboardPath(pathname: string): boolean {
 }
 
 function sanitizeCallbackUrl(raw: string): string {
-  // Solo aceptar rutas relativas internas. Evita open redirect a sitios
-  // externos o esquemas peligrosos (javascript:, data:, //evil.com, etc.).
+  // Only accept internal relative paths. Prevents open redirect to external
+  // sites or dangerous schemes (javascript:, data:, //evil.com, etc.).
   if (!raw.startsWith('/')) return '/'
   if (raw.startsWith('//')) return '/'
   if (raw.includes('\\')) return '/'
   return raw
 }
 
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   const intlResponse = intlMiddleware(request)
