@@ -22,7 +22,16 @@ const createSignUpSchema = (t: (k: string) => string) =>
   z.object({
     name: z.string().min(2, t('validation.nameMinLength')),
     email: z.string().email(t('validation.invalidEmail')),
-    password: z.string().min(8, t('validation.passwordMinLength')),
+    password: z
+      .string()
+      .min(12, 'Mínimo 12 caracteres')
+      .refine((p) => /[A-Z]/.test(p), 'Debe incluir al menos una mayúscula')
+      .refine((p) => /[a-z]/.test(p), 'Debe incluir al menos una minúscula')
+      .refine((p) => /[0-9]/.test(p), 'Debe incluir al menos un número')
+      .refine((p) => /[^A-Za-z0-9]/.test(p), 'Debe incluir al menos un carácter especial'),
+    privacyConsent: z.literal(true, {
+      errorMap: () => ({ message: 'Debes aceptar el Aviso de Privacidad para continuar' }),
+    }),
   })
 
 type SignUpFormData = z.infer<ReturnType<typeof createSignUpSchema>>
@@ -48,7 +57,9 @@ export default function SignUpPage() {
         name: data.name,
         email: data.email,
         password: data.password,
-      });
+        // Store consent timestamp for LFPDPPP compliance
+        callbackURL: `/${locale}/dashboard`,
+      } as Parameters<typeof signUp.email>[0]);
 
       if (result.error) {
         toast.error(result.error.message ?? t('toast.signUpFailed'))
@@ -160,6 +171,28 @@ export default function SignUpPage() {
         </CardContent>
 
         <CardFooter className="flex flex-col gap-3 border-t-0">
+          <div className="flex items-start gap-2 w-full">
+            <input
+              id="privacyConsent"
+              type="checkbox"
+              className="mt-0.5 shrink-0"
+              {...register('privacyConsent')}
+            />
+            <label htmlFor="privacyConsent" className="text-xs text-muted-foreground leading-relaxed">
+              He leído y acepto el{' '}
+              <Link href="/privacidad" target="_blank" className="text-foreground underline underline-offset-2">
+                Aviso de Privacidad
+              </Link>{' '}
+              y los{' '}
+              <Link href="/terminos" target="_blank" className="text-foreground underline underline-offset-2">
+                Términos de Uso
+              </Link>{' '}
+              de Aduvanta.
+            </label>
+          </div>
+          {errors.privacyConsent && (
+            <p className="text-xs text-destructive w-full">{errors.privacyConsent.message}</p>
+          )}
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? t('auth.creatingAccount') : t('auth.createAccount')}
           </Button>

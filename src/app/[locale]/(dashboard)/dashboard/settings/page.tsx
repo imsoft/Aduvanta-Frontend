@@ -10,7 +10,7 @@ import { routing } from '@/i18n/routing';
 import { toast } from 'sonner';
 import {
   Sun, Moon, Desktop, Globe, User, SignOut, ShieldCheck, Camera,
-  LockKey, ShieldWarning, DeviceMobile, QrCode, X,
+  LockKey, ShieldWarning, DeviceMobile, X, Warning,
 } from '@phosphor-icons/react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -393,6 +393,84 @@ function SessionsSection() {
   );
 }
 
+// --- Danger Zone (LFPDPPP Right to Erasure) ---
+
+function DangerZoneSection() {
+  const router = useRouter();
+  const { clearOrg } = useOrgStore();
+  const [confirm, setConfirm] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const CONFIRM_WORD = 'ELIMINAR';
+
+  const handleDelete = async () => {
+    if (confirm !== CONFIRM_WORD) return;
+    setLoading(true);
+    try {
+      await apiClient.delete('/api/users/me');
+      await signOut();
+      clearOrg();
+      toast.success('Tu cuenta ha sido eliminada.');
+      router.push('/sign-in');
+    } catch {
+      toast.error('No se pudo eliminar la cuenta. Intenta de nuevo.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="border border-destructive/40 p-5 space-y-4">
+      <div className="flex items-center gap-3">
+        <Warning size={20} className="text-destructive shrink-0" />
+        <div>
+          <p className="text-sm font-medium text-destructive">Eliminar cuenta</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Elimina permanentemente tu cuenta y todos tus datos personales (LFPDPPP, Art. 24).
+          </p>
+        </div>
+      </div>
+
+      {!open ? (
+        <Button size="sm" variant="destructive" onClick={() => setOpen(true)}>
+          Solicitar eliminación de cuenta
+        </Button>
+      ) : (
+        <div className="space-y-3">
+          <div className="bg-destructive/5 border border-destructive/20 p-3 text-xs text-destructive space-y-1">
+            <p className="font-medium">Esta acción es irreversible.</p>
+            <p>Se anonimizarán tu nombre, correo e imagen. Las operaciones y pedimentos de tu organización se conservan por obligación fiscal (SAT, 5 años).</p>
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs">
+              Escribe <span className="font-mono font-bold">{CONFIRM_WORD}</span> para confirmar
+            </Label>
+            <Input
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              placeholder={CONFIRM_WORD}
+              className="font-mono w-40"
+            />
+          </div>
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={loading || confirm !== CONFIRM_WORD}
+            >
+              {loading ? 'Eliminando…' : 'Eliminar mi cuenta'}
+            </Button>
+            <Button size="sm" variant="ghost" onClick={() => { setOpen(false); setConfirm(''); }}>
+              Cancelar
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // --- Main Page ---
 
 export default function SettingsPage() {
@@ -592,6 +670,13 @@ export default function SettingsPage() {
             {t('auth.signOut')}
           </Button>
         </div>
+      </Section>
+
+      <Separator />
+
+      {/* Zona de peligro — LFPDPPP derecho al olvido */}
+      <Section title="Zona de peligro" description="Acciones permanentes e irreversibles sobre tu cuenta.">
+        <DangerZoneSection />
       </Section>
     </div>
   );
