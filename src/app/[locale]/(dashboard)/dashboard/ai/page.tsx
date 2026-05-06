@@ -1,49 +1,46 @@
 'use client';
 
-import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Separator } from '@/components/ui/separator';
-import { useAiSearch } from '@/features/ai-search/hooks/use-ai-search';
-import type { AiSearchResult } from '@/features/ai-search/types/ai-search.types';
-import { AiSearchForm } from '@/components/ai/ai-search-form';
-import { AiSearchResults } from '@/components/ai/ai-search-results';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { TariffClassifierWidget } from '@/features/ai-tariff/components/tariff-classifier-widget';
+import { CopilotChat } from '@/features/ai-copilot/components/copilot-chat';
 
 export default function AiPage() {
   const t = useTranslations();
-  const [result, setResult] = useState<AiSearchResult | null>(null);
-  const search = useAiSearch();
 
   return (
     <div className="w-full space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">{t('ai.title')}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">AI Copilot</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          {t('ai.description')}
+          Clasificación arancelaria automática y asistente de comercio exterior
         </p>
       </div>
 
-      <Separator />
-
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-sm font-semibold mb-4">{t('ai.searchTitle')}</h2>
-          <AiSearchForm
-            onSubmit={(data) =>
-              search.mutate(data, {
-                onSuccess: (res) => setResult(res),
-              })
-            }
-            isPending={search.isPending}
-          />
-        </div>
-
-        {result && (
-          <>
-            <Separator />
-            <AiSearchResults result={result} />
-          </>
-        )}
-      </div>
+      <Tabs defaultValue="classifier">
+        <TabsList>
+          <TabsTrigger value="classifier">Clasificación Arancelaria</TabsTrigger>
+          <TabsTrigger value="copilot">Copilot</TabsTrigger>
+        </TabsList>
+        <TabsContent value="classifier" className="mt-4">
+          <div className="border p-6">
+            <h2 className="font-medium mb-1">Clasificación con IA</h2>
+            <p className="text-sm text-muted-foreground mb-4">
+              Describe la mercancía y Gemini AI sugerirá la fracción arancelaria correcta de la TIGIE.
+            </p>
+            <TariffClassifierWidget />
+          </div>
+        </TabsContent>
+        <TabsContent value="copilot" className="mt-4">
+          <div className="border p-6">
+            <h2 className="font-medium mb-1">Asistente de Comercio Exterior</h2>
+            <p className="text-sm text-muted-foreground mb-4">
+              Consulta sobre fracciones, regímenes, NOM, TLCs, Incoterms y más.
+            </p>
+            <CopilotChat />
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

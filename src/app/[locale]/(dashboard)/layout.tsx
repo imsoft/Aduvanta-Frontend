@@ -10,6 +10,7 @@ import { AnnouncementBanner } from '@/components/layout/announcement-banner';
 import { AnalyticsTracker } from '@/components/analytics-tracker';
 import { DashboardShellSkeleton } from '@/components/ui/loading-skeletons';
 import { AbuseBlockCleaner } from '@/components/layout/abuse-block-cleaner';
+import { PwaInstallBanner } from '@/components/pwa/install-banner';
 
 export default function DashboardLayout({
   children,
@@ -45,6 +46,7 @@ export default function DashboardLayout({
           <main className="flex-1 overflow-auto p-6 w-full min-w-0">{children}</main>
         </div>
       </div>
+      <PwaInstallBanner />
     </SidebarProvider>
   );
 }
