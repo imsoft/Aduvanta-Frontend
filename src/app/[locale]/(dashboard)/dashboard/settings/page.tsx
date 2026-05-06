@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { useLocale, useTranslations } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/navigation';
@@ -10,8 +10,9 @@ import { routing } from '@/i18n/routing';
 import { toast } from 'sonner';
 import {
   Sun, Moon, Desktop, Globe, User, SignOut, ShieldCheck, Camera,
-  LockKey, ShieldWarning, DeviceMobile, X, Warning,
+  LockKey, ShieldWarning, DeviceMobile, X, Warning, Envelope,
 } from '@phosphor-icons/react';
+import { GoogleIcon } from '@/components/ui/icons/google-icon';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -53,7 +54,7 @@ function Section({ title, description, children }: { title: string; description?
 
 type TwoFaStep = 'idle' | 'qr' | 'verify' | 'backup-codes' | 'disable-confirm';
 
-function TwoFaSection() {
+function TwoFaSection({ isOAuthUser }: { isOAuthUser: boolean }) {
   const { data: session, refetch } = useSession();
   const [step, setStep] = useState<TwoFaStep>('idle');
   const [password, setPassword] = useState('');
@@ -65,6 +66,26 @@ function TwoFaSection() {
   const [error, setError] = useState('');
 
   const isEnabled = (session?.user as Record<string, unknown> | undefined)?.twoFactorEnabled === true;
+
+  if (isOAuthUser) {
+    return (
+      <div className="border p-5 space-y-3 opacity-60">
+        <div className="flex items-center gap-3">
+          <ShieldWarning size={20} className="text-muted-foreground" />
+          <div>
+            <p className="text-sm font-medium">Verificación en dos pasos (2FA)</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Tu cuenta usa Google para autenticarse. El 2FA lo gestiona directamente Google.
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 border px-3 py-2">
+          <GoogleIcon className="h-3.5 w-3.5 shrink-0" />
+          Administrado por Google — no disponible aquí
+        </div>
+      </div>
+    );
+  }
 
   const handleEnable = async () => {
     if (!password) { setError('Ingresa tu contraseña para continuar.'); return; }
@@ -225,7 +246,7 @@ function TwoFaSection() {
 
 // --- Password Change Section ---
 
-function PasswordSection() {
+function PasswordSection({ isOAuthUser }: { isOAuthUser: boolean }) {
   const [current, setCurrent] = useState('');
   const [next, setNext] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -250,6 +271,26 @@ function PasswordSection() {
       setLoading(false);
     }
   };
+
+  if (isOAuthUser) {
+    return (
+      <div className="border p-5 space-y-3 opacity-60">
+        <div className="flex items-center gap-3">
+          <LockKey size={20} className="text-muted-foreground" />
+          <div>
+            <p className="text-sm font-medium">Contraseña</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Tu cuenta no tiene contraseña — el acceso lo gestiona Google.
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 border px-3 py-2">
+          <GoogleIcon className="h-3.5 w-3.5 shrink-0" />
+          Administrado por Google — no disponible aquí
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="border p-5 space-y-4">
@@ -488,6 +529,17 @@ export default function SettingsPage() {
   const user = session?.user;
   const displayImage = avatarUrl ?? user?.image ?? null;
 
+  const [provider, setProvider] = useState<'google' | 'credential' | null>(null);
+
+  useEffect(() => {
+    apiClient.get<Array<{ provider: string }>>('/api/auth/list-accounts')
+      .then(({ data }) => {
+        if (data.some((a) => a.provider === 'google')) setProvider('google');
+        else setProvider('credential');
+      })
+      .catch(() => setProvider('credential'));
+  }, []);
+
   const handleLocaleChange = (newLocale: string) => {
     router.replace(pathname, { locale: newLocale });
   };
@@ -566,12 +618,26 @@ export default function SettingsPage() {
           <div className="min-w-0 flex-1">
             <p className="font-semibold truncate">{user?.name ?? '—'}</p>
             <p className="text-sm text-muted-foreground truncate">{user?.email}</p>
-            {user?.emailVerified && (
-              <Badge variant="secondary" className="mt-1.5 text-[10px] gap-1 h-4">
-                <ShieldCheck size={10} />
-                {t('settings.profile.verified')}
-              </Badge>
-            )}
+            <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+              {user?.emailVerified && (
+                <Badge variant="secondary" className="text-[10px] gap-1 h-4">
+                  <ShieldCheck size={10} />
+                  {t('settings.profile.verified')}
+                </Badge>
+              )}
+              {provider === 'google' && (
+                <Badge variant="outline" className="text-[10px] gap-1 h-4">
+                  <GoogleIcon className="h-2.5 w-2.5" />
+                  Registrado con Google
+                </Badge>
+              )}
+              {provider === 'credential' && (
+                <Badge variant="outline" className="text-[10px] gap-1 h-4">
+                  <Envelope size={10} />
+                  Registrado con correo
+                </Badge>
+              )}
+            </div>
             <p className="text-xs text-muted-foreground mt-1">{t('settings.profile.clickToChangeAvatar')}</p>
           </div>
         </div>
@@ -581,8 +647,8 @@ export default function SettingsPage() {
 
       {/* Seguridad */}
       <Section title="Seguridad" description="Gestiona la autenticación y protección de tu cuenta.">
-        <TwoFaSection />
-        <PasswordSection />
+        <TwoFaSection isOAuthUser={provider === 'google'} />
+        <PasswordSection isOAuthUser={provider === 'google'} />
         <SessionsSection />
       </Section>
 
